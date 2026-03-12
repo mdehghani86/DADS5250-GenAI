@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__nanobanana-mcp__gemini_generate_image"
+    ]
+  }
+}

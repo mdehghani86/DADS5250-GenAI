@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DADS 5250 — Course Lab Planner</title>
+<style>
+  :root {
+    --brand: #001a70;
+    --accent: #0055d4;
+    --bg: #f5f7fa;
+    --card: #ffffff;
+    --border: #dde3ec;
+    --text: #1a1a2e;
+    --muted: #6b7280;
+    --green: #059669;
+    --amber: #d97706;
+    --red: #dc2626;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+  header {
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    color: #fff; padding: 2rem 2rem 1.5rem; text-align: center;
+  }
+  header h1 { font-size: 1.8rem; font-weight: 700; margin-bottom: .3rem; }
+  header p { opacity: .85; font-size: .95rem; }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 1.5rem; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: .5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+  .tab-btn {
+    padding: .55rem 1.2rem; border: 2px solid var(--border); border-radius: 8px;
+    background: var(--card); cursor: pointer; font-size: .85rem; font-weight: 600;
+    color: var(--muted); transition: all .2s;
+  }
+  .tab-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .tab-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Sections */
+  .section {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.5rem; margin-bottom: 1.2rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);
+  }
+  .section h2 { font-size: 1.1rem; color: var(--brand); margin-bottom: .2rem; }
+  .section .subtitle { font-size: .82rem; color: var(--muted); margin-bottom: 1rem; }
+
+  /* Questions */
+  .question { margin-bottom: 1.4rem; }
+  .question:last-child { margin-bottom: 0; }
+  .q-label { font-weight: 600; font-size: .92rem; margin-bottom: .5rem; display: block; }
+  .q-context { font-size: .8rem; color: var(--muted); margin-bottom: .5rem; padding: .5rem; background: #f0f4ff; border-radius: 6px; }
+
+  .options { display: flex; flex-direction: column; gap: .4rem; }
+  .option {
+    display: flex; align-items: flex-start; gap: .5rem;
+    padding: .5rem .75rem; border: 1px solid var(--border); border-radius: 8px;
+    cursor: pointer; transition: all .15s; font-size: .88rem;
+  }
+  .option:hover { border-color: var(--accent); background: #f0f4ff; }
+  .option input { margin-top: 3px; accent-color: var(--accent); }
+  .option.selected { border-color: var(--accent); background: #e8f0fe; }
+
+  textarea.notes {
+    width: 100%; min-height: 60px; border: 1px solid var(--border); border-radius: 8px;
+    padding: .6rem; font-family: inherit; font-size: .85rem; resize: vertical; margin-top: .4rem;
+  }
+  textarea.notes:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,85,212,.12); }
+
+  /* Audit table */
+  .audit-table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+  .audit-table th, .audit-table td { padding: .5rem .6rem; text-align: left; border-bottom: 1px solid var(--border); }
+  .audit-table th { background: #f0f4ff; font-weight: 600; color: var(--brand); position: sticky; top: 0; }
+  .audit-table tr:hover td { background: #fafbff; }
+  .badge { display: inline-block; padding: 1px 8px; border-radius: 10px; font-size: .72rem; font-weight: 600; }
+  .badge-red { background: #fde8e8; color: var(--red); }
+  .badge-amber { background: #fef3cd; color: var(--amber); }
+  .badge-green { background: #d1fae5; color: var(--green); }
+
+  /* Summary panel */
+  .summary-box {
+    background: linear-gradient(135deg, #f0f4ff, #e8f0fe); border: 2px solid var(--accent);
+    border-radius: 12px; padding: 1.5rem; margin-top: 1rem;
+  }
+  .summary-box h3 { color: var(--brand); margin-bottom: .8rem; }
+  .summary-list { list-style: none; }
+  .summary-list li { padding: .3rem 0; font-size: .88rem; }
+  .summary-list li::before { content: "→ "; color: var(--accent); font-weight: bold; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: .8rem; margin-top: 1.5rem; flex-wrap: wrap; }
+  .btn {
+    padding: .6rem 1.4rem; border: none; border-radius: 8px; font-size: .88rem;
+    font-weight: 600; cursor: pointer; transition: all .2s;
+  }
+  .btn-primary { background: var(--accent); color: #fff; }
+  .btn-primary:hover { background: var(--brand); }
+  .btn-secondary { background: var(--card); color: var(--accent); border: 2px solid var(--accent); }
+  .btn-secondary:hover { background: #f0f4ff; }
+  .btn-danger { background: #fde8e8; color: var(--red); border: 2px solid #fca5a5; }
+  .btn-danger:hover { background: #fee2e2; }
+
+  .progress-bar { height: 6px; background: var(--border); border-radius: 3px; margin: 1rem 0; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 3px; transition: width .4s; }
+
+  .timestamp { font-size: .75rem; color: var(--muted); text-align: right; margin-top: .5rem; }
+
+  @media (max-width: 640px) {
+    header h1 { font-size: 1.3rem; }
+    .container { padding: 1rem; }
+    .tabs { gap: .3rem; }
+    .tab-btn { padding: .4rem .8rem; font-size: .78rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>DADS 5250: Generative AI in Practice</h1>
+  <p>Course Lab Planning &amp; Design Decisions</p>
+</header>
+
+<div class="container">
+
+  <!-- Progress -->
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.3rem">
+    <span style="font-size:.82rem;font-weight:600;color:var(--brand)">Planning Progress</span>
+    <span id="progressLabel" style="font-size:.82rem;color:var(--muted)">0 / 0 answered</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="audit">Current Audit</button>
+    <button class="tab-btn" data-tab="structure">Structure &amp; Naming</button>
+    <button class="tab-btn" data-tab="models">Models &amp; APIs</button>
+    <button class="tab-btn" data-tab="pedagogy">Pedagogy &amp; Exercises</button>
+    <button class="tab-btn" data-tab="utils">Utils &amp; Shared Code</button>
+    <button class="tab-btn" data-tab="modules">Module Plan</button>
+    <button class="tab-btn" data-tab="summary">Summary</button>
+  </div>
+
+  <!-- ===================== TAB 1: AUDIT ===================== -->
+  <div class="tab-panel active" id="tab-audit">
+    <div class="section">
+      <h2>Existing Lab Audit</h2>
+      <p class="subtitle">Issues found across the 18 notebooks in mdehghani86/AppliedGenAI</p>
+      <div style="overflow-x:auto">
+      <table class="audit-table">
+        <thead>
+          <tr><th>Issue</th><th>Details</th><th>Severity</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>API Key Name Inconsistency</td>
+            <td>M3 &amp; M11 use <code>OpenAI_Key</code> (camelCase). M5 &amp; M8 use <code>OPENAI_API_KEY</code> (SCREAMING_SNAKE). Students must store key under both names.</td>
+            <td><span class="badge badge-red">Breaking</span></td>
+          </tr>
+          <tr>
+            <td>API Setup Pattern</td>
+            <td>4 different patterns: raw check+raise, if/else+print, try/except+pretty_print, bare assignment. No consistency.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+          <tr>
+            <td>Markdown Styling</td>
+            <td>M3/M5: inline div gradient. M8: full DOCTYPE HTML docs (11 cells!). M11: mixed. No template.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+          <tr>
+            <td>Comment Banners</td>
+            <td>M3: <code>====</code>, M5: <code>=====</code>, M8: <code>++++</code>, M11: <code>###</code>. Four different styles.</td>
+            <td><span class="badge badge-green">Minor</span></td>
+          </tr>
+          <tr>
+            <td>Colab Badge</td>
+            <td>M3 and M11 have it. M5 and M8 do not. Should be on all notebooks.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+          <tr>
+            <td>Display/Output</td>
+            <td>M3: raw print. M5: pandas display. M8: custom pretty_print HTML. M11: display(Markdown). No shared helper.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+          <tr>
+            <td>pip Installs</td>
+            <td>M3 has NONE (assumes env). Others vary: some use %%capture, some don't. No standard block.</td>
+            <td><span class="badge badge-red">Breaking</span></td>
+          </tr>
+          <tr>
+            <td>Outdated Models</td>
+            <td>All default to <code>gpt-3.5-turbo</code>. Reference to <code>gpt-o3</code> (likely typo). No GPT-4o-mini or GPT-4.1 usage.</td>
+            <td><span class="badge badge-red">Breaking</span></td>
+          </tr>
+          <tr>
+            <td>LangChain Compatibility</td>
+            <td>M8 uses <code>langchain-classic</code> shim for <code>hub.pull()</code>. Deprecated patterns likely to break.</td>
+            <td><span class="badge badge-red">Breaking</span></td>
+          </tr>
+          <tr>
+            <td>CrewAI Version</td>
+            <td>M11 uses older CrewAI API. CrewAI 0.80+ has breaking changes (new Agent/Task syntax).</td>
+            <td><span class="badge badge-red">Breaking</span></td>
+          </tr>
+          <tr>
+            <td>Missing requirements.txt</td>
+            <td>No requirements.txt or environment spec in repo. README references one that doesn't exist.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+          <tr>
+            <td>No Utils/Shared Code</td>
+            <td><code>pretty_print()</code> defined only in M8. API setup, badge, install blocks all duplicated per notebook.</td>
+            <td><span class="badge badge-amber">Confusing</span></td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 2: STRUCTURE ===================== -->
+  <div class="tab-panel" id="tab-structure">
+    <div class="section">
+      <h2>Repo &amp; File Structure</h2>
+      <p class="subtitle">Decide how labs are organized in the new DADS5250 repo</p>
+
+      <div class="question" data-qid="s1">
+        <span class="q-label">Q1. Folder structure for labs</span>
+        <div class="q-context">Current repo: all 18 .ipynb files flat in root. No folders.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="s1" value="flat"> Keep flat (all notebooks in root)</label>
+          <label class="option"><input type="radio" name="s1" value="by-module"> By module folder: <code>M03/</code>, <code>M04/</code>, ... <code>M11/</code></label>
+          <label class="option"><input type="radio" name="s1" value="by-week"> By week folder: <code>Week01/</code>, <code>Week02/</code>, ...</label>
+          <label class="option"><input type="radio" name="s1" value="by-topic"> By topic folder: <code>prompting/</code>, <code>langchain/</code>, <code>rag/</code>, <code>agents/</code>, <code>crewai/</code></label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="s2">
+        <span class="q-label">Q2. Notebook naming convention</span>
+        <div class="q-context">Current: inconsistent — <code>M3_Lab1_...</code> vs <code>Lab_7_HealthLLM</code> vs <code>ChatGPT_API_Tutorial</code></div>
+        <div class="options">
+          <label class="option"><input type="radio" name="s2" value="module-lab"> <code>M03_Lab1_Topic_Name.ipynb</code> (zero-padded module + lab number)</label>
+          <label class="option"><input type="radio" name="s2" value="week-lab"> <code>W03_Lab1_Topic_Name.ipynb</code> (week-based)</label>
+          <label class="option"><input type="radio" name="s2" value="numbered"> <code>01_Prompting_Strategies.ipynb</code> (sequential number)</label>
+          <label class="option"><input type="radio" name="s2" value="topic-only"> <code>prompting_strategies.ipynb</code> (topic only, lowercase snake_case)</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="s3">
+        <span class="q-label">Q3. Colab badge policy</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="s3" value="all"> Every notebook gets a Colab "Open in Colab" badge (auto-generated)</label>
+          <label class="option"><input type="radio" name="s3" value="none"> No badges — students open from course LMS</label>
+          <label class="option"><input type="radio" name="s3" value="optional"> Optional — instructor adds manually</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="s4">
+        <span class="q-label">Q4. Section header style in notebooks</span>
+        <div class="q-context">Current: M3/M5 use gradient HTML div. M8 uses full DOCTYPE. M11 uses mixed.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="s4" value="gradient"> Branded gradient HTML div (blue #001a70 → #0055d4)</label>
+          <label class="option"><input type="radio" name="s4" value="markdown"> Plain Markdown headings (# / ## / ###) — clean, portable</label>
+          <label class="option"><input type="radio" name="s4" value="minimal-html"> Minimal HTML: colored top banner + Markdown for rest</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 3: MODELS & APIS ===================== -->
+  <div class="tab-panel" id="tab-models">
+    <div class="section">
+      <h2>Models &amp; API Updates</h2>
+      <p class="subtitle">All labs currently default to gpt-3.5-turbo. Time to update.</p>
+
+      <div class="question" data-qid="m1">
+        <span class="q-label">Q5. Default model for labs</span>
+        <div class="q-context">gpt-3.5-turbo is deprecated for new projects. Cost-effective alternatives exist.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="m1" value="gpt-4o-mini"> <code>gpt-4o-mini</code> — cheap, fast, good for most labs</label>
+          <label class="option"><input type="radio" name="m1" value="gpt-4o"> <code>gpt-4o</code> — more capable, moderate cost</label>
+          <label class="option"><input type="radio" name="m1" value="gpt-4.1-mini"> <code>gpt-4.1-mini</code> — latest mini model (2025+)</label>
+          <label class="option"><input type="radio" name="m1" value="gpt-4.1-nano"> <code>gpt-4.1-nano</code> — cheapest, good for intro labs</label>
+          <label class="option"><input type="radio" name="m1" value="mixed"> Mixed: nano for basic, mini for main, 4o for advanced</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="m2">
+        <span class="q-label">Q6. Multi-provider strategy</span>
+        <div class="q-context">M5 already compares GPT vs Gemini. Should we expand?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="m2" value="openai-only"> OpenAI only — simpler, one API key</label>
+          <label class="option"><input type="radio" name="m2" value="openai-gemini"> OpenAI + Gemini (current approach, 2 keys)</label>
+          <label class="option"><input type="radio" name="m2" value="openai-gemini-claude"> OpenAI + Gemini + Claude (3 providers, richer comparison)</label>
+          <label class="option"><input type="radio" name="m2" value="litellm"> Use LiteLLM as unified interface to all providers</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="m3">
+        <span class="q-label">Q7. API key management</span>
+        <div class="q-context">Currently: 2 different secret names (OpenAI_Key vs OPENAI_API_KEY). Must standardize.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="m3" value="colab-secrets"> Google Colab Secrets with standardized names (<code>OPENAI_API_KEY</code>, <code>GEMINI_API_KEY</code>)</label>
+          <label class="option"><input type="radio" name="m3" value="env-file"> <code>.env</code> file with python-dotenv (works local + Colab)</label>
+          <label class="option"><input type="radio" name="m3" value="both"> Both: try Colab secrets first, fallback to .env</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="m4">
+        <span class="q-label">Q8. LangChain version strategy</span>
+        <div class="q-context">Current labs use langchain + langchain-classic (deprecated shim). LangChain 0.3+ is current.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="m4" value="latest"> Pin to latest LangChain 0.3.x — use LCEL throughout</label>
+          <label class="option"><input type="radio" name="m4" value="pin-specific"> Pin exact versions in requirements.txt for reproducibility</label>
+          <label class="option"><input type="radio" name="m4" value="langgraph-focus"> Shift focus to LangGraph (LangChain's successor for agents)</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="m5">
+        <span class="q-label">Q9. CrewAI version strategy</span>
+        <div class="q-context">CrewAI has had breaking changes. Current labs use older syntax.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="m5" value="latest-crewai"> Update to latest CrewAI (0.80+) with new decorator syntax</label>
+          <label class="option"><input type="radio" name="m5" value="pin-crewai"> Pin to a stable CrewAI version for semester</label>
+          <label class="option"><input type="radio" name="m5" value="both-frameworks"> Teach both CrewAI + AutoGen/Agency Swarm for comparison</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 4: PEDAGOGY ===================== -->
+  <div class="tab-panel" id="tab-pedagogy">
+    <div class="section">
+      <h2>Pedagogy &amp; Exercise Design</h2>
+      <p class="subtitle">How students interact with the labs</p>
+
+      <div class="question" data-qid="p1">
+        <span class="q-label">Q10. Code exercise style</span>
+        <div class="q-context">M5 uses <code>-----</code> placeholders (fill-in-the-blank). M3 has full code cells students modify. M11 has markdown instructions.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="p1" value="placeholders"> Coursera-style: code cells with <code># YOUR CODE HERE</code> placeholders + hints</label>
+          <label class="option"><input type="radio" name="p1" value="fill-blank"> Fill-in-the-blank: <code>response = client.chat.completions.create(model=___)</code></label>
+          <label class="option"><input type="radio" name="p1" value="mixed-progressive"> Progressive: early labs use fill-in-blank, later labs use YOUR CODE HERE</label>
+          <label class="option"><input type="radio" name="p1" value="full-scaffold"> Full scaffold: working code shown, then "Now modify it to..." exercises</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="p2">
+        <span class="q-label">Q11. Solution availability</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="p2" value="no-solutions"> No solutions in repo — discussed in class only</label>
+          <label class="option"><input type="radio" name="p2" value="separate-branch"> Solutions on a separate <code>solutions</code> branch</label>
+          <label class="option"><input type="radio" name="p2" value="separate-folder"> Solutions in a <code>solutions/</code> folder (same branch)</label>
+          <label class="option"><input type="radio" name="p2" value="hidden-cells"> Collapsed/hidden cells in Colab (students can expand)</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="p3">
+        <span class="q-label">Q12. Follow-up assignments</span>
+        <div class="q-context">Current labs have no formal assignments. Should we add them?</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="p3" value="inline"> Inline: assignment section at end of each lab notebook</label>
+          <label class="option"><input type="radio" name="p3" value="separate-nb"> Separate notebook: <code>M03_Assignment.ipynb</code> per module</label>
+          <label class="option"><input type="radio" name="p3" value="markdown"> Markdown file: <code>assignments/M03_assignment.md</code></label>
+          <label class="option"><input type="radio" name="p3" value="none"> No formal assignments — labs are self-contained</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="p4">
+        <span class="q-label">Q13. Difficulty scaffolding</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="p4" value="labels"> Label each exercise: <strong>Beginner</strong> / <strong>Intermediate</strong> / <strong>Challenge</strong></label>
+          <label class="option"><input type="radio" name="p4" value="stars"> Star rating: ★ ★★ ★★★</label>
+          <label class="option"><input type="radio" name="p4" value="no-labels"> No labels — natural progression within each lab</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="p5">
+        <span class="q-label">Q14. Theory vs practice ratio in labs</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="p5" value="20-80"> 20% theory / 80% code (hands-on focus)</label>
+          <label class="option"><input type="radio" name="p5" value="40-60"> 40% theory / 60% code (balanced — current style)</label>
+          <label class="option"><input type="radio" name="p5" value="theory-separate"> Theory in separate lecture slides, labs are 100% hands-on</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 5: UTILS ===================== -->
+  <div class="tab-panel" id="tab-utils">
+    <div class="section">
+      <h2>Shared Utils &amp; Common Code</h2>
+      <p class="subtitle">Eliminate copy-paste across labs</p>
+
+      <div class="question" data-qid="u1">
+        <span class="q-label">Q15. Utils delivery method</span>
+        <div class="q-context">Currently: pretty_print exists only in M8. API setup is different in every notebook.</div>
+        <div class="options">
+          <label class="option"><input type="radio" name="u1" value="utils-folder"> <code>utils/</code> folder with .py files, imported via <code>from utils.display import pretty_print</code></label>
+          <label class="option"><input type="radio" name="u1" value="pip-package"> Install as pip package: <code>pip install dads5250-utils</code> (PyPI or GitHub)</label>
+          <label class="option"><input type="radio" name="u1" value="setup-cell"> Standard "Setup" cell at top of every notebook (copy-pasted but identical)</label>
+          <label class="option"><input type="radio" name="u1" value="gist-fetch"> Fetch from GitHub gist at runtime: <code>exec(requests.get(url).text)</code></label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="u2">
+        <span class="q-label">Q16. What goes in shared utils?</span>
+        <p style="font-size:.82rem;color:var(--muted);margin:.4rem 0">Select all that apply</p>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="u2" value="pretty-print"> <code>pretty_print(text, title)</code> — styled HTML output</label>
+          <label class="option"><input type="checkbox" name="u2" value="api-setup"> <code>setup_api_keys()</code> — standardized key loading (Colab + .env)</label>
+          <label class="option"><input type="checkbox" name="u2" value="colab-badge"> <code>colab_badge(notebook_name)</code> — auto-generate Open in Colab badge</label>
+          <label class="option"><input type="checkbox" name="u2" value="timer"> <code>@timer</code> decorator — measure API call duration</label>
+          <label class="option"><input type="checkbox" name="u2" value="cost-tracker"> <code>cost_tracker(response)</code> — estimate API cost from token usage</label>
+          <label class="option"><input type="checkbox" name="u2" value="compare-models"> <code>compare_models(prompt, models)</code> — side-by-side model comparison</label>
+          <label class="option"><input type="checkbox" name="u2" value="display-chat"> <code>display_chat(messages)</code> — render chat history nicely</label>
+          <label class="option"><input type="checkbox" name="u2" value="save-output"> <code>save_output(data, filename)</code> — save results to JSON/CSV</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="u3">
+        <span class="q-label">Q17. Standard notebook template cells</span>
+        <p style="font-size:.82rem;color:var(--muted);margin:.4rem 0">Select all cells every notebook should start with</p>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="u3" value="badge"> Colab badge cell</label>
+          <label class="option"><input type="checkbox" name="u3" value="header"> Branded header (course name, lab title, date)</label>
+          <label class="option"><input type="checkbox" name="u3" value="objectives"> Learning objectives list</label>
+          <label class="option"><input type="checkbox" name="u3" value="install"> pip install cell (with %%capture)</label>
+          <label class="option"><input type="checkbox" name="u3" value="imports"> Standard imports cell</label>
+          <label class="option"><input type="checkbox" name="u3" value="api-keys"> API key setup cell</label>
+          <label class="option"><input type="checkbox" name="u3" value="utils-import"> Utils import cell</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 6: MODULE PLAN ===================== -->
+  <div class="tab-panel" id="tab-modules">
+    <div class="section">
+      <h2>Module &amp; Lab Plan</h2>
+      <p class="subtitle">Map old labs to new course structure. Decide what stays, what merges, what's new.</p>
+
+      <div class="question" data-qid="mod1">
+        <span class="q-label">Q18. What to do with the "extras" (ChatGPT_API_Tutorial, Prompting_with_API, Week 1 Colab intro)?</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="mod1" value="merge-m1"> Merge into a single "M01: Getting Started" module</label>
+          <label class="option"><input type="radio" name="mod1" value="prereq"> Move to a <code>prerequisites/</code> folder (self-study)</label>
+          <label class="option"><input type="radio" name="mod1" value="drop"> Drop — students should know Python/Colab/APIs by DADS 5250 level</label>
+          <label class="option"><input type="radio" name="mod1" value="keep-separate"> Keep as separate reference notebooks</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="mod2">
+        <span class="q-label">Q19. Beer Game lab (M4_Lab2)</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="mod2" value="keep"> Keep as-is — great supply chain + AI example</label>
+          <label class="option"><input type="radio" name="mod2" value="update"> Keep but update with newer model + LangChain integration</label>
+          <label class="option"><input type="radio" name="mod2" value="replace"> Replace with a different domain application</label>
+          <label class="option"><input type="radio" name="mod2" value="optional"> Move to optional/bonus section</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="mod3">
+        <span class="q-label">Q20. Health LLM lab (Lab_7)</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="mod3" value="keep"> Keep — healthcare AI is high-demand topic</label>
+          <label class="option"><input type="radio" name="mod3" value="expand"> Expand into a full module with RAG + clinical data</label>
+          <label class="option"><input type="radio" name="mod3" value="replace"> Replace with a different vertical (finance, legal, etc.)</label>
+          <label class="option"><input type="radio" name="mod3" value="drop"> Drop — too specialized for a general course</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="mod4">
+        <span class="q-label">Q21. New topics to add?</span>
+        <p style="font-size:.82rem;color:var(--muted);margin:.4rem 0">Select all that apply</p>
+        <div class="options">
+          <label class="option"><input type="checkbox" name="mod4" value="structured-output"> Structured Output (JSON mode, function calling)</label>
+          <label class="option"><input type="checkbox" name="mod4" value="vision"> Vision / Multimodal (GPT-4o image input)</label>
+          <label class="option"><input type="checkbox" name="mod4" value="fine-tuning"> Fine-tuning basics</label>
+          <label class="option"><input type="checkbox" name="mod4" value="eval"> LLM Evaluation &amp; Benchmarking</label>
+          <label class="option"><input type="checkbox" name="mod4" value="guardrails"> Guardrails &amp; Safety</label>
+          <label class="option"><input type="checkbox" name="mod4" value="voice"> Voice / TTS / STT APIs</label>
+          <label class="option"><input type="checkbox" name="mod4" value="deployment"> Deployment (Streamlit, Gradio, FastAPI)</label>
+          <label class="option"><input type="checkbox" name="mod4" value="mcp"> MCP (Model Context Protocol) &amp; Tool Use</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="mod5">
+        <span class="q-label">Q22. Total number of labs for the semester</span>
+        <div class="options">
+          <label class="option"><input type="radio" name="mod5" value="10-12"> 10-12 labs (one per week, some weeks off)</label>
+          <label class="option"><input type="radio" name="mod5" value="14-15"> 14-15 labs (one per week, full semester)</label>
+          <label class="option"><input type="radio" name="mod5" value="18-20"> 18-20 labs (some weeks have 2 labs, like current)</label>
+          <label class="option"><input type="radio" name="mod5" value="flexible"> Flexible — decide per module based on content depth</label>
+        </div>
+      </div>
+
+      <div class="question" data-qid="mod6">
+        <span class="q-label">Q23. Additional notes on module plan</span>
+        <textarea class="notes" name="mod6" placeholder="Any thoughts on module ordering, topics to emphasize, labs to split/merge..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== TAB 7: SUMMARY ===================== -->
+  <div class="tab-panel" id="tab-summary">
+    <div class="section">
+      <h2>Decision Summary</h2>
+      <p class="subtitle">Review your choices before exporting</p>
+      <div id="summaryContent">
+        <p style="color:var(--muted);font-style:italic">Answer questions in the other tabs to see your decisions here.</p>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="exportJSON()">Export as JSON</button>
+      <button class="btn btn-secondary" onclick="copyMarkdown()">Copy as Markdown</button>
+      <button class="btn btn-danger" onclick="resetAll()">Reset All</button>
+    </div>
+    <div class="timestamp" id="lastSaved"></div>
+  </div>
+
+</div>
+
+<script>
+const STORAGE_KEY = 'dads5250_planner';
+
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    if (btn.dataset.tab === 'summary') buildSummary();
+  });
+});
+
+// Option highlight
+document.querySelectorAll('.option').forEach(opt => {
+  const input = opt.querySelector('input');
+  input.addEventListener('change', () => {
+    if (input.type === 'radio') {
+      opt.closest('.options').querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    }
+    if (input.checked) opt.classList.add('selected');
+    else opt.classList.remove('selected');
+    saveState();
+    updateProgress();
+  });
+});
+
+// Textarea save
+document.querySelectorAll('textarea.notes').forEach(ta => {
+  ta.addEventListener('input', () => { saveState(); });
+});
+
+function getAnswers() {
+  const answers = {};
+  document.querySelectorAll('.question').forEach(q => {
+    const qid = q.dataset.qid;
+    const radios = q.querySelectorAll('input[type="radio"]:checked');
+    const checks = q.querySelectorAll('input[type="checkbox"]:checked');
+    const textarea = q.querySelector('textarea');
+    if (radios.length) answers[qid] = radios[0].value;
+    else if (checks.length) answers[qid] = Array.from(checks).map(c => c.value);
+    else if (textarea && textarea.value.trim()) answers[qid] = textarea.value.trim();
+  });
+  return answers;
+}
+
+function saveState() {
+  const data = { answers: getAnswers(), timestamp: new Date().toISOString() };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+}
+
+function loadState() {
+  const raw = localStorage.getItem(STORAGE_KEY);
+  if (!raw) return;
+  try {
+    const data = JSON.parse(raw);
+    const ans = data.answers || {};
+    Object.entries(ans).forEach(([qid, val]) => {
+      const q = document.querySelector(`[data-qid="${qid}"]`);
+      if (!q) return;
+      if (Array.isArray(val)) {
+        val.forEach(v => {
+          const inp = q.querySelector(`input[value="${v}"]`);
+          if (inp) { inp.checked = true; inp.closest('.option').classList.add('selected'); }
+        });
+      } else if (typeof val === 'string') {
+        const inp = q.querySelector(`input[value="${val}"]`);
+        const ta = q.querySelector('textarea');
+        if (inp) { inp.checked = true; inp.closest('.option').classList.add('selected'); }
+        else if (ta) ta.value = val;
+      }
+    });
+    updateProgress();
+  } catch(e) {}
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.question').length;
+  const answers = getAnswers();
+  const answered = Object.keys(answers).length;
+  document.getElementById('progressLabel').textContent = `${answered} / ${total} answered`;
+  document.getElementById('progressFill').style.width = `${(answered/total*100).toFixed(0)}%`;
+}
+
+const LABELS = {
+  s1: 'Folder structure', s2: 'Naming convention', s3: 'Colab badge', s4: 'Header style',
+  m1: 'Default model', m2: 'Provider strategy', m3: 'API key management', m4: 'LangChain version', m5: 'CrewAI version',
+  p1: 'Exercise style', p2: 'Solution availability', p3: 'Follow-up assignments', p4: 'Difficulty labels', p5: 'Theory/practice ratio',
+  u1: 'Utils delivery', u2: 'Shared utils contents', u3: 'Template cells',
+  mod1: 'Extras disposition', mod2: 'Beer Game lab', mod3: 'Health LLM lab', mod4: 'New topics', mod5: 'Total labs', mod6: 'Module notes'
+};
+
+function buildSummary() {
+  const ans = getAnswers();
+  const el = document.getElementById('summaryContent');
+  if (Object.keys(ans).length === 0) {
+    el.innerHTML = '<p style="color:var(--muted);font-style:italic">No answers yet.</p>';
+    return;
+  }
+  let html = '<ul class="summary-list">';
+  Object.entries(ans).forEach(([k, v]) => {
+    const label = LABELS[k] || k;
+    const val = Array.isArray(v) ? v.join(', ') : v;
+    html += `<li><strong>${label}:</strong> ${val}</li>`;
+  });
+  html += '</ul>';
+  el.innerHTML = html;
+}
+
+function exportJSON() {
+  const data = { course: 'DADS 5250: Generative AI in Practice', exported: new Date().toISOString(), decisions: getAnswers() };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'dads5250_plan.json';
+  a.click();
+}
+
+function copyMarkdown() {
+  const ans = getAnswers();
+  let md = '# DADS 5250 — Planning Decisions\n\n';
+  Object.entries(ans).forEach(([k, v]) => {
+    const label = LABELS[k] || k;
+    const val = Array.isArray(v) ? v.join(', ') : v;
+    md += `- **${label}:** ${val}\n`;
+  });
+  navigator.clipboard.writeText(md).then(() => alert('Copied to clipboard!'));
+}
+
+function resetAll() {
+  if (!confirm('Reset all answers?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  document.querySelectorAll('input').forEach(i => { i.checked = false; });
+  document.querySelectorAll('textarea').forEach(t => { t.value = ''; });
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  updateProgress();
+}
+
+loadState();
+updateProgress();
+</script>
+</body>
+</html>

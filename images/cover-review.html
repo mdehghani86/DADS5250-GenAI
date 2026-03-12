@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DADS 5250 — Lab Module Cover Review</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #0a0e1a;
+    color: #e0e6f0;
+    padding: 24px;
+  }
+  h1 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #7a8ba8;
+    font-size: 0.95rem;
+    margin-bottom: 32px;
+  }
+  .subtitle span.done { color: #4ade80; }
+  .subtitle span.missing { color: #f87171; }
+
+  /* Filter bar */
+  .filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .filters button {
+    padding: 7px 18px;
+    border: 1px solid #1e3a5f;
+    border-radius: 20px;
+    background: transparent;
+    color: #7a8ba8;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .filters button:hover, .filters button.active {
+    background: #0055d4;
+    color: #fff;
+    border-color: #0055d4;
+  }
+
+  /* Grid */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 24px;
+    max-width: 1600px;
+    margin: 0 auto;
+  }
+  .card {
+    background: #111827;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #1e293b;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0, 85, 212, 0.2);
+  }
+  .card.missing {
+    border-color: #7f1d1d;
+    opacity: 0.6;
+  }
+  .card img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    display: block;
+    background: #1a1a2e;
+  }
+  .card .info {
+    padding: 14px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .card .module-id {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #60a5fa;
+  }
+  .card .topic {
+    font-size: 0.82rem;
+    color: #94a3b8;
+    margin-top: 2px;
+  }
+  .card .badge {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge.done { background: #064e3b; color: #4ade80; }
+  .badge.missing { background: #7f1d1d; color: #f87171; }
+  .badge.test { background: #3b0764; color: #c084fc; }
+  .badge.ref { background: #713f12; color: #fbbf24; }
+
+  /* Alert banner */
+  .alert-banner {
+    max-width: 1600px;
+    margin: 0 auto 28px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #1e1b4b 0%, #312e81 100%);
+    border: 1px solid #4338ca;
+    border-radius: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .alert-banner .icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
+  .alert-banner .text { font-size: 0.88rem; line-height: 1.5; color: #c7d2fe; }
+  .alert-banner strong { color: #fff; }
+  .alert-banner .color-chips {
+    display: flex;
+    gap: 6px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+  }
+  .alert-banner .chip {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: 2px solid rgba(255,255,255,0.2);
+  }
+
+  /* Reference section */
+  .reference {
+    max-width: 1600px;
+    margin: 48px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid #1e293b;
+  }
+  .reference h2 {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    color: #fff;
+  }
+  .reference .ref-subtitle {
+    text-align: center;
+    color: #7a8ba8;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+  }
+  .ref-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .ref-grid .card img { aspect-ratio: 1/1; }
+
+  /* Comparison section */
+  .comparison {
+    max-width: 1600px;
+    margin: 48px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid #1e293b;
+  }
+  .comparison h2 {
+    text-align: center;
+    font-size: 1.3rem;
+    margin-bottom: 20px;
+    color: #fff;
+  }
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .compare-grid .card .info { justify-content: center; gap: 12px; }
+
+  /* Placeholder for missing */
+  .placeholder {
+    width: 100%;
+    aspect-ratio: 4/3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #475569;
+    font-size: 1.1rem;
+    font-style: italic;
+  }
+
+  /* Lightbox */
+  .lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.92);
+    z-index: 100;
+    cursor: zoom-out;
+    align-items: center;
+    justify-content: center;
+  }
+  .lightbox.open { display: flex; }
+  .lightbox img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 8px;
+    box-shadow: 0 0 60px rgba(0,85,212,0.3);
+  }
+</style>
+</head>
+<body>
+
+<h1>DADS 5250: Generative AI in Practice</h1>
+<p class="subtitle">
+  Lab Module Covers &mdash;
+  <span class="done">11 generated</span> &middot;
+  <span class="missing">2 missing (M12, M13)</span>
+</p>
+
+<div class="alert-banner">
+  <div class="icon">&#9888;&#65039;</div>
+  <div class="text">
+    <strong>Color Monotony Issue:</strong> All 11 current covers use the same dark navy + cyan/white glow palette.
+    They look great individually but feel repetitive as a set. Consider regenerating with <strong>subtle accent colors per module</strong>
+    to add visual differentiation while keeping the Northeastern blue base:
+    <div class="color-chips">
+      <div class="chip" style="background:#001a70" title="NEU Navy (base)"></div>
+      <div class="chip" style="background:#0055d4" title="Accent Blue (base)"></div>
+      <div class="chip" style="background:#7c3aed" title="Purple (Agents/Multi-Agent)"></div>
+      <div class="chip" style="background:#059669" title="Green (RAG/Supply Chain)"></div>
+      <div class="chip" style="background:#d97706" title="Amber (Fine-Tuning/Deploy)"></div>
+      <div class="chip" style="background:#dc2626" title="Red (Guardrails/Safety)"></div>
+      <div class="chip" style="background:#0891b2" title="Teal (Platforms/Workflow)"></div>
+      <div class="chip" style="background:#db2777" title="Pink (Vision/Creative)"></div>
+    </div>
+  </div>
+</div>
+
+<div class="filters">
+  <button class="active" onclick="filter('all')">All</button>
+  <button onclick="filter('done')">Generated</button>
+  <button onclick="filter('missing')">Missing</button>
+</div>
+
+<div class="grid" id="grid">
+
+  <div class="card" data-status="done">
+    <img src="M01-cover.png" alt="M01 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M01</div><div class="topic">Getting Started with LLM APIs</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M02-cover.png" alt="M02 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M02</div><div class="topic">Prompt Engineering</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M03-cover.png" alt="M03 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M03</div><div class="topic">Structured Output & Function Calling</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M04-cover.png" alt="M04 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M04</div><div class="topic">LangChain & Beer Game</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M05-cover.png" alt="M05 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M05</div><div class="topic">RAG (Retrieval-Augmented Generation)</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M06-cover.png" alt="M06 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M06</div><div class="topic">Agents & LangGraph</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M08-cover.png" alt="M08 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M08</div><div class="topic">Multi-Agent (CrewAI)</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M09-cover.png" alt="M09 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M09</div><div class="topic">Vision & Evaluation</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M10-cover.png" alt="M10 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M10</div><div class="topic">GenAI Platforms</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card" data-status="done">
+    <img src="M11-cover.png" alt="M11 Cover" onclick="openLightbox(this)">
+    <div class="info">
+      <div><div class="module-id">M11</div><div class="topic">MCP & Guardrails</div></div>
+      <span class="badge done">Done</span>
+    </div>
+  </div>
+
+  <div class="card missing" data-status="missing">
+    <div class="placeholder">M12 — Not yet generated</div>
+    <div class="info">
+      <div><div class="module-id">M12</div><div class="topic">Workflow Automation & n8n</div></div>
+      <span class="badge missing">Missing</span>
+    </div>
+  </div>
+
+  <div class="card missing" data-status="missing">
+    <div class="placeholder">M13 — Not yet generated</div>
+    <div class="info">
+      <div><div class="module-id">M13</div><div class="topic">Fine-Tuning & Deployment</div></div>
+      <span class="badge missing">Missing</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Flash vs Pro comparison -->
+<div class="comparison">
+  <h2>M01 — Flash vs Pro Comparison</h2>
+  <div class="compare-grid">
+    <div class="card" data-status="test">
+      <img src="M01-test-flash.png" alt="M01 Flash" onclick="openLightbox(this)">
+      <div class="info">
+        <span class="module-id">Gemini Flash</span>
+        <span class="badge test">Test</span>
+      </div>
+    </div>
+    <div class="card" data-status="test">
+      <img src="M01-test-pro.png" alt="M01 Pro" onclick="openLightbox(this)">
+      <div class="info">
+        <span class="module-id">Gemini Pro</span>
+        <span class="badge test">Test</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Style Direction -->
+<div class="reference">
+  <h2>Target Style: Dark Navy + Accent Color Pop</h2>
+  <p class="ref-subtitle">Keep the existing dark navy abstract tech base. Each module gets a unique accent color glow — neon highlights, glowing edges, ambient light in that module's color. See <code>cover-prompts.md</code> for ready-to-use generation prompts.</p>
+  <div class="ref-grid">
+    <div class="card">
+      <img src="demos/banner-dark-01.png" alt="Style Ref: Dark Abstract" onclick="openLightbox(this)">
+      <div class="info">
+        <div><div class="module-id">Base Style</div><div class="topic">Dark navy, geometric shapes, glowing nodes</div></div>
+        <span class="badge ref">Reference</span>
+      </div>
+    </div>
+    <div class="card">
+      <img src="demos/banner-dark-02.png" alt="Style Ref: Dark Abstract 2" onclick="openLightbox(this)">
+      <div class="info">
+        <div><div class="module-id">Base Style</div><div class="topic">Circuit patterns, digital particles, depth</div></div>
+        <span class="badge ref">Reference</span>
+      </div>
+    </div>
+    <div class="card">
+      <img src="demos/banner-scene-01.png" alt="Style Ref: Scene" onclick="openLightbox(this)">
+      <div class="info">
+        <div><div class="module-id">Color Pop</div><div class="topic">Add accent color glow per module topic</div></div>
+        <span class="badge ref">Reference</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Suggested Color Map -->
+<div class="reference">
+  <h2>Suggested Accent Color Map for Regeneration</h2>
+  <p class="ref-subtitle">Keep the dark navy base, but add a distinct accent color per module for visual differentiation</p>
+  <div class="grid" id="color-map" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;">
+  </div>
+</div>
+
+<script>
+const colorMap = [
+  { id: 'M01', topic: 'LLM APIs', accent: '#0055d4', name: 'Blue (Cloud/API)' },
+  { id: 'M02', topic: 'Prompt Engineering', accent: '#8b5cf6', name: 'Violet (Creativity)' },
+  { id: 'M03', topic: 'Structured Output', accent: '#0891b2', name: 'Teal (Schema/Structure)' },
+  { id: 'M04', topic: 'LangChain & Beer Game', accent: '#059669', name: 'Emerald (Supply Chain)' },
+  { id: 'M05', topic: 'RAG', accent: '#16a34a', name: 'Green (Knowledge/Docs)' },
+  { id: 'M06', topic: 'Agents & LangGraph', accent: '#7c3aed', name: 'Purple (Autonomy)' },
+  { id: 'M08', topic: 'Multi-Agent (CrewAI)', accent: '#9333ea', name: 'Deep Purple (Collaboration)' },
+  { id: 'M09', topic: 'Vision & Evaluation', accent: '#db2777', name: 'Pink (Vision/Creative)' },
+  { id: 'M10', topic: 'GenAI Platforms', accent: '#0ea5e9', name: 'Sky Blue (Ecosystem)' },
+  { id: 'M11', topic: 'MCP & Guardrails', accent: '#dc2626', name: 'Red (Safety/Security)' },
+  { id: 'M12', topic: 'Workflow & n8n', accent: '#d97706', name: 'Amber (Automation)' },
+  { id: 'M13', topic: 'Fine-Tuning & Deploy', accent: '#ea580c', name: 'Orange (Launch/Rocket)' },
+];
+const mapGrid = document.getElementById('color-map');
+colorMap.forEach(m => {
+  const d = document.createElement('div');
+  d.style.cssText = `background:#111827; border-radius:10px; border:1px solid #1e293b; padding:14px 16px; display:flex; align-items:center; gap:12px;`;
+  d.innerHTML = `<div style="width:36px;height:36px;border-radius:8px;background:${m.accent};flex-shrink:0;border:2px solid rgba(255,255,255,0.15)"></div>
+    <div><div style="font-weight:700;font-size:0.9rem;color:#e0e6f0">${m.id} — ${m.topic}</div>
+    <div style="font-size:0.78rem;color:#94a3b8">${m.name}</div></div>`;
+  mapGrid.appendChild(d);
+});
+</script>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img" src="" alt="Preview">
+</div>
+
+<script>
+function filter(status) {
+  document.querySelectorAll('.filters button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.querySelectorAll('#grid .card').forEach(card => {
+    if (status === 'all') { card.style.display = ''; return; }
+    card.style.display = card.dataset.status === status ? '' : 'none';
+  });
+}
+
+function openLightbox(img) {
+  document.getElementById('lightbox-img').src = img.src;
+  document.getElementById('lightbox').classList.add('open');
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+});
+</script>
+
+</body>
+</html>
