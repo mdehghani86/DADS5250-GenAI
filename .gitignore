@@ -5,3 +5,11 @@ __pycache__/
 *.pyc
 .env
 .ipynb_checkpoints/
+
+# Personal / planning files — not for GitHub
+planning/
+images/
+.claude/
+CLAUDE.md
+course-materials/
+evaluations/
