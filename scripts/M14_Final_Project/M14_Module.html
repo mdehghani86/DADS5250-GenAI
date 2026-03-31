@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M14: Final Project -- Build & Present</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: rgba(37,99,235,0.08);
+  --accent-border: rgba(37,99,235,0.15);
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  --code-bg: #1e293b;
+  --video-bg: #0f172a;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body { height: 100%; overflow: hidden; font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+
+#progress-bar { position: fixed; top: 0; left: 0; height: 3px; background: var(--accent); transition: width 0.4s ease; z-index: 1000; }
+
+#top-bar { position: fixed; top: 3px; left: 0; right: 0; height: 48px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: rgba(240,244,250,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(37,99,235,0.06); z-index: 999; font-size: 0.82rem; }
+#top-bar .module-title { color: var(--text-secondary); font-weight: 500; }
+#top-bar .page-info { display: flex; align-items: center; gap: 16px; }
+#top-bar .page-counter { color: var(--text-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+#top-bar .total-time { color: var(--accent); font-weight: 600; font-size: 0.75rem; background: var(--accent-light); padding: 3px 10px; border-radius: 6px; }
+
+#pages-container { position: fixed; top: 51px; left: 0; right: 0; bottom: 0; overflow: hidden; }
+
+.page { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow-y: auto; overflow-x: hidden; padding: 48px 24px 180px; display: flex; justify-content: center; transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease; will-change: transform, opacity; }
+.page[data-state="active"] { transform: translateX(0); opacity: 1; pointer-events: auto; }
+.page[data-state="left"]   { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+.page[data-state="right"]  { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.page[data-state="hidden"] { display: none; }
+.page-inner { width: 100%; max-width: 900px; }
+
+.glass { background: var(--glass-bg); backdrop-filter: blur(20px); border: 1px solid var(--glass-border); border-radius: var(--radius); box-shadow: var(--glass-shadow); padding: 40px; }
+.glass-sm { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); box-shadow: 0 4px 16px rgba(0,0,0,0.04); padding: 24px; }
+
+.page-label { display: inline-block; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: var(--accent-light); padding: 4px 12px; border-radius: 6px; margin-bottom: 16px; }
+h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+h2 { font-size: 1.6rem; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 10px; }
+h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.subtitle { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; }
+
+.video-wrapper { display: flex; justify-content: center; margin: 28px 0 24px; }
+.video-placeholder { position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 16/9; background: var(--video-bg); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer; transition: box-shadow var(--transition); }
+.video-placeholder:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
+.vp-center { text-align: center; }
+.vp-play { opacity: 0.7; transition: opacity 0.2s; }
+.video-placeholder:hover .vp-play { opacity: 1; }
+.vp-title { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 12px; font-weight: 400; }
+.vp-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+.vp-badge { font-size: 0.6rem; font-weight: 600; padding: 3px 8px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.04em; }
+.vp-badge-type { background: rgba(37,99,235,0.3); color: #93c5fd; }
+.vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+
+.script-btn { position: absolute; top: 10px; right: 10px; width: 36px; height: 36px; border-radius: 8px; border: none; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); cursor: pointer; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); transition: all 0.2s; z-index: 10; }
+.script-btn:hover { background: rgba(37,99,235,0.4); color: #fff; }
+
+.script-modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.script-modal-overlay.open { opacity: 1; pointer-events: auto; }
+.script-modal { background: #fff; border-radius: 16px; max-width: 700px; width: 90%; max-height: 80vh; overflow-y: auto; padding: 32px; box-shadow: 0 20px 60px rgba(0,0,0,0.2); position: relative; }
+.script-modal-close { position: absolute; top: 12px; right: 12px; width: 32px; height: 32px; border-radius: 50%; border: none; background: rgba(0,0,0,0.05); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; color: #64748b; transition: background 0.15s; }
+.script-modal-close:hover { background: rgba(0,0,0,0.1); }
+.script-modal h3 { font-size: 1rem; font-weight: 700; color: #1e293b; margin-bottom: 16px; }
+.script-modal p { font-size: 0.92rem; line-height: 1.8; color: #475569; margin-bottom: 12px; }
+.script-modal .review-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(245,158,11,0.15); color: #d97706; padding: 2px 8px; border-radius: 4px; margin-bottom: 12px; }
+
+.info-grid { display: grid; gap: 16px; margin: 20px 0; }
+.info-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.info-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 768px) { .info-grid.cols-3, .info-grid.cols-2 { grid-template-columns: 1fr; } }
+.info-card { background: var(--glass-bg); backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 24px; text-align: center; transition: transform var(--transition), box-shadow var(--transition); }
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.info-card .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.info-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.info-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+.info-table { width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85rem; }
+.info-table th { background: var(--accent); color: #fff; padding: 10px 16px; text-align: left; font-weight: 600; }
+.info-table th:first-child { border-radius: 8px 0 0 0; }
+.info-table th:last-child { border-radius: 0 8px 0 0; }
+.info-table td { padding: 10px 16px; border-bottom: 1px solid rgba(37,99,235,0.08); }
+.info-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+.info-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+.info-table tbody tr { background: rgba(255,255,255,0.6); }
+.info-table tbody tr:hover { background: rgba(37,99,235,0.04); }
+
+.bullet-list { list-style: none; padding: 0; margin: 16px 0; }
+.bullet-list li { position: relative; padding: 8px 0 8px 28px; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; }
+.bullet-list li::before { content: ''; position: absolute; left: 0; top: 16px; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+
+.reading-badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 600; color: #10b981; background: rgba(16,185,129,0.08); padding: 5px 14px; border-radius: 6px; margin-bottom: 20px; }
+.reading-badge svg { width: 14px; height: 14px; }
+.reading-body { max-width: 740px; margin: 0 auto; }
+.reading-body p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+.reading-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 32px 0 12px; }
+.reading-body .lead { font-size: 1.05rem; color: var(--text); line-height: 1.7; margin-bottom: 20px; }
+
+.quote-block { border-left: 3px solid var(--accent); padding: 16px 24px; margin: 20px 0; background: rgba(37,99,235,0.03); border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+.quote-block p { font-size: 1.15rem; font-weight: 500; font-style: italic; color: var(--text); line-height: 1.6; }
+
+.sep { height: 1px; background: rgba(37,99,235,0.08); margin: 24px 0; }
+
+.end-card { display: inline-block; background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(37,99,235,0.12)); border: 1px solid var(--accent-border); border-radius: var(--radius-sm); padding: 16px 32px; margin-top: 20px; }
+.end-card span { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+
+.time-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+@media (max-width: 600px) { .time-breakdown { grid-template-columns: 1fr; } }
+.time-item { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 16px; text-align: center; }
+.time-item .time-val { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+.time-item .time-label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+.meta-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0; font-size: 0.8rem; color: var(--text-muted); }
+.meta-row .meta-item { display: flex; align-items: center; gap: 4px; }
+
+.takeaway-list { list-style: none; padding: 0; margin: 16px 0; }
+.takeaway-list li { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5; }
+.takeaway-list li .tk-icon { width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%; background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.takeaway-list li .tk-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+.cover-placeholder { width: 100%; height: 220px; background: linear-gradient(135deg, #e2e8f0, #cbd5e1); border-radius: var(--radius); display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 0.85rem; }
+.cover-image-wrapper { margin: 20px 0; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--accent-border); }
+.cover-image-wrapper img { width: 100%; display: block; }
+
+/* -- Project idea card -- */
+.idea-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); padding: 20px; text-align: left; }
+.idea-card h4 { font-size: 0.95rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.idea-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+code.inline { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: rgba(37,99,235,0.06); padding: 2px 8px; border-radius: 5px; color: var(--accent); }
+
+:fullscreen { background: var(--bg); }
+@media print { #top-bar, #nav-bar, #progress-bar { display: none !important; } #pages-container { position: static; overflow: visible; } .page { position: static !important; display: block !important; opacity: 1 !important; transform: none !important; page-break-after: always; padding: 24px; } }
+@media (max-width: 768px) { h1 { font-size: 1.8rem; } h2 { font-size: 1.3rem; } .glass { padding: 24px; } .video-placeholder { width: 100%; } }
+
+/* -- Sidebar -- */
+#sidebar { position: fixed; top: 51px; left: 0; bottom: 0; width: 230px; background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border-right: 1px solid rgba(148,163,184,0.15); overflow-y: auto; padding: 14px 0; z-index: 800; transition: transform 0.3s ease, opacity 0.3s ease; }
+#sidebar.collapsed { transform: translateX(-230px); opacity: 0; pointer-events: none; }
+#sidebar-toggle { position: fixed; top: 58px; left: 8px; width: 32px; height: 32px; border-radius: 8px; background: var(--glass-bg); border: 1px solid rgba(148,163,184,0.25); cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 850; transition: left 0.3s ease, background 0.2s; color: var(--text-muted); font-size: 0.8rem; }
+#sidebar-toggle:hover { background: rgba(37,99,235,0.06); color: var(--accent); }
+#sidebar.collapsed ~ #sidebar-toggle { left: 8px; }
+body:not(.sidebar-hidden) #sidebar-toggle { left: 238px; }
+.sb-title { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 14px 8px; }
+.sb-item { display: flex; align-items: flex-start; gap: 10px; padding: 6px 14px; cursor: pointer; transition: background 0.15s; position: relative; }
+.sb-item:hover { background: rgba(37,99,235,0.05); }
+.sb-item.active { background: rgba(37,99,235,0.07); border-left: 2px solid var(--accent); }
+.sb-item.active .sb-dot { background: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.sb-item.active .sb-label { color: var(--text); font-weight: 600; }
+.sb-item.visited .sb-dot { background: #10b981; }
+.sb-item::before { content: ''; position: absolute; left: 18px; top: 0; bottom: 0; width: 2px; background: rgba(148,163,184,0.15); }
+.sb-item:first-child::before { top: 50%; }
+.sb-item:last-child::before { bottom: 50%; }
+.sb-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(148,163,184,0.3); flex-shrink: 0; margin-top: 5px; position: relative; z-index: 1; transition: all 0.2s; }
+.sb-type { font-size: 0.5rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; padding: 1px 4px 1px 16px; border-radius: 3px; display: inline-block; margin-bottom: 2px; position: relative; }
+.sb-type svg.sb-icon { position: absolute; left: 3px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; }
+.sb-type-video { background: rgba(37,99,235,0.1); color: var(--accent); }
+.sb-type-content { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-type-reading { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-label { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.25; transition: color 0.2s; }
+.sb-dur { font-size: 0.55rem; color: var(--text-muted); margin-top: 1px; }
+.sb-section { font-size: 0.58rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); padding: 12px 14px 4px; margin-top: 4px; border-top: 1px solid rgba(37,99,235,0.08); }
+.sb-section:first-of-type { border-top: none; margin-top: 0; }
+
+body:not(.sidebar-hidden) #pages-container { left: 230px; }
+body:not(.sidebar-hidden) #nav-bar { left: 230px; }
+body.sidebar-hidden #pages-container { left: 0; }
+body.sidebar-hidden #nav-bar { left: 0; }
+#pages-container { transition: left 0.3s ease; }
+#nav-bar { transition: left 0.3s ease; }
+@media (max-width: 900px) { #sidebar { width: 220px; } body:not(.sidebar-hidden) #pages-container { left: 220px; } body:not(.sidebar-hidden) #nav-bar { left: 220px; } body:not(.sidebar-hidden) #sidebar-toggle { left: 228px; } }
+
+#nav-bar { position: fixed; bottom: 0; left: 0; right: 0; height: 80px; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; background: rgba(240,244,250,0.88); backdrop-filter: blur(16px); border-top: 1px solid rgba(37,99,235,0.06); z-index: 999; }
+.nav-btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 24px; border-radius: 12px; font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; transition: all var(--transition); min-width: 120px; justify-content: center; }
+.nav-btn.prev { background: rgba(255,255,255,0.7); border: 1px solid var(--glass-border); color: var(--text-secondary); backdrop-filter: blur(12px); }
+.nav-btn.prev:hover { background: rgba(255,255,255,0.9); color: var(--text); }
+.nav-btn.prev:disabled { opacity: 0.3; cursor: default; }
+.nav-btn.next { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(37,99,235,0.3); }
+.nav-btn.next:hover { background: #1d4ed8; transform: translateY(-1px); }
+#page-dots { display: flex; gap: 8px; align-items: center; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(37,99,235,0.2); cursor: pointer; transition: all var(--transition); border: none; padding: 0; }
+.dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+.dot:hover { background: rgba(37,99,235,0.4); }
+</style>
+</head>
+<body>
+
+<div class="script-modal-overlay" id="scriptModal">
+  <div class="script-modal" onclick="event.stopPropagation()">
+    <button class="script-modal-close" onclick="closeScriptModal()">&times;</button>
+    <h3 id="scriptModalTitle">Script</h3>
+    <div id="scriptModalBody"></div>
+  </div>
+</div>
+
+<div id="progress-bar" style="width: 10%"></div>
+
+<a href="../../planning/course-outline.html" class="back-to-outline" style="position:fixed;top:58px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div id="top-bar">
+  <span class="module-title">M14: Final Project -- Build & Present</span>
+  <div class="page-info">
+    <span class="page-counter" id="page-counter">1 / 10</span>
+    <span class="total-time">Total: ~45 min</span>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div id="sidebar">
+  <div class="sb-title">Module Progress</div>
+
+  <div class="sb-item active" onclick="goToPage(1)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Welcome</div><div class="sb-dur">Overview</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(2)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">The Spark</div><div class="sb-dur">3-4 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 1: Project Requirements</div>
+  <div class="sb-item" onclick="goToPage(3)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Project Requirements</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(4)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Project Ideas</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(5)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Rubric & Grading</div><div class="sb-dur">~5 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 2: Building & Presenting</div>
+  <div class="sb-item" onclick="goToPage(6)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Tips for a Great Project</div><div class="sb-dur">5-6 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(7)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Past Project Examples</div><div class="sb-dur">~5 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 3: Course Finale</div>
+  <div class="sb-item" onclick="goToPage(8)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">The Final Closing</div><div class="sb-dur">3 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(9)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">What's Next?</div><div class="sb-dur">~4 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(10)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Course Complete</div><div class="sb-dur">Review</div></div>
+  </div>
+</div>
+
+<button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
+
+<!-- Hidden script containers -->
+<div id="script-v1" style="display:none;" data-title="V1: The Spark -- Look How Far You Have Come">
+  <span class="review-badge">REVIEW -- First Draft</span>
+  <p>Thirteen modules ago, you made your first API call. You did not know what a token was. Now you build agents, orchestrate multi-agent teams, connect AI to any tool through MCP, and automate workflows. Look how far you have come.</p>
+  <p>This final project is your portfolio piece. It is the thing you point to in job interviews when someone asks "What can you build with AI?" It is proof -- not of what you learned, but of what you can do.</p>
+  <p>The scope is yours to define. The technology is yours to choose. The only requirement is that it must be real -- a working system that solves a real problem, demonstrates genuine engineering, and uses what you have learned in this course.</p>
+  <p>Make it count.</p>
+</div>
+<div id="script-v2" style="display:none;" data-title="V2: Tips for a Great Project">
+  <span class="review-badge">REVIEW -- First Draft</span>
+  <p>Let me share some advice from watching hundreds of student projects.</p>
+  <p>First, scope ruthlessly. The most common mistake is building too much. A polished, working demo of one thing beats a broken prototype of five things. Every time.</p>
+  <p>Second, pick a problem you care about. If you are in supply chain, build a supply chain tool. If you are in healthcare, build a healthcare tool. Your domain expertise combined with AI skills is what makes the project unique.</p>
+  <p>Third, architecture matters. Think about your system design before you write a single line of code. Which LLM? Which tools? How do components connect? A clean architecture is easier to build, easier to debug, and easier to present.</p>
+  <p>Fourth, demo over slides. When you present, show the working system. Click through it live. Nothing is more convincing than a system that works in front of the audience.</p>
+  <p>Fifth, document everything. Your report should explain not just what you built, but why you made each technical decision. That is what separates an engineering project from a coding exercise.</p>
+</div>
+<div id="script-v3" style="display:none;" data-title="V3: Course Wrap-Up -- The Final Closing">
+  <span class="review-badge">REVIEW -- First Draft</span>
+  <p>You walked in as students learning about AI. You are walking out as engineers who build with it.</p>
+  <p>Over fourteen modules, you connected to AI through code. You built tools that write Excel formulas and analyze Bitcoin. You mastered prompt engineering. You forced AI output into structured, validated formats. You chained operations with LangChain. You grounded AI in real data with RAG. You built autonomous agents. You orchestrated multi-agent teams. You built frontends. You connected AI to every tool through MCP. You kept it safe with guardrails. You saw through AI's eyes with vision. You deployed with the latest SDKs. You automated workflows.</p>
+  <p>That is not a course. That is an engineering toolkit.</p>
+  <p>The tools will change. New models will come. But the skill of knowing how to think about AI, how to architect with it, how to evaluate it -- that does not expire.</p>
+  <p>Thank you for being part of this course. Now go build something.</p>
+</div>
+
+<!-- Pages -->
+<div id="pages-container" style="left:230px;">
+
+<!-- PAGE 1: Welcome -->
+<div class="page" data-page="1" data-state="active">
+<div class="page-inner">
+  <div class="glass" style="text-align:center;">
+    <span class="page-label">Module 14 -- Final</span>
+    <h1>Final Project -- Build & Present</h1>
+
+    <div class="quote-block" style="text-align:left; max-width:600px; margin:20px auto;">
+      <p>"You walked in as students learning about AI. You walk out as engineers who build with it."</p>
+    </div>
+
+    <div class="cover-image-wrapper" style="max-width:720px; margin:24px auto;">
+      <img src="../images/M14-cover.png" alt="Module 14 Cover"
+           onerror="this.parentElement.innerHTML='<div class=\'cover-placeholder\'>M14 Cover Image</div>'" />
+    </div>
+
+    <div style="text-align:left; max-width:600px; margin:24px auto 0;">
+      <h3>This Is It</h3>
+      <p class="subtitle">Everything you have learned comes together in one project. You design it. You build it. You present it. This is your portfolio piece.</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="max-width:600px; margin:0 auto;">
+      <h3 style="text-align:center; margin-bottom:16px;">Estimated Time: ~45 Minutes (reading)</h3>
+      <div class="time-breakdown">
+        <div class="time-item">
+          <div class="time-val">~15</div>
+          <div class="time-label">min Videos</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~25</div>
+          <div class="time-label">min Reading</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">TBD</div>
+          <div class="time-label">Project Work</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 10 pages</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 2: The Spark -->
+<div class="page" data-page="2" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 1</span>
+    <h2>The Spark -- Look How Far You Have Come</h2>
+    <p class="subtitle">A reflection on the journey from first API call to building complete AI systems.</p>
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">3-4 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v1')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none"><polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/></svg>
+          <div class="vp-title">V1: The Spark -- Look How Far You Have Come</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 3: Reading -- Project Requirements -->
+<div class="page" data-page="3" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg> Reading -- ~5 min</span>
+    <h2>Project Requirements</h2>
+    <div class="reading-body">
+      <p class="lead">Your final project is a working AI system that demonstrates genuine engineering skill. Here is what is required.</p>
+
+      <h3>Scope</h3>
+      <p>Build a system that uses generative AI to solve a real problem. It must go beyond a simple API call -- your project should demonstrate at least three techniques from the course (e.g., structured output + RAG + agents, or prompt engineering + MCP + workflow automation).</p>
+
+      <h3>Team Size</h3>
+      <p>Teams of 1-3 students. Larger teams are expected to deliver proportionally more complex projects.</p>
+
+      <h3>Deliverables</h3>
+      <table class="info-table">
+        <thead><tr><th>Deliverable</th><th>Description</th><th>Due</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Proposal</strong></td><td>1-page overview: problem, approach, tech stack, team</td><td>Week 13</td></tr>
+          <tr><td><strong>Working Demo</strong></td><td>Functional system with clear user interaction</td><td>Week 14</td></tr>
+          <tr><td><strong>Presentation</strong></td><td>8-10 min live demo + Q&A</td><td>Week 14</td></tr>
+          <tr><td><strong>Report</strong></td><td>Technical report: architecture, decisions, results (4-6 pages)</td><td>Week 14</td></tr>
+          <tr><td><strong>Code Repository</strong></td><td>GitHub repo with README, setup instructions, clean code</td><td>Week 14</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Timeline</h3>
+      <ul class="bullet-list">
+        <li><strong>Week 12:</strong> Form teams, brainstorm ideas</li>
+        <li><strong>Week 13:</strong> Submit proposal, begin building</li>
+        <li><strong>Week 14:</strong> Present and submit all deliverables</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 4: Reading -- Project Ideas -->
+<div class="page" data-page="4" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg> Reading -- ~5 min</span>
+    <h2>Project Ideas</h2>
+    <div class="reading-body">
+      <p class="lead">These are suggestions to spark your thinking. You are welcome to propose your own idea.</p>
+
+      <div class="info-grid cols-2" style="margin:24px 0;">
+        <div class="idea-card">
+          <h4>Supply Chain Optimizer</h4>
+          <p>Multi-agent system that monitors inventory levels, predicts demand, and generates reorder recommendations. Use LangGraph + structured output + RAG on historical data.</p>
+        </div>
+        <div class="idea-card">
+          <h4>AI Teaching Assistant</h4>
+          <p>Chatbot grounded in course materials via RAG. Answers student questions, generates practice problems, and explains concepts at different levels. Add MCP for document access.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Document Intelligence Pipeline</h4>
+          <p>Upload contracts, invoices, or reports. AI extracts structured data, identifies risks, and generates summaries. Use vision + structured output + n8n automation.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Customer Support Bot</h4>
+          <p>Multi-agent support system: classifier agent routes queries, specialist agents handle different categories, escalation agent identifies complex cases. Built with CrewAI or Agent SDK.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Multi-Agent Research Tool</h4>
+          <p>Give it a research question. One agent searches the web, another analyzes papers, another synthesizes findings. Final agent writes a structured research brief.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Personal Finance Analyzer</h4>
+          <p>Connect to bank transaction data (mock or real). AI categorizes expenses, identifies patterns, generates budget recommendations, and creates visual reports.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Code Review Assistant</h4>
+          <p>Analyze GitHub pull requests. AI identifies bugs, suggests improvements, checks for security issues, and generates review summaries. Use Claude Agent SDK + GitHub API.</p>
+        </div>
+        <div class="idea-card">
+          <h4>Healthcare Triage System</h4>
+          <p>Patient describes symptoms. AI asks follow-up questions, assesses urgency level, recommends next steps. Guardrails ensure safe, non-diagnostic responses.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 5: Reading -- Rubric & Grading -->
+<div class="page" data-page="5" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg> Reading -- ~5 min</span>
+    <h2>Rubric & Grading</h2>
+    <div class="reading-body">
+      <p class="lead">Your project is graded on five dimensions. Each is weighted equally.</p>
+
+      <table class="info-table">
+        <thead><tr><th>Dimension</th><th>Weight</th><th>What We Look For</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Technical Complexity</strong></td><td>20%</td><td>Uses 3+ course techniques meaningfully. Architecture is well-designed. Handles edge cases.</td></tr>
+          <tr><td><strong>Code Quality</strong></td><td>20%</td><td>Clean, documented code. Clear README. Reproducible setup. No hardcoded secrets.</td></tr>
+          <tr><td><strong>AI Integration Depth</strong></td><td>20%</td><td>AI is central to the system (not bolted on). Prompt engineering is thoughtful. Output is validated.</td></tr>
+          <tr><td><strong>Presentation</strong></td><td>20%</td><td>Clear demo. Good pacing. Answered questions well. Live system worked.</td></tr>
+          <tr><td><strong>Documentation</strong></td><td>20%</td><td>Technical report explains architecture, decisions, and results. Honest about limitations.</td></tr>
+        </tbody>
+      </table>
+
+      <h3>Grade Breakdown</h3>
+      <ul class="bullet-list">
+        <li><strong>A (90-100):</strong> Excellent execution across all dimensions. Impressive demo. Could be a real product.</li>
+        <li><strong>B (80-89):</strong> Solid project with good technical depth. Minor issues in presentation or documentation.</li>
+        <li><strong>C (70-79):</strong> Working system but limited complexity or polish. Missing some deliverables.</li>
+        <li><strong>Below 70:</strong> System does not work, or AI is not meaningfully integrated.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 6: Video -- Tips -->
+<div class="page" data-page="6" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 2</span>
+    <h2>Tips for a Great Project</h2>
+    <p class="subtitle">Architecture advice, common mistakes, how to scope, and presentation tips from Prof. Dehghani.</p>
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">5-6 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v2')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none"><polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/></svg>
+          <div class="vp-title">V2: Tips for a Great Project</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 7: Reading -- Past Project Examples -->
+<div class="page" data-page="7" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg> Reading -- ~5 min</span>
+    <h2>Past Project Examples</h2>
+    <div class="reading-body">
+      <p class="lead">These examples illustrate what makes a strong final project. Use them as benchmarks, not templates.</p>
+
+      <div class="glass-sm" style="margin:20px 0;">
+        <h3 style="color:var(--accent);">Example 1: Supply Chain Intelligence Dashboard</h3>
+        <p><strong>Team of 2.</strong> Built a multi-agent supply chain optimizer using CrewAI. A demand forecasting agent analyzed historical data via RAG. A procurement agent generated reorder recommendations with structured output. A reporting agent produced daily dashboards. Frontend built with React. <strong>What made it excellent:</strong> Clear architecture diagram. Live demo with real data. Honest discussion of where the agents made mistakes.</p>
+      </div>
+
+      <div class="glass-sm" style="margin:20px 0;">
+        <h3 style="color:var(--accent);">Example 2: Legal Contract Analyzer</h3>
+        <p><strong>Solo project.</strong> Used vision API to process scanned contracts, structured output to extract clauses, and RAG to compare against a database of standard terms. n8n workflow automated the pipeline from email attachment to final report. <strong>What made it excellent:</strong> End-to-end automation. Professional-quality output. The student had legal domain expertise that showed in the prompt engineering.</p>
+      </div>
+
+      <div class="glass-sm" style="margin:20px 0;">
+        <h3 style="color:var(--accent);">Example 3: AI Study Companion</h3>
+        <p><strong>Team of 3.</strong> Built a RAG-powered study assistant that ingested lecture notes and textbook chapters. Used LangGraph for multi-step tutoring conversations. Added guardrails to prevent giving direct exam answers. Evaluation framework tracked answer quality. <strong>What made it excellent:</strong> Thoughtful guardrails design. Evaluation metrics presented in the demo. Students could not "trick" it into cheating.</p>
+      </div>
+
+      <div class="glass-sm" style="margin:20px 0;">
+        <h3 style="color:var(--accent);">Example 4: Real-Time News Analyst</h3>
+        <p><strong>Team of 2.</strong> Multi-agent system using Claude Agent SDK. A web search agent gathered breaking news. An analysis agent identified bias and verified claims against trusted sources via RAG. A summary agent produced balanced briefings. MCP connected to a custom data source. <strong>What made it excellent:</strong> Creative use of MCP. Bias detection was genuinely useful. Clean code with comprehensive documentation.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 8: Video -- Course Wrap-Up -->
+<div class="page" data-page="8" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 3 -- The Final Closing</span>
+    <h2>Course Wrap-Up</h2>
+    <p class="subtitle">Prof. Dehghani's closing message to the class.</p>
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">~3 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v3')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none"><polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/></svg>
+          <div class="vp-title">V3: The Final Closing</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top:24px;">
+      <p>"The tools will change. New models will come. But the skill of knowing how to think about AI, how to architect with it, how to evaluate it -- that does not expire."</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 9: Reading -- What's Next -->
+<div class="page" data-page="9" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg> Reading -- ~4 min</span>
+    <h2>What's Next?</h2>
+    <div class="reading-body">
+      <p class="lead">The course ends. The learning does not. Here is how to stay current and keep building.</p>
+
+      <h3>Communities</h3>
+      <ul class="bullet-list">
+        <li><strong>Anthropic Developer Discord</strong> -- Active community for Claude developers</li>
+        <li><strong>LangChain Discord</strong> -- Large community for LangChain/LangGraph users</li>
+        <li><strong>Hugging Face</strong> -- Open-source model community and model hub</li>
+        <li><strong>r/MachineLearning, r/LocalLLaMA</strong> -- Reddit communities for ML and local models</li>
+      </ul>
+
+      <h3>Conferences</h3>
+      <ul class="bullet-list">
+        <li><strong>NeurIPS, ICML, ICLR</strong> -- Top ML research conferences</li>
+        <li><strong>AI Engineer Summit</strong> -- Practical AI engineering conference</li>
+        <li><strong>INFORMS</strong> -- Operations research + AI applications</li>
+      </ul>
+
+      <h3>Staying Current</h3>
+      <ul class="bullet-list">
+        <li>Follow release blogs from OpenAI, Anthropic, Google DeepMind</li>
+        <li>Read Simon Willison's blog for practical AI engineering insights</li>
+        <li>Build something every month -- the best way to learn is to ship</li>
+        <li>Teach someone else -- explaining solidifies understanding</li>
+      </ul>
+
+      <h3>Advanced Topics to Explore</h3>
+      <ul class="bullet-list">
+        <li>Fine-tuning and model customization</li>
+        <li>Reinforcement learning from human feedback (RLHF)</li>
+        <li>AI safety and alignment research</li>
+        <li>Multimodal models (video, 3D, robotics)</li>
+        <li>Edge AI and on-device models</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 10: Summary / Course Complete -->
+<div class="page" data-page="10" data-state="right">
+<div class="page-inner">
+  <div class="glass" style="text-align:center;">
+    <span class="page-label">Course Complete</span>
+    <h1>DADS 5250: Generative AI in Practice</h1>
+
+    <div class="quote-block" style="text-align:left; max-width:600px; margin:20px auto;">
+      <p>"Now go build something."</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:left; max-width:600px; margin:0 auto;">
+      <h3>What You Have Accomplished</h3>
+      <ul class="takeaway-list">
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M01-M03:</strong> LLM APIs, prompt engineering, structured output, function calling</div></li>
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M04-M06:</strong> LangChain, Beer Game, RAG, agents, LangGraph</div></li>
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M07-M08:</strong> Hackathon, multi-agent systems with CrewAI</div></li>
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M09-M10:</strong> GenAI platforms, MCP, guardrails</div></li>
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M11-M13:</strong> Vision, evaluation, SDKs, Claude Code, n8n automation</div></li>
+        <li><div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div><strong>M14:</strong> Final project -- your portfolio piece</div></li>
+      </ul>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="glass-sm" style="max-width:500px; margin:0 auto; background:rgba(37,99,235,0.04); border:1px solid var(--accent-border);">
+      <h3 style="color:var(--accent); font-size:1rem;">Final Reminders</h3>
+      <ul class="bullet-list" style="text-align:left;">
+        <li>Submit all deliverables via Canvas by the deadline</li>
+        <li>Complete the course feedback survey (link on Canvas)</li>
+        <li>Keep your GitHub repositories -- they are your portfolio</li>
+      </ul>
+    </div>
+
+    <div class="sep"></div>
+
+    <p style="font-size:1.1rem; font-weight:600; color:var(--text); margin-top:20px;">Thank you for being part of DADS 5250.</p>
+    <p style="font-size:0.92rem; color:var(--text-secondary); margin-top:8px;">-- Prof. Mohammad Dehghani</p>
+  </div>
+</div>
+</div>
+
+</div><!-- /pages-container -->
+
+<div id="nav-bar">
+  <button class="nav-btn prev" id="btn-prev" onclick="prevPage()" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg> Previous
+  </button>
+  <div id="page-dots"></div>
+  <button class="nav-btn next" id="btn-next" onclick="nextPage()">
+    Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  const TOTAL = 10;
+  let current = parseInt(localStorage.getItem('m14_page') || '1', 10);
+  if (current < 1 || current > TOTAL) current = 1;
+  const pages = document.querySelectorAll('.page');
+  const progressBar = document.getElementById('progress-bar');
+  const pageCounter = document.getElementById('page-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const dotsContainer = document.getElementById('page-dots');
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Go to page ' + i);
+    dot.addEventListener('click', () => goToPage(i));
+    dotsContainer.appendChild(dot);
+  }
+  function render(oldPage, direction) {
+    pages.forEach((p) => {
+      const idx = parseInt(p.getAttribute('data-page'), 10);
+      if (idx === current) { p.style.display = ''; void p.offsetWidth; p.setAttribute('data-state', 'active'); }
+      else if (idx === oldPage && direction) { p.setAttribute('data-state', direction === 'next' ? 'left' : 'right'); setTimeout(() => { p.style.display = 'none'; }, 500); }
+      else { p.style.display = 'none'; p.setAttribute('data-state', idx < current ? 'left' : 'right'); }
+    });
+    progressBar.style.width = ((current / TOTAL) * 100) + '%';
+    pageCounter.textContent = current + ' / ' + TOTAL;
+    btnPrev.disabled = (current === 1);
+    if (current < TOTAL) { btnNext.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>'; }
+    else { btnNext.innerHTML = 'Done <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>'; }
+    dotsContainer.querySelectorAll('.dot').forEach((d, i) => { d.classList.toggle('active', i + 1 === current); });
+    const activePage = document.querySelector('.page[data-state="active"]');
+    if (activePage) activePage.scrollTop = 0;
+    localStorage.setItem('m14_page', current.toString());
+  }
+  function nextPage() { if (current >= TOTAL) return; const old = current; const nextP = document.querySelector('.page[data-page="' + (current + 1) + '"]'); if (nextP) { nextP.style.display = ''; nextP.setAttribute('data-state', 'right'); void nextP.offsetWidth; } current++; render(old, 'next'); }
+  function prevPage() { if (current <= 1) return; const old = current; const prevP = document.querySelector('.page[data-page="' + (current - 1) + '"]'); if (prevP) { prevP.style.display = ''; prevP.setAttribute('data-state', 'left'); void prevP.offsetWidth; } current--; render(old, 'prev'); }
+  function goToPage(n) { if (n === current || n < 1 || n > TOTAL) return; const old = current; const dir = n > current ? 'next' : 'prev'; const targetP = document.querySelector('.page[data-page="' + n + '"]'); if (targetP) { targetP.style.display = ''; targetP.setAttribute('data-state', dir === 'next' ? 'right' : 'left'); void targetP.offsetWidth; } current = n; render(old, dir); }
+  function toggleFullscreen() { if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {}); else document.exitFullscreen(); }
+  document.addEventListener('keydown', function(e) { if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return; if (e.key === 'ArrowRight') nextPage(); if (e.key === 'ArrowLeft') prevPage(); if (e.key === 'f' || e.key === 'F') toggleFullscreen(); if (e.key === 'Escape') closeScriptModal(); });
+  window.nextPage = nextPage; window.prevPage = prevPage; window.goToPage = goToPage;
+  render(null, null);
+})();
+(function() {
+  var overlay = document.getElementById('scriptModal');
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.classList.remove('open'); });
+  window.closeScriptModal = function() { overlay.classList.remove('open'); };
+  window.openScript = function(scriptId) { var container = document.getElementById(scriptId); if (!container) return; document.getElementById('scriptModalTitle').textContent = container.getAttribute('data-title') || 'Script'; document.getElementById('scriptModalBody').innerHTML = container.innerHTML; overlay.classList.add('open'); };
+})();
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); document.body.classList.toggle('sidebar-hidden'); }
+function updateSidebar(pageNum) { var items = document.querySelectorAll('.sb-item'); items.forEach(function(item, i) { item.classList.remove('active'); if (i + 1 < pageNum) item.classList.add('visited'); if (i + 1 === pageNum) item.classList.add('active'); }); }
+(function() {
+  var origGo = window.goToPage, origNext = window.nextPage, origPrev = window.prevPage;
+  function getCurrentPage() { var active = document.querySelector('.page[data-state="active"]'); return active ? parseInt(active.dataset.page) : 1; }
+  window.goToPage = function(n) { origGo(n); setTimeout(function() { updateSidebar(getCurrentPage()); }, 50); };
+  window.nextPage = function() { origNext(); setTimeout(function() { updateSidebar(getCurrentPage()); }, 50); };
+  window.prevPage = function() { origPrev(); setTimeout(function() { updateSidebar(getCurrentPage()); }, 50); };
+})();
+updateSidebar(parseInt(localStorage.getItem('m14_page') || '1', 10));
+</script>
+</body>
+</html>
