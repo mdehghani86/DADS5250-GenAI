@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M01 Production Script — DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle blue orb */
+body::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  right: -120px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Top bar ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(240,244,250,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.topbar-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Video tabs */
+.video-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.video-tab {
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.15);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.video-tab:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.video-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Action buttons */
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.18);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.btn-action:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.btn-action.teleprompter-active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 32px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Video section ── */
+.video-section {
+  display: none;
+}
+
+.video-section.active {
+  display: block;
+}
+
+/* Video header */
+.video-header {
+  margin-bottom: 28px;
+}
+
+.video-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.video-header .video-meta {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ── Segment row (two columns) ── */
+.segment {
+  display: grid;
+  grid-template-columns: var(--col-left) var(--col-right);
+  gap: 24px;
+  margin-bottom: 28px;
+  min-height: 120px;
+}
+
+/* Segment header spans both columns */
+.segment-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  margin-bottom: 4px;
+}
+
+.segment-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.segment-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.segment-badges {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-type {
+  background: rgba(37,99,235,0.1);
+  color: var(--accent);
+}
+
+.badge-duration {
+  background: rgba(16,185,129,0.1);
+  color: var(--green);
+}
+
+.badge-shot {
+  background: rgba(245,158,11,0.1);
+  color: #b45309;
+}
+
+.badge-ta {
+  background: rgba(245,158,11,0.12);
+  color: #b45309;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+/* Left column — Script */
+.script-col {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 28px 32px;
+}
+
+.script-col p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.script-col p:last-child {
+  margin-bottom: 0;
+}
+
+/* Right column — Media */
+.media-col {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(37,99,235,0.06);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.media-col .media-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.media-col .media-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  background: rgba(37,99,235,0.04);
+  border-left: 2px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+}
+
+.media-col .shot-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Media placeholder box */
+.media-placeholder {
+  background: #f8fafc;
+  border: 1px dashed rgba(37,99,235,0.2);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.media-placeholder .placeholder-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.media-placeholder .placeholder-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.media-placeholder .placeholder-duration {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* Code block */
+.code-block {
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: pre;
+}
+
+.code-block .kw { color: #93c5fd; }
+.code-block .str { color: #86efac; }
+.code-block .fn { color: #fde68a; }
+.code-block .cm { color: #64748b; }
+
+/* Key message bar */
+.key-message-bar {
+  background: rgba(37,99,235,0.06);
+  border: 1px solid rgba(37,99,235,0.15);
+  border-radius: 10px;
+  padding: 14px 24px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.key-message-bar .km-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.key-message-bar .km-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* TA Guidelines card */
+.ta-guidelines {
+  background: rgba(245,158,11,0.03);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 10px;
+  padding: 24px;
+}
+
+.ta-guidelines h4 {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b45309;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+}
+
+.ta-guidelines .ta-intro {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  font-style: italic;
+}
+
+.ta-guidelines .ta-section {
+  margin-bottom: 14px;
+}
+
+.ta-guidelines .ta-section h5 {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+
+.ta-guidelines .ta-section ul {
+  padding-left: 18px;
+}
+
+.ta-guidelines .ta-section li {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 4px;
+}
+
+.ta-guidelines .ta-tone {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ── References section ── */
+.references-section {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(37,99,235,0.06);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.references-section h3 {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+}
+
+.ref-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 3px 6px;
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ref-table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid rgba(37,99,235,0.03);
+  color: var(--text-muted);
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.ref-table a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.62rem;
+}
+
+.ref-table a:hover {
+  text-decoration: underline;
+}
+
+/* ── Teleprompter mode ── */
+body.teleprompter {
+  background: #0a0a0a;
+}
+
+body.teleprompter::before {
+  display: none;
+}
+
+body.teleprompter .topbar {
+  background: rgba(10,10,10,0.92);
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.teleprompter .topbar-title,
+body.teleprompter .topbar-subtitle {
+  color: rgba(255,255,255,0.5);
+}
+
+body.teleprompter .video-tab {
+  color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.1);
+}
+
+body.teleprompter .video-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+body.teleprompter .btn-action {
+  color: rgba(255,255,255,0.5);
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+}
+
+body.teleprompter .video-header h2 {
+  color: rgba(255,255,255,0.3);
+}
+
+body.teleprompter .video-header .video-meta {
+  color: rgba(255,255,255,0.15);
+}
+
+body.teleprompter .media-col {
+  display: none;
+}
+
+body.teleprompter .key-message-bar {
+  background: rgba(37,99,235,0.08);
+  border-color: rgba(37,99,235,0.2);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.teleprompter .key-message-bar .km-text {
+  color: rgba(255,255,255,0.85);
+}
+
+body.teleprompter .segment {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.teleprompter .segment-header {
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.teleprompter .segment-number {
+  background: rgba(37,99,235,0.15);
+  color: var(--accent);
+}
+
+body.teleprompter .segment-title {
+  color: rgba(255,255,255,0.4);
+}
+
+body.teleprompter .badge {
+  opacity: 0.5;
+}
+
+body.teleprompter .script-col {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 20px 0;
+}
+
+body.teleprompter .script-col p {
+  font-size: 1.55rem;
+  line-height: 2;
+  color: rgba(255,255,255,0.92);
+  font-weight: 400;
+}
+
+body.teleprompter .references-section {
+  display: none;
+}
+
+/* Auto-scroll controls */
+.scroll-controls {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  background: rgba(30,30,30,0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 10px 16px;
+  gap: 10px;
+  align-items: center;
+}
+
+body.teleprompter .scroll-controls {
+  display: flex;
+}
+
+.scroll-controls label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.scroll-controls input[type="range"] {
+  width: 100px;
+  accent-color: var(--accent);
+}
+
+.scroll-controls button {
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scroll-controls button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.scroll-controls button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* ── Print styles ── */
+@media print {
+  .topbar, .scroll-controls { display: none !important; }
+  body { background: #fff; }
+  body::before { display: none; }
+  .container { max-width: 100%; padding: 16px; }
+  .video-section { display: block !important; page-break-before: always; }
+  .video-section:first-of-type { page-break-before: avoid; }
+  .segment { page-break-inside: avoid; }
+  .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; }
+  .media-col { background: #f8fafc; border: 1px solid #e2e8f0; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .segment {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .video-tabs {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M01 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: What Are LLMs?</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: What Is an API?</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: TA -- API Setup</button>
+    <button class="video-tab" onclick="switchVideo(5)">V5: Parameters &amp; Tokens</button>
+    <button class="video-tab" onclick="switchVideo(6)">V6: Lab Walkthroughs</button>
+    <button class="video-tab" onclick="switchVideo(7)">V7: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 1: "The Spark" — Opening                          -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark"</h2>
+    <div class="video-meta">Opening -- Prof on camera -- 3-4 minutes -- 2 segments</div>
+  </div>
+
+  <!-- Key Message Bar -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The chat window is the demo. The API is the product.</span>
+  </div>
+
+  <!-- ── SEGMENT 1 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Opening Hook</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~40 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>There are two worlds of AI right now.</p>
+      <p>In one world, you open a browser, you type a question, you get an answer. Nine hundred million people live in this world.</p>
+      <p>In the other world, you write code. Your code talks directly to the AI. It runs a thousand times while you sleep. It connects to your data. It builds products. Four million developers live in this world.</p>
+      <p>Today, you move from the first world to the second.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Same studio setup as M00. Conversational delivery -- slight pause after "four million developers" for impact.</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays needed for this segment. Clean shot, let the words carry. Consider shallow depth-of-field to keep focus on Prof.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT 2 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Key Message</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~15 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The chat window is the demo. The API is the product. And this module teaches you to build the product.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"The chat window is the demo. The API is the product." -- white text on dark semi-transparent bar, lower third of frame.</span>
+        <span class="placeholder-duration">Hold 4 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Lower-third text overlay appears as Prof. says the line. Subtle slide-up animation. Same glass bar style as M00 name card. Hold for 4 seconds after Prof. finishes.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 2: "What Are LLMs?"                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "What Are LLMs?"</h2>
+    <div class="video-meta">Voiceover + animation -- 6-8 minutes -- 3 segments</div>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">What Is a Large Language Model</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>LLM stands for Large Language Model. Here is what that means.</p>
+      <p>Take a significant portion of human knowledge -- books, code, research, conversations. Compress it into a mathematical model. The model does not memorize any of it. It learns patterns.</p>
+      <p>When you give it a prompt, it uses those patterns to generate something new. Every response is original. Every piece of code is composed, not retrieved. That is generative AI -- and LLMs are the engine behind it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Books, code, web pages flow into a central compression node. On the other side, new text and code emerge -- visually distinct from the inputs.</span>
+        <span class="placeholder-duration">~20 sec loop</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Clean, minimal, dark blue tech aesthetic matching the course cover image style. Data flows left-to-right: source material icons compress into a glowing central LLM node, then new generated text/code fans out on the right. Emphasize that outputs are NEW, not copies. Use particle/flow effects, not literal document icons.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT B ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Platform vs API</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You can access these models two ways.</p>
+      <p>The first is through a platform -- ChatGPT, Gemini, Claude. You open a browser, type a message, get a response. Think of it as walking into a restaurant and ordering at the counter. It works. It is convenient.</p>
+      <p>The second way is through an API. Your Python code sends a request directly to the model. Think of this as building the delivery app -- you handle thousands of orders, route them, process them, all automatically. Same kitchen, same food, completely different power.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec -- Split Screen</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split-Screen Animation</span>
+        <span class="placeholder-desc">Left: browser chat window, one message at a time (gray, muted). Right: code running in a loop, processing hundreds of requests (blue, dynamic).</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Emphasize scale difference. Left side = single order at a counter (slow, manual). Right side = hundreds of requests flowing through code (fast, automated). Left should feel static, right should feel alive. Use the restaurant/delivery-app analogy visually if possible.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT C ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">How LLMs Generate Text</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is something worth understanding. LLMs do not think. They predict.</p>
+      <p>When you send a prompt, the model looks at all the words so far and calculates -- what is the most likely next word? It picks one, adds it, and repeats. Word by word. Token by token.</p>
+      <p>This is why temperature matters -- at zero, it always picks the most likely word. At higher values, it takes risks. And this is why LLMs sometimes hallucinate -- they generate text that sounds right but is factually wrong.</p>
+      <p>The model does not know what is true. It knows what is likely.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec -- Token Prediction</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">A sentence builds word by word. After each word, a probability bar shows candidate next words. The top candidate gets selected, added to the sentence, repeat.</span>
+        <span class="placeholder-duration">~20 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: When narration mentions temperature, briefly show the probability bars shifting: low temp = one bar dominates (tall blue bar, short gray bars). High temp = bars more even (multiple similar-height bars). This is the visual foundation for Lab 2's temperature experiments.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 3: "What Is an API?"                              -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: "What Is an API?"</h2>
+    <div class="video-meta">Voiceover + code display -- 5-6 minutes -- 2 segments</div>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">API from Zero</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>API stands for Application Programming Interface. Let me make that simple.</p>
+      <p>Think of a vending machine. You put something in -- a coin and a button press. Something happens inside that you cannot see. And something comes out -- your drink.</p>
+      <p>You do not need to know how the machine works inside. You just need to know two things: what to put in, and what comes out.</p>
+      <p>An LLM API works the same way. You put in a prompt -- your question. Something happens on OpenAI's servers -- the model thinks. And out comes a response -- the answer.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec -- Vending Machine</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Vending machine: coin in, button pressed, drink out. Then morph into: prompt in, OpenAI servers process, response out. Same shape, different content.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Keep it simple. The vending machine should be clean and modern, not cartoon-y. The morph transition should feel smooth -- the vending machine outline transforms into a code terminal outline. Same input/process/output flow.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT B ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The Code</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is what it looks like in code.</p>
+      <div class="code-block"><pre><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+client = OpenAI()
+
+response = client.chat.completions.<span class="fn">create</span>(
+    model=<span class="str">'gpt-4.1-mini'</span>,
+    messages=[
+        {<span class="str">'role'</span>: <span class="str">'system'</span>, <span class="str">'content'</span>: <span class="str">'You are a helpful assistant.'</span>},
+        {<span class="str">'role'</span>: <span class="str">'user'</span>, <span class="str">'content'</span>: <span class="str">'What is an API?'</span>}
+    ]
+)
+
+<span class="fn">print</span>(response.choices[0].message.content)</pre></div>
+      <p>Seven lines. That is all it takes. Seven lines and you have programmatic access to one of the most powerful AI models on earth.</p>
+      <p>Now imagine running those seven lines ten thousand times in a loop. Or connecting them to a database. Or triggering them from a web application. That is the power of an API.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display Spec</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Display</span>
+        <span class="placeholder-desc">Show code appearing line by line as narrator describes each part. Dark background (#1e293b), syntax highlighted. After full code, zoom out to show "x10,000" loop visualization.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Code appears with a typing effect, one line at a time. After the full block is visible, a brief animation shows the code block shrinking into a loop icon that multiplies across the screen -- representing scale. Keywords in blue, strings in green, matching the code block styling in the script column.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 4: TA — API Setup Guide                           -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: "API Setup Guide" (TA)</h2>
+    <div class="video-meta">TA screen recording -- 5-7 minutes</div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">API Setup Guide</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">5-7 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Screen recording with TA voiceover. Show every click. Friendly, patient, step-by-step.</p>
+
+        <div class="ta-section">
+          <h5>1. OpenAI API Key</h5>
+          <ul>
+            <li>Go to platform.openai.com</li>
+            <li>Navigate to API Keys section</li>
+            <li>Click "Create new secret key"</li>
+            <li>Copy it immediately -- it will not be shown again</li>
+            <li>Emphasize: never share this key, never commit it to GitHub</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Gemini API Key</h5>
+          <ul>
+            <li>Go to aistudio.google.com</li>
+            <li>Click "Get API Key"</li>
+            <li>Create key for new or existing project</li>
+            <li>Same security rules apply</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Colab Secrets Setup</h5>
+          <ul>
+            <li>Open any Colab notebook</li>
+            <li>Click the key icon in the left sidebar</li>
+            <li>Add secret: Name = <strong>OPENAI_API_KEY</strong>, Value = your key</li>
+            <li>Add secret: Name = <strong>GEMINI_API_KEY</strong>, Value = your key</li>
+            <li>Toggle "Notebook access" ON for both</li>
+            <li>Show the two-line access code:</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Two-Line Access Demo</h5>
+          <ul>
+            <li><code>from google.colab import userdata</code></li>
+            <li><code>api_key = userdata.get('OPENAI_API_KEY')</code></li>
+            <li>Run it live. Show that it works.</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Common Errors</h5>
+          <ul>
+            <li><strong>AuthenticationError:</strong> Key is wrong or expired -- regenerate</li>
+            <li><strong>QuotaError / RateLimitError:</strong> Billing not set up or free credits exhausted -- add $5 credit</li>
+            <li><strong>ModuleNotFoundError:</strong> Package not installed -- run <code>!pip install openai</code></li>
+            <li>Show each error and its fix</li>
+          </ul>
+        </div>
+
+        <p class="ta-tone"><strong>Tone:</strong> Friendly, patient, step-by-step. Students may have never used an API key before. Make it feel approachable.</p>
+        <p class="ta-tone"><strong>Recording:</strong> Full screen recording. Show every click. Use Colab for the live demo. Picture-in-picture with TA on camera in corner.</p>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Screen Recording</span>
+        <span class="placeholder-desc">Full walkthrough: platform.openai.com key creation, aistudio.google.com key creation, Colab Secrets panel, live code test. Show every click.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: This is a screen recording, not a scripted lecture. TA should have both API keys ready before recording. Show the Colab Secrets panel clearly -- the key icon is easy to miss. Include a "common mistakes" segment at the end showing each error message and its fix.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 5: "Parameters, Tokens & Temperature"             -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: "Parameters, Tokens &amp; Temperature"</h2>
+    <div class="video-meta">Voiceover + animation -- 3-5 minutes -- 1 segment</div>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Transition Between Labs</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Before you start Lab 2, let us talk about what you are actually controlling when you call the API.</p>
+      <p>Three things matter: temperature, tokens, and cost.</p>
+      <p>Temperature controls randomness. At zero, the model gives you the same answer every time -- the most predictable, most likely response. At one, it takes more risks. At two, it gets creative -- sometimes too creative.</p>
+      <p>Tokens are how LLMs measure text. Roughly four characters per token, or about three-quarters of a word. When you send a prompt, you pay for input tokens. When the model responds, you pay for output tokens.</p>
+      <p>And the cost? GPT-4o Mini costs fifteen cents per million input tokens. That is roughly seven hundred fifty thousand words for fifteen cents. This technology is remarkably cheap.</p>
+      <p>You will experiment with all of this in Lab 2.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec -- Three Panels</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Sequential Animation</span>
+        <span class="placeholder-desc">Three panels appear one by one: (1) Temperature slider with sample outputs at 0, 1, 2. (2) Token counter splitting a sentence into tokens. (3) Cost calculator: tokens to dollars.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Each panel appears as narrator introduces the concept. Panel 1: a slider moves from 0 to 2, showing example outputs becoming more varied. Panel 2: a sentence splits into colored token chunks with a counter. Panel 3: token count multiplies by price per token, showing the final cost. Link to Temperature Playground gamification HTML as supplemental interactive resource.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 6: Lab Walkthroughs (compact placeholders)        -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: Lab Walkthroughs</h2>
+    <div class="video-meta">Lab demos -- variable length -- 3 items</div>
+  </div>
+
+  <!-- Lab 1 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">LAB 1</span>
+      <span class="segment-title">API Basics</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Screen Recording</span>
+        <span class="badge badge-duration">10-15 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Walkthrough of Lab 1: API Basics. Students connect to OpenAI and Gemini APIs for the first time, send their first programmatic requests, and compare responses.</p>
+      <p>Notebook: <a href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M01/M01_Lab1_API_Basics.ipynb" style="color: var(--accent); text-decoration: none;">M01_Lab1_API_Basics.ipynb</a></p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lab Resource</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Colab Notebook</span>
+        <span class="placeholder-desc">Screen recording walkthrough of the Colab notebook. Run each cell, explain outputs, highlight key concepts.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gamification -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">GAME</span>
+      <span class="segment-title">Temperature Playground</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Interactive HTML</span>
+        <span class="badge badge-duration">Self-paced</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Interactive Temperature Playground -- students experiment with temperature settings and see how they affect model output in real time. Standalone HTML gamification resource.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Supplemental</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Gamification</span>
+        <span class="placeholder-desc">Existing Temperature Playground HTML. Students use this alongside Lab 2 to build intuition about the temperature parameter.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lab 2 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">LAB 2</span>
+      <span class="segment-title">Parameters &amp; Tokens</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Screen Recording</span>
+        <span class="badge badge-duration">10-15 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Walkthrough of Lab 2: Parameters and Tokens. Students experiment with temperature, max_tokens, and system messages. They count tokens, estimate costs, and compare model behavior at different settings.</p>
+      <p>Notebook: <a href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M01/M01_Lab2_Parameters_Tokens.ipynb" style="color: var(--accent); text-decoration: none;">M01_Lab2_Parameters_Tokens.ipynb</a></p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lab Resource</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Colab Notebook</span>
+        <span class="placeholder-desc">Screen recording walkthrough. Emphasize the temperature experiments and cost calculation exercises.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-6 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 7: "Module 1 Wrap-Up"                             -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-7">
+
+  <div class="video-header">
+    <h2>Video 7: "Module 1 Wrap-Up"</h2>
+    <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 1 segment</div>
+  </div>
+
+  <!-- ── SEGMENT 1 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Closing</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is what you accomplished this week. You connected to two of the most powerful AI models on the planet -- not through a chat window, but through code. You controlled parameters. You saw how temperature changes output. You counted tokens and estimated costs.</p>
+      <p>That might sound simple. But think about what it means. You now have programmatic access to intelligence. Everything else in this course builds on this foundation.</p>
+      <p>Next week -- how do you communicate with these models effectively? The answer is prompt engineering. And it starts with a coffee order. See you in Module 2.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Notes</span>
+      <p class="shot-note">On camera closing. Same warm studio setup. Conversational, reflective tone for the recap. Energy picks up at "Next week" -- lean in slightly, hint of a smile at "coffee order."</p>
+      <div class="media-placeholder">
+        <span class="placeholder-type">End Card</span>
+        <span class="placeholder-desc">DADS 5250 -- Generative AI in Practice. "Next: M02 -- Prompt Engineering." Prof. Mohammad Dehghani -- Northeastern University.</span>
+        <span class="placeholder-duration">Hold 4 sec, fade to black</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Hold on Prof. for full segment. After final line ("See you in Module 2"), 1-second pause, then cut to end card. End card uses same dark background (#0f172a) as M00 end card. Hold for 4 seconds. Fade to black.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-7 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- REFERENCES                                              -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="references-section">
+  <h3>Verified References</h3>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Claim</th>
+        <th>Fact</th>
+        <th>Source</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>900M weekly ChatGPT users</td>
+        <td>900 million weekly active users</td>
+        <td><a href="https://techcrunch.com/2025/10/" target="_blank" rel="noopener">Sam Altman, TechCrunch Oct 2025</a></td>
+      </tr>
+      <tr>
+        <td>4M developers on OpenAI API</td>
+        <td>4 million+ developers using the API</td>
+        <td><a href="https://openai.com/enterprise" target="_blank" rel="noopener">OpenAI Enterprise Report 2025</a></td>
+      </tr>
+      <tr>
+        <td>92% Fortune 500</td>
+        <td>92% of Fortune 500 companies use OpenAI</td>
+        <td><a href="https://openai.com/enterprise" target="_blank" rel="noopener">OpenAI Enterprise Report 2025</a></td>
+      </tr>
+      <tr>
+        <td>GPT-4.1-mini pricing</td>
+        <td>$0.15 / 1M input tokens, $0.60 / 1M output tokens</td>
+        <td><a href="https://openai.com/api/pricing" target="_blank" rel="noopener">openai.com/api/pricing</a></td>
+      </tr>
+      <tr>
+        <td>Gemini Flash pricing</td>
+        <td>$0.08 / 1M input tokens, $0.30 / 1M output tokens</td>
+        <td><a href="https://ai.google.dev/pricing" target="_blank" rel="noopener">ai.google.dev/pricing</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<!-- ── Auto-scroll controls (teleprompter) ── -->
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+// ── Video tab switching ──
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── Teleprompter mode ──
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) {
+    stopAutoScroll();
+  }
+}
+
+// ── Auto-scroll ──
+let scrollInterval = null;
+let isScrolling = false;
+
+function toggleAutoScroll() {
+  if (isScrolling) {
+    stopAutoScroll();
+  } else {
+    startAutoScroll();
+  }
+}
+
+function startAutoScroll() {
+  isScrolling = true;
+  const btn = document.getElementById('scrollToggle');
+  btn.textContent = 'Stop';
+  btn.classList.add('active');
+  scrollInterval = setInterval(() => {
+    const speed = parseFloat(document.getElementById('scrollSpeed').value);
+    window.scrollBy(0, speed);
+  }, 16);
+}
+
+function stopAutoScroll() {
+  isScrolling = false;
+  const btn = document.getElementById('scrollToggle');
+  btn.textContent = 'Start';
+  btn.classList.remove('active');
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+}
+
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown', function(e) {
+  // T = toggle teleprompter
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+    toggleTeleprompter();
+  }
+  // Space = toggle auto-scroll (in teleprompter mode)
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') {
+    e.preventDefault();
+    toggleAutoScroll();
+  }
+  // 1-7 = switch videos
+  if (['1','2','3','4','5','6','7'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+    switchVideo(parseInt(e.key));
+  }
+});
+</script>
+
+</body>
+</html>

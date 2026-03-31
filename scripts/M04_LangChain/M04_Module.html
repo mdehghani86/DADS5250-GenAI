@@ -1,0 +1,1971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M04: LangChain & Beer Game</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: rgba(37,99,235,0.08);
+  --accent-border: rgba(37,99,235,0.15);
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  --code-bg: #1e293b;
+  --video-bg: #0f172a;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Progress Bar ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+  z-index: 1000;
+}
+
+/* ── Top Bar ── */
+#top-bar {
+  position: fixed; top: 3px; left: 0; right: 0;
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(37,99,235,0.06);
+  z-index: 999;
+  font-size: 0.82rem;
+}
+#top-bar .module-title { color: var(--text-secondary); font-weight: 500; }
+#top-bar .page-info { display: flex; align-items: center; gap: 16px; }
+#top-bar .page-counter { color: var(--text-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+#top-bar .total-time {
+  color: var(--accent); font-weight: 600; font-size: 0.75rem;
+  background: var(--accent-light); padding: 3px 10px; border-radius: 6px;
+}
+
+/* ── Pages Container ── */
+#pages-container {
+  position: fixed;
+  top: 51px; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 48px 24px 180px;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+.page[data-state="active"] { transform: translateX(0); opacity: 1; pointer-events: auto; }
+.page[data-state="left"]   { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+.page[data-state="right"]  { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.page[data-state="hidden"] { display: none; }
+
+.page-inner {
+  width: 100%; max-width: 900px;
+}
+
+/* ── Glass Card ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+  padding: 40px;
+}
+.glass-sm {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  padding: 24px;
+}
+
+/* ── Typography ── */
+.page-label {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 12px; border-radius: 6px;
+  margin-bottom: 16px;
+}
+h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+h2 { font-size: 1.6rem; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 10px; }
+h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.subtitle { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── Video Placeholder ── */
+.video-wrapper { display: flex; justify-content: center; margin: 28px 0 24px; }
+.video-placeholder {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: var(--video-bg);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow var(--transition);
+}
+.video-placeholder:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
+.vp-center { text-align: center; }
+.vp-play { opacity: 0.7; transition: opacity 0.2s; }
+.video-placeholder:hover .vp-play { opacity: 1; }
+.vp-title {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  font-weight: 400;
+}
+.vp-badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+}
+.vp-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vp-badge-type { background: rgba(37,99,235,0.3); color: #93c5fd; }
+.vp-badge-type-ta { background: rgba(217,119,6,0.3); color: #fcd34d; }
+.vp-badge-type-lab { background: rgba(100,116,139,0.4); color: #cbd5e1; }
+.vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+
+/* ── Script Button ── */
+.script-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  transition: all 0.2s;
+  z-index: 10;
+}
+.script-btn:hover {
+  background: rgba(37,99,235,0.4);
+  color: #fff;
+}
+
+/* ── Script Modal ── */
+.script-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.script-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.script-modal {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  position: relative;
+}
+.script-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.05);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #64748b;
+  transition: background 0.15s;
+}
+.script-modal-close:hover { background: rgba(0,0,0,0.1); }
+.script-modal h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+.script-modal p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #475569;
+  margin-bottom: 12px;
+}
+
+/* ── Code Block ── */
+.code-block {
+  background: var(--code-bg);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin: 16px 0;
+}
+.code-block .kw { color: #c084fc; }
+.code-block .fn { color: #67e8f9; }
+.code-block .str { color: #86efac; }
+.code-block .cm { color: #64748b; }
+.code-block .op { color: #fbbf24; }
+
+/* ── Infographic Cards ── */
+.info-grid { display: grid; gap: 16px; margin: 20px 0; }
+.info-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.info-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.info-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+@media (max-width: 768px) {
+  .info-grid.cols-3, .info-grid.cols-2, .info-grid.cols-4 { grid-template-columns: 1fr; }
+}
+.info-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.info-card .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.info-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.info-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Table ── */
+.info-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0;
+  font-size: 0.85rem;
+}
+.info-table th {
+  background: var(--accent); color: #fff;
+  padding: 10px 16px; text-align: left; font-weight: 600;
+}
+.info-table th:first-child { border-radius: 8px 0 0 0; }
+.info-table th:last-child { border-radius: 0 8px 0 0; }
+.info-table td {
+  padding: 10px 16px; border-bottom: 1px solid rgba(37,99,235,0.08);
+}
+.info-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+.info-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+.info-table tbody tr { background: rgba(255,255,255,0.6); }
+.info-table tbody tr:hover { background: rgba(37,99,235,0.04); }
+
+/* ── Bullets ── */
+.bullet-list { list-style: none; padding: 0; margin: 16px 0; }
+.bullet-list li {
+  position: relative;
+  padding: 8px 0 8px 28px;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.bullet-list li::before {
+  content: '';
+  position: absolute; left: 0; top: 16px;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ── Lab Card ── */
+.lab-card {
+  text-align: center;
+}
+.lab-card .lab-badge {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 6px;
+  background: rgba(37,99,235,0.08); color: var(--accent);
+  margin-bottom: 16px;
+}
+.lab-buttons { display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+.lab-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 10px;
+  font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: all var(--transition);
+}
+.lab-btn.primary { background: var(--accent); color: #fff; }
+.lab-btn.primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+.lab-btn.secondary { background: rgba(37,99,235,0.08); color: var(--accent); border: 1px solid var(--accent-border); }
+.lab-btn.secondary:hover { background: rgba(37,99,235,0.14); }
+.lab-sections { text-align: left; margin: 20px 0; }
+.lab-sections ol { padding-left: 24px; margin: 12px 0; }
+.lab-sections ol li { padding: 6px 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Calculation Card ── */
+.calc-card {
+  background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(37,99,235,0.08));
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 24px; margin: 16px 0;
+  text-align: center;
+}
+.calc-card .calc-line { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.8; }
+.calc-card .calc-result { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-top: 8px; }
+
+/* ── Cover Image ── */
+.cover-image-wrapper {
+  margin: 20px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--accent-border);
+}
+.cover-image-wrapper img {
+  width: 100%; display: block;
+}
+.cover-placeholder {
+  width: 100%; height: 220px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 0.85rem;
+}
+
+/* ── Navigation ── */
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(37,99,235,0.06);
+  z-index: 999;
+}
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 12px;
+  font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none;
+  transition: all var(--transition);
+  min-width: 120px; justify-content: center;
+}
+.nav-btn.prev {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+}
+.nav-btn.prev:hover { background: rgba(255,255,255,0.9); color: var(--text); }
+.nav-btn.prev:disabled { opacity: 0.3; cursor: default; }
+.nav-btn.next {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+.nav-btn.next:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+/* ── Page Dots ── */
+#page-dots {
+  display: flex; gap: 8px; align-items: center;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(37,99,235,0.2);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none; padding: 0;
+}
+.dot.active {
+  background: var(--accent);
+  width: 24px; border-radius: 4px;
+}
+.dot:hover { background: rgba(37,99,235,0.4); }
+
+/* ── Separator ── */
+.sep { height: 1px; background: rgba(37,99,235,0.08); margin: 24px 0; }
+
+/* ── Inline code ── */
+code.inline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: rgba(37,99,235,0.06);
+  padding: 2px 8px; border-radius: 5px;
+  color: var(--accent);
+}
+
+/* ── Meta info ── */
+.meta-row {
+  display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0;
+  font-size: 0.8rem; color: var(--text-muted);
+}
+.meta-row .meta-item { display: flex; align-items: center; gap: 4px; }
+
+/* ── Fullscreen ── */
+:fullscreen { background: var(--bg); }
+
+/* ── Print ── */
+@media print {
+  #top-bar, #nav-bar, #progress-bar { display: none !important; }
+  #pages-container { position: static; overflow: visible; }
+  .page { position: static !important; display: block !important; opacity: 1 !important; transform: none !important; page-break-after: always; padding: 24px; }
+  .page[data-state] { transform: none !important; opacity: 1 !important; pointer-events: auto !important; display: block !important; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.3rem; }
+  .glass { padding: 24px; }
+  .video-placeholder { width: 100%; }
+}
+
+/* ── Sidebar Timeline ── */
+#sidebar {
+  position: fixed;
+  top: 51px;
+  left: 0;
+  bottom: 0;
+  width: 230px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(148,163,184,0.15);
+  overflow-y: auto;
+  padding: 14px 0;
+  z-index: 800;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#sidebar.collapsed {
+  transform: translateX(-230px);
+  opacity: 0;
+  pointer-events: none;
+}
+#sidebar-toggle {
+  position: fixed;
+  top: 58px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--glass-bg);
+  border: 1px solid rgba(148,163,184,0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 850;
+  transition: left 0.3s ease, background 0.2s;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+#sidebar-toggle:hover { background: rgba(37,99,235,0.06); color: var(--accent); }
+#sidebar.collapsed ~ #sidebar-toggle { left: 8px; }
+body:not(.sidebar-hidden) #sidebar-toggle { left: 238px; }
+
+.sb-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0 14px 8px;
+}
+.sb-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  border-radius: 0;
+}
+.sb-item:hover { background: rgba(37,99,235,0.05); }
+.sb-item.active { background: rgba(37,99,235,0.07); border-left: 2px solid var(--accent); }
+.sb-item.active .sb-dot { background: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.sb-item.active .sb-label { color: var(--text); font-weight: 600; }
+.sb-item.visited .sb-dot { background: #10b981; }
+
+.sb-item::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(148,163,184,0.15);
+}
+.sb-item:first-child::before { top: 50%; }
+.sb-item:last-child::before { bottom: 50%; }
+
+.sb-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(148,163,184,0.3);
+  flex-shrink: 0;
+  margin-top: 5px;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+.sb-type {
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 4px 1px 16px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 2px;
+  position: relative;
+}
+.sb-type svg.sb-icon {
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+}
+.sb-type-video { background: rgba(37,99,235,0.1); color: var(--accent); }
+.sb-type-lab { background: rgba(100,116,139,0.1); color: #64748b; }
+.sb-type-content { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-type-reading { background: rgba(16,185,129,0.1); color: #10b981; }
+
+.sb-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  transition: color 0.2s;
+}
+.sb-dur {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.sb-section {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  padding: 12px 14px 4px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(37,99,235,0.08);
+}
+.sb-section:first-of-type { border-top: none; margin-top: 0; }
+
+body:not(.sidebar-hidden) #pages-container { left: 230px; }
+body:not(.sidebar-hidden) #nav-bar { left: 230px; }
+body.sidebar-hidden #pages-container { left: 0; }
+body.sidebar-hidden #nav-bar { left: 0; }
+#pages-container { transition: left 0.3s ease; }
+#nav-bar { transition: left 0.3s ease; }
+
+@media (max-width: 900px) {
+  #sidebar { width: 220px; }
+  body:not(.sidebar-hidden) #pages-container { left: 220px; }
+  body:not(.sidebar-hidden) #nav-bar { left: 220px; }
+  body:not(.sidebar-hidden) #sidebar-toggle { left: 228px; }
+}
+
+/* ── End Card ── */
+.end-card {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(37,99,235,0.12));
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 32px;
+  margin-top: 20px;
+}
+.end-card span { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+
+/* ── Quote ── */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding: 16px 24px;
+  margin: 20px 0;
+  background: rgba(37,99,235,0.03);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.quote-block p {
+  font-size: 1.15rem; font-weight: 500; font-style: italic;
+  color: var(--text); line-height: 1.6;
+}
+
+/* ── Section heading ── */
+.section-heading {
+  font-size: 1.1rem; font-weight: 700; color: var(--text);
+  margin: 28px 0 12px; display: flex; align-items: center; gap: 8px;
+}
+.section-heading .num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 0.72rem; font-weight: 700;
+}
+
+/* ── Reading Page Styles ── */
+.reading-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 600;
+  color: #10b981; background: rgba(16,185,129,0.08);
+  padding: 5px 14px; border-radius: 6px;
+  margin-bottom: 20px;
+}
+.reading-badge svg { width: 14px; height: 14px; }
+
+.reading-body { max-width: 740px; margin: 0 auto; }
+.reading-body p {
+  font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;
+  margin-bottom: 16px;
+}
+.reading-body h3 {
+  font-size: 1.15rem; font-weight: 700; color: var(--text);
+  margin: 32px 0 12px;
+}
+.reading-body .lead {
+  font-size: 1.05rem; color: var(--text); line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin: 20px 0;
+}
+@media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+.stat-item {
+  background: rgba(37,99,235,0.04);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+}
+.stat-item .stat-label {
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px;
+}
+.stat-item .stat-value {
+  font-size: 0.92rem; font-weight: 600; color: var(--text);
+}
+
+.ref-links {
+  background: rgba(37,99,235,0.02);
+  border-top: 1px solid rgba(37,99,235,0.06);
+  padding: 10px 0 0; margin: 20px 0 0;
+}
+.ref-links h4 {
+  font-size: 0.58rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 6px;
+}
+.ref-links a {
+  display: inline-block; font-size: 0.68rem; color: var(--accent);
+  text-decoration: none; padding: 2px 0; margin-right: 14px;
+  transition: color 0.2s; opacity: 0.8;
+}
+.ref-links a:hover { color: #1d4ed8; text-decoration: underline; opacity: 1; }
+
+/* ── Time breakdown card ── */
+.time-breakdown {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0;
+}
+@media (max-width: 600px) { .time-breakdown { grid-template-columns: 1fr; } }
+.time-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 16px; text-align: center;
+}
+.time-item .time-val { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+.time-item .time-label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+/* ── Summary page takeaway ── */
+.takeaway-list { list-style: none; padding: 0; margin: 16px 0; }
+.takeaway-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.takeaway-list li .tk-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%; background: var(--accent-light);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.takeaway-list li .tk-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+.capability-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 16px 0; }
+@media (max-width: 600px) { .capability-cards { grid-template-columns: 1fr; } }
+.capability-card {
+  background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(37,99,235,0.08));
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 20px; text-align: center;
+}
+.capability-card p { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+/* ── Quick Reference Card ── */
+.ref-card {
+  background: var(--code-bg);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-top: 20px;
+}
+.ref-card .ref-label {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: rgba(255,255,255,0.5); margin-bottom: 10px;
+}
+.ref-card code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem; color: #86efac; line-height: 1.7;
+  display: block;
+}
+</style>
+</head>
+<body>
+
+<!-- Script Modal Overlay (shared, one instance) -->
+<div class="script-modal-overlay" id="scriptModal" onclick="closeScriptModal(event)">
+  <div class="script-modal" onclick="event.stopPropagation()">
+    <button class="script-modal-close" onclick="closeScriptModal()">&times;</button>
+    <h3 id="scriptModalTitle">Script</h3>
+    <div id="scriptModalBody"></div>
+  </div>
+</div>
+
+<!-- Progress Bar -->
+<div id="progress-bar" style="width: 7.69%"></div>
+
+<!-- Top Bar -->
+<div id="top-bar">
+  <span class="module-title">M04: LangChain & Beer Game</span>
+  <div class="page-info">
+    <span class="page-counter" id="page-counter">1 / 13</span>
+    <span class="total-time">Total: ~85 min</span>
+  </div>
+</div>
+
+<!-- Sidebar Timeline -->
+<div id="sidebar">
+  <div class="sb-title">Module Progress</div>
+
+  <div class="sb-item active" onclick="goToPage(1)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Welcome</div><div class="sb-dur">Overview</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(2)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">The Spark -- Opening</div><div class="sb-dur">3-4 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 1: LangChain Foundations</div>
+  <div class="sb-item" onclick="goToPage(3)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Why Chains?</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(4)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">LangChain Foundations</div><div class="sb-dur">8-10 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(5)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">The Four Building Blocks</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(6)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Building Your First Chain</div><div class="sb-dur">6-7 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(7)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-lab"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3h6v4.5L18 16a2 2 0 01-2 2H8a2 2 0 01-2-2l3-8.5V3z"/></svg>Lab</span><div class="sb-label">Lab 1: LangChain Basics</div><div class="sb-dur">~20 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 2: The Beer Game</div>
+  <div class="sb-item" onclick="goToPage(8)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">The Beer Game</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(9)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">AI Meets the Beer Game</div><div class="sb-dur">5-6 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(10)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-lab"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3h6v4.5L18 16a2 2 0 01-2 2H8a2 2 0 01-2-2l3-8.5V3z"/></svg>Lab</span><div class="sb-label">Lab 2: Beer Game Sim</div><div class="sb-dur">~20 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 3: Wrap-Up</div>
+  <div class="sb-item" onclick="goToPage(11)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">LangChain in Industry</div><div class="sb-dur">~4 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(12)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Module Wrap-Up</div><div class="sb-dur">2-3 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(13)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Summary & Next Steps</div><div class="sb-dur">Review</div></div>
+  </div>
+</div>
+
+<!-- Sidebar Toggle -->
+<button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
+
+<!-- Hidden script containers -->
+<div id="script-v1" style="display:none;" data-title="V1: The Spark -- The Symphony Conductor">
+  <p>I was at a symphony concert last year. Dozens of musicians on stage, each playing a completely different instrument. Individually, each one is talented. But without the conductor standing at the front, coordinating every section, every tempo change, every entrance -- it would just be noise.</p>
+  <p>LangChain is that conductor for your AI applications.</p>
+  <p>Until now, you have been making single API calls. One prompt in, one response out. But real AI applications are rarely that simple. You might need the model to remember what the user said three messages ago. You might need it to search a database before responding. You might need it to call a tool, format the output, and pass it to a second model.</p>
+  <p>LangChain gives you pre-built components for every part of an AI pipeline -- and a standard way to connect them together.</p>
+</div>
+<div id="script-v2" style="display:none;" data-title="V2: LangChain Foundations">
+  <p>LangChain is an open-source framework for building AI pipelines. It was created by Harrison Chase in late 2022, and it has become the most widely used framework for connecting language models to the real world.</p>
+  <p>There are four core elements you need to understand.</p>
+  <p>First, LLMs. LangChain gives you a unified interface to every major model -- GPT, Gemini, Claude. Same code, swap models in one line. You do not rewrite your application when you change providers.</p>
+  <p>Second, Prompt Templates. Instead of hardcoding prompts, you create templates with variables. This makes your prompts reusable at scale. One template, a thousand different inputs.</p>
+  <p>Third, Memory. By default, LLMs are stateless -- they forget everything between calls. LangChain adds memory so your application can maintain conversation history across multiple interactions.</p>
+  <p>Fourth, Chains. This is the core idea. A chain connects steps together. The output of step one becomes the input of step two. Summarize, then translate, then format -- three steps, one chain.</p>
+  <p>The modern way to build chains is called LCEL -- LangChain Expression Language. It uses the pipe operator to connect components. It is clean, it is readable, and it is powerful.</p>
+  <p>Let me show you a quick preview of what that looks like in code.</p>
+</div>
+<div id="script-v3" style="display:none;" data-title="V3: Building Your First Chain">
+  <p>Let me walk you through building your first chain with LCEL.</p>
+  <p>The syntax is beautifully simple. You write: prompt, pipe, llm, pipe, output_parser. That is it. Three components connected with the pipe operator.</p>
+  <p>Here is what happens. The user asks a question. The prompt template wraps it with structure and context. The model generates a response. The output parser extracts the clean text.</p>
+  <p>Now let us extend it. Add memory -- and suddenly the model remembers what the user said before. Add a second step -- and now the output of the first model becomes the input of the next.</p>
+  <p>In three lines of code, you have a pipeline that would take dozens of lines without LangChain. And the best part? Every component is swappable. Change the model, change the prompt, change the parser -- the pipeline still works.</p>
+  <p>That is the power of composability. And that is what you will build in Lab 1.</p>
+</div>
+<div id="script-v4" style="display:none;" data-title="V4: AI Meets the Beer Game">
+  <p>Now let us take LangChain and apply it to something real -- the Beer Game.</p>
+  <p>The Beer Game is a supply chain simulation invented at MIT in the 1960s. It has been used in business schools around the world to teach one of the most important concepts in supply chain management: the bullwhip effect.</p>
+  <p>Here is the idea. You have four roles in a supply chain: Retailer, Wholesaler, Distributor, and Factory. Each one orders inventory from the next. The problem? There are delays. And when demand changes at the retail level, each player overreacts. Small changes in demand amplify into massive swings at the factory level.</p>
+  <p>Now here is where it gets interesting. What if each supply chain role is an AI agent? Each agent has its own prompt, its own inventory data, its own decision-making logic. And we chain them together using LangChain.</p>
+  <p>The Retailer agent sees customer demand and places an order. That order flows to the Wholesaler agent. The Wholesaler sees the order and makes its own decision. And so on, up the chain.</p>
+  <p>When you run this simulation over 20 rounds, you will see the bullwhip effect emerge naturally -- from the AI agents' decisions. This is not a toy example. This is how companies model supply chain decisions.</p>
+</div>
+<div id="script-v5" style="display:none;" data-title="V5: Module 4 Wrap-Up">
+  <p>This week you went from single API calls to multi-step pipelines.</p>
+  <p>You built chains that connect prompts, models, and memory into coherent workflows. And you put them to the test with the Beer Game -- watching AI agents make supply chain decisions and the bullwhip effect emerge from their interactions.</p>
+  <p>That is the power of orchestration. Not one model answering questions -- multiple steps working together toward a goal.</p>
+  <p>Next module -- what happens when your AI needs to retrieve information from real documents before answering? That is RAG -- Retrieval-Augmented Generation. And it solves one of the biggest problems in AI: hallucination.</p>
+  <p>See you in Module 5.</p>
+</div>
+<div id="script-lab1" style="display:none;" data-title="Lab 1 Walkthrough: LangChain -- Building AI Pipelines">
+  <p>This screen recording walks through the Lab 1 notebook step by step.</p>
+  <p>You will see how to install LangChain, build prompt templates, create chains with LCEL, add memory, and build a multi-step pipeline.</p>
+</div>
+<div id="script-lab2" style="display:none;" data-title="Lab 2 Walkthrough: The Beer Game -- AI Supply Chain Simulation">
+  <p>This screen recording walks through the Lab 2 notebook step by step.</p>
+  <p>You will see how to set up the Beer Game environment, create AI agents for each supply chain role, chain them with LangChain, run the simulation, and visualize the bullwhip effect.</p>
+</div>
+
+<!-- Pages -->
+<div id="pages-container" style="left:230px;">
+
+<!-- ════════════════════════════════════════ PAGE 1: Welcome ════════════════════════════════════════ -->
+<div class="page" data-page="1" data-state="active">
+<div class="page-inner">
+  <div class="glass" style="text-align:center;">
+    <span class="page-label">Module 04</span>
+    <h1>LangChain & Beer Game</h1>
+
+    <div class="quote-block" style="text-align:left; max-width:600px; margin:20px auto;">
+      <p>"Real AI applications are not single calls -- they are pipelines."</p>
+    </div>
+
+    <div class="cover-image-wrapper" style="max-width:720px; margin:24px auto;">
+      <img src="../images/M04-cover.png" alt="Module 4 Cover"
+           onerror="this.parentElement.innerHTML='<div class=\'cover-placeholder\'>M04 Cover Image</div>'" />
+    </div>
+
+    <div style="text-align:left; max-width:600px; margin:24px auto 0;">
+      <p class="subtitle">You have made API calls, built tools, and mastered prompting. Now you chain them together into multi-step workflows.</p>
+      <h3 style="margin-top:20px;">What You Will Learn</h3>
+      <ul class="bullet-list">
+        <li>What LangChain is and why AI pipelines matter</li>
+        <li>The four building blocks: LLMs, Prompt Templates, Memory, Chains</li>
+        <li>How to build chains with LCEL (LangChain Expression Language)</li>
+        <li>The Beer Game: AI agents making supply chain decisions</li>
+      </ul>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="max-width:600px; margin:0 auto;">
+      <h3 style="text-align:center; margin-bottom:16px;">Estimated Time: ~85 Minutes</h3>
+      <div class="time-breakdown">
+        <div class="time-item">
+          <div class="time-val">~30</div>
+          <div class="time-label">min Videos</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~15</div>
+          <div class="time-label">min Reading</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~40</div>
+          <div class="time-label">min Labs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 13 pages</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 3h6v4.5L18 16a2 2 0 01-2 2H8a2 2 0 01-2-2l3-8.5V3z"/></svg> 2 Labs</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> AI Spotlight: NotebookLM</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 2: The Spark ════════════════════════════════════════ -->
+<div class="page" data-page="2" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 1</span>
+    <h2>The Spark -- The Symphony Conductor</h2>
+    <p class="subtitle">In this opening, Prof. Dehghani introduces the central idea of Module 4 -- real AI applications are pipelines, not single calls. And every pipeline needs a conductor.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">3-4 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v1')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V1: The Spark -- The Symphony Conductor</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 3: READING -- Why Chains? ════════════════════════════════════════ -->
+<div class="page" data-page="3" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~5 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">Why Chains? The Single-Call Limitation</h2>
+      <p class="lead" style="text-align:center;">A single API call is powerful. But real applications need multiple steps working together.</p>
+
+      <div class="sep"></div>
+
+      <h3>The Problem with Single Calls</h3>
+      <p>Until now, every interaction with an LLM has been a single round trip. You send a prompt, you get a response. That works for simple tasks -- answering a question, summarizing a paragraph, generating a code snippet.</p>
+      <p>But what happens when the task is more complex? What if you need to:</p>
+      <ul class="bullet-list">
+        <li>Summarize a document, then translate the summary, then format it as an email</li>
+        <li>Look up data from a database before the model can answer</li>
+        <li>Remember what the user said three messages ago</li>
+        <li>Call a tool, process the result, and pass it to a second model</li>
+      </ul>
+      <p>A single API call cannot do any of this. You need a <strong>pipeline</strong>.</p>
+
+      <div class="sep"></div>
+
+      <!-- Single Call vs Chain Visual -->
+      <h3>Single Call vs Chain</h3>
+
+      <div style="background:#f8fafc;border:1px solid rgba(37,99,235,0.1);border-radius:12px;padding:28px 32px;margin:24px auto;max-width:600px;">
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;">Comparison</div>
+
+        <!-- Single call -->
+        <div style="margin-bottom:24px;">
+          <div style="font-size:0.75rem;font-weight:700;color:var(--text-secondary);margin-bottom:10px;">Single API Call</div>
+          <div style="display:flex;align-items:center;gap:12px;justify-content:center;">
+            <div style="background:rgba(37,99,235,0.08);border:1.5px solid rgba(37,99,235,0.2);border-radius:8px;padding:8px 16px;font-size:0.8rem;font-weight:600;color:var(--accent);">Input</div>
+            <svg width="24" height="16"><line x1="0" y1="8" x2="20" y2="8" stroke="#94a3b8" stroke-width="2"/><polygon points="16,4 24,8 16,12" fill="#94a3b8"/></svg>
+            <div style="background:var(--accent);border-radius:8px;padding:8px 16px;font-size:0.8rem;font-weight:600;color:#fff;">Model</div>
+            <svg width="24" height="16"><line x1="0" y1="8" x2="20" y2="8" stroke="#94a3b8" stroke-width="2"/><polygon points="16,4 24,8 16,12" fill="#94a3b8"/></svg>
+            <div style="background:rgba(37,99,235,0.08);border:1.5px solid rgba(37,99,235,0.2);border-radius:8px;padding:8px 16px;font-size:0.8rem;font-weight:600;color:var(--accent);">Output</div>
+          </div>
+          <div style="text-align:center;font-size:0.72rem;color:var(--text-muted);margin-top:6px;">Simple but limited</div>
+        </div>
+
+        <!-- Chain -->
+        <div>
+          <div style="font-size:0.75rem;font-weight:700;color:var(--accent);margin-bottom:10px;">Multi-Step Chain</div>
+          <div style="display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;">
+            <div style="background:rgba(37,99,235,0.08);border:1.5px solid rgba(37,99,235,0.2);border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;color:var(--accent);">Input</div>
+            <svg width="16" height="16"><polygon points="8,2 16,8 8,14" fill="#2563EB"/></svg>
+            <div style="background:var(--accent);border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;color:#fff;">Step 1</div>
+            <svg width="16" height="16"><polygon points="8,2 16,8 8,14" fill="#2563EB"/></svg>
+            <div style="background:var(--accent);border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;color:#fff;">Step 2</div>
+            <svg width="16" height="16"><polygon points="8,2 16,8 8,14" fill="#2563EB"/></svg>
+            <div style="background:var(--accent);border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;color:#fff;">Step 3</div>
+            <svg width="16" height="16"><polygon points="8,2 16,8 8,14" fill="#2563EB"/></svg>
+            <div style="background:rgba(37,99,235,0.08);border:1.5px solid rgba(37,99,235,0.2);border-radius:8px;padding:8px 12px;font-size:0.75rem;font-weight:600;color:var(--accent);">Output</div>
+          </div>
+          <div style="text-align:center;font-size:0.72rem;color:var(--accent);margin-top:6px;font-weight:600;">Powerful, multi-step</div>
+        </div>
+
+        <div style="font-size:0.75rem;color:var(--text-secondary);text-align:center;margin-top:16px;line-height:1.5;border-top:1px solid rgba(37,99,235,0.06);padding-top:12px;">
+          <strong>Real example:</strong> "Summarize a document, then translate to Spanish, then format as email"<br>
+          <span style="font-size:0.68rem;color:var(--text-muted);">Three steps chained -- the output of each step feeds the next.</span>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>What You Need: An Orchestration Framework</h3>
+      <p>You could build all of this from scratch -- manually passing outputs between functions, managing memory yourself, handling errors at every step. But that is tedious and error-prone.</p>
+      <p>That is why frameworks like <strong>LangChain</strong> exist. They give you pre-built, tested components for every part of the pipeline -- and a clean way to connect them together.</p>
+
+      <div class="ref-links">
+        <h4>References</h4>
+        <a href="https://python.langchain.com/" target="_blank">LangChain Documentation</a>
+        <a href="https://python.langchain.com/docs/concepts/lcel/" target="_blank">LCEL Concepts</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 4: LangChain Foundations Video ════════════════════════════════════════ -->
+<div class="page" data-page="4" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 2</span>
+    <h2>LangChain Foundations</h2>
+    <p class="subtitle">Prof. Dehghani introduces LangChain -- what it is, the four core elements, and the modern LCEL syntax for building chains.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">8-10 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v2')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V2: LangChain Foundations</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 5: READING -- Four Building Blocks ════════════════════════════════════════ -->
+<div class="page" data-page="5" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~5 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">The Four Building Blocks</h2>
+      <p class="lead" style="text-align:center;">Every LangChain application is built from four fundamental components.</p>
+
+      <div class="sep"></div>
+
+      <div class="info-grid cols-2">
+        <div class="info-card" style="border-top:3px solid #2563EB;">
+          <span class="icon">&#x1F916;</span>
+          <h3>LLMs</h3>
+          <p>Connect to GPT, Gemini, Claude -- same code, swap models in one line. LangChain provides a unified interface so your pipeline works regardless of the provider.</p>
+        </div>
+        <div class="info-card" style="border-top:3px solid #7c3aed;">
+          <span class="icon">&#x1F4DD;</span>
+          <h3>Prompt Templates</h3>
+          <p>Variables + structure = reusable prompts at scale. One template, a thousand different inputs. No more copy-pasting and editing prompts manually.</p>
+        </div>
+        <div class="info-card" style="border-top:3px solid #059669;">
+          <span class="icon">&#x1F9E0;</span>
+          <h3>Memory</h3>
+          <p>Conversation history that persists across calls. LLMs are stateless by default -- Memory lets your application remember what the user said before.</p>
+        </div>
+        <div class="info-card" style="border-top:3px solid #d97706;">
+          <span class="icon">&#x1F517;</span>
+          <h3>Chains</h3>
+          <p>Connect steps together. Output of step 1 becomes input of step 2. This is the core abstraction -- composable, reusable, testable pipelines.</p>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <!-- Pipeline Visual -->
+      <h3>How They Connect</h3>
+      <div style="background:#f8fafc;border:1px solid rgba(37,99,235,0.1);border-radius:12px;padding:24px;margin:16px auto;max-width:580px;">
+        <div style="display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;">
+          <div style="background:rgba(124,58,237,0.1);border:1.5px solid rgba(124,58,237,0.3);border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:0.65rem;font-weight:700;color:#7c3aed;text-transform:uppercase;">Prompt Template</div>
+            <div style="font-size:0.72rem;color:var(--text-secondary);">Structure input</div>
+          </div>
+          <svg width="20" height="16"><polygon points="12,2 20,8 12,14" fill="#2563EB"/></svg>
+          <div style="background:rgba(37,99,235,0.1);border:1.5px solid rgba(37,99,235,0.3);border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:0.65rem;font-weight:700;color:#2563EB;text-transform:uppercase;">LLM</div>
+            <div style="font-size:0.72rem;color:var(--text-secondary);">Generate response</div>
+          </div>
+          <svg width="20" height="16"><polygon points="12,2 20,8 12,14" fill="#2563EB"/></svg>
+          <div style="background:rgba(5,150,105,0.1);border:1.5px solid rgba(5,150,105,0.3);border-radius:8px;padding:10px 14px;text-align:center;">
+            <div style="font-size:0.65rem;font-weight:700;color:#059669;text-transform:uppercase;">Output Parser</div>
+            <div style="font-size:0.72rem;color:var(--text-secondary);">Clean result</div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:12px;">
+          <div style="font-size:0.68rem;color:var(--text-muted);">+ Memory wraps the whole pipeline to maintain conversation state</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>LCEL: The Modern Syntax</h3>
+      <p>LangChain Expression Language (LCEL) uses the pipe operator to connect components. It is clean, declarative, and makes your pipelines readable at a glance.</p>
+
+      <div class="code-block"><span class="cm"># LCEL syntax -- the pipe operator connects components</span>
+chain = prompt <span class="op">|</span> llm <span class="op">|</span> output_parser
+
+<span class="cm"># Invoke the chain</span>
+result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>: <span class="str">"supply chain optimization"</span>})</div>
+
+      <div class="ref-links">
+        <h4>References</h4>
+        <a href="https://python.langchain.com/docs/concepts/" target="_blank">LangChain Core Concepts</a>
+        <a href="https://python.langchain.com/docs/concepts/lcel/" target="_blank">LCEL Documentation</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 6: Building Your First Chain Video ════════════════════════════════════════ -->
+<div class="page" data-page="6" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 3</span>
+    <h2>Building Your First Chain</h2>
+    <p class="subtitle">Prof. Dehghani walks through LCEL syntax live -- building a simple chain, then extending it with memory and multi-step logic.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">6-7 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v3')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V3: Building Your First Chain</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="code-block"><span class="kw">from</span> langchain_openai <span class="kw">import</span> ChatOpenAI
+<span class="kw">from</span> langchain_core.prompts <span class="kw">import</span> ChatPromptTemplate
+<span class="kw">from</span> langchain_core.output_parsers <span class="kw">import</span> StrOutputParser
+
+<span class="cm"># Define components</span>
+prompt = ChatPromptTemplate.<span class="fn">from_template</span>(
+    <span class="str">"Explain {topic} in 3 sentences for a business audience."</span>
+)
+llm = <span class="fn">ChatOpenAI</span>(model=<span class="str">"gpt-4.1-mini"</span>)
+parser = <span class="fn">StrOutputParser</span>()
+
+<span class="cm"># Build the chain with LCEL</span>
+chain = prompt <span class="op">|</span> llm <span class="op">|</span> parser
+
+<span class="cm"># Run it</span>
+result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>: <span class="str">"the bullwhip effect"</span>})
+<span class="fn">print</span>(result)</div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 7: Lab 1 ════════════════════════════════════════ -->
+<div class="page" data-page="7" data-state="right">
+<div class="page-inner">
+  <div class="glass lab-card">
+    <span class="lab-badge">Lab 1</span>
+    <h2>LangChain: Building AI Pipelines</h2>
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ~20 min</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Google Colab</span>
+      <span class="meta-item">Difficulty: Intermediate</span>
+    </div>
+
+    <!-- Lab Walkthrough Video -->
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
+          <span class="vp-badge vp-badge-dur">~15 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-lab1')" title="View Walkthrough Info">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">Lab 1 Walkthrough: LangChain Basics</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-buttons">
+      <a href="#" class="lab-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open in Colab
+      </a>
+      <a href="#" class="lab-btn secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="lab-sections">
+      <h3>What You Will Do</h3>
+      <ol>
+        <li>Install LangChain and connect to OpenAI</li>
+        <li>Build prompt templates with variables</li>
+        <li>Create your first chain with LCEL</li>
+        <li>Add memory for multi-turn conversations</li>
+        <li>Build a multi-step pipeline (summarize &rarr; translate &rarr; format)</li>
+        <li><strong>Compare:</strong> Raw API call vs LangChain chain (same task, different approach)</li>
+      </ol>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-line">By the end of this lab, you will have built multi-step AI pipelines<br>using three lines of LCEL code.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 8: READING -- The Beer Game ════════════════════════════════════════ -->
+<div class="page" data-page="8" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~5 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">The Beer Game: A Supply Chain Classic</h2>
+      <p class="lead" style="text-align:center;">A simulation game invented at MIT in the 1960s that teaches one of the most important lessons in supply chain management.</p>
+
+      <div class="sep"></div>
+
+      <h3>What Is the Beer Game?</h3>
+      <p>The Beer Distribution Game was developed at MIT Sloan School of Management by Jay Forrester in the 1960s. It simulates a simple supply chain with four roles: <strong>Retailer</strong>, <strong>Wholesaler</strong>, <strong>Distributor</strong>, and <strong>Factory</strong>. Each player manages inventory and places orders to the player upstream.</p>
+      <p>The game teaches a powerful lesson: even with stable customer demand, supply chains naturally amplify variability. This is the <strong>bullwhip effect</strong>.</p>
+
+      <div class="sep"></div>
+
+      <h3>The Bullwhip Effect</h3>
+      <p>Small changes in customer demand at the retail level create increasingly large swings as you move upstream. The retailer overorders slightly. The wholesaler overorders more. By the time the signal reaches the factory, a 5% increase in customer demand can look like a 40% surge.</p>
+
+      <!-- Bullwhip Visual -->
+      <div style="background:#f8fafc;border:1px solid rgba(37,99,235,0.1);border-radius:12px;padding:28px 32px;margin:24px auto;max-width:560px;">
+        <div style="font-size:0.7rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:16px;">Supply Chain -- Bullwhip Effect</div>
+
+        <div style="display:flex;align-items:flex-end;gap:16px;justify-content:center;margin-bottom:16px;">
+          <div style="text-align:center;">
+            <div style="width:50px;height:30px;background:rgba(37,99,235,0.15);border-radius:4px;margin:0 auto 6px;"></div>
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text);">Retailer</div>
+            <div style="font-size:0.6rem;color:var(--text-muted);">+5%</div>
+          </div>
+          <svg width="20" height="16"><polygon points="12,2 20,8 12,14" fill="#94a3b8"/></svg>
+          <div style="text-align:center;">
+            <div style="width:50px;height:50px;background:rgba(37,99,235,0.25);border-radius:4px;margin:0 auto 6px;"></div>
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text);">Wholesaler</div>
+            <div style="font-size:0.6rem;color:var(--text-muted);">+15%</div>
+          </div>
+          <svg width="20" height="16"><polygon points="12,2 20,8 12,14" fill="#94a3b8"/></svg>
+          <div style="text-align:center;">
+            <div style="width:50px;height:75px;background:rgba(37,99,235,0.4);border-radius:4px;margin:0 auto 6px;"></div>
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text);">Distributor</div>
+            <div style="font-size:0.6rem;color:var(--text-muted);">+25%</div>
+          </div>
+          <svg width="20" height="16"><polygon points="12,2 20,8 12,14" fill="#94a3b8"/></svg>
+          <div style="text-align:center;">
+            <div style="width:50px;height:110px;background:var(--accent);border-radius:4px;margin:0 auto 6px;"></div>
+            <div style="font-size:0.72rem;font-weight:600;color:var(--text);">Factory</div>
+            <div style="font-size:0.6rem;color:var(--accent);font-weight:600;">+40%</div>
+          </div>
+        </div>
+
+        <div style="font-size:0.75rem;color:var(--text-secondary);text-align:center;line-height:1.5;border-top:1px solid rgba(37,99,235,0.06);padding-top:12px;">
+          A small 5% demand change at retail amplifies to a 40% surge at the factory.<br>
+          <span style="font-size:0.68rem;color:var(--text-muted);">This is the bullwhip effect -- and it happens in every supply chain.</span>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>Why It Matters</h3>
+      <p>The Beer Game teaches <strong>systems thinking</strong> -- how delays, incomplete information, and local optimization create global problems. These are the same dynamics that cause real supply chain failures, from semiconductor shortages to the toilet paper crisis of 2020.</p>
+      <p style="font-weight:600;color:var(--accent);">In Lab 2, you will build an AI-powered version of this classic simulation.</p>
+
+      <div class="sep"></div>
+
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Created</div>
+          <div class="stat-value">MIT Sloan, 1960s (Jay Forrester)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Players</div>
+          <div class="stat-value">4 roles: Retailer, Wholesaler, Distributor, Factory</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Key Lesson</div>
+          <div class="stat-value">The Bullwhip Effect -- demand amplification</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Used By</div>
+          <div class="stat-value">Business schools worldwide (MBA core curriculum)</div>
+        </div>
+      </div>
+
+      <div class="ref-links">
+        <h4>References</h4>
+        <a href="https://beergame.org/" target="_blank">The Beer Game -- Official Site</a>
+        <a href="https://en.wikipedia.org/wiki/Beer_distribution_game" target="_blank">Wikipedia -- Beer Distribution Game</a>
+        <a href="https://github.com/mdehghani86/Beer_Game" target="_blank">Prof. Dehghani's Beer Game Repository</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 9: AI Meets the Beer Game Video ════════════════════════════════════════ -->
+<div class="page" data-page="9" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 4</span>
+    <h2>AI Meets the Beer Game</h2>
+    <p class="subtitle">Prof. Dehghani explains how to combine LangChain with the Beer Game -- turning each supply chain role into an AI agent and watching the bullwhip effect emerge.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">5-6 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v4')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V4: AI Meets the Beer Game</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="calc-card">
+      <div class="calc-line">"This is not a toy example. This is how companies<br>model supply chain decisions."</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 10: Lab 2 ════════════════════════════════════════ -->
+<div class="page" data-page="10" data-state="right">
+<div class="page-inner">
+  <div class="glass lab-card">
+    <span class="lab-badge">Lab 2</span>
+    <h2>The Beer Game: AI Supply Chain Simulation</h2>
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ~20 min</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg> Google Colab</span>
+      <span class="meta-item">Difficulty: Intermediate</span>
+    </div>
+
+    <!-- Lab Walkthrough Video -->
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
+          <span class="vp-badge vp-badge-dur">~15 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-lab2')" title="View Walkthrough Info">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">Lab 2 Walkthrough: Beer Game Simulation</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-buttons">
+      <a href="#" class="lab-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open in Colab
+      </a>
+      <a href="#" class="lab-btn secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="lab-sections">
+      <h3>What You Will Do</h3>
+      <ol>
+        <li>Set up the Beer Game environment (inventory, demand, costs)</li>
+        <li>Create AI agents for each supply chain role (Retailer, Wholesaler, Distributor, Factory)</li>
+        <li>Chain them together using LangChain</li>
+        <li>Run the simulation over 20 rounds</li>
+        <li>Visualize the bullwhip effect (demand amplification chart)</li>
+        <li><strong>Compare:</strong> AI decisions vs optimal strategy</li>
+      </ol>
+    </div>
+
+    <div class="glass-sm" style="margin-top:20px; background:rgba(37,99,235,0.03); text-align:left;">
+      <p style="font-size:0.85rem; color:var(--text-secondary);"><strong>Note:</strong> Prof. Dehghani's Beer Game repo: <a href="https://github.com/mdehghani86/Beer_Game" target="_blank" style="color:var(--accent);text-decoration:none;">github.com/mdehghani86/Beer_Game</a></p>
+    </div>
+
+    <div class="calc-card">
+      <div class="calc-line">By the end of this lab, you will have built an AI-powered<br>supply chain simulation using LangChain agents.</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 11: READING -- LangChain in Industry ════════════════════════════════════════ -->
+<div class="page" data-page="11" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~4 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">LangChain in Industry</h2>
+      <p class="lead" style="text-align:center;">How companies use LangChain -- and when you should (and should not) reach for it.</p>
+
+      <div class="sep"></div>
+
+      <h3>Where LangChain Is Used</h3>
+      <ul class="bullet-list">
+        <li><strong>Customer Support Systems:</strong> Multi-step pipelines that retrieve context, classify intent, and generate personalized responses</li>
+        <li><strong>Document Analysis:</strong> Chains that extract, summarize, and cross-reference information from large document sets</li>
+        <li><strong>Research Pipelines:</strong> Automated workflows that search, synthesize, and format findings from multiple sources</li>
+        <li><strong>Internal Tools:</strong> Enterprise chatbots that connect to databases, APIs, and internal knowledge bases</li>
+      </ul>
+
+      <div class="sep"></div>
+
+      <h3>LangChain vs Raw API: When to Use Which</h3>
+      <table class="info-table">
+        <thead>
+          <tr><th></th><th>Raw API</th><th>LangChain</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Best for</strong></td><td>Simple, single-step tasks</td><td>Multi-step pipelines, chains</td></tr>
+          <tr><td><strong>Complexity</strong></td><td>Minimal setup</td><td>Framework to learn</td></tr>
+          <tr><td><strong>Flexibility</strong></td><td>Full control, no abstractions</td><td>Swappable components</td></tr>
+          <tr><td><strong>Memory</strong></td><td>Build it yourself</td><td>Built-in conversation memory</td></tr>
+          <tr><td><strong>Model switching</strong></td><td>Rewrite code</td><td>Change one line</td></tr>
+        </tbody>
+      </table>
+
+      <div class="sep"></div>
+
+      <h3>The LangChain Ecosystem</h3>
+      <div class="info-grid cols-3">
+        <div class="info-card">
+          <h3>LangChain</h3>
+          <p>Core framework for building chains and pipelines with LCEL</p>
+        </div>
+        <div class="info-card">
+          <h3>LangSmith</h3>
+          <p>Observability and debugging -- trace every step of your chain</p>
+        </div>
+        <div class="info-card">
+          <h3>LangServe</h3>
+          <p>Deploy chains as REST APIs with one command</p>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="glass-sm" style="background:rgba(37,99,235,0.03);">
+        <p style="font-size:0.88rem;color:var(--text-secondary);line-height:1.7;"><strong>Looking Ahead:</strong> LangChain is one of the most widely used frameworks -- but it is not the only one. In <strong>M06</strong>, you will learn <strong>LangGraph</strong> for more complex orchestration with cycles, conditional logic, and true agent behavior.</p>
+      </div>
+
+      <div class="ref-links">
+        <h4>References</h4>
+        <a href="https://python.langchain.com/" target="_blank">LangChain Python Documentation</a>
+        <a href="https://smith.langchain.com/" target="_blank">LangSmith -- Observability Platform</a>
+        <a href="https://langchain-ai.github.io/langgraph/" target="_blank">LangGraph Documentation</a>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 12: Wrap-Up Video ════════════════════════════════════════ -->
+<div class="page" data-page="12" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 5</span>
+    <h2>Module 4 Wrap-Up</h2>
+    <p class="subtitle">Prof. Dehghani recaps the journey from single calls to pipelines, and previews Module 5: RAG.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">2-3 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v5')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V5: Module 4 Wrap-Up</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:center;">
+      <div class="end-card">
+        <span>Next: M05 -- RAG (Retrieval-Augmented Generation)</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 13: Summary & Next Steps ════════════════════════════════════════ -->
+<div class="page" data-page="13" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Module Summary</span>
+    <h2 style="text-align:center;">Module 4 Complete</h2>
+    <p class="subtitle" style="text-align:center;">Here is everything you learned and where to go next.</p>
+
+    <div class="sep"></div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></span>
+        <span><strong>LangChain</strong> is the most widely used framework for building AI pipelines -- it provides a unified interface to LLMs, prompt templates, memory, and chains.</span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg></span>
+        <span><strong>LCEL</strong> (LangChain Expression Language) lets you build multi-step pipelines with the pipe operator: <code class="inline">prompt | llm | parser</code></span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+        <span><strong>Memory</strong> makes LLMs stateful -- your applications can remember previous interactions across multiple calls.</span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a4 4 0 00-8 0v2"/></svg></span>
+        <span>The <strong>Beer Game</strong> demonstrated how AI agents can make supply chain decisions -- and how the bullwhip effect emerges from their interactions.</span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+        <span>You built <strong>real pipelines</strong> -- from simple chains to a full supply chain simulation with multiple AI agents.</span>
+      </li>
+    </ul>
+
+    <div class="sep"></div>
+
+    <h3 style="text-align:center;">What You Can Now Do</h3>
+    <div class="capability-cards">
+      <div class="capability-card">
+        <p>Build multi-step AI pipelines with LCEL</p>
+      </div>
+      <div class="capability-card">
+        <p>Add memory and conversation state to your chains</p>
+      </div>
+      <div class="capability-card">
+        <p>Create AI agents that simulate real-world decisions</p>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <h3>Resources</h3>
+    <div class="ref-links" style="margin:12px 0;">
+      <h4>Labs & Notebooks</h4>
+      <a href="#" target="_blank">Lab 1: LangChain -- Building AI Pipelines (GitHub)</a>
+      <a href="#" target="_blank">Lab 2: The Beer Game -- AI Supply Chain Simulation (GitHub)</a>
+    </div>
+    <div class="ref-links" style="margin:12px 0;">
+      <h4>Further Reading</h4>
+      <a href="https://python.langchain.com/" target="_blank">LangChain Documentation</a>
+      <a href="https://python.langchain.com/docs/concepts/lcel/" target="_blank">LCEL -- LangChain Expression Language</a>
+      <a href="https://beergame.org/" target="_blank">The Beer Game -- Official Site</a>
+      <a href="https://github.com/mdehghani86/Beer_Game" target="_blank">Prof. Dehghani's Beer Game Repository</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="glass-sm" style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15);">
+      <h3 style="color:#b45309; font-size:0.95rem;">Assignment Reminder</h3>
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Complete and submit both lab notebooks via Canvas. Review the assignment rubric on the Assignments page.</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:center;">
+      <div class="end-card" style="padding:20px 40px;">
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:6px; font-weight:500;">NEXT MODULE</p>
+        <span style="font-size:1rem;">M05: RAG -- Retrieval-Augmented Generation</span>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:8px; font-weight:400; font-style:italic;">"An AI that cannot access your data is just guessing."</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /pages-container -->
+
+<!-- Navigation -->
+<div id="nav-bar">
+  <button class="nav-btn prev" id="btn-prev" onclick="prevPage()" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Previous
+  </button>
+  <div id="page-dots"></div>
+  <button class="nav-btn next" id="btn-next" onclick="nextPage()">
+    Next
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  const TOTAL = 13;
+  let current = parseInt(localStorage.getItem('m04_page') || '1', 10);
+  if (current < 1 || current > TOTAL) current = 1;
+
+  const pages = document.querySelectorAll('.page');
+  const progressBar = document.getElementById('progress-bar');
+  const pageCounter = document.getElementById('page-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const dotsContainer = document.getElementById('page-dots');
+
+  // Build dots
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Go to page ' + i);
+    dot.addEventListener('click', () => goToPage(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function render(oldPage, direction) {
+    pages.forEach((p) => {
+      const idx = parseInt(p.getAttribute('data-page'), 10);
+      if (idx === current) {
+        p.style.display = '';
+        void p.offsetWidth;
+        p.setAttribute('data-state', 'active');
+      } else if (idx === oldPage && direction) {
+        p.setAttribute('data-state', direction === 'next' ? 'left' : 'right');
+        setTimeout(() => { p.style.display = 'none'; }, 500);
+      } else {
+        p.style.display = 'none';
+        p.setAttribute('data-state', idx < current ? 'left' : 'right');
+      }
+    });
+
+    progressBar.style.width = ((current / TOTAL) * 100) + '%';
+    pageCounter.textContent = current + ' / ' + TOTAL;
+
+    btnPrev.disabled = (current === 1);
+    if (current < TOTAL) {
+      btnNext.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>';
+    } else {
+      btnNext.innerHTML = 'Done <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i + 1 === current);
+    });
+
+    const activePage = document.querySelector('.page[data-state="active"]');
+    if (activePage) activePage.scrollTop = 0;
+
+    localStorage.setItem('m04_page', current.toString());
+  }
+
+  function nextPage() {
+    if (current >= TOTAL) return;
+    const old = current;
+    const nextP = document.querySelector('.page[data-page="' + (current + 1) + '"]');
+    if (nextP) {
+      nextP.style.display = '';
+      nextP.setAttribute('data-state', 'right');
+      void nextP.offsetWidth;
+    }
+    current++;
+    render(old, 'next');
+  }
+
+  function prevPage() {
+    if (current <= 1) return;
+    const old = current;
+    const prevP = document.querySelector('.page[data-page="' + (current - 1) + '"]');
+    if (prevP) {
+      prevP.style.display = '';
+      prevP.setAttribute('data-state', 'left');
+      void prevP.offsetWidth;
+    }
+    current--;
+    render(old, 'prev');
+  }
+
+  function goToPage(n) {
+    if (n === current || n < 1 || n > TOTAL) return;
+    const old = current;
+    const dir = n > current ? 'next' : 'prev';
+    const targetP = document.querySelector('.page[data-page="' + n + '"]');
+    if (targetP) {
+      targetP.style.display = '';
+      targetP.setAttribute('data-state', dir === 'next' ? 'right' : 'left');
+      void targetP.offsetWidth;
+    }
+    current = n;
+    render(old, dir);
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') nextPage();
+    if (e.key === 'ArrowLeft') prevPage();
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    if (e.key === 'Escape') closeScriptModal();
+  });
+
+  window.nextPage = nextPage;
+  window.prevPage = prevPage;
+  window.goToPage = goToPage;
+
+  render(null, null);
+})();
+
+// Script Modal functions
+(function() {
+  var overlay = document.getElementById('scriptModal');
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.classList.remove('open');
+    }
+  });
+  window.closeScriptModal = function() {
+    overlay.classList.remove('open');
+  };
+  window.openScript = function(scriptId) {
+    var container = document.getElementById(scriptId);
+    if (!container) return;
+    var title = document.getElementById('scriptModalTitle');
+    var body = document.getElementById('scriptModalBody');
+    title.textContent = container.getAttribute('data-title') || 'Script';
+    body.innerHTML = container.innerHTML;
+    overlay.classList.add('open');
+  };
+})();
+
+// Sidebar toggle
+function toggleSidebar() {
+  var sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('collapsed');
+  document.body.classList.toggle('sidebar-hidden');
+}
+
+// Sync sidebar with current page
+function updateSidebar(pageNum) {
+  var items = document.querySelectorAll('.sb-item');
+  items.forEach(function(item, i) {
+    item.classList.remove('active');
+    if (i + 1 < pageNum) item.classList.add('visited');
+    if (i + 1 === pageNum) item.classList.add('active');
+  });
+}
+
+// Wrap navigation functions to sync sidebar
+(function() {
+  var origGo = window.goToPage;
+  var origNext = window.nextPage;
+  var origPrev = window.prevPage;
+
+  function getCurrentPage() {
+    var active = document.querySelector('.page[data-state="active"]');
+    return active ? parseInt(active.dataset.page) : 1;
+  }
+
+  window.goToPage = function(n) {
+    origGo(n);
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+  window.nextPage = function() {
+    origNext();
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+  window.prevPage = function() {
+    origPrev();
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+})();
+
+// Init sidebar state
+updateSidebar(parseInt(localStorage.getItem('m04_page') || '1', 10));
+</script>
+</body>
+</html>

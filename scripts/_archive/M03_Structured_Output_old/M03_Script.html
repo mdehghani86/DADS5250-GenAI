@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M03 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Subtle blue orb */
+body::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  right: -120px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* -- Top bar -- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(240,244,250,0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.topbar-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* Video tabs */
+.video-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.video-tab {
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.15);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.video-tab:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.video-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Action buttons */
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.18);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.btn-action:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.btn-action.teleprompter-active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+/* -- Container -- */
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 32px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* -- Video section -- */
+.video-section {
+  display: none;
+}
+
+.video-section.active {
+  display: block;
+}
+
+/* Video header */
+.video-header {
+  margin-bottom: 28px;
+}
+
+.video-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.video-header .video-meta {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* -- Segment row (two columns) -- */
+.segment {
+  display: grid;
+  grid-template-columns: var(--col-left) var(--col-right);
+  gap: 24px;
+  margin-bottom: 28px;
+  min-height: 120px;
+}
+
+/* Segment header spans both columns */
+.segment-header {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  margin-bottom: 4px;
+}
+
+.segment-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.segment-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.segment-badges {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-type {
+  background: rgba(37,99,235,0.1);
+  color: var(--accent);
+}
+
+.badge-duration {
+  background: rgba(16,185,129,0.1);
+  color: var(--green);
+}
+
+.badge-shot {
+  background: rgba(245,158,11,0.1);
+  color: #b45309;
+}
+
+/* Left column -- Script */
+.script-col {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 28px 32px;
+}
+
+.script-col p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.script-col p:last-child {
+  margin-bottom: 0;
+}
+
+/* Right column -- Media */
+.media-col {
+  background: rgba(255,255,255,0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(37,99,235,0.06);
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.media-col .media-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 4px;
+}
+
+.media-col .media-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  background: rgba(37,99,235,0.04);
+  border-left: 2px solid var(--accent);
+  padding: 10px 14px;
+  border-radius: 0 8px 8px 0;
+}
+
+.media-col .shot-note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+  font-style: italic;
+}
+
+/* Media placeholder box */
+.media-placeholder {
+  background: #f8fafc;
+  border: 1px dashed rgba(37,99,235,0.2);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.media-placeholder .placeholder-type {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 999px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.media-placeholder .placeholder-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  max-width: 280px;
+}
+
+.media-placeholder .placeholder-duration {
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+
+/* Code block */
+.code-block {
+  background: #1e293b;
+  border-radius: 10px;
+  padding: 20px 24px;
+  overflow-x: auto;
+  margin: 12px 0;
+}
+
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.7;
+  color: #e2e8f0;
+  margin: 0;
+  white-space: pre;
+}
+
+.code-block .kw { color: #93c5fd; }
+.code-block .str { color: #86efac; }
+.code-block .fn { color: #fde68a; }
+.code-block .cm { color: #64748b; }
+
+/* Key message bar */
+.key-message-bar {
+  background: rgba(37,99,235,0.06);
+  border: 1px solid rgba(37,99,235,0.15);
+  border-radius: 10px;
+  padding: 14px 24px;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.key-message-bar .km-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.key-message-bar .km-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* -- Lab placeholder card -- */
+.lab-card {
+  background: rgba(37,99,235,0.03);
+  border: 1px dashed rgba(37,99,235,0.2);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.lab-card .lab-icon {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.lab-card .lab-info {
+  flex: 1;
+}
+
+.lab-card .lab-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.lab-card .lab-link {
+  font-size: 0.78rem;
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.lab-card .lab-link:hover {
+  text-decoration: underline;
+}
+
+/* -- AI Spotlight -- */
+.ai-spotlight {
+  background: rgba(37,99,235,0.04);
+  border: 1px solid rgba(37,99,235,0.12);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ai-spotlight .spot-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+.ai-spotlight .spot-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.ai-spotlight .spot-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+/* -- References section -- */
+.references-section {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(37,99,235,0.06);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.references-section h3 {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.62rem;
+}
+
+.ref-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 3px 6px;
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  font-size: 0.6rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ref-table td {
+  padding: 3px 6px;
+  border-bottom: 1px solid rgba(37,99,235,0.03);
+  color: var(--text-muted);
+  vertical-align: top;
+  line-height: 1.4;
+}
+
+.ref-table a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.62rem;
+}
+
+.ref-table a:hover {
+  text-decoration: underline;
+}
+
+/* -- Teleprompter mode -- */
+body.teleprompter {
+  background: #0a0a0a;
+}
+
+body.teleprompter::before {
+  display: none;
+}
+
+body.teleprompter .topbar {
+  background: rgba(10,10,10,0.92);
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.teleprompter .topbar-title,
+body.teleprompter .topbar-subtitle {
+  color: rgba(255,255,255,0.5);
+}
+
+body.teleprompter .video-tab {
+  color: rgba(255,255,255,0.4);
+  border-color: rgba(255,255,255,0.1);
+}
+
+body.teleprompter .video-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+body.teleprompter .btn-action {
+  color: rgba(255,255,255,0.5);
+  border-color: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.05);
+}
+
+body.teleprompter .video-header h2 {
+  color: rgba(255,255,255,0.3);
+}
+
+body.teleprompter .video-header .video-meta {
+  color: rgba(255,255,255,0.15);
+}
+
+body.teleprompter .media-col {
+  display: none;
+}
+
+body.teleprompter .key-message-bar {
+  background: rgba(37,99,235,0.08);
+  border-color: rgba(37,99,235,0.2);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.teleprompter .key-message-bar .km-text {
+  color: rgba(255,255,255,0.85);
+}
+
+body.teleprompter .segment {
+  grid-template-columns: 1fr;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.teleprompter .segment-header {
+  border-bottom-color: rgba(255,255,255,0.06);
+}
+
+body.teleprompter .segment-number {
+  background: rgba(37,99,235,0.15);
+  color: var(--accent);
+}
+
+body.teleprompter .segment-title {
+  color: rgba(255,255,255,0.4);
+}
+
+body.teleprompter .badge {
+  opacity: 0.5;
+}
+
+body.teleprompter .script-col {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  padding: 20px 0;
+}
+
+body.teleprompter .script-col p {
+  font-size: 1.55rem;
+  line-height: 2;
+  color: rgba(255,255,255,0.92);
+  font-weight: 400;
+}
+
+body.teleprompter .lab-card,
+body.teleprompter .ai-spotlight {
+  display: none;
+}
+
+body.teleprompter .references-section {
+  display: none;
+}
+
+/* Auto-scroll controls */
+.scroll-controls {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  background: rgba(30,30,30,0.9);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 10px 16px;
+  gap: 10px;
+  align-items: center;
+}
+
+body.teleprompter .scroll-controls {
+  display: flex;
+}
+
+.scroll-controls label {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.scroll-controls input[type="range"] {
+  width: 100px;
+  accent-color: var(--accent);
+}
+
+.scroll-controls button {
+  padding: 4px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,0.15);
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.scroll-controls button:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.scroll-controls button.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* -- Print styles -- */
+@media print {
+  .topbar, .scroll-controls { display: none !important; }
+  body { background: #fff; }
+  body::before { display: none; }
+  .container { max-width: 100%; padding: 16px; }
+  .video-section { display: block !important; page-break-before: always; }
+  .video-section:first-of-type { page-break-before: avoid; }
+  .segment { page-break-inside: avoid; }
+  .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; }
+  .media-col { background: #f8fafc; border: 1px solid #e2e8f0; }
+}
+
+/* -- Responsive -- */
+@media (max-width: 900px) {
+  .segment {
+    grid-template-columns: 1fr;
+  }
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .video-tabs {
+    flex-wrap: wrap;
+  }
+}
+</style>
+</head>
+<body>
+
+<!-- -- Top Bar -- -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M03 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: JSON &amp; Function Calling</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: Lab 1</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: Lab 2</button>
+    <button class="video-tab" onclick="switchVideo(5)">V5: Transition</button>
+    <button class="video-tab" onclick="switchVideo(6)">V6: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Opening                                  -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark"</h2>
+    <div class="video-meta">Opening -- Prof on camera -- ~3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- Key Message Bar -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">If you cannot control the format, you cannot build a product.</span>
+  </div>
+
+  <!-- -- SEGMENT 1 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Opening -- The Gap</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~40 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is the gap between a demo and a product.</p>
+      <p>In a demo, you ask the model a question, it responds with text, everyone is impressed.</p>
+      <p>In a product, that text needs to be JSON. It needs to match a schema. It needs to be validated. It needs to flow into a database, an API, a dashboard -- automatically, thousands of times a day.</p>
+      <p>Free-form text breaks pipelines. Structured output builds them. This module teaches you to get exactly the output format you need -- every single time.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Same studio setup as M00/M01. Conversational delivery -- deliberate pause after "thousands of times a day" before the pivot to structured output.</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays needed for this segment. Clean shot, let the words carry. Consider shallow depth-of-field to keep focus on Prof.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT 2 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Key Message</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~10 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>If you cannot control the format, you cannot build a product.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"If you cannot control the format, you cannot build a product." -- white text on dark semi-transparent bar, lower third of frame.</span>
+        <span class="placeholder-duration">Hold 4 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Lower-third text overlay appears as Prof. says the line. Subtle slide-up animation. Same glass bar style as M00/M01 name card. Hold for 4 seconds after Prof. finishes.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: "JSON Mode & Function Calling"                          -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "JSON Mode &amp; Function Calling"</h2>
+    <div class="video-meta">Voiceover + animation/code -- 10-12 minutes -- 6 segments</div>
+  </div>
+
+  <!-- -- SEGMENT A -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Why Structure Matters</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Up until now, every response from the API has been text. A string. A paragraph. And text is great for humans -- but terrible for code.</p>
+      <p>Code needs data. Structured data. Fields with names. Values with types. Lists with consistent formats. That is JSON -- JavaScript Object Notation. And it is the language of every API, every database, every web application on earth.</p>
+      <p>JSON mode forces the model to return valid JSON -- guaranteed parseable, guaranteed structured. No more hoping the model gives you the right format. You demand it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Free-form text on left (messy, highlighted red) transforming into clean JSON on right (structured, highlighted green). Chaos into order.</span>
+        <span class="placeholder-duration">~20 sec loop</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Show messy paragraph text with red highlights dissolving and re-assembling into clean JSON with green highlights. The transformation should feel like organizing chaos into order. Dark background, minimal aesthetic.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT A2 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A2</span>
+      <span class="segment-title">Live Comparison: Text vs JSON</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me show you the difference. Same prompt, two modes.</p>
+      <p>WITHOUT JSON mode. Prompt: "List 3 programming languages with their primary use case."</p>
+      <p>Response: "Sure! Here are three popular programming languages: 1. Python -- Python is widely used for data science, machine learning, and web development. It is known for its readability..." And it continues for 200 words.</p>
+      <p>Try parsing that with code. You would need regex, string splitting, error handling -- and it would break the moment the model changes its formatting.</p>
+      <p>WITH JSON mode. Same prompt, plus response_format equals json_object.</p>
+      <p>Response: A clean JSON object. Languages as an array. Each with a name and use_case field. Three items. Done.</p>
+      <p>json.loads() and you have a Python dictionary. That is the difference between a demo and a product.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Split Screen Spec</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split Screen</span>
+        <span class="placeholder-desc">Left -- messy text output with "try parsing this..." label. Right -- clean JSON with "json.loads()" label. Same question at top.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Same prompt shown at top spanning both sides. Left side: plain text response, slightly faded/red tinted, with a frustrated "try parsing this..." label. Right side: clean JSON with syntax highlighting, green check mark and "json.loads()" label. Clear visual winner.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT B -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Pydantic Validation</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>JSON mode guarantees valid JSON. But it does not guarantee the right structure. What if the model uses "total_amount" instead of "total"? What if it returns a string where you need a number?</p>
+      <p>Pydantic solves this. You define a Python class that describes exactly what fields you expect, what types they should be, and which are required. Then you pass the model's JSON through it. If everything matches, you get a clean validated object. If anything is wrong, you get a clear error.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Display</span>
+        <span class="placeholder-desc">Show Pydantic class definition, then JSON being validated -- green check for valid, red X for invalid with error message.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Top half -- Pydantic class with fields and types highlighted. Bottom half -- two scenarios side by side: valid JSON with green check animation, invalid JSON with red X and error message sliding in. Use JetBrains Mono font, dark code editor aesthetic.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT B2 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B2</span>
+      <span class="segment-title">Pydantic Catching Bugs</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is why Pydantic matters. The model returned this JSON for an invoice:</p>
+      <p>invoice_num instead of invoice_number. Total as a string with a dollar sign, not a float. Items as a comma-separated string, not a list.</p>
+      <p>Looks fine to a human. But three problems that would break your pipeline.</p>
+      <p>Without Pydantic, this goes into your database and something breaks downstream -- maybe tomorrow, maybe next week. A silent bug.</p>
+      <p>With Pydantic, you define the schema. Run the JSON through it. Pydantic catches all three errors immediately. Field invoice_number missing. Value is not a valid float. Value is not a valid list.</p>
+      <p>Three bugs caught before they touched your database. That is Pydantic.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display with Error Highlights</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code + Errors</span>
+        <span class="placeholder-desc">Bad JSON with three errors highlighted in red. Pydantic error messages appearing one by one. Clean version shown at end.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Start with the bad JSON -- highlight the three errors in red one at a time as Prof. narrates each. Then show Pydantic error messages appearing sequentially below. Finally, dissolve to the corrected clean JSON with green highlights. Build the narrative: problem, catch, fix.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT C -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Function Calling Concept</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Diagram</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Function calling is one of the most important concepts in this course -- because it is the bridge between a chatbot and an agent.</p>
+      <p>A chatbot generates text. An agent takes actions. Function calling is what makes the difference.</p>
+      <p>You define tools -- functions with names, descriptions, and parameter schemas. The model reads the user's request and decides: which tool should I use? What arguments should I pass?</p>
+      <p>The model returns a structured JSON object. Your code executes it and feeds the result back. This loop -- reason, call, observe, repeat -- is the foundation of everything we build from Module 6 onward.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Flow Diagram</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Flow Diagram</span>
+        <span class="placeholder-desc">User question -> Model reasons -> Function call (JSON) -> Your code executes -> Result back to model -> Final response. Circular loop emphasized.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Circular flow diagram with 5-6 nodes. Animate each step lighting up as Prof. narrates. The loop should feel continuous -- emphasize that this is a cycle, not a one-shot. Use the same blue accent color palette. Clean, minimal, no clutter.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT C2 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C2</span>
+      <span class="segment-title">Function Calling Live Example</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me walk through a complete example.</p>
+      <p>Step 1 -- Define the function schema. Name: get_weather. Description: Get current weather for a city. Parameters: city as a string, required. Unit as a string, either celsius or fahrenheit.</p>
+      <p>Step 2 -- Send it with the user's message. User says: "What is the weather like in Boston right now?"</p>
+      <p>Step 3 -- The model responds -- not with text, but with a function call. Name: get_weather. Arguments: city equals Boston, unit equals fahrenheit.</p>
+      <p>The model decided: this question needs the weather function. The city is Boston. The user probably wants Fahrenheit.</p>
+      <p>Step 4 -- Your code executes the function, calls a real weather API, gets the actual data.</p>
+      <p>Step 5 -- You send the result back. The model generates a natural language response: "It is currently 62 degrees Fahrenheit in Boston with partly cloudy skies."</p>
+      <p>The model did not know the weather. It knew it needed a tool. It chose the right tool and the right arguments. That is function calling. And in Module 6, we will build full agents that chain multiple function calls together.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Step-by-Step Flow</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Step-by-Step</span>
+        <span class="placeholder-desc">Five numbered steps, each appearing sequentially. Step 1: schema code. Step 2: user message. Step 3: function call JSON. Step 4: code execution. Step 5: final response. Connected by arrows.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Vertical or diagonal flow with 5 numbered cards. Each card appears with a slide-in animation as Prof. narrates the step. Step 1 shows the schema JSON. Step 2 shows the user message bubble. Step 3 shows the model's function call JSON (highlighted). Step 4 shows a code execution icon with API call. Step 5 shows the final natural language response. Arrows connect each step.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: Lab 1                                                    -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: Lab 1 Walkthrough</h2>
+    <div class="video-meta">Lab demo -- screen recording</div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Lab 1: JSON Mode &amp; Pydantic</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Screen Recording</span>
+        <span class="badge badge-duration">10-15 min</span>
+      </div>
+    </div>
+    <div class="lab-card">
+      <span class="lab-icon">COLAB</span>
+      <div class="lab-info">
+        <div class="lab-title">Lab 1: JSON Mode &amp; Pydantic Validation</div>
+        <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M03/M03_Lab1_JSON_Mode_Pydantic.ipynb" target="_blank" rel="noopener">M03_Lab1_JSON_Mode_Pydantic.ipynb</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Lab 2                                                    -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: Lab 2 Walkthrough</h2>
+    <div class="video-meta">Lab demo -- screen recording</div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Lab 2: Function Calling</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Screen Recording</span>
+        <span class="badge badge-duration">10-15 min</span>
+      </div>
+    </div>
+    <div class="lab-card">
+      <span class="lab-icon">COLAB</span>
+      <div class="lab-info">
+        <div class="lab-title">Lab 2: Function Calling</div>
+        <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M03/M03_Lab2_Function_Calling.ipynb" target="_blank" rel="noopener">M03_Lab2_Function_Calling.ipynb</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 5: "Transition"                                             -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: "Transition"</h2>
+    <div class="video-meta">Voiceover -- ~2 minutes -- 1 segment</div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Output Control to Action Control</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>In Lab 1, you forced the model to return structured data -- clean, validated JSON. That is the output side.</p>
+      <p>Now we flip it. In Lab 2, the model does not just return data -- it decides what action to take. It looks at a user request, reasons about the available tools, and generates a function call.</p>
+      <p>This is a fundamental shift. The model goes from answering questions to making decisions. Let us see how.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Transition Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Transition Card</span>
+        <span class="placeholder-desc">"Output Control" on left with arrow transforming to "Action Control" on right. Simple, clean, two-tone card.</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Full-screen transition card. Left side: "Output Control" in muted text. Right side: "Action Control" in accent blue. A clean arrow or morphing animation connects them. Hold for the duration of the voiceover. Minimal, no clutter.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 6: "Wrap-Up"                                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- -- SEGMENT 1 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Three Pillars</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>This module gave you three pillars of production AI.</p>
+      <p>JSON mode -- guaranteed structure. Pydantic -- guaranteed correctness. Function calling -- the model as a decision maker.</p>
+      <p>With these three tools, you can build systems where the output is not just text -- it is data that flows into databases, triggers actions, and powers applications.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same studio setup. Direct to camera, confident delivery. Slight lean forward on "three pillars" for emphasis.</p>
+      <div class="media-note">
+        MEDIA TEAM: Consider a subtle lower-third showing the three pillars as Prof. names them: "JSON Mode | Pydantic | Function Calling" -- each appearing as he says it.
+      </div>
+    </div>
+  </div>
+
+  <!-- -- SEGMENT 2 -- -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Next Module Tease</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next module, we take these building blocks and chain them together. LangChain. And a supply chain simulation called the Beer Game. See you in Module 4.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">End Card</span>
+        <span class="placeholder-desc">"Next: M04 -- LangChain &amp; Beer Game" -- same end card style as M01/M02.</span>
+        <span class="placeholder-duration">Hold 5 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: End card appears after Prof. finishes. Same template as M01/M02 end cards. "Next: M04 -- LangChain &amp; Beer Game" in center. Course branding at bottom.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-6 -->
+
+
+<!-- -- AI Spotlight -- -->
+<div class="ai-spotlight">
+  <span class="spot-label">AI SPOTLIGHT</span>
+  <div>
+    <div class="spot-name">Perplexity</div>
+    <div class="spot-desc">AI-powered search engine with structured, cited answers and real-time web access.</div>
+  </div>
+</div>
+
+
+<!-- -- References -- -->
+<div class="references-section">
+  <h3>References</h3>
+  <table class="ref-table">
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th>Detail</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>OpenAI Blog</td>
+        <td>Function calling introduced June 2023</td>
+      </tr>
+      <tr>
+        <td>PyPI Stats</td>
+        <td>Pydantic: ~200M+ downloads/month</td>
+      </tr>
+      <tr>
+        <td>OpenAI API Docs</td>
+        <td>JSON mode -- response_format parameter documentation</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+</div><!-- end container -->
+
+<!-- -- Auto-scroll controls (teleprompter) -- -->
+<div class="scroll-controls">
+  <label>Speed</label>
+  <input type="range" id="scrollSpeed" min="0.3" max="4" step="0.1" value="1">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+// -- Video tab switching --
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(el => el.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// -- Teleprompter mode --
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) {
+    stopAutoScroll();
+  }
+}
+
+// -- Auto-scroll --
+let scrollInterval = null;
+let isScrolling = false;
+
+function toggleAutoScroll() {
+  if (isScrolling) {
+    stopAutoScroll();
+  } else {
+    startAutoScroll();
+  }
+}
+
+function startAutoScroll() {
+  isScrolling = true;
+  const btn = document.getElementById('scrollToggle');
+  btn.textContent = 'Stop';
+  btn.classList.add('active');
+  scrollInterval = setInterval(() => {
+    const speed = parseFloat(document.getElementById('scrollSpeed').value);
+    window.scrollBy(0, speed);
+  }, 16);
+}
+
+function stopAutoScroll() {
+  isScrolling = false;
+  const btn = document.getElementById('scrollToggle');
+  btn.textContent = 'Start';
+  btn.classList.remove('active');
+  if (scrollInterval) {
+    clearInterval(scrollInterval);
+    scrollInterval = null;
+  }
+}
+
+// -- Keyboard shortcuts --
+document.addEventListener('keydown', function(e) {
+  // T = toggle teleprompter
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+    toggleTeleprompter();
+  }
+  // Space = toggle auto-scroll (in teleprompter mode)
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') {
+    e.preventDefault();
+    toggleAutoScroll();
+  }
+  // 1-6 = switch videos
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
+    switchVideo(parseInt(e.key));
+  }
+});
+</script>
+
+</body>
+</html>

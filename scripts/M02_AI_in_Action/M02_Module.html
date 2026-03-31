@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M02: AI in Action</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: rgba(37,99,235,0.08);
+  --accent-border: rgba(37,99,235,0.15);
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  --code-bg: #1e293b;
+  --video-bg: #0f172a;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Progress Bar ── */
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+  z-index: 1000;
+}
+
+/* ── Top Bar ── */
+#top-bar {
+  position: fixed; top: 3px; left: 0; right: 0;
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(37,99,235,0.06);
+  z-index: 999;
+  font-size: 0.82rem;
+}
+#top-bar .module-title { color: var(--text-secondary); font-weight: 500; }
+#top-bar .page-info { display: flex; align-items: center; gap: 16px; }
+#top-bar .page-counter { color: var(--text-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+#top-bar .total-time {
+  color: var(--accent); font-weight: 600; font-size: 0.75rem;
+  background: var(--accent-light); padding: 3px 10px; border-radius: 6px;
+}
+
+/* ── Pages Container ── */
+#pages-container {
+  position: fixed;
+  top: 51px; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 48px 24px 180px;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+.page[data-state="active"] { transform: translateX(0); opacity: 1; pointer-events: auto; }
+.page[data-state="left"]   { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+.page[data-state="right"]  { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.page[data-state="hidden"] { display: none; }
+
+.page-inner {
+  width: 100%; max-width: 900px;
+}
+
+/* ── Glass Card ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+  padding: 40px;
+}
+.glass-sm {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  padding: 24px;
+}
+
+/* ── Typography ── */
+.page-label {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 12px; border-radius: 6px;
+  margin-bottom: 16px;
+}
+h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.15; color: var(--text); margin-bottom: 12px; }
+h2 { font-size: 1.6rem; font-weight: 700; line-height: 1.25; color: var(--text); margin-bottom: 10px; }
+h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.subtitle { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; }
+
+/* ── Video Placeholder ── */
+.video-wrapper { display: flex; justify-content: center; margin: 28px 0 24px; }
+.video-placeholder {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: var(--video-bg);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+  transition: box-shadow var(--transition);
+}
+.video-placeholder:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
+.vp-center { text-align: center; }
+.vp-play { opacity: 0.7; transition: opacity 0.2s; }
+.video-placeholder:hover .vp-play { opacity: 1; }
+.vp-title {
+  color: rgba(255,255,255,0.7);
+  font-size: 0.85rem;
+  margin-top: 12px;
+  font-weight: 400;
+}
+.vp-badges {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  gap: 6px;
+}
+.vp-badge {
+  font-size: 0.6rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.vp-badge-type { background: rgba(37,99,235,0.3); color: #93c5fd; }
+.vp-badge-type-lab { background: rgba(100,116,139,0.4); color: #cbd5e1; }
+.vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+
+/* ── Script Button ── */
+.script-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: none;
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.7);
+  transition: all 0.2s;
+  z-index: 10;
+}
+.script-btn:hover {
+  background: rgba(37,99,235,0.4);
+  color: #fff;
+}
+
+/* ── Script Modal ── */
+.script-modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+}
+.script-modal-overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+.script-modal {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 700px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 32px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  position: relative;
+}
+.script-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.05);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: #64748b;
+  transition: background 0.15s;
+}
+.script-modal-close:hover { background: rgba(0,0,0,0.1); }
+.script-modal h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 16px;
+}
+.script-modal p {
+  font-size: 0.92rem;
+  line-height: 1.8;
+  color: #475569;
+  margin-bottom: 12px;
+}
+
+/* ── Infographic Cards ── */
+.info-grid { display: grid; gap: 16px; margin: 20px 0; }
+.info-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.info-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 768px) {
+  .info-grid.cols-3, .info-grid.cols-2 { grid-template-columns: 1fr; }
+}
+.info-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 24px;
+  text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.info-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.info-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Bullets ── */
+.bullet-list { list-style: none; padding: 0; margin: 16px 0; }
+.bullet-list li {
+  position: relative;
+  padding: 8px 0 8px 28px;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.bullet-list li::before {
+  content: '';
+  position: absolute; left: 0; top: 16px;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+/* ── Lab Card ── */
+.lab-card {
+  text-align: center;
+}
+.lab-card .lab-badge {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 4px 14px; border-radius: 6px;
+  background: rgba(37,99,235,0.08); color: var(--accent);
+  margin-bottom: 16px;
+}
+.lab-buttons { display: flex; gap: 12px; justify-content: center; margin: 20px 0; flex-wrap: wrap; }
+.lab-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 10px;
+  font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;
+  text-decoration: none; cursor: pointer; border: none;
+  transition: all var(--transition);
+}
+.lab-btn.primary { background: var(--accent); color: #fff; }
+.lab-btn.primary:hover { background: #1d4ed8; transform: translateY(-1px); }
+.lab-btn.secondary { background: rgba(37,99,235,0.08); color: var(--accent); border: 1px solid var(--accent-border); }
+.lab-btn.secondary:hover { background: rgba(37,99,235,0.14); }
+.lab-sections { text-align: left; margin: 20px 0; }
+.lab-sections ol { padding-left: 24px; margin: 12px 0; }
+.lab-sections ol li { padding: 6px 0; font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5; }
+
+/* ── Separator ── */
+.sep { height: 1px; background: rgba(37,99,235,0.08); margin: 24px 0; }
+
+/* ── Inline code ── */
+code.inline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  background: rgba(37,99,235,0.06);
+  padding: 2px 8px; border-radius: 5px;
+  color: var(--accent);
+}
+
+/* ── Meta info ── */
+.meta-row {
+  display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0;
+  font-size: 0.8rem; color: var(--text-muted);
+}
+.meta-row .meta-item { display: flex; align-items: center; gap: 4px; }
+
+/* ── Quote ── */
+.quote-block {
+  border-left: 3px solid var(--accent);
+  padding: 16px 24px;
+  margin: 20px 0;
+  background: rgba(37,99,235,0.03);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.quote-block p {
+  font-size: 1.15rem; font-weight: 500; font-style: italic;
+  color: var(--text); line-height: 1.6;
+}
+
+/* ── End Card ── */
+.end-card {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(37,99,235,0.06), rgba(37,99,235,0.12));
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 32px;
+  margin-top: 20px;
+}
+.end-card span { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+
+/* ── Section heading ── */
+.section-heading {
+  font-size: 1.1rem; font-weight: 700; color: var(--text);
+  margin: 28px 0 12px; display: flex; align-items: center; gap: 8px;
+}
+.section-heading .num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--accent); color: #fff;
+  font-size: 0.72rem; font-weight: 700;
+}
+
+/* ── Reading Page Styles ── */
+.reading-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 600;
+  color: #10b981; background: rgba(16,185,129,0.08);
+  padding: 5px 14px; border-radius: 6px;
+  margin-bottom: 20px;
+}
+.reading-badge svg { width: 14px; height: 14px; }
+
+.reading-body { max-width: 740px; margin: 0 auto; }
+.reading-body p {
+  font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8;
+  margin-bottom: 16px;
+}
+.reading-body h3 {
+  font-size: 1.15rem; font-weight: 700; color: var(--text);
+  margin: 32px 0 12px;
+}
+.reading-body .lead {
+  font-size: 1.05rem; color: var(--text); line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 12px; margin: 20px 0;
+}
+@media (max-width: 600px) { .stats-grid { grid-template-columns: 1fr; } }
+.stat-item {
+  background: rgba(37,99,235,0.04);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+}
+.stat-item .stat-label {
+  font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 4px;
+}
+.stat-item .stat-value {
+  font-size: 0.92rem; font-weight: 600; color: var(--text);
+}
+
+.ref-links {
+  background: rgba(37,99,235,0.02);
+  border-top: 1px solid rgba(37,99,235,0.06);
+  padding: 10px 0 0; margin: 20px 0 0;
+}
+.ref-links h4 {
+  font-size: 0.58rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--text-muted); margin-bottom: 6px;
+}
+.ref-links a {
+  display: inline-block; font-size: 0.68rem; color: var(--accent);
+  text-decoration: none; padding: 2px 0; margin-right: 14px;
+  transition: color 0.2s; opacity: 0.8;
+}
+.ref-links a:hover { color: #1d4ed8; text-decoration: underline; opacity: 1; }
+
+/* ── Tool cards ── */
+.tool-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin: 20px 0; }
+@media (max-width: 768px) { .tool-cards { grid-template-columns: 1fr; } }
+.tool-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 24px; text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.tool-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.tool-card .tool-name {
+  font-size: 1rem; font-weight: 700; color: var(--text); margin-bottom: 4px;
+}
+.tool-card .tool-tag {
+  font-size: 0.72rem; color: var(--accent); font-weight: 600; margin-bottom: 8px;
+}
+.tool-card .tool-desc {
+  font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5;
+}
+
+/* ── Time breakdown card ── */
+.time-breakdown {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0;
+}
+@media (max-width: 600px) { .time-breakdown { grid-template-columns: 1fr; } }
+.time-item {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 16px; text-align: center;
+}
+.time-item .time-val { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+.time-item .time-label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+/* ── Summary page takeaway ── */
+.takeaway-list { list-style: none; padding: 0; margin: 16px 0; }
+.takeaway-list li {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 10px 0;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.takeaway-list li .tk-icon {
+  width: 28px; height: 28px; flex-shrink: 0;
+  border-radius: 50%; background: var(--accent-light);
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 1px;
+}
+.takeaway-list li .tk-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+.capability-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin: 16px 0; }
+@media (max-width: 600px) { .capability-cards { grid-template-columns: 1fr; } }
+.capability-card {
+  background: linear-gradient(135deg, rgba(37,99,235,0.04), rgba(37,99,235,0.08));
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 20px; text-align: center;
+}
+.capability-card p { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+
+/* ── Cover Image ── */
+.cover-image-wrapper {
+  margin: 20px 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--accent-border);
+}
+.cover-image-wrapper img {
+  width: 100%; display: block;
+}
+.cover-placeholder {
+  width: 100%; height: 220px;
+  background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 0.85rem;
+}
+
+/* ── Headline cards ── */
+.headline-card {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 20px 24px;
+  margin-bottom: 14px;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.headline-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.headline-card .hl-source {
+  font-size: 0.65rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 6px;
+}
+.headline-card .hl-title {
+  font-size: 1rem; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 8px;
+}
+.headline-card .hl-body {
+  font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6;
+}
+.headline-card a {
+  display: inline-block; font-size: 0.72rem; color: var(--accent);
+  text-decoration: none; margin-top: 8px; font-weight: 600;
+}
+.headline-card a:hover { text-decoration: underline; }
+
+/* ── Navigation ── */
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(37,99,235,0.06);
+  z-index: 999;
+}
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 12px;
+  font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none;
+  transition: all var(--transition);
+  min-width: 120px; justify-content: center;
+}
+.nav-btn.prev {
+  background: rgba(255,255,255,0.7);
+  border: 1px solid var(--glass-border);
+  color: var(--text-secondary);
+  backdrop-filter: blur(12px);
+}
+.nav-btn.prev:hover { background: rgba(255,255,255,0.9); color: var(--text); }
+.nav-btn.prev:disabled { opacity: 0.3; cursor: default; }
+.nav-btn.next {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(37,99,235,0.3);
+}
+.nav-btn.next:hover { background: #1d4ed8; transform: translateY(-1px); }
+
+/* ── Page Dots ── */
+#page-dots {
+  display: flex; gap: 8px; align-items: center;
+}
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(37,99,235,0.2);
+  cursor: pointer;
+  transition: all var(--transition);
+  border: none; padding: 0;
+}
+.dot.active {
+  background: var(--accent);
+  width: 24px; border-radius: 4px;
+}
+.dot:hover { background: rgba(37,99,235,0.4); }
+
+/* ── Fullscreen ── */
+:fullscreen { background: var(--bg); }
+
+/* ── Print ── */
+@media print {
+  #top-bar, #nav-bar, #progress-bar { display: none !important; }
+  #pages-container { position: static; overflow: visible; }
+  .page { position: static !important; display: block !important; opacity: 1 !important; transform: none !important; page-break-after: always; padding: 24px; }
+  .page[data-state] { transform: none !important; opacity: 1 !important; pointer-events: auto !important; display: block !important; }
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.3rem; }
+  .glass { padding: 24px; }
+  .video-placeholder { width: 100%; }
+}
+
+/* ── Sidebar Timeline ── */
+#sidebar {
+  position: fixed;
+  top: 51px;
+  left: 0;
+  bottom: 0;
+  width: 230px;
+  background: rgba(255,255,255,0.9);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(148,163,184,0.15);
+  overflow-y: auto;
+  padding: 14px 0;
+  z-index: 800;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#sidebar.collapsed {
+  transform: translateX(-230px);
+  opacity: 0;
+  pointer-events: none;
+}
+#sidebar-toggle {
+  position: fixed;
+  top: 58px;
+  left: 8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--glass-bg);
+  border: 1px solid rgba(148,163,184,0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 850;
+  transition: left 0.3s ease, background 0.2s;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+#sidebar-toggle:hover { background: rgba(37,99,235,0.06); color: var(--accent); }
+#sidebar.collapsed ~ #sidebar-toggle { left: 8px; }
+body:not(.sidebar-hidden) #sidebar-toggle { left: 238px; }
+
+.sb-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0 14px 8px;
+}
+.sb-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+  position: relative;
+  border-radius: 0;
+}
+.sb-item:hover { background: rgba(37,99,235,0.05); }
+.sb-item.active { background: rgba(37,99,235,0.07); border-left: 2px solid var(--accent); }
+.sb-item.active .sb-dot { background: var(--accent); box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+.sb-item.active .sb-label { color: var(--text); font-weight: 600; }
+.sb-item.visited .sb-dot { background: #10b981; }
+
+.sb-item::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: rgba(148,163,184,0.15);
+}
+.sb-item:first-child::before { top: 50%; }
+.sb-item:last-child::before { bottom: 50%; }
+
+.sb-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(148,163,184,0.3);
+  flex-shrink: 0;
+  margin-top: 5px;
+  position: relative;
+  z-index: 1;
+  transition: all 0.2s;
+}
+.sb-type {
+  font-size: 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 1px 4px 1px 16px;
+  border-radius: 3px;
+  display: inline-block;
+  margin-bottom: 2px;
+  position: relative;
+}
+.sb-type svg.sb-icon {
+  position: absolute;
+  left: 3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 9px;
+  height: 9px;
+}
+.sb-type-video { background: rgba(37,99,235,0.1); color: var(--accent); }
+.sb-type-lab { background: rgba(100,116,139,0.1); color: #64748b; }
+.sb-type-content { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-type-reading { background: rgba(16,185,129,0.1); color: #10b981; }
+
+.sb-label {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.25;
+  transition: color 0.2s;
+}
+.sb-dur {
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.sb-section {
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  padding: 12px 14px 4px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(37,99,235,0.08);
+}
+.sb-section:first-of-type { border-top: none; margin-top: 0; }
+
+body:not(.sidebar-hidden) #pages-container { left: 230px; }
+body:not(.sidebar-hidden) #nav-bar { left: 230px; }
+body.sidebar-hidden #pages-container { left: 0; }
+body.sidebar-hidden #nav-bar { left: 0; }
+#pages-container { transition: left 0.3s ease; }
+#nav-bar { transition: left 0.3s ease; }
+
+@media (max-width: 900px) {
+  #sidebar { width: 220px; }
+  body:not(.sidebar-hidden) #pages-container { left: 220px; }
+  body:not(.sidebar-hidden) #nav-bar { left: 220px; }
+  body:not(.sidebar-hidden) #sidebar-toggle { left: 228px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Script Modal Overlay (shared, one instance) -->
+<div class="script-modal-overlay" id="scriptModal">
+  <div class="script-modal" onclick="event.stopPropagation()">
+    <button class="script-modal-close" onclick="closeScriptModal()">&times;</button>
+    <h3 id="scriptModalTitle">Script</h3>
+    <div id="scriptModalBody"></div>
+  </div>
+</div>
+
+<!-- Progress Bar -->
+<div id="progress-bar" style="width: 8.33%"></div>
+
+<!-- Top Bar -->
+<div id="top-bar">
+  <span class="module-title">M02: AI in Action</span>
+  <div class="page-info">
+    <span class="page-counter" id="page-counter">1 / 12</span>
+    <span class="total-time">Total: ~80 min</span>
+  </div>
+</div>
+
+<!-- Sidebar Timeline -->
+<div id="sidebar">
+  <div class="sb-title">Module Progress</div>
+
+  <div class="sb-item active" onclick="goToPage(1)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Welcome</div><div class="sb-dur">Overview</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(2)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">The Spark -- Opening</div><div class="sb-dur">3-4 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 1: Excel GPT</div>
+  <div class="sb-item" onclick="goToPage(3)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">What Is Vibe Coding?</div><div class="sb-dur">~5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(4)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">AI Tools Changing Work</div><div class="sb-dur">~4 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(5)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Excel GPT: AI Meets Spreadsheets</div><div class="sb-dur">5-6 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(6)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-lab"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3h6v4.5L18 16a2 2 0 01-2 2H8a2 2 0 01-2-2l3-8.5V3z"/></svg>Lab</span><div class="sb-label">Lab 1: Excel GPT</div><div class="sb-dur">~15 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 2: Bitcoin Analyzer</div>
+  <div class="sb-item" onclick="goToPage(7)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Headlines: AI is Everywhere</div><div class="sb-dur">~4 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(8)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Bitcoin Analyzer: AI + Real Data</div><div class="sb-dur">4-5 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(9)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-lab"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3h6v4.5L18 16a2 2 0 01-2 2H8a2 2 0 01-2-2l3-8.5V3z"/></svg>Lab</span><div class="sb-label">Lab 2: Bitcoin Analyzer</div><div class="sb-dur">~15 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 3: Wrap-Up</div>
+  <div class="sb-item" onclick="goToPage(10)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">From Vibe Coding to Production</div><div class="sb-dur">~3 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(11)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">Module Wrap-Up</div><div class="sb-dur">2-3 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(12)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Summary & Next Steps</div><div class="sb-dur">Review</div></div>
+  </div>
+</div>
+
+<!-- Sidebar Toggle -->
+<button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
+
+<!-- Hidden script containers -->
+<div id="script-v1" style="display:none;" data-title="V1: The Spark -- Build Something Real">
+  <p>Last week you wrote seven lines of code and connected to an AI model. That was the foundation.</p>
+  <p>This week, you build.</p>
+  <p>Not a toy. Not a demo. Two real tools that do real things.</p>
+  <p>The first one writes Excel formulas and VBA code for you -- you paste data, describe what you want, and the AI generates working spreadsheet code. Your colleagues will think you spent hours on it. You spent five minutes.</p>
+  <p>The second one analyzes Bitcoin prices, identifies trends, and generates investment reports -- using real market data and the same API you set up last week.</p>
+  <p>By the end of this module, you will have two working tools you can show anyone. That is what applied AI looks like.</p>
+</div>
+<div id="script-v2" style="display:none;" data-title="V2: Excel GPT -- AI Meets Spreadsheets">
+  <p>Here is something that will change how you think about Excel.</p>
+  <p>You have a spreadsheet with sales data -- thousands of rows. You need to calculate monthly growth rates, create a pivot summary, and highlight outliers. Normally, you would spend an hour writing formulas, maybe some VBA if it gets complex.</p>
+  <p>Instead, you describe what you want to the API: "Analyze this sales data. Calculate month-over-month growth rates. Flag any month where growth dropped below negative ten percent. Generate the Excel formulas I need."</p>
+  <p>The model responds with working formulas. You paste them into Excel. Done.</p>
+  <p>But here is the real power -- you can also ask it to write VBA macros. "Write a VBA macro that automatically formats the top 10 products by revenue in bold and adds a chart." The model writes the macro. You paste it into Excel's VBA editor. Run it. Your spreadsheet transforms.</p>
+  <p>In Lab 1, you will build this from scratch. The starter code is on GitHub. Your assignment is to extend it with your own functions.</p>
+</div>
+<div id="script-v3" style="display:none;" data-title="V3: Bitcoin Analyzer -- AI Meets Real Data">
+  <p>Now let us build something completely different.</p>
+  <p>Cryptocurrency markets generate massive amounts of data -- prices, volumes, trends, all changing by the second. Analyzing this data manually is tedious and slow.</p>
+  <p>But with the API, you can feed real Bitcoin price data to the model and ask it to identify patterns, calculate technical indicators, and generate an investment analysis report -- all in a few lines of Python.</p>
+  <p>You will load real market data using a free API. You will send it to GPT along with instructions for analysis. And the model will return a structured report with trend analysis, support and resistance levels, and a summary recommendation.</p>
+  <p>Is it financial advice? Absolutely not. But it is a working demonstration of how AI can process real data and generate structured analysis -- the same pattern used in every industry from finance to manufacturing to healthcare.</p>
+</div>
+<div id="script-v4" style="display:none;" data-title="V4: Module 2 Wrap-Up">
+  <p>This week you built two real tools.</p>
+  <p>An Excel GPT that writes formulas and VBA macros from plain English. A Bitcoin analyzer that processes real market data and generates investment reports.</p>
+  <p>You did this with the same API you learned last week. Seven lines of code. Different prompts. Different data. Completely different applications.</p>
+  <p>That is the power of generative AI -- the same technology, infinite applications.</p>
+  <p>But you also noticed something. Sometimes the output was perfect. Sometimes it was not quite right. Sometimes the format was inconsistent. That inconsistency is the gap between a demo and a product.</p>
+  <p>Next module, we close that gap. Prompt engineering -- the skill of getting exactly what you want from AI, every single time. And it starts with a coffee order.</p>
+  <p>See you in Module 3.</p>
+</div>
+<div id="script-lab1" style="display:none;" data-title="Lab 1 Walkthrough: Excel GPT">
+  <p>This screen recording walks through the Lab 1 notebook step by step.</p>
+  <p>You will see how to load sample sales data, send it to the API with natural language instructions, receive working Excel formulas, and generate VBA macros for automation.</p>
+</div>
+<div id="script-lab2" style="display:none;" data-title="Lab 2 Walkthrough: Bitcoin Analyzer">
+  <p>This screen recording walks through the Lab 2 notebook step by step.</p>
+  <p>You will see how to fetch real Bitcoin price data, send it to GPT for analysis, generate a structured report with trends and indicators, and create a price chart with matplotlib.</p>
+</div>
+
+<!-- Pages -->
+<div id="pages-container" style="left:230px;">
+
+<!-- ════════════════════════════════════════ PAGE 1: Welcome ════════════════════════════════════════ -->
+<div class="page" data-page="1" data-state="active">
+<div class="page-inner">
+  <div class="glass" style="text-align:center;">
+    <span class="page-label">Module 02</span>
+    <h1>AI in Action</h1>
+
+    <div class="quote-block" style="text-align:left; max-width:600px; margin:20px auto;">
+      <p>"The best way to learn AI is to build something cool with it -- right now."</p>
+    </div>
+
+    <div class="cover-image-wrapper" style="max-width:720px; margin:24px auto;">
+      <img src="../images/M02-cover.png" alt="Module 2 Cover"
+           onerror="this.parentElement.innerHTML='<div class=\'cover-placeholder\'>M02 Cover Image</div>'" />
+    </div>
+
+    <div style="text-align:left; max-width:600px; margin:24px auto 0;">
+      <p class="subtitle" style="margin-bottom:20px;">Last module, you connected to AI through code. This module, you build real things with it.</p>
+      <h3>What You Will Build</h3>
+      <ul class="bullet-list">
+        <li><strong>Excel GPT</strong> -- AI writes your spreadsheet formulas and VBA macros from plain English</li>
+        <li><strong>Bitcoin Analyzer</strong> -- AI analyzes real crypto market data and generates investment reports</li>
+      </ul>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="max-width:600px; margin:0 auto;">
+      <h3 style="text-align:center; margin-bottom:16px;">Estimated Time: ~80 Minutes</h3>
+      <div class="time-breakdown">
+        <div class="time-item">
+          <div class="time-val">~20</div>
+          <div class="time-label">min Videos</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~16</div>
+          <div class="time-label">min Reading</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~30</div>
+          <div class="time-label">min Labs</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 12 pages</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> AI Spotlight: Prompt Bud</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 2: The Spark ════════════════════════════════════════ -->
+<div class="page" data-page="2" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 1</span>
+    <h2>The Spark -- Build Something Real</h2>
+    <p class="subtitle">Prof. Dehghani introduces the central idea of Module 2 -- you have the API, now build real tools with it.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">3-4 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v1')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V1: The Spark -- Build Something Real</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 3: READING -- What Is Vibe Coding? ════════════════════════════════════════ -->
+<div class="page" data-page="3" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~5 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">Vibe Coding: The New Way to Build Software</h2>
+      <p class="lead" style="text-align:center;">Vibe coding means describing what you want in plain English and letting AI write the code. You guide the direction. AI handles the syntax.</p>
+
+      <div class="sep"></div>
+
+      <h3>The Shift</h3>
+      <p>For decades, building software meant memorizing syntax, debugging semicolons, and reading documentation. Vibe coding flips this model. You describe the outcome you want -- "create a dashboard that shows monthly sales trends" -- and AI generates the code. Your job is to evaluate, iterate, and improve.</p>
+
+      <div class="sep"></div>
+
+      <h3>The Evidence</h3>
+      <div class="stats-grid">
+        <div class="stat-item">
+          <div class="stat-label">Productivity</div>
+          <div class="stat-value">GitHub Copilot users complete tasks 55% faster (GitHub Research, 2022)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Adoption</div>
+          <div class="stat-value">Companies are actively hiring for "AI-assisted development" roles</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">Industry Shift</div>
+          <div class="stat-value">Google: 25%+ of new code is AI-generated (Sundar Pichai, Q3 2024)</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-label">The Term</div>
+          <div class="stat-value">Coined by Andrej Karpathy (Feb 2025) -- "just see stuff, say stuff, run stuff"</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <h3>The Tools</h3>
+      <div class="tool-cards">
+        <div class="tool-card">
+          <div class="tool-name">Cursor</div>
+          <div class="tool-tag">AI Code Editor</div>
+          <div class="tool-desc">VS Code fork with AI built in. Describe changes in English, AI edits your codebase.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Replit Agent</div>
+          <div class="tool-tag">Describe, Build, Deploy</div>
+          <div class="tool-desc">Describe an app in plain English. AI builds the full stack and deploys it.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">v0.dev</div>
+          <div class="tool-tag">AI UI Builder</div>
+          <div class="tool-desc">By Vercel. Describe a UI component, get production React code instantly.</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="quote-block">
+        <p>"You don't need to memorize syntax. You need to know what to ask for and how to verify the result."</p>
+      </div>
+
+      <p>In this module, you will vibe-code an Excel tool and a Bitcoin analyzer. The AI writes the code. You evaluate and improve it.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 4: READING -- AI Tools Changing How We Work ════════════════════════════════════════ -->
+<div class="page" data-page="4" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~4 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">AI Tools Changing How We Work</h2>
+      <p class="lead" style="text-align:center;">A brief overview of AI tools every student should know about -- and the common thread that connects them all.</p>
+
+      <div class="sep"></div>
+
+      <div class="tool-cards" style="grid-template-columns: repeat(2,1fr);">
+        <div class="tool-card">
+          <div class="tool-name">Excel Copilot / ChatGPT</div>
+          <div class="tool-tag">AI in the Spreadsheet</div>
+          <div class="tool-desc">Microsoft's Copilot embeds GPT directly into Excel. Ask questions about your data in English, get formulas and charts.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Cursor</div>
+          <div class="tool-tag">AI-First Code Editor</div>
+          <div class="tool-desc">The editor that treats AI as a first-class citizen. Tab-complete entire functions, refactor with natural language.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Replit Agent</div>
+          <div class="tool-tag">Full-Stack AI Builder</div>
+          <div class="tool-desc">Describe an app, AI builds the frontend, backend, and database. Deploy with one click.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Claude Artifacts</div>
+          <div class="tool-tag">Interactive AI Outputs</div>
+          <div class="tool-desc">Anthropic's Claude generates interactive components -- dashboards, games, visualizations -- directly in the chat.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Gamma.ai</div>
+          <div class="tool-tag">AI Presentations</div>
+          <div class="tool-desc">Describe your presentation topic, AI generates slides with design, layout, and content. The AI Spotlight from M01.</div>
+        </div>
+        <div class="tool-card">
+          <div class="tool-name">Bolt.new</div>
+          <div class="tool-tag">Describe, Deploy</div>
+          <div class="tool-desc">Describe a web app in a sentence. AI generates full code and deploys it instantly. Zero config.</div>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="quote-block">
+        <p>"These tools all use the same LLM APIs you learned in Module 1. The difference is the interface."</p>
+      </div>
+
+      <p>Every tool above is a wrapper around the same models -- GPT, Claude, Gemini. When you learn the API, you understand how all of them work under the hood. And you can build your own.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 5: Video -- Excel GPT ════════════════════════════════════════ -->
+<div class="page" data-page="5" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 2</span>
+    <h2>Excel GPT: AI Meets Spreadsheets</h2>
+    <p class="subtitle">Prof. Dehghani demonstrates how the same API you learned last week can write Excel formulas and VBA macros from plain English descriptions.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">5-6 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v2')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V2: Excel GPT -- AI Meets Spreadsheets</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 6: Lab 1 -- Excel GPT ════════════════════════════════════════ -->
+<div class="page" data-page="6" data-state="right">
+<div class="page-inner">
+  <div class="glass lab-card">
+    <span class="lab-badge">Hands-On Lab</span>
+    <h2>M02 Lab 1 -- Excel GPT: AI-Powered Spreadsheets</h2>
+    <p class="subtitle" style="max-width:600px; margin:0 auto;">Build a tool that generates Excel formulas and VBA macros from natural language descriptions using the OpenAI API.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
+          <span class="vp-badge vp-badge-dur">~12 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-lab1')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">Lab 1 Walkthrough: Excel GPT</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-buttons">
+      <a href="#" class="lab-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open in Colab
+      </a>
+      <a href="#" class="lab-btn secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="lab-sections">
+      <h3>What You Will Do</h3>
+      <ol>
+        <li>Load sample sales data (CSV) into your notebook</li>
+        <li>Send data to GPT with natural language instructions -- get Excel formulas back</li>
+        <li>Test the generated formulas in a spreadsheet</li>
+        <li>Ask AI to write VBA macros for automation</li>
+        <li>Copy VBA code from GitHub starter, run in Excel</li>
+      </ol>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="glass-sm" style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15); text-align:left;">
+      <h3 style="color:#b45309; font-size:0.95rem;">Assignment</h3>
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Extend the tool: add 2 new functions (your choice), test with different data, submit your modified notebook + Excel file.</p>
+    </div>
+
+    <div class="glass-sm" style="margin-top:16px; background:rgba(37,99,235,0.03); text-align:left;">
+      <p style="font-size:0.85rem; color:var(--text-secondary);"><strong>Key outcome:</strong> A working Excel GPT tool that writes formulas and VBA from natural language.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 7: READING -- Headlines: AI is Everywhere ════════════════════════════════════════ -->
+<div class="page" data-page="7" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~4 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">Headlines: AI is Everywhere</h2>
+      <p class="lead" style="text-align:center;">These are not predictions. This is happening now. And this is why you are in this course.</p>
+
+      <div class="sep"></div>
+
+      <div class="headline-card">
+        <div class="hl-source">GitHub Research Blog, 2022</div>
+        <div class="hl-title">"GitHub Copilot helps developers complete tasks 55% faster"</div>
+        <div class="hl-body">A controlled study of 95 developers found that those using Copilot completed coding tasks significantly faster than those without it. The effect was consistent across experience levels.</div>
+        <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/" target="_blank">Read the study</a>
+      </div>
+
+      <div class="headline-card">
+        <div class="hl-source">Alphabet Q3 Earnings Call, October 2024</div>
+        <div class="hl-title">"More than 25% of new code at Google is now AI-generated" -- Sundar Pichai</div>
+        <div class="hl-body">Google's CEO confirmed that AI is now writing a significant share of new code at the company, with human engineers reviewing and accepting the output. The trend is accelerating.</div>
+        <a href="https://www.cnbc.com/2024/10/29/google-ceo-says-more-than-25percent-of-new-google-code-is-generated-by-ai.html" target="_blank">Read the report</a>
+      </div>
+
+      <div class="headline-card">
+        <div class="hl-source">CNBC / GTC 2024</div>
+        <div class="hl-title">"You won't lose your job to AI. You'll lose it to someone who uses AI." -- Jensen Huang</div>
+        <div class="hl-body">NVIDIA's CEO spoke at GTC about the transformation of every industry. His message: the risk is not AI replacing you -- it is being outpaced by peers who use AI as a tool.</div>
+        <a href="https://www.cnbc.com/2024/03/19/nvidia-ceo-jensen-huang-on-what-ai-means-for-the-job-market.html" target="_blank">Watch the keynote</a>
+      </div>
+
+      <div class="headline-card">
+        <div class="hl-source">World Economic Forum / Future of Jobs Report, 2025</div>
+        <div class="hl-title">"AI-related job postings have grown 3.5x since 2021"</div>
+        <div class="hl-body">Demand for AI skills is surging across industries -- not just tech. Finance, healthcare, manufacturing, and marketing are all hiring for roles that require prompt engineering, data analysis, and AI integration.</div>
+        <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank">Read the WEF report</a>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="quote-block">
+        <p>"These are not predictions. This is happening now. And this is why you are in this course."</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 8: Video -- Bitcoin Analyzer ════════════════════════════════════════ -->
+<div class="page" data-page="8" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 3</span>
+    <h2>Bitcoin Analyzer: AI Meets Real Data</h2>
+    <p class="subtitle">Prof. Dehghani introduces the second project -- feeding real cryptocurrency data to the API and generating structured analysis reports.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">4-5 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v3')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V3: Bitcoin Analyzer -- AI Meets Real Data</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 9: Lab 2 -- Bitcoin Analyzer ════════════════════════════════════════ -->
+<div class="page" data-page="9" data-state="right">
+<div class="page-inner">
+  <div class="glass lab-card">
+    <span class="lab-badge">Hands-On Lab</span>
+    <h2>M02 Lab 2 -- Bitcoin Analyzer: AI + Real Market Data</h2>
+    <p class="subtitle" style="max-width:600px; margin:0 auto;">Build a tool that fetches real Bitcoin price data, sends it to GPT for analysis, and generates a visual report with charts.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
+          <span class="vp-badge vp-badge-dur">~10 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-lab2')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">Lab 2 Walkthrough: Bitcoin Analyzer</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lab-buttons">
+      <a href="#" class="lab-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Open in Colab
+      </a>
+      <a href="#" class="lab-btn secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
+        View on GitHub
+      </a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="lab-sections">
+      <h3>What You Will Do</h3>
+      <ol>
+        <li>Fetch real Bitcoin price data using a free API (CoinGecko)</li>
+        <li>Send price data to GPT with analysis instructions</li>
+        <li>Get a structured report: trends, moving averages, support/resistance levels</li>
+        <li>Generate a price chart with matplotlib</li>
+        <li>Ask AI to explain its analysis in plain English</li>
+      </ol>
+    </div>
+
+    <div class="glass-sm" style="margin-top:20px; background:rgba(37,99,235,0.03); text-align:left;">
+      <p style="font-size:0.85rem; color:var(--text-secondary);"><strong>Key outcome:</strong> A working Bitcoin analyzer that fetches real data, runs AI analysis, and generates a visual report.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 10: READING -- From Vibe Coding to Production ════════════════════════════════════════ -->
+<div class="page" data-page="10" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Reading</span>
+    <div class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+      ~3 min read
+    </div>
+
+    <div class="reading-body">
+      <h2 style="text-align:center; margin-bottom:8px;">From Vibe Coding to Production</h2>
+      <p class="lead" style="text-align:center;">You just built two working tools by describing what you wanted to an AI. That is vibe coding. But there is a gap between a prototype and a product.</p>
+
+      <div class="sep"></div>
+
+      <h3>What You Just Did</h3>
+      <p>You sent natural language to an API. The AI generated code, formulas, analysis. You ran it, and it worked. This is the power of vibe coding -- rapid prototyping, instant results, zero boilerplate.</p>
+
+      <h3>The Gap</h3>
+      <p>But you also noticed something. Sometimes the output was perfect. Other times, the format shifted. A formula used the wrong column reference. The analysis missed a key data point. The VBA code had a syntax error.</p>
+      <p>This is the gap between a vibe-coded prototype and a production system: <strong>reliability, consistency, error handling.</strong></p>
+
+      <div class="sep"></div>
+
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin:20px 0;">
+        <div style="background:rgba(245,158,11,0.06); border:1px solid rgba(245,158,11,0.15); border-radius:var(--radius-sm); padding:20px;">
+          <h3 style="color:#b45309; font-size:0.95rem; margin-bottom:8px;">Vibe Coding (Now)</h3>
+          <ul style="font-size:0.85rem; color:var(--text-secondary); line-height:1.7; padding-left:18px;">
+            <li>Fast prototyping</li>
+            <li>Natural language input</li>
+            <li>Output varies each run</li>
+            <li>Manual quality checks</li>
+          </ul>
+        </div>
+        <div style="background:rgba(37,99,235,0.04); border:1px solid var(--accent-border); border-radius:var(--radius-sm); padding:20px;">
+          <h3 style="color:var(--accent); font-size:0.95rem; margin-bottom:8px;">Production (M03+)</h3>
+          <ul style="font-size:0.85rem; color:var(--text-secondary); line-height:1.7; padding-left:18px;">
+            <li>Consistent output format</li>
+            <li>Engineered prompts</li>
+            <li>Same quality every run</li>
+            <li>Automated validation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="sep"></div>
+
+      <div class="quote-block">
+        <p>"Next module -- Prompt Engineering -- teaches you to close that gap. You will learn to write prompts that produce the same quality output every time, not just when you are lucky."</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 11: Video -- Wrap-Up ════════════════════════════════════════ -->
+<div class="page" data-page="11" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Video 4</span>
+    <h2>Module 2 Wrap-Up</h2>
+    <p class="subtitle">Prof. Dehghani recaps what you built and previews Module 3: Prompt Engineering.</p>
+
+    <div class="video-wrapper">
+      <div class="video-placeholder">
+        <div class="vp-badges">
+          <span class="vp-badge vp-badge-type">VIDEO</span>
+          <span class="vp-badge vp-badge-dur">2-3 min</span>
+        </div>
+        <button class="script-btn" onclick="openScript('script-v4')" title="View Script">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <line x1="10" y1="9" x2="8" y2="9"/>
+          </svg>
+        </button>
+        <div class="vp-center">
+          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
+            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
+          </svg>
+          <div class="vp-title">V4: Module 2 Wrap-Up</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <!-- AI Spotlight Card -->
+    <div class="glass-sm" style="max-width:500px; margin:0 auto; text-align:center;">
+      <div style="font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); margin-bottom:8px;">AI Spotlight</div>
+      <h3 style="font-size:1.1rem; margin-bottom:4px;">Prompt Bud</h3>
+      <p style="font-size:0.85rem; color:var(--text-secondary); line-height:1.5; margin-bottom:12px;">An AI-powered prompt optimizer. Paste your prompt, get a better version with structure, specificity, and clarity improvements.</p>
+      <a href="https://promptbud.com" target="_blank" style="display:inline-block; font-size:0.78rem; color:var(--accent); text-decoration:none; font-weight:600; padding:6px 16px; background:var(--accent-light); border-radius:6px;">Try Prompt Bud</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:center;">
+      <div class="end-card">
+        <span>Next: M03 -- Prompt Engineering</span>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════════════ PAGE 12: Summary & Next Steps ════════════════════════════════════════ -->
+<div class="page" data-page="12" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Module Summary</span>
+    <h2 style="text-align:center;">Module 2 Complete</h2>
+    <p class="subtitle" style="text-align:center;">Here is everything you built and where to go next.</p>
+
+    <div class="sep"></div>
+
+    <h3>Key Takeaways</h3>
+    <ul class="takeaway-list">
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+        <span><strong>Vibe coding</strong> lets you build working tools by describing what you want in plain English. The AI writes the code. You evaluate and improve.</span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg></span>
+        <span>The <strong>same API</strong> from Module 1 powers completely different applications -- Excel formulas, VBA macros, cryptocurrency analysis -- just by changing the prompt and data.</span>
+      </li>
+      <li>
+        <span class="tk-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></span>
+        <span>There is a <strong>gap between vibe coding and production</strong> -- consistency, reliability, and error handling. Prompt engineering (M03) closes that gap.</span>
+      </li>
+    </ul>
+
+    <div class="sep"></div>
+
+    <h3 style="text-align:center;">What You Built</h3>
+    <div class="capability-cards">
+      <div class="capability-card">
+        <p>Excel GPT -- AI writes formulas and VBA from natural language</p>
+      </div>
+      <div class="capability-card">
+        <p>Bitcoin Analyzer -- AI processes real market data into structured reports</p>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <h3>Resources</h3>
+    <div class="ref-links" style="margin:12px 0;">
+      <h4>Labs & Notebooks</h4>
+      <a href="#" target="_blank">Lab 1: Excel GPT (GitHub)</a>
+      <a href="#" target="_blank">Lab 2: Bitcoin Analyzer (GitHub)</a>
+    </div>
+    <div class="ref-links" style="margin:12px 0;">
+      <h4>Further Reading</h4>
+      <a href="https://github.blog/news-insights/research/research-quantifying-github-copilots-impact-on-developer-productivity-and-happiness/" target="_blank">GitHub Copilot Productivity Study</a>
+      <a href="https://www.weforum.org/publications/the-future-of-jobs-report-2025/" target="_blank">WEF Future of Jobs Report 2025</a>
+      <a href="https://promptbud.com" target="_blank">Prompt Bud -- AI Spotlight</a>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="glass-sm" style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15);">
+      <h3 style="color:#b45309; font-size:0.95rem;">Assignment Reminder</h3>
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Extend the Excel GPT tool: add 2 new functions (your choice), test with different data, submit your modified notebook + Excel file via Canvas.</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:center;">
+      <div class="end-card" style="padding:20px 40px;">
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:6px; font-weight:500;">NEXT MODULE</p>
+        <span style="font-size:1rem;">M03: Prompt Engineering</span>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:8px; font-weight:400; font-style:italic;">"A well-written prompt is the difference between a useful tool and a random generator."</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- /pages-container -->
+
+<!-- Navigation -->
+<div id="nav-bar">
+  <button class="nav-btn prev" id="btn-prev" onclick="prevPage()" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Previous
+  </button>
+  <div id="page-dots"></div>
+  <button class="nav-btn next" id="btn-next" onclick="nextPage()">
+    Next
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  const TOTAL = 12;
+  let current = parseInt(localStorage.getItem('m02_page') || '1', 10);
+  if (current < 1 || current > TOTAL) current = 1;
+
+  const pages = document.querySelectorAll('.page');
+  const progressBar = document.getElementById('progress-bar');
+  const pageCounter = document.getElementById('page-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const dotsContainer = document.getElementById('page-dots');
+
+  // Build dots
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Go to page ' + i);
+    dot.addEventListener('click', () => goToPage(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function render(oldPage, direction) {
+    pages.forEach((p) => {
+      const idx = parseInt(p.getAttribute('data-page'), 10);
+      if (idx === current) {
+        p.style.display = '';
+        void p.offsetWidth;
+        p.setAttribute('data-state', 'active');
+      } else if (idx === oldPage && direction) {
+        p.setAttribute('data-state', direction === 'next' ? 'left' : 'right');
+        setTimeout(() => { p.style.display = 'none'; }, 500);
+      } else {
+        p.style.display = 'none';
+        p.setAttribute('data-state', idx < current ? 'left' : 'right');
+      }
+    });
+
+    progressBar.style.width = ((current / TOTAL) * 100) + '%';
+    pageCounter.textContent = current + ' / ' + TOTAL;
+
+    btnPrev.disabled = (current === 1);
+    if (current < TOTAL) {
+      btnNext.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>';
+    } else {
+      btnNext.innerHTML = 'Done <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i + 1 === current);
+    });
+
+    const activePage = document.querySelector('.page[data-state="active"]');
+    if (activePage) activePage.scrollTop = 0;
+
+    localStorage.setItem('m02_page', current.toString());
+  }
+
+  function nextPage() {
+    if (current >= TOTAL) return;
+    const old = current;
+    const nextP = document.querySelector('.page[data-page="' + (current + 1) + '"]');
+    if (nextP) {
+      nextP.style.display = '';
+      nextP.setAttribute('data-state', 'right');
+      void nextP.offsetWidth;
+    }
+    current++;
+    render(old, 'next');
+  }
+
+  function prevPage() {
+    if (current <= 1) return;
+    const old = current;
+    const prevP = document.querySelector('.page[data-page="' + (current - 1) + '"]');
+    if (prevP) {
+      prevP.style.display = '';
+      prevP.setAttribute('data-state', 'left');
+      void prevP.offsetWidth;
+    }
+    current--;
+    render(old, 'prev');
+  }
+
+  function goToPage(n) {
+    if (n === current || n < 1 || n > TOTAL) return;
+    const old = current;
+    const dir = n > current ? 'next' : 'prev';
+    const targetP = document.querySelector('.page[data-page="' + n + '"]');
+    if (targetP) {
+      targetP.style.display = '';
+      targetP.setAttribute('data-state', dir === 'next' ? 'right' : 'left');
+      void targetP.offsetWidth;
+    }
+    current = n;
+    render(old, dir);
+  }
+
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen();
+    }
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') nextPage();
+    if (e.key === 'ArrowLeft') prevPage();
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    if (e.key === 'Escape') closeScriptModal();
+  });
+
+  window.nextPage = nextPage;
+  window.prevPage = prevPage;
+  window.goToPage = goToPage;
+
+  render(null, null);
+})();
+
+// Script Modal
+(function() {
+  var overlay = document.getElementById('scriptModal');
+  overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) {
+      overlay.classList.remove('open');
+    }
+  });
+  window.closeScriptModal = function() {
+    overlay.classList.remove('open');
+  };
+  window.openScript = function(scriptId) {
+    var container = document.getElementById(scriptId);
+    if (!container) return;
+    var title = document.getElementById('scriptModalTitle');
+    var body = document.getElementById('scriptModalBody');
+    title.textContent = container.getAttribute('data-title') || 'Script';
+    body.innerHTML = container.innerHTML;
+    overlay.classList.add('open');
+  };
+})();
+
+// Sidebar toggle
+function toggleSidebar() {
+  var sidebar = document.getElementById('sidebar');
+  sidebar.classList.toggle('collapsed');
+  document.body.classList.toggle('sidebar-hidden');
+}
+
+// Sync sidebar with current page
+function updateSidebar(pageNum) {
+  var items = document.querySelectorAll('.sb-item');
+  items.forEach(function(item, i) {
+    item.classList.remove('active');
+    if (i + 1 < pageNum) item.classList.add('visited');
+    if (i + 1 === pageNum) item.classList.add('active');
+  });
+}
+
+// Wrap navigation functions to sync sidebar
+(function() {
+  var origGo = window.goToPage;
+  var origNext = window.nextPage;
+  var origPrev = window.prevPage;
+
+  function getCurrentPage() {
+    var active = document.querySelector('.page[data-state="active"]');
+    return active ? parseInt(active.dataset.page) : 1;
+  }
+
+  window.goToPage = function(n) {
+    origGo(n);
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+  window.nextPage = function() {
+    origNext();
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+  window.prevPage = function() {
+    origPrev();
+    setTimeout(function() { updateSidebar(getCurrentPage()); }, 50);
+  };
+})();
+
+// Init sidebar state
+updateSidebar(parseInt(localStorage.getItem('m02_page') || '1', 10));
+</script>
+</body>
+</html>

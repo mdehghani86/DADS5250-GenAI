@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DADS 5250 — Generative AI in Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #F0F4FA;
+    --accent: #2563EB;
+    --accent-light: rgba(37, 99, 235, 0.08);
+    --accent-mid: rgba(37, 99, 235, 0.15);
+    --text-primary: #1e293b;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --glass-bg: rgba(255, 255, 255, 0.72);
+    --glass-border: rgba(255, 255, 255, 0.45);
+    --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --radius-xs: 6px;
+  }
+
+  body {
+    font-family: 'Outfit', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  /* Single subtle background orb */
+  body::before {
+    content: '';
+    position: fixed;
+    top: -120px;
+    right: -180px;
+    width: 520px;
+    height: 520px;
+    background: radial-gradient(circle, rgba(37, 99, 235, 0.07) 0%, transparent 70%);
+    border-radius: 50%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── Header ── */
+  .header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .header h1 {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 6px;
+    letter-spacing: -0.5px;
+  }
+
+  .header .subtitle {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+  }
+
+  .header .instructor {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--text-muted);
+  }
+
+  /* Progress bar */
+  .progress-section {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+  }
+
+  .progress-label {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  .progress-bar-track {
+    width: 260px;
+    height: 8px;
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    width: 21.4%; /* 6/28 */
+    background: var(--accent);
+    border-radius: 4px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* ── View Toggle ── */
+  .view-toggle-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 16px;
+  }
+
+  .view-toggle {
+    display: flex;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: var(--glass-shadow);
+  }
+
+  .view-toggle button {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    padding: 7px 18px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .view-toggle button.active {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  /* ── Quick Links ── */
+  .quick-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 36px;
+  }
+
+  .pill-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 20px;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-decoration: none;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    box-shadow: var(--glass-shadow);
+    transition: all 0.2s;
+  }
+
+  .pill-link:hover {
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--accent);
+    border-color: rgba(37, 99, 235, 0.2);
+  }
+
+  .pill-link svg {
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* ── Glass Card ── */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius);
+    box-shadow: var(--glass-shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  /* ── Phase Section ── */
+  .phase-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .phase-header h2 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .phase-header .phase-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-light);
+    padding: 3px 12px;
+    border-radius: 12px;
+    margin-left: 12px;
+  }
+
+  .phase-header .phase-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .phase-header .phase-count {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .phase-chevron {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-muted);
+    fill: none;
+    stroke-width: 2;
+    transition: transform 0.25s ease;
+  }
+
+  .phase-card.collapsed .phase-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .phase-card.collapsed .phase-body {
+    display: none;
+  }
+
+  .phase-body {
+    margin-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  /* ── Module Card ── */
+  .module-card {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    transition: opacity 0.3s, filter 0.3s;
+  }
+
+  .module-card.dimmed {
+    opacity: 0.6;
+  }
+
+  .module-card.locked {
+    opacity: 0.35;
+    filter: grayscale(0.4);
+    pointer-events: none;
+  }
+
+  .module-thumb {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+
+  .module-thumb-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    flex-shrink: 0;
+    background: var(--accent-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .module-info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .module-top-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .module-number {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .module-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .status-badge {
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+  }
+
+  .status-complete {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+  }
+
+  .status-progress {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+  }
+
+  .status-not-started {
+    background: rgba(148, 163, 184, 0.12);
+    color: #94a3b8;
+  }
+
+  .lab-count {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  .content-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .chip {
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 500;
+    padding: 3px 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.15s;
+    border: 1px solid transparent;
+  }
+
+  .chip-active {
+    background: var(--accent-light);
+    color: var(--accent);
+    border-color: rgba(37, 99, 235, 0.12);
+  }
+
+  .chip-active:hover {
+    background: var(--accent-mid);
+  }
+
+  .chip-placeholder {
+    background: rgba(148, 163, 184, 0.08);
+    color: var(--text-muted);
+    border-color: rgba(148, 163, 184, 0.1);
+    cursor: default;
+  }
+
+  /* ── Stats Row ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .stat-item {
+    text-align: center;
+    padding: 16px 8px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .stat-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    line-height: 1.2;
+  }
+
+  .stat-value.accent {
+    color: var(--accent);
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  /* ── Collapsible Section ── */
+  .collapsible-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .collapsible-header h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  .collapsible-body {
+    margin-top: 16px;
+  }
+
+  .collapsed-section .collapsible-body {
+    display: none;
+  }
+
+  .collapsed-section .phase-chevron {
+    transform: rotate(-90deg);
+  }
+
+  /* ── Key Decisions ── */
+  .decisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 10px;
+  }
+
+  .decision-item {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    font-size: 0.85rem;
+  }
+
+  .decision-key {
+    font-weight: 600;
+    color: var(--text-secondary);
+    white-space: nowrap;
+  }
+
+  .decision-val {
+    font-weight: 400;
+    color: var(--text-muted);
+  }
+
+  /* ── Tools Grid ── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+
+  .tool-card {
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: var(--radius-sm);
+    padding: 14px 16px;
+    text-align: center;
+  }
+
+  .tool-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+  }
+
+  .tool-desc {
+    font-size: 0.73rem;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  /* ── Planning Links ── */
+  .planning-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  /* ── Section Title ── */
+  .section-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 14px;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .container { padding: 24px 14px 60px; }
+    .header h1 { font-size: 1.5rem; }
+    .stats-row { grid-template-columns: repeat(3, 1fr); }
+    .module-card { flex-direction: column; }
+    .module-thumb, .module-thumb-placeholder { width: 100%; height: 80px; }
+    .tools-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  /* ── Print ── */
+  @media print {
+    body::before { display: none; }
+    .view-toggle-row { display: none; }
+    .glass-card { box-shadow: none; border: 1px solid #e2e8f0; backdrop-filter: none; background: #fff; }
+    .module-card { break-inside: avoid; }
+    .stat-item { box-shadow: none; border: 1px solid #e2e8f0; backdrop-filter: none; background: #fff; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <h1>DADS 5250 — Generative AI in Practice</h1>
+    <div class="subtitle">Graduate | Northeastern University | MS in Data Analytics</div>
+    <div class="instructor">Mohammad Dehghani, Ph.D. | Dept of Mechanical &amp; Industrial Engineering</div>
+    <div class="progress-section">
+      <span class="progress-label">Build Progress</span>
+      <div class="progress-bar-track">
+        <div class="progress-bar-fill"></div>
+      </div>
+      <span class="progress-count">6 / 28 labs</span>
+    </div>
+  </header>
+
+  <!-- ── View Toggle ── -->
+  <div class="view-toggle-row">
+    <div class="view-toggle">
+      <button id="btn-instructor" class="active" onclick="setView('instructor')">Instructor View</button>
+      <button id="btn-student" onclick="setView('student')">Student View</button>
+    </div>
+  </div>
+
+  <!-- ── Quick Links ── -->
+  <div class="quick-links">
+    <a href="https://github.com/mdehghani86/DADS5250-GenAI" target="_blank" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      GitHub Repo
+    </a>
+    <a href="https://colab.research.google.com/" target="_blank" class="pill-link">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M8 12l3 3 5-5"/></svg>
+      Google Colab
+    </a>
+    <a href="#" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+      Course Syllabus
+    </a>
+    <a href="#" class="pill-link">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+      Canvas
+    </a>
+  </div>
+
+  <!-- ── Content Stats ── -->
+  <div class="stats-row">
+    <div class="stat-item">
+      <div class="stat-value">14</div>
+      <div class="stat-label">Modules</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value accent">6</div>
+      <div class="stat-label">Labs Built</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">22</div>
+      <div class="stat-label">Labs Remaining</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">10</div>
+      <div class="stat-label">Cover Images</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Quizzes</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value">0</div>
+      <div class="stat-label">Slides</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- PHASE 1: FOUNDATIONS -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="glass-card phase-card" id="phase-1">
+    <div class="phase-header" onclick="togglePhase('phase-1')">
+      <div style="display:flex;align-items:center;">
+        <h2>Phase 1: Foundations</h2>
+        <span class="phase-tag">M01 -- M04</span>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-count">4 modules</span>
+        <svg class="phase-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="phase-body">
+
+      <!-- M01 -->
+      <div class="module-card" data-status="complete">
+        <img class="module-thumb" src="images/M01-cover.png" alt="M01 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M01</span>
+            <span class="module-title">Getting Started with LLM APIs</span>
+            <span class="status-badge status-complete">Complete</span>
+            <span class="lab-count">2 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <a href="labs/M01/M01_Lab1_API_Basics.ipynb" class="chip chip-active">Lab 1: API Basics</a>
+            <a href="labs/M01/M01_Lab2_Parameters_Tokens.ipynb" class="chip chip-active">Lab 2: Parameters &amp; Tokens</a>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M02 -->
+      <div class="module-card" data-status="complete">
+        <img class="module-thumb" src="images/M02-cover.png" alt="M02 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M02</span>
+            <span class="module-title">Prompt Engineering</span>
+            <span class="status-badge status-complete">Complete</span>
+            <span class="lab-count">2 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <a href="labs/M02/M02_Lab1_Prompting_Techniques.ipynb" class="chip chip-active">Lab 1: Prompting Techniques</a>
+            <a href="labs/M02/M02_Lab2_System_Messages_Templates.ipynb" class="chip chip-active">Lab 2: System Messages &amp; Templates</a>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M03 -->
+      <div class="module-card" data-status="complete">
+        <img class="module-thumb" src="images/M03-cover.png" alt="M03 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M03</span>
+            <span class="module-title">Structured Output &amp; Function Calling</span>
+            <span class="status-badge status-complete">Complete</span>
+            <span class="lab-count">2 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <a href="labs/M03/M03_Lab1_JSON_Mode_Pydantic.ipynb" class="chip chip-active">Lab 1: JSON Mode &amp; Pydantic</a>
+            <a href="labs/M03/M03_Lab2_Function_Calling.ipynb" class="chip chip-active">Lab 2: Function Calling</a>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M04 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M04-cover.png" alt="M04 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M04</span>
+            <span class="module-title">LangChain &amp; Beer Game</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- PHASE 2: CORE -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="glass-card phase-card" id="phase-2">
+    <div class="phase-header" onclick="togglePhase('phase-2')">
+      <div style="display:flex;align-items:center;">
+        <h2>Phase 2: Core</h2>
+        <span class="phase-tag">M05 -- M07</span>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-count">3 modules</span>
+        <svg class="phase-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="phase-body">
+
+      <!-- M05 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M05-cover.png" alt="M05 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M05</span>
+            <span class="module-title">Retrieval-Augmented Generation (RAG)</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M06 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M06-cover.png" alt="M06 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M06</span>
+            <span class="module-title">Agents &amp; LangGraph</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M07 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <div class="module-thumb-placeholder">M07</div>
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M07</span>
+            <span class="module-title">Hackathon</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">No lab</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Rubric</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- PHASE 3: ADVANCED -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="glass-card phase-card" id="phase-3">
+    <div class="phase-header" onclick="togglePhase('phase-3')">
+      <div style="display:flex;align-items:center;">
+        <h2>Phase 3: Advanced</h2>
+        <span class="phase-tag">M08 -- M11</span>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-count">4 modules</span>
+        <svg class="phase-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="phase-body">
+
+      <!-- M08 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M08-cover.png" alt="M08 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M08</span>
+            <span class="module-title">Multi-Agent Systems (CrewAI)</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M09 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M09-cover.png" alt="M09 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M09</span>
+            <span class="module-title">Vision &amp; Evaluation</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M10 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M10-cover.png" alt="M10 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M10</span>
+            <span class="module-title">GenAI Platforms</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M11 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <img class="module-thumb" src="images/M11-cover.png" alt="M11 cover">
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M11</span>
+            <span class="module-title">MCP &amp; Guardrails</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ -->
+  <!-- PHASE 4: PRODUCTION -->
+  <!-- ══════════════════════════════════════════════ -->
+  <div class="glass-card phase-card" id="phase-4">
+    <div class="phase-header" onclick="togglePhase('phase-4')">
+      <div style="display:flex;align-items:center;">
+        <h2>Phase 4: Production</h2>
+        <span class="phase-tag">M12 -- M14</span>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-count">3 modules</span>
+        <svg class="phase-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+    </div>
+    <div class="phase-body">
+
+      <!-- M12 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <div class="module-thumb-placeholder">M12</div>
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M12</span>
+            <span class="module-title">Workflow Automation &amp; n8n</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M13 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <div class="module-thumb-placeholder">M13</div>
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M13</span>
+            <span class="module-title">Fine-Tuning &amp; Deployment</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">0 / 2 labs</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Lab 1</span>
+            <span class="chip chip-placeholder">Lab 2</span>
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Quiz</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- M14 -->
+      <div class="module-card dimmed" data-status="not-started">
+        <div class="module-thumb-placeholder">M14</div>
+        <div class="module-info">
+          <div class="module-top-row">
+            <span class="module-number">M14</span>
+            <span class="module-title">Final Project</span>
+            <span class="status-badge status-not-started">Not Started</span>
+            <span class="lab-count">No lab</span>
+          </div>
+          <div class="content-chips">
+            <span class="chip chip-placeholder">Slides</span>
+            <span class="chip chip-placeholder">Rubric</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Key Decisions ── -->
+  <div class="glass-card collapsed-section" id="decisions-section">
+    <div class="collapsible-header" onclick="toggleSection('decisions-section')">
+      <h3>Key Design Decisions</h3>
+      <svg class="phase-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="collapsible-body">
+      <div class="decisions-grid">
+        <div class="decision-item">
+          <span class="decision-key">Primary LLM:</span>
+          <span class="decision-val">gpt-4.1-mini</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Free Tier:</span>
+          <span class="decision-val">gemini-2.5-flash</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Platform:</span>
+          <span class="decision-val">Google Colab</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Theory / Practice:</span>
+          <span class="decision-val">20 / 80</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Lab Time:</span>
+          <span class="decision-val">10-15 min max</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Exercises:</span>
+          <span class="decision-val">60% observational, 40% code</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">Template:</span>
+          <span class="decision-val">Badge - Header - Objectives - Install - Utils - API - Content - Exercises - Summary</span>
+        </div>
+        <div class="decision-item">
+          <span class="decision-key">GitHub:</span>
+          <span class="decision-val">mdehghani86/DADS5250-GenAI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Tools & Stack ── -->
+  <div class="section-title" style="margin-top: 12px;">Tools &amp; Stack</div>
+  <div class="tools-grid">
+    <div class="tool-card">
+      <div class="tool-name">OpenAI API</div>
+      <div class="tool-desc">gpt-4.1-mini (primary)</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Google Gemini</div>
+      <div class="tool-desc">gemini-2.5-flash (free tier)</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">LangChain</div>
+      <div class="tool-desc">v1.0+ / LCEL</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">LangGraph</div>
+      <div class="tool-desc">Agent orchestration</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">CrewAI</div>
+      <div class="tool-desc">v0.80+ multi-agent</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Google Colab</div>
+      <div class="tool-desc">Jupyter notebooks</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">Gradio / Streamlit</div>
+      <div class="tool-desc">Self-study demos</div>
+    </div>
+    <div class="tool-card">
+      <div class="tool-name">n8n</div>
+      <div class="tool-desc">Workflow automation</div>
+    </div>
+  </div>
+
+  <!-- ── Planning Files ── -->
+  <div class="section-title">Planning Files</div>
+  <div class="planning-links">
+    <a href="planning/module-plan.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Module Plan
+    </a>
+    <a href="planning/lab-design-survey.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+      Lab Design Survey
+    </a>
+    <a href="planning/pick-image-style.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+      Cover Image Picker
+    </a>
+    <a href="planning/course-planner.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      Course Planner
+    </a>
+    <a href="planning/design-decisions.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      Design Decisions
+    </a>
+    <a href="planning/header-style-picker.html" class="pill-link">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Header Style Picker
+    </a>
+  </div>
+
+</div><!-- /container -->
+
+<script>
+  // ── View Toggle ──
+  function setView(view) {
+    localStorage.setItem('dads5250_view', view);
+    document.getElementById('btn-instructor').classList.toggle('active', view === 'instructor');
+    document.getElementById('btn-student').classList.toggle('active', view === 'student');
+    applyView(view);
+  }
+
+  function applyView(view) {
+    document.querySelectorAll('.module-card').forEach(function(card) {
+      var status = card.getAttribute('data-status');
+      card.classList.remove('dimmed', 'locked');
+      if (status === 'not-started') {
+        card.classList.add(view === 'student' ? 'locked' : 'dimmed');
+      }
+    });
+  }
+
+  // ── Phase Toggle ──
+  function togglePhase(id) {
+    document.getElementById(id).classList.toggle('collapsed');
+  }
+
+  // ── Collapsible Section ──
+  function toggleSection(id) {
+    document.getElementById(id).classList.toggle('collapsed-section');
+  }
+
+  // ── Init ──
+  (function() {
+    var saved = localStorage.getItem('dads5250_view') || 'instructor';
+    setView(saved);
+  })();
+</script>
+
+</body>
+</html>

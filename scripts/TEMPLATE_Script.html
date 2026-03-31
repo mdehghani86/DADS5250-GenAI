@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{MODULE_NUM}} Production Script — DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --teal: #14b8a6;
+  --slate: #64748b;
+  --warm-gray: #78716c;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Subtle blue orb */
+body::before {
+  content: '';
+  position: fixed;
+  top: -120px;
+  right: -120px;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Top bar (sticky) ── */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(240,244,250,0.88);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.topbar-subtitle {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.selection-counter {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 12px;
+  border-radius: 999px;
+}
+
+/* Video tabs */
+.video-tabs {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.video-tab {
+  padding: 6px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.15);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.video-tab:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.video-tab.active {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+/* Action buttons */
+.topbar-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-action {
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(37,99,235,0.18);
+  background: var(--card-bg);
+  color: var(--text);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  backdrop-filter: blur(8px);
+}
+
+.btn-action:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.btn-action.teleprompter-active {
+  background: #0f172a;
+  color: #fff;
+  border-color: #0f172a;
+}
+
+.btn-action kbd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.68rem;
+  background: rgba(37,99,235,0.1);
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 4px;
+}
+
+/* ── Container ── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 28px 32px 80px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Key message bar ── */
+.key-message-bar {
+  background: linear-gradient(135deg, rgba(37,99,235,0.08) 0%, rgba(37,99,235,0.03) 100%);
+  border: 1px solid rgba(37,99,235,0.15);
+  border-radius: var(--radius);
+  padding: 16px 28px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.key-message-bar .km-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.key-message-bar .km-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── Video section ── */
+.video-section { display: none; }
+.video-section.active { display: block; }
+
+.video-header { margin-bottom: 28px; }
+
+.video-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.video-header .video-meta {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ── Segment ── */
+.segment { margin-bottom: 36px; }
+
+.segment-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(37,99,235,0.08);
+  margin-bottom: 16px;
+}
+
+.segment-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 3px 10px;
+  border-radius: 999px;
+}
+
+.segment-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.segment-badges {
+  display: flex;
+  gap: 6px;
+  margin-left: auto;
+}
+
+/* Type badges */
+.badge {
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge-oncamera     { background: rgba(37,99,235,0.1);  color: var(--accent); }
+.badge-voiceover    { background: rgba(16,185,129,0.1);  color: var(--green); }
+.badge-screenrec    { background: rgba(100,116,139,0.1); color: var(--slate); }
+.badge-ta           { background: rgba(245,158,11,0.1);  color: #b45309; }
+.badge-discussion   { background: rgba(20,184,166,0.1);  color: var(--teal); }
+.badge-expert       { background: rgba(120,113,108,0.1); color: var(--warm-gray); }
+
+.badge-duration {
+  background: rgba(16,185,129,0.1);
+  color: var(--green);
+}
+
+/* ── Script card (full width, no options) ── */
+.script-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 28px 32px;
+}
+
+.script-card p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+
+.script-card p:last-child { margin-bottom: 0; }
+
+/* ── Option cards (click to select) ── */
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 24px 28px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+  opacity: 0.4;
+}
+
+.option-card:hover {
+  opacity: 0.75;
+  border-color: rgba(37,99,235,0.2);
+}
+
+.option-card.selected {
+  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 4px 24px rgba(37,99,235,0.15);
+}
+
+.option-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.option-letter {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.option-card.selected .option-letter {
+  background: var(--accent);
+  color: #fff;
+}
+
+.option-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.option-wc {
+  margin-left: auto;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.option-card p {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.option-card p:last-child { margin-bottom: 0; }
+
+/* ── Media specs (collapsed) ── */
+.media-specs-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(37,99,235,0.1);
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.media-specs-toggle:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+}
+
+.media-specs-toggle .arrow {
+  transition: transform 0.2s;
+  font-size: 0.65rem;
+}
+
+.media-specs-toggle.open .arrow {
+  transform: rotate(90deg);
+}
+
+.media-specs-panel {
+  display: none;
+  margin-top: 12px;
+  padding: 20px 24px;
+  background: rgba(37,99,235,0.02);
+  border: 1px solid rgba(37,99,235,0.08);
+  border-radius: 10px;
+}
+
+.media-specs-panel.open { display: block; }
+
+.media-specs-panel .spec-row {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.media-specs-panel .spec-label {
+  font-weight: 600;
+  color: var(--text);
+  min-width: 120px;
+  flex-shrink: 0;
+}
+
+.media-specs-panel .spec-value {
+  color: var(--text-muted);
+}
+
+.media-placeholder {
+  width: 300px;
+  height: 180px;
+  border: 2px dashed rgba(37,99,235,0.2);
+  border-radius: 10px;
+  background: rgba(37,99,235,0.02);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+/* ── Code block ── */
+.code-block {
+  background: var(--text);
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin: 16px 0;
+  overflow-x: auto;
+  min-height: 120px;
+}
+
+.code-block pre {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: #e2e8f0;
+  margin: 0;
+}
+
+.code-block .kw  { color: #c084fc; }
+.code-block .str { color: #34d399; }
+.code-block .fn  { color: #60a5fa; }
+.code-block .cm  { color: #64748b; }
+.code-block .num { color: #fbbf24; }
+
+/* ── TA Guidelines block ── */
+.ta-guidelines {
+  background: rgba(245,158,11,0.04);
+  border: 1px solid rgba(245,158,11,0.15);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+}
+
+.ta-guidelines h4 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #b45309;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 16px;
+}
+
+.ta-guidelines ol { padding-left: 20px; margin-bottom: 16px; }
+
+.ta-guidelines li {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.ta-guidelines li strong { color: #b45309; }
+
+/* ── Resources section ── */
+.resources-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(37,99,235,0.1);
+}
+
+.resources-section h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+
+.resources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.resource-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius);
+  box-shadow: var(--card-shadow);
+  padding: 18px 20px;
+}
+
+.resource-card .rc-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+
+.resource-card .rc-title {
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+
+.resource-card .rc-desc {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── References ── */
+.references-section {
+  margin-top: 32px;
+  max-width: 600px;
+}
+
+.references-section h4 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.references-section ol {
+  padding-left: 16px;
+}
+
+.references-section li {
+  font-size: 0.62rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+.references-section li a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.references-section li a:hover {
+  text-decoration: underline;
+}
+
+/* ── Teleprompter mode ── */
+body.teleprompter {
+  background: #0a0a0a;
+}
+
+body.teleprompter .topbar {
+  background: rgba(10,10,10,0.95);
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.teleprompter .topbar-title,
+body.teleprompter .topbar-subtitle {
+  color: rgba(255,255,255,0.6);
+}
+
+body.teleprompter .key-message-bar,
+body.teleprompter .resources-section,
+body.teleprompter .references-section,
+body.teleprompter .media-specs-toggle,
+body.teleprompter .media-specs-panel,
+body.teleprompter .option-card:not(.selected),
+body.teleprompter .segment-badges {
+  display: none !important;
+}
+
+body.teleprompter .video-section {
+  display: block !important;
+}
+
+body.teleprompter .video-header h2 {
+  color: rgba(255,255,255,0.5);
+  font-size: 1.1rem;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 12px;
+}
+
+body.teleprompter .video-header .video-meta { display: none; }
+
+body.teleprompter .segment-header {
+  border-color: rgba(255,255,255,0.06);
+}
+
+body.teleprompter .segment-number {
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.4);
+}
+
+body.teleprompter .segment-title {
+  color: rgba(255,255,255,0.4);
+  font-size: 0.9rem;
+}
+
+body.teleprompter .option-card.selected,
+body.teleprompter .script-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  padding: 12px 0;
+}
+
+body.teleprompter .option-card-header { display: none; }
+
+body.teleprompter .option-card.selected p,
+body.teleprompter .script-card p {
+  color: #ffffff;
+  font-size: 1.6rem;
+  line-height: 2;
+  font-weight: 400;
+}
+
+body.teleprompter .container {
+  max-width: 780px;
+}
+
+body.teleprompter .video-tabs { display: none; }
+
+/* ── Print styles ── */
+@media print {
+  .topbar { position: static; }
+  .video-section { display: block !important; page-break-before: always; }
+  .video-section:first-of-type { page-break-before: auto; }
+  .option-card:not(.selected) { opacity: 0.25; }
+  .option-card.selected { border-color: var(--accent); }
+  .btn-action { display: none; }
+  body::before { display: none; }
+}
+
+/* ── Bottom bar ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(240,244,250,0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(37,99,235,0.08);
+  padding: 8px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+body.teleprompter .bottom-bar {
+  background: rgba(10,10,10,0.92);
+  border-color: rgba(255,255,255,0.08);
+}
+
+body.teleprompter .bottom-bar .btn-action {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.6);
+  border-color: rgba(255,255,255,0.1);
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div>
+      <div class="topbar-title">{{MODULE_NUM}} — {{MODULE_TITLE}}</div>
+      <div class="topbar-subtitle">DADS 5250: Generative AI in Practice</div>
+    </div>
+    <span class="selection-counter" id="selectionCounter">0 / 0 selected</span>
+  </div>
+
+  <div class="video-tabs" id="videoTabs">
+    <button class="video-tab active" data-video="v1" title="Press 1">V1</button>
+    <button class="video-tab" data-video="v2" title="Press 2">V2</button>
+    <button class="video-tab" data-video="v3" title="Press 3">V3</button>
+    <button class="video-tab" data-video="v4" title="Press 4">V4</button>
+    <button class="video-tab" data-video="v5" title="Press 5">V5</button>
+    <button class="video-tab" data-video="v6" title="Press 6">V6</button>
+    <button class="video-tab" data-video="v7" title="Press 7">V7</button>
+  </div>
+</div>
+
+<!-- ── MAIN CONTENT ── -->
+<div class="container">
+
+  <!-- Key message -->
+  <div class="key-message-bar">
+    <span class="km-label">Key Message</span>
+    <span class="km-text">{{KEY_MESSAGE}}</span>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 1 — Opening / The Hook                          ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section active" data-video="v1">
+    <div class="video-header">
+      <h2>Video 1 — Opening: The Hook</h2>
+      <div class="video-meta">On Camera | 3-4 min | Prof. Dehghani</div>
+    </div>
+
+    <!-- Segment 1: The Spark -->
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">THE SPARK</span>
+        <div class="segment-badges">
+          <span class="badge badge-oncamera">On Camera</span>
+          <span class="badge badge-duration">0:00 - 0:45</span>
+        </div>
+      </div>
+
+      <div class="option-group" data-segment="v1-s1">
+        <div class="option-card" data-option="a">
+          <div class="option-card-header">
+            <span class="option-letter">A</span>
+            <span class="option-title">The Revolution (Steve Jobs style)</span>
+            <span class="option-wc">62 words</span>
+          </div>
+          <p>A chatbot. A code assistant. An image generator. A data analyst. A research partner. Are you getting it? These are not five different products. This is one technology. One API call. And the difference between using someone else's product and building your own starts with seven lines of code.</p>
+        </div>
+
+        <div class="option-card" data-option="b">
+          <div class="option-card-header">
+            <span class="option-letter">B</span>
+            <span class="option-title">The Personal Story</span>
+            <span class="option-wc">48 words</span>
+          </div>
+          <p>[YOUR STORY: A specific moment when you realized the API was fundamentally different from the chat window — perhaps building something for Simini or TwinAI that could not be done through the UI.]</p>
+        </div>
+
+        <div class="option-card" data-option="c">
+          <div class="option-card-header">
+            <span class="option-letter">C</span>
+            <span class="option-title">The Provocative Question</span>
+            <span class="option-wc">55 words</span>
+          </div>
+          <p>How many of you have used ChatGPT? Most of you. How many of you have built something with ChatGPT? Almost none of you. That is the gap this course closes. The chat window is the demo. The API is the product. And today, you learn to build products.</p>
+        </div>
+      </div>
+
+      <!-- Media specs (collapsed) -->
+      <button class="media-specs-toggle" onclick="toggleMedia(this)">
+        <span class="arrow">&#9654;</span> Media Specs
+      </button>
+      <div class="media-specs-panel">
+        <div class="spec-row">
+          <span class="spec-label">Media type</span>
+          <span class="spec-value">Lower-third text overlay during on-camera delivery</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Description</span>
+          <span class="spec-value">Key message text fades in at the punch line: "The chat window is the demo. The API is the product."</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Notes</span>
+          <span class="spec-value">Clean sans-serif type, left-aligned, blue accent underline. No animation beyond fade.</span>
+        </div>
+        <div class="media-placeholder">Visual placeholder — 300 x 180</div>
+      </div>
+    </div>
+
+    <!-- Segment 2: Core Message -->
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S2</span>
+        <span class="segment-title">CORE MESSAGE</span>
+        <div class="segment-badges">
+          <span class="badge badge-oncamera">On Camera</span>
+          <span class="badge badge-duration">0:45 - 2:00</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>This is where a single-option scripted segment goes. No option picker needed — just the final script text in a clean card.</p>
+        <p>Short sentences. One idea per sentence. Natural speech rhythm for the teleprompter.</p>
+      </div>
+
+      <button class="media-specs-toggle" onclick="toggleMedia(this)">
+        <span class="arrow">&#9654;</span> Media Specs
+      </button>
+      <div class="media-specs-panel">
+        <div class="spec-row">
+          <span class="spec-label">Media type</span>
+          <span class="spec-value">Animation</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Description</span>
+          <span class="spec-value">Animated diagram showing chat window vs API pipeline</span>
+        </div>
+        <div class="media-placeholder">Visual placeholder — 300 x 180</div>
+      </div>
+    </div>
+
+    <!-- Segment 3: Transition -->
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S3</span>
+        <span class="segment-title">TRANSITION TO VIDEO 2</span>
+        <div class="segment-badges">
+          <span class="badge badge-oncamera">On Camera</span>
+          <span class="badge badge-duration">2:00 - 2:30</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>But first, let us understand what we are connecting to. What is a large language model? How does it actually work? And why does that matter for the code you are about to write?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 2 — Foundation (placeholder)                     ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v2">
+    <div class="video-header">
+      <h2>Video 2 — The Foundation</h2>
+      <div class="video-meta">Voiceover + Animation | 6-8 min | Prof. Dehghani</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">WHAT IS AN LLM</span>
+        <div class="segment-badges">
+          <span class="badge badge-voiceover">Voiceover</span>
+          <span class="badge badge-duration">0:00 - 1:30</span>
+        </div>
+      </div>
+
+      <div class="option-group" data-segment="v2-s1">
+        <div class="option-card" data-option="a">
+          <div class="option-card-header">
+            <span class="option-letter">A</span>
+            <span class="option-title">The Colleague Analogy</span>
+            <span class="option-wc">-- words</span>
+          </div>
+          <p>Placeholder for Option A script text. Write 2-3 paragraphs of teleprompter-ready content here.</p>
+        </div>
+
+        <div class="option-card" data-option="b">
+          <div class="option-card-header">
+            <span class="option-letter">B</span>
+            <span class="option-title">The Prediction Machine</span>
+            <span class="option-wc">-- words</span>
+          </div>
+          <p>Placeholder for Option B script text. Write 2-3 paragraphs of teleprompter-ready content here.</p>
+        </div>
+      </div>
+
+      <button class="media-specs-toggle" onclick="toggleMedia(this)">
+        <span class="arrow">&#9654;</span> Media Specs
+      </button>
+      <div class="media-specs-panel">
+        <div class="spec-row">
+          <span class="spec-label">Media type</span>
+          <span class="spec-value">Animation</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Description</span>
+          <span class="spec-value">Animated next-word prediction showing token probabilities</span>
+        </div>
+        <div class="media-placeholder">Visual placeholder — 300 x 180</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 3 — Placeholder                                  ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v3">
+    <div class="video-header">
+      <h2>Video 3 — The Key Concept</h2>
+      <div class="video-meta">On Camera + Screen Recording | 5-6 min | Prof. Dehghani</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">API FROM ZERO</span>
+        <div class="segment-badges">
+          <span class="badge badge-oncamera">On Camera</span>
+          <span class="badge badge-duration">0:00 - 1:30</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>Placeholder segment. Replace with actual script content.</p>
+      </div>
+    </div>
+
+    <!-- Example: code block segment -->
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S2</span>
+        <span class="segment-title">THE CODE</span>
+        <div class="segment-badges">
+          <span class="badge badge-screenrec">Screen Recording</span>
+          <span class="badge badge-duration">1:30 - 4:00</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>Let me show you what an API call actually looks like. Seven lines of Python.</p>
+        <div class="code-block"><pre><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+
+client = OpenAI()
+response = client.<span class="fn">chat.completions.create</span>(
+    model=<span class="str">"gpt-4.1-mini"</span>,
+    messages=[{<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Hello"</span>}]
+)
+<span class="kw">print</span>(response.choices[<span class="num">0</span>].message.content)</pre></div>
+        <p>That is it. That is the entire program. Seven lines. Let me walk you through each one.</p>
+      </div>
+
+      <button class="media-specs-toggle" onclick="toggleMedia(this)">
+        <span class="arrow">&#9654;</span> Media Specs
+      </button>
+      <div class="media-specs-panel">
+        <div class="spec-row">
+          <span class="spec-label">Media type</span>
+          <span class="spec-value">Screen recording with highlight annotations</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Description</span>
+          <span class="spec-value">VS Code or Colab showing the code being written line-by-line with callout annotations for each line</span>
+        </div>
+        <div class="spec-row">
+          <span class="spec-label">Notes</span>
+          <span class="spec-value">Pause on each line for ~5 seconds. Highlight current line with blue left-border.</span>
+        </div>
+        <div class="media-placeholder">Visual placeholder — 300 x 180</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 4 — TA Guidelines (placeholder)                  ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v4">
+    <div class="video-header">
+      <h2>Video 4 — TA: Environment Setup</h2>
+      <div class="video-meta">TA Guidelines | 5-7 min | Teaching Assistant</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">API KEY SETUP</span>
+        <div class="segment-badges">
+          <span class="badge badge-ta">TA Guidelines</span>
+          <span class="badge badge-duration">Full video</span>
+        </div>
+      </div>
+
+      <div class="ta-guidelines">
+        <h4>TA Recording Guidelines</h4>
+        <ol>
+          <li><strong>OpenAI API Key</strong> — Walk through platform.openai.com signup, billing, key generation</li>
+          <li><strong>Google Gemini Key</strong> — Walk through aistudio.google.com, get free API key</li>
+          <li><strong>Colab Secrets</strong> — Show how to store keys in Colab Secrets (not hardcoded)</li>
+          <li><strong>Test the connection</strong> — Run a simple test cell to verify both keys work</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 5 — Lab placeholder                              ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v5">
+    <div class="video-header">
+      <h2>Video 5 — Lab 1: First API Calls</h2>
+      <div class="video-meta">Screen Recording | 10-12 min | Prof. Dehghani</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">LAB WALKTHROUGH</span>
+        <div class="segment-badges">
+          <span class="badge badge-screenrec">Screen Recording</span>
+          <span class="badge badge-duration">Full video</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>Placeholder for lab walkthrough script. Screen recording segments use a lighter script — key transitions and explanations are scripted, coding is narrated live.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 6 — Lab placeholder                              ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v6">
+    <div class="video-header">
+      <h2>Video 6 — Lab 2: Temperature, Tokens, Cost</h2>
+      <div class="video-meta">Screen Recording | 10-12 min | Prof. Dehghani</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">LAB WALKTHROUGH</span>
+        <div class="segment-badges">
+          <span class="badge badge-screenrec">Screen Recording</span>
+          <span class="badge badge-duration">Full video</span>
+        </div>
+      </div>
+
+      <div class="script-card">
+        <p>Placeholder for Lab 2 walkthrough script.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  VIDEO 7 — Closing                                      ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="video-section" data-video="v7">
+    <div class="video-header">
+      <h2>Video 7 — Closing</h2>
+      <div class="video-meta">On Camera | 2-3 min | Prof. Dehghani</div>
+    </div>
+
+    <div class="segment">
+      <div class="segment-header">
+        <span class="segment-number">S1</span>
+        <span class="segment-title">RECAP AND BRIDGE</span>
+        <div class="segment-badges">
+          <span class="badge badge-oncamera">On Camera</span>
+          <span class="badge badge-duration">0:00 - 2:00</span>
+        </div>
+      </div>
+
+      <div class="option-group" data-segment="v7-s1">
+        <div class="option-card" data-option="a">
+          <div class="option-card-header">
+            <span class="option-letter">A</span>
+            <span class="option-title">The Builder Close</span>
+            <span class="option-wc">-- words</span>
+          </div>
+          <p>Placeholder for closing option A. Recap what students built, bridge to next module.</p>
+        </div>
+
+        <div class="option-card" data-option="b">
+          <div class="option-card-header">
+            <span class="option-letter">B</span>
+            <span class="option-title">The Career Close</span>
+            <span class="option-wc">-- words</span>
+          </div>
+          <p>Placeholder for closing option B. Connect skills learned to career outcomes, tease M02.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  RESOURCES                                              ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="resources-section">
+    <h3>Resources</h3>
+    <div class="resources-grid">
+      <div class="resource-card">
+        <div class="rc-label">Reading</div>
+        <div class="rc-title">{{RESOURCE_READING_TITLE}}</div>
+        <div class="rc-desc">{{RESOURCE_READING_DESC}}</div>
+      </div>
+      <div class="resource-card">
+        <div class="rc-label">Gamification</div>
+        <div class="rc-title">{{RESOURCE_GAME_TITLE}}</div>
+        <div class="rc-desc">{{RESOURCE_GAME_DESC}}</div>
+      </div>
+      <div class="resource-card">
+        <div class="rc-label">AI Spotlight</div>
+        <div class="rc-title">{{AI_SPOTLIGHT}}</div>
+        <div class="rc-desc">{{AI_SPOTLIGHT_DESC}}</div>
+      </div>
+      <div class="resource-card">
+        <div class="rc-label">Assignment</div>
+        <div class="rc-title">{{ASSIGNMENT_TITLE}}</div>
+        <div class="rc-desc">{{ASSIGNMENT_DESC}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ╔══════════════════════════════════════════════════════════╗ -->
+  <!-- ║  REFERENCES                                             ║ -->
+  <!-- ╚══════════════════════════════════════════════════════════╝ -->
+  <div class="references-section">
+    <h4>References</h4>
+    <ol>
+      <li>Placeholder reference 1. <a href="#">Source link</a></li>
+      <li>Placeholder reference 2. <a href="#">Source link</a></li>
+      <li>Placeholder reference 3. <a href="#">Source link</a></li>
+    </ol>
+  </div>
+
+</div><!-- /container -->
+
+<!-- ── BOTTOM BAR ── -->
+<div class="bottom-bar">
+  <button class="btn-action" id="btnTeleprompter" onclick="toggleTeleprompter()">Teleprompter <kbd>T</kbd></button>
+  <button class="btn-action" onclick="exportScript()">Export</button>
+  <button class="btn-action" onclick="window.print()">Print</button>
+</div>
+
+<script>
+// ── State ──
+const STORAGE_KEY = 'dads5250_{{MODULE_NUM}}_selections';
+let selections = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', () => {
+  restoreSelections();
+  updateCounter();
+});
+
+// ── Video tab switching ──
+document.querySelectorAll('.video-tab').forEach(tab => {
+  tab.addEventListener('click', () => switchVideo(tab.dataset.video));
+});
+
+function switchVideo(id) {
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  const tab = document.querySelector(`.video-tab[data-video="${id}"]`);
+  const section = document.querySelector(`.video-section[data-video="${id}"]`);
+  if (tab) tab.classList.add('active');
+  if (section) section.classList.add('active');
+}
+
+// ── Option selection ──
+document.querySelectorAll('.option-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const group = card.closest('.option-group');
+    if (!group) return;
+    const segKey = group.dataset.segment;
+    const optKey = card.dataset.option;
+
+    // Toggle: if already selected, deselect
+    if (card.classList.contains('selected')) {
+      card.classList.remove('selected');
+      delete selections[segKey];
+    } else {
+      group.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+      card.classList.add('selected');
+      selections[segKey] = optKey;
+    }
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(selections));
+    updateCounter();
+  });
+});
+
+function restoreSelections() {
+  for (const [segKey, optKey] of Object.entries(selections)) {
+    const group = document.querySelector(`.option-group[data-segment="${segKey}"]`);
+    if (!group) continue;
+    const card = group.querySelector(`.option-card[data-option="${optKey}"]`);
+    if (card) card.classList.add('selected');
+  }
+}
+
+function updateCounter() {
+  const totalGroups = document.querySelectorAll('.option-group').length;
+  const selected = Object.keys(selections).length;
+  const counter = document.getElementById('selectionCounter');
+  if (counter) counter.textContent = `${selected} / ${totalGroups} selected`;
+}
+
+// ── Media specs toggle ──
+function toggleMedia(btn) {
+  btn.classList.toggle('open');
+  const panel = btn.nextElementSibling;
+  if (panel) panel.classList.toggle('open');
+}
+
+// ── Teleprompter ──
+let teleprompterMode = false;
+
+function toggleTeleprompter() {
+  teleprompterMode = !teleprompterMode;
+  document.body.classList.toggle('teleprompter', teleprompterMode);
+  document.getElementById('btnTeleprompter').classList.toggle('teleprompter-active', teleprompterMode);
+
+  if (teleprompterMode) {
+    // Auto-scroll setup
+    window.scrollTo({ top: 0 });
+  }
+}
+
+// ── Keyboard shortcuts ──
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+  // T = teleprompter
+  if (e.key === 't' || e.key === 'T') {
+    toggleTeleprompter();
+    return;
+  }
+
+  // Number keys = switch video tabs
+  const num = parseInt(e.key);
+  if (num >= 1 && num <= 9) {
+    const tabs = document.querySelectorAll('.video-tab');
+    if (num <= tabs.length) {
+      switchVideo(tabs[num - 1].dataset.video);
+    }
+  }
+});
+
+// ── Export ──
+function exportScript() {
+  let output = [];
+  const title = document.querySelector('.topbar-title')?.textContent || '';
+  output.push('=' .repeat(60));
+  output.push(title);
+  output.push('=' .repeat(60));
+  output.push('');
+
+  document.querySelectorAll('.video-section').forEach(section => {
+    const h2 = section.querySelector('.video-header h2')?.textContent || '';
+    const meta = section.querySelector('.video-meta')?.textContent || '';
+    output.push('');
+    output.push('-'.repeat(50));
+    output.push(h2);
+    output.push(meta);
+    output.push('-'.repeat(50));
+    output.push('');
+
+    section.querySelectorAll('.segment').forEach(seg => {
+      const segTitle = seg.querySelector('.segment-title')?.textContent || '';
+      output.push(`\n### ${segTitle}\n`);
+
+      // Check for selected option
+      const selectedCard = seg.querySelector('.option-card.selected');
+      if (selectedCard) {
+        const optTitle = selectedCard.querySelector('.option-title')?.textContent || '';
+        output.push(`[Selected: ${optTitle}]`);
+        selectedCard.querySelectorAll('p').forEach(p => {
+          output.push(p.textContent);
+        });
+      }
+
+      // Check for script card (no options)
+      const scriptCard = seg.querySelector('.script-card');
+      if (scriptCard) {
+        scriptCard.querySelectorAll('p').forEach(p => {
+          output.push(p.textContent);
+        });
+      }
+
+      // Check for TA guidelines
+      const ta = seg.querySelector('.ta-guidelines');
+      if (ta) {
+        output.push('[TA GUIDELINES]');
+        ta.querySelectorAll('li').forEach(li => {
+          output.push('  - ' + li.textContent.trim());
+        });
+      }
+    });
+  });
+
+  const text = output.join('\n');
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
+    const original = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1500);
+  });
+}
+</script>
+</body>
+</html>

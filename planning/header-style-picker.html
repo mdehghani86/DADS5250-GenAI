@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DADS 5250 — Header Style Picker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', system-ui, sans-serif; background: #f5f6fa; padding: 40px; }
+  h1 { text-align: center; color: #1a1a2e; margin-bottom: 10px; font-size: 28px; }
+  .subtitle { text-align: center; color: #64748b; margin-bottom: 40px; font-size: 15px; }
+  .section-title { font-size: 20px; color: #1a1a2e; margin: 50px 0 20px; font-weight: 700; border-bottom: 2px solid #e2e8f0; padding-bottom: 8px; }
+
+  .grid { display: flex; flex-direction: column; gap: 30px; max-width: 900px; margin: 0 auto; }
+  .option { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 2px solid transparent; transition: border-color 0.2s; }
+  .option:hover { border-color: #0055d4; }
+  .option-label { font-size: 13px; color: #64748b; margin-bottom: 12px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* Sub-header previews */
+  .sub-grid { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; }
+  .sub-option { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); border: 2px solid transparent; transition: border-color 0.2s; }
+  .sub-option:hover { border-color: #0055d4; }
+</style>
+</head>
+<body>
+
+<h1>🎨 DADS 5250 — Header Style Picker</h1>
+<p class="subtitle">Pick a main header style and section header style for your lab notebooks</p>
+
+<!-- ========== MAIN HEADERS ========== -->
+<div class="section-title">Main Lab Header (Top of Each Notebook)</div>
+
+<div class="grid">
+
+  <!-- Option A: Current Blue Gradient -->
+  <div class="option">
+    <div class="option-label">A — Current Blue Gradient (Northeastern Blue)</div>
+    <div style="background: linear-gradient(135deg, #001a70 0%, #0055d4 100%); padding: 30px 36px; border-radius: 14px;">
+      <h1 style="color: #fff; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: rgba(255,255,255,0.65); margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+  <!-- Option B: NEU Red + Dark Navy -->
+  <div class="option">
+    <div class="option-label">B — NEU Red & Dark Navy (Your RL Repo Style)</div>
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #C41230 100%); padding: 30px 36px; border-radius: 14px;">
+      <h1 style="color: #fff; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: rgba(255,255,255,0.65); margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+  <!-- Option C: Dark Slate + Teal Accent -->
+  <div class="option">
+    <div class="option-label">C — Dark Slate + Teal Accent</div>
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #0d9488 100%); padding: 30px 36px; border-radius: 14px;">
+      <h1 style="color: #fff; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: rgba(255,255,255,0.65); margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+  <!-- Option D: Dark Navy + Gold Accent -->
+  <div class="option">
+    <div class="option-label">D — Dark Navy + Gold Accent (Academic)</div>
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #1e3a5f 80%); padding: 30px 36px; border-radius: 14px; border-left: 5px solid #d4a84b;">
+      <h1 style="color: #fff; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: #d4a84b; margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: rgba(255,255,255,0.6); margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+  <!-- Option E: NEU Red left bar + White -->
+  <div class="option">
+    <div class="option-label">E — Clean White + Red Accent Bar</div>
+    <div style="background: #fafbfc; padding: 30px 36px; border-radius: 14px; border-left: 6px solid #C41230; box-shadow: 0 2px 12px rgba(0,0,0,0.08);">
+      <h1 style="color: #1a1a2e; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: #C41230; margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui; font-weight: 600;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: #64748b; margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+  <!-- Option F: Purple Gradient -->
+  <div class="option">
+    <div class="option-label">F — Deep Purple + Indigo</div>
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%); padding: 30px 36px; border-radius: 14px;">
+      <h1 style="color: #fff; margin: 0; font-size: 28px; font-family: Inter, system-ui;">🚀 M01 Lab 1 — Your First LLM API Call</h1>
+      <p style="color: rgba(255,255,255,0.85); margin: 8px 0 0; font-size: 15px; font-family: Inter, system-ui;">DADS 5250: Generative AI in Practice &nbsp;|&nbsp; Prof. Dehghani</p>
+      <p style="color: rgba(255,255,255,0.65); margin: 6px 0 0; font-size: 13px; font-family: Inter, system-ui;">⭐ Difficulty: Beginner &nbsp;|&nbsp; ⏱ Time: ~10 min</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== SECTION HEADERS ========== -->
+<div class="section-title">Section Headers (Inside Each Lab)</div>
+
+<div class="sub-grid">
+
+  <!-- Sub A: Current Blue Gradient -->
+  <div class="sub-option">
+    <div class="option-label">A — Current Blue Gradient (matches Main A)</div>
+    <div style="background: linear-gradient(135deg, #001a70 0%, #0055d4 100%); padding: 18px 24px; border-radius: 10px;">
+      <h2 style="color: white; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+  <!-- Sub B: NEU Red Gradient -->
+  <div class="sub-option">
+    <div class="option-label">B — Red Gradient (matches Main B)</div>
+    <div style="background: linear-gradient(135deg, #1a1a2e 0%, #C41230 100%); padding: 18px 24px; border-radius: 10px;">
+      <h2 style="color: white; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+  <!-- Sub C: Flat Dark with Colored Left Bar -->
+  <div class="sub-option">
+    <div class="option-label">C — Dark Flat + Accent Left Bar</div>
+    <div style="background: #1a1a2e; padding: 16px 22px; border-radius: 8px; border-left: 4px solid #C41230;">
+      <h2 style="color: white; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+  <!-- Sub D: Light with Bottom Border -->
+  <div class="sub-option">
+    <div class="option-label">D — Clean Light with Bottom Border</div>
+    <div style="background: #f8f9fb; padding: 16px 22px; border-radius: 8px; border-bottom: 3px solid #0055d4;">
+      <h2 style="color: #001a70; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+  <!-- Sub E: Teal Gradient -->
+  <div class="sub-option">
+    <div class="option-label">E — Teal Gradient (matches Main C)</div>
+    <div style="background: linear-gradient(135deg, #0f172a 0%, #0d9488 100%); padding: 18px 24px; border-radius: 10px;">
+      <h2 style="color: white; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+  <!-- Sub F: Purple Gradient -->
+  <div class="sub-option">
+    <div class="option-label">F — Purple Gradient (matches Main F)</div>
+    <div style="background: linear-gradient(135deg, #1e1b4b 0%, #6366f1 100%); padding: 18px 24px; border-radius: 10px;">
+      <h2 style="color: white; margin: 0; font-size: 20px; font-family: Inter, system-ui;">1️⃣ The Chat Completions API</h2>
+    </div>
+  </div>
+
+</div>
+
+<div style="text-align: center; margin: 50px 0 20px; color: #64748b; font-size: 14px;">
+  Pick one Main Header + one Section Header. They can mix and match!<br>
+  Tell me your choices (e.g., "Main B + Section C") and I'll update all labs.
+</div>
+
+</body>
+</html>
