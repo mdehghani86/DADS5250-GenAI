@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cover Variants — ExcelGPT & Prompt Engineering</title>
+<style>
+  :root {
+    --brand: #001a70;
+    --accent: #0055d4;
+    --bg: #0a0e1a;
+    --card: #111827;
+    --border: #1e293b;
+    --text: #e2e8f0;
+    --muted: #94a3b8;
+    --excel: #217346;
+    --amber: #D97706;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.5;
+  }
+
+  header {
+    background: linear-gradient(135deg, var(--brand), var(--accent));
+    padding: 2rem 2rem 1.5rem; text-align: center;
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; color: #fff; }
+  header p { color: rgba(255,255,255,.7); font-size: .82rem; margin-top: .3rem; }
+
+  .container { max-width: 1300px; margin: 0 auto; padding: 1.5rem; }
+
+  .section {
+    margin: 2rem 0 1rem;
+    display: flex; align-items: center; gap: .8rem;
+  }
+  .section-dot {
+    width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0;
+  }
+  .section h2 { font-size: 1.15rem; font-weight: 700; color: #fff; }
+  .section-sub {
+    font-size: .78rem; color: var(--muted); margin-bottom: 1.2rem;
+    padding-left: 22px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  @media (max-width: 900px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s, border-color .2s;
+    cursor: pointer;
+    position: relative;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(0,85,212,.2);
+  }
+  .card.selected {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px var(--accent), 0 8px 28px rgba(0,85,212,.25);
+  }
+  .card.selected::after {
+    content: "Picked";
+    position: absolute; top: 8px; right: 8px;
+    background: var(--accent); color: #fff;
+    font-size: .65rem; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; z-index: 2;
+  }
+
+  .card img {
+    width: 100%; aspect-ratio: 16/9;
+    object-fit: cover; display: block;
+  }
+
+  .card-meta {
+    padding: .6rem .8rem;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .card-meta .dot {
+    width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+  }
+  .card-meta .title { font-size: .8rem; font-weight: 600; color: #fff; }
+  .card-meta .desc { font-size: .68rem; color: var(--muted); }
+  .card-meta .file {
+    margin-left: auto; font-size: .6rem; color: var(--muted);
+    font-family: 'Cascadia Code', monospace; opacity: .6;
+  }
+
+  /* Lightbox */
+  .lb { display:none; position:fixed; inset:0; background:rgba(0,0,0,.9); z-index:100; align-items:center; justify-content:center; padding:2rem; cursor:zoom-out; }
+  .lb.on { display:flex; }
+  .lb img { max-width:95%; max-height:90vh; border-radius:8px; box-shadow:0 20px 60px rgba(0,0,0,.5); }
+  .lb-label { position:fixed; bottom:1.5rem; left:50%; transform:translateX(-50%); background:rgba(0,0,0,.7); color:#fff; padding:.4rem 1.2rem; border-radius:20px; font-size:.78rem; }
+
+  /* Reference strip */
+  .ref-strip {
+    margin: 2.5rem 0 1rem;
+    padding: 1rem;
+    background: linear-gradient(135deg, rgba(17,24,39,.8), rgba(30,41,59,.5));
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+  .ref-strip h3 { font-size: .85rem; color: var(--muted); margin-bottom: .8rem; }
+  .ref-row { display: flex; gap: .8rem; overflow-x: auto; }
+  .ref-row img {
+    height: 100px; border-radius: 6px; border: 1px solid var(--border);
+    flex-shrink: 0; cursor: pointer; opacity: .7; transition: opacity .2s;
+  }
+  .ref-row img:hover { opacity: 1; }
+
+  footer { text-align:center; padding:2.5rem; font-size:.7rem; color:var(--muted); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Cover Variants Picker</h1>
+  <p>ExcelGPT + Prompt Engineering — Pattern style. Click to pick favorites, double-click to enlarge.</p>
+</header>
+
+<div class="container">
+
+  <!-- EXCEL GPT -->
+  <div class="section">
+    <div class="section-dot" style="background:#217346"></div>
+    <h2>ExcelGPT</h2>
+  </div>
+  <div class="section-sub">Excel green (#217346) accent. Grid patterns, data waves, structured precision.</div>
+
+  <div class="grid">
+    <div class="card" data-name="ExcelGPT v1: Grid Wave" onclick="pick(this)">
+      <img src="cover-excel-v1-gridwave.png" alt="Excel v1" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#217346"></div>
+        <div>
+          <div class="title">Grid Wave</div>
+          <div class="desc">Wave lines over faint grid pattern</div>
+        </div>
+        <div class="file">cover-excel-v1-gridwave.png</div>
+      </div>
+    </div>
+
+    <div class="card" data-name="ExcelGPT v2: Data Rise" onclick="pick(this)">
+      <img src="cover-excel-v2-datarise.png" alt="Excel v2" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#217346"></div>
+        <div>
+          <div class="title">Data Rise</div>
+          <div class="desc">Diagonal ribbons with abstract bar chart silhouettes</div>
+        </div>
+        <div class="file">cover-excel-v2-datarise.png</div>
+      </div>
+    </div>
+
+    <div class="card" data-name="ExcelGPT v3: Ripple" onclick="pick(this)">
+      <img src="cover-excel-v3-ripple.png" alt="Excel v3" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#217346"></div>
+        <div>
+          <div class="title">Ripple</div>
+          <div class="desc">Concentric arcs radiating outward, green core</div>
+        </div>
+        <div class="file">cover-excel-v3-ripple.png</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROMPT ENGINEERING -->
+  <div class="section" style="margin-top:2.5rem;">
+    <div class="section-dot" style="background:#D97706"></div>
+    <h2>Prompt Engineering</h2>
+  </div>
+  <div class="section-sub">Amber gold (#D97706) accent. Thought flow, branching, convergence, refinement.</div>
+
+  <div class="grid">
+    <div class="card" data-name="Prompt v1: Compose" onclick="pick(this)">
+      <img src="cover-prompt-v1-compose.png" alt="Prompt v1" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#D97706"></div>
+        <div>
+          <div class="title">Compose</div>
+          <div class="desc">Flowing lines like text being written, subtle { } hints</div>
+        </div>
+        <div class="file">cover-prompt-v1-compose.png</div>
+      </div>
+    </div>
+
+    <div class="card" data-name="Prompt v2: Branch" onclick="pick(this)">
+      <img src="cover-prompt-v2-branch.png" alt="Prompt v2" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#D97706"></div>
+        <div>
+          <div class="title">Branch</div>
+          <div class="desc">Diverging/converging streams, chain-of-thought reasoning</div>
+        </div>
+        <div class="file">cover-prompt-v2-branch.png</div>
+      </div>
+    </div>
+
+    <div class="card" data-name="Prompt v3: Vortex" onclick="pick(this)">
+      <img src="cover-prompt-v3-vortex.png" alt="Prompt v3" ondblclick="zoom(this,event)">
+      <div class="card-meta">
+        <div class="dot" style="background:#D97706"></div>
+        <div>
+          <div class="title">Vortex</div>
+          <div class="desc">Spiral convergence toward focal point, refinement</div>
+        </div>
+        <div class="file">cover-prompt-v3-vortex.png</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Reference strip -->
+  <div class="ref-strip">
+    <h3>Style Reference (B4 Tools Pattern)</h3>
+    <div class="ref-row">
+      <img src="m08-B4-tools-pattern.png" alt="B4 reference" ondblclick="zoom(this,event)">
+      <img src="m08-B3-multi-agent-pattern.png" alt="B3 reference" ondblclick="zoom(this,event)">
+      <img src="m08-B1-agents-roles-pattern.png" alt="B1 reference" ondblclick="zoom(this,event)">
+    </div>
+  </div>
+
+</div>
+
+<!-- Lightbox -->
+<div class="lb" id="lb" onclick="this.classList.remove('on')">
+  <img id="lb-img" src="">
+  <div class="lb-label" id="lb-lbl"></div>
+</div>
+
+<footer>DADS 5250 — Cover Variants — Generated with NanoBanana MCP (Gemini)</footer>
+
+<script>
+function pick(card) {
+  card.classList.toggle('selected');
+}
+function zoom(img, e) {
+  e.stopPropagation();
+  document.getElementById('lb-img').src = img.src;
+  const card = img.closest('.card');
+  document.getElementById('lb-lbl').textContent = card ? card.dataset.name : '';
+  document.getElementById('lb').classList.add('on');
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') document.getElementById('lb').classList.remove('on');
+});
+</script>
+</body>
+</html>
