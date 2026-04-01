@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M07 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+/* Teleprompter */
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M07 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: Hackathon Kickoff</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Build Something Real                    -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark" -- Build Something Real</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">Build something real. Break something. Ship it.</span>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">The Shift</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>For six weeks, I have been teaching you. This week, you teach me.</p>
+      <p>No new lectures. No new frameworks. No new concepts. Just you, your team, forty-eight hours, and everything you have learned so far. LLM APIs. Prompt engineering. Structured output. LangChain. RAG. Agents. All of it. Combined into one project. Something real.</p>
+      <p>This is the hackathon.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, slightly more energized than usual. Direct to camera. Build momentum through the list of skills. Pause before "This is the hackathon."</p>
+      <div class="media-note">
+        MEDIA TEAM: Clean shot, no overlays. Energy should feel different from typical lecture -- more like a coach before a game.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Startup Inspiration</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me give you some perspective on what is possible.</p>
+      <p>Jasper AI -- built on GPT-3 API calls to generate marketing copy. Reached 80 million dollars in annual revenue by 2023. Cursor -- an AI code editor built on LLM APIs plus RAG over codebases. Raised 60 million in its Series A. Perplexity -- RAG applied to the entire internet. Valued at nine billion dollars.</p>
+      <p>Every one of these companies started with the same tools you have right now. An API key and an idea. The difference is they shipped it.</p>
+      <p>Your hackathon project will not be the next Perplexity. But the process of building, breaking, and shipping? That is exactly the same.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Startup Inspiration</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Logo Parade</span>
+        <span class="placeholder-desc">Jasper, Cursor, Perplexity logos appearing one by one with their revenue/valuation numbers. Clean, minimalist presentation. Not a montage -- measured reveals synced to the narration.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">Key Message</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~20 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Build something real. Break something. Ship it. The clock starts now.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Countdown Visual</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Countdown Timer</span>
+        <span class="placeholder-desc">Large countdown timer appears: 48:00:00, ticking down. White digits on dark background. Clean, urgent.</span>
+        <span class="placeholder-duration">Hold 4 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Timer overlay appears as Prof says "the clock starts now." Hold for 4 seconds, then transition to title card.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: Hackathon Kickoff                                      -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "Hackathon Kickoff"</h2>
+    <div class="video-meta">Prof on camera -- 5-6 minutes -- 4 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Logistics</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here are the rules.</p>
+      <p>Teams of two to three students. Forty-eight hours from kickoff to submission. You submit two things: a GitHub repository with working code and a three-minute video demo.</p>
+      <p>Your project must use at least two course techniques -- that means some combination of API calls, prompt engineering, structured output, LangChain, RAG, or agents. It must be Python-based and it must actually work. The judges will run your code.</p>
+      <p>Office hours are running continuously during the sprint. Slack channel is live for quick questions and team coordination.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Info Card</span>
+        <span class="placeholder-desc">Four stats: Duration (48 hours), Team Size (2-3), Deliverables (GitHub + 3-min video), Support (continuous office hours + Slack).</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Project Ideas</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Not sure what to build? Here are categories that have produced strong projects.</p>
+      <p>AI Assistant -- a domain-specific chatbot with RAG. Legal research, medical FAQ, course advisor. Content Pipeline -- a chain that takes raw input and produces polished output. Blog posts, reports, social media threads. Data Analyzer -- upload a CSV, ask questions in plain English, get charts and insights. Code Tool -- an agent that reads a codebase and answers questions or generates tests. Workflow Automator -- connect multiple APIs to solve a real business process.</p>
+      <p>Pick something you care about. The best projects come from real problems, not hypothetical ones.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Project Showcase</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Scrolling Cards</span>
+        <span class="placeholder-desc">Montage-style scrolling cards of project ideas -- each card shows a project category name, a brief description, and an icon. Cards scroll vertically like a feed, suggesting abundance of possibilities.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">Judging Criteria</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You are judged on four things, equally weighted.</p>
+      <p>Technical depth -- meaningful use of two or more course techniques. Not just an API call. Show me architecture. Creativity -- original problem choice. Surprise us. Build something we have not seen before. Polish -- it works, no crashes, clean code, good error handling. And presentation -- a clear three-minute video where you explain what you built and why it matters.</p>
+      <p>Twenty-five percent each. Notice that presentation counts as much as technical depth. If you build something brilliant and cannot explain it, that is a problem.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Rubric Overlay</span>
+        <span class="placeholder-desc">Four-quadrant graphic: Technical Depth (25%), Creativity (25%), Polish (25%), Presentation (25%). Clean, minimal.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 04 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 04</span>
+      <span class="segment-title">Final Words</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>One more thing. The goal is not perfection. The goal is momentum. Build the simplest version that works. Get it running. Then improve it. Do not spend thirty hours planning and eighteen hours panicking.</p>
+      <p>Build early. Test often. Ship it. Good luck.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Transition</span>
+      <div class="media-note">
+        MEDIA TEAM: End on a high note. Consider a quick montage cut of students working, coding, presenting from stock footage. Then the 48:00:00 countdown appears again as the final frame.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- References -->
+<div class="references-section">
+  <h3>Resources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Resource</th><th>Details</th></tr></thead>
+    <tbody>
+      <tr><td>All course labs (M01-M06)</td><td>Reuse and extend freely</td></tr>
+      <tr><td>API keys</td><td>OpenAI and Gemini (your existing keys)</td></tr>
+      <tr><td>Support</td><td>Continuous office hours + Slack</td></tr>
+      <tr><td>Submission</td><td>GitHub repo + 3-min video via Canvas</td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) { stopAutoScroll(); }
+}
+
+let scrollInterval = null;
+let isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) { stopAutoScroll(); } else { startAutoScroll(); } }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+});
+</script>
+
+</body>
+</html>

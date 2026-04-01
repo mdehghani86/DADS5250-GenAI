@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M08 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+.badge-discussion { background: rgba(20,184,166,0.1); color: #0d9488; font-weight: 600; letter-spacing: 0.04em; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.code-block { background: #1e293b; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin: 12px 0; }
+.code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-block .kw { color: #93c5fd; } .code-block .str { color: #86efac; } .code-block .fn { color: #fde68a; } .code-block .cm { color: #64748b; }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+/* Discussion guide card */
+.discussion-guidelines { background: rgba(20,184,166,0.03); border: 1px solid rgba(20,184,166,0.2); border-radius: 10px; padding: 24px; }
+.discussion-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #0d9488; letter-spacing: 0.06em; margin-bottom: 12px; }
+.discussion-guidelines .disc-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.discussion-guidelines ol { padding-left: 18px; }
+.discussion-guidelines li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+/* Teleprompter */
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M08 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: CrewAI Intro</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: Orchestrating Workflows</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Why Teams Beat Solo                     -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark" -- Why Teams Beat Solo</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">One agent is a tool. A team of agents is a system.</span>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">The Hiring Analogy</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Imagine you are starting a company. Day one, it is just you. You are the CEO, the developer, the marketer, the accountant, and the customer support team. You can do all of it. But you cannot do all of it well. Not at the same time.</p>
+      <p>So what do you do? You hire specialists. A developer who only writes code. A marketer who only thinks about growth. An accountant who only handles the books. Each person focuses on one job. And suddenly, the whole operation gets better.</p>
+      <p>That is exactly what happens with AI agents.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting. Storytelling mode -- paint the picture. Conversational, not lecture-y. Pause after "that is exactly what happens with AI agents."</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays. Clean shot. This is a generic startup analogy -- no specific company names.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Single vs Team</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~50 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Last module, you built single agents. Powerful. Flexible. But they hit a ceiling.</p>
+      <p>A single agent has one context window, one set of instructions, and one persona. Ask it to be a researcher and a writer and an editor, and it gets confused. It loses track of which role it is playing. The context fills up. Quality drops.</p>
+      <p>The solution is not a better model. The solution is specialization. Give each job to a different agent. Let them collaborate. Let them check each other's work.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Single vs Team</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animated Transition</span>
+        <span class="placeholder-desc">One person juggling 10 tasks (dropping balls, overwhelmed) -- animated transition -- team of 4 specialists each handling their domain perfectly. Balls caught, organized, flowing.</span>
+        <span class="placeholder-duration">~12 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: The transition from solo to team should feel like a relief -- chaos becoming order. Use the blue accent for specialist roles. No text labels during animation -- let the visual carry it.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">Key Message</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~15 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>One agent is a tool. A team of agents is a system. This module teaches you to build the system.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"One agent is a tool. A team of agents is a system." -- white on dark bar, lower third. Hold 4 sec.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: CrewAI -- Building Agent Teams                         -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "CrewAI: Building Agent Teams"</h2>
+    <div class="video-meta">Voiceover + animation -- 8-10 minutes -- 4 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">The Three Building Blocks</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>CrewAI has three building blocks. That is it. Agents, tasks, and crews.</p>
+      <p>An agent is a specialist. It has a role -- "Senior Researcher." It has a goal -- "Find the three most relevant papers on this topic." It has a backstory -- context that shapes how it behaves. And optionally, it has tools -- functions it can call.</p>
+      <p>A task is an assignment. It has a description -- what needs to be done. It has an expected output -- what the result should look like. And it is assigned to a specific agent.</p>
+      <p>A crew is the team. It takes a list of agents and a list of tasks, and it orchestrates the work. Sequential or hierarchical -- you choose the process.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- CrewAI Roles</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Org Chart Animation</span>
+        <span class="placeholder-desc">Roles appear one by one: Researcher (magnifying glass icon), Analyst (chart icon), Writer (pen icon), Reviewer (checkmark icon). Lines connect them showing task flow. Each role card flips to show: role, goal, backstory fields.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Build the org chart piece by piece, synced with narration. When "agents" is mentioned, the role cards appear. When "tasks" is mentioned, assignment arrows appear. When "crew" is mentioned, a containing box wraps everything.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The Code</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is what it looks like in code.</p>
+      <div class="code-block"><pre><span class="kw">from</span> crewai <span class="kw">import</span> Agent, Task, Crew
+
+<span class="cm"># Define agents</span>
+researcher = Agent(
+    role=<span class="str">"Senior Researcher"</span>,
+    goal=<span class="str">"Find the 3 most relevant papers"</span>,
+    backstory=<span class="str">"Expert at academic research"</span>
+)
+
+writer = Agent(
+    role=<span class="str">"Technical Writer"</span>,
+    goal=<span class="str">"Write a clear summary"</span>,
+    backstory=<span class="str">"Skilled at explaining complex topics"</span>
+)
+
+<span class="cm"># Define tasks</span>
+research_task = Task(
+    description=<span class="str">"Research recent papers on RAG"</span>,
+    expected_output=<span class="str">"List of 3 papers with summaries"</span>,
+    agent=researcher
+)
+
+write_task = Task(
+    description=<span class="str">"Write a 500-word summary"</span>,
+    expected_output=<span class="str">"A polished summary article"</span>,
+    agent=writer
+)
+
+<span class="cm"># Assemble crew</span>
+crew = Crew(
+    agents=[researcher, writer],
+    tasks=[research_task, write_task],
+    process=<span class="str">"sequential"</span>
+)
+
+result = crew.<span class="fn">kickoff</span>()</pre></div>
+      <p>The researcher runs first, finds the papers. Its output automatically flows to the writer. The writer uses those findings to produce the summary. Two agents, two tasks, one crew. That is multi-agent AI.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code + Flow Side-by-Side</span>
+        <span class="placeholder-desc">Left: code appearing section by section. Right: the agent-task flow building visually -- Researcher box appears, then Writer box, then arrow connecting them, then "Crew" wrapper.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Sequential vs Hierarchical</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>CrewAI supports two orchestration patterns.</p>
+      <p>Sequential: tasks run in order. The researcher finishes, then the writer starts, then the reviewer. Output flows downstream. Simple, predictable, great for linear workflows.</p>
+      <p>Hierarchical: a manager agent delegates tasks, reviews outputs, and can reassign work. The manager decides the order. It can send work back for revision. More complex, more flexible, better for dynamic projects where the path is not fixed.</p>
+      <p>Start with sequential. Move to hierarchical when you need it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Two-Pattern Animation</span>
+        <span class="placeholder-desc">Top: Sequential pipeline -- Researcher, Writer, Reviewer in a straight line with arrows. Bottom: Hierarchical -- Manager at top with arrows down to Researcher, Writer, Reviewer, plus feedback arrows going back up.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG D -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG D</span>
+      <span class="segment-title">Delegation</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>One of CrewAI's most powerful features is delegation. An agent can ask another agent for help.</p>
+      <p>The writer is drafting a section and realizes it needs a specific statistic. Instead of guessing, it delegates to the researcher: "Find me the 2024 market size for vector databases." The researcher runs, finds the number, and passes it back. The writer continues with real data.</p>
+      <p>This is not hardcoded. The agents decide when to delegate based on the task at hand. It is collaboration, not just sequencing.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Agent Communication</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Chat Animation</span>
+        <span class="placeholder-desc">Chat-style bubbles showing agents messaging each other: "Writer: I need the 2024 market size for vector DBs" -- "Researcher: Searching... Found it: $3.2B" -- "Writer: Thanks, incorporating into section 2." Messages appear one by one.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: Orchestrating Complex Workflows                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: "Orchestrating Complex Workflows"</h2>
+    <div class="video-meta">Voiceover + animation -- 6-8 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Task Dependencies</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Real workflows have dependencies. The analyst cannot analyze until the researcher has gathered data. The writer cannot write until the analyst has produced insights. The editor cannot edit until the writer has a draft.</p>
+      <p>CrewAI handles this through task ordering and context passing. Each task's output becomes available to downstream tasks. You define the order, and the framework ensures that each agent gets the context it needs from the agents that ran before it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Crew Execution</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Timeline Animation</span>
+        <span class="placeholder-desc">Timeline showing tasks executing in sequence. Each task block shows: agent name, duration bar, dependency arrows. Researcher finishes, output arrow feeds into Analyst, Analyst finishes, arrow feeds into Writer. Dependencies highlighted with connecting lines.</span>
+        <span class="placeholder-duration">~12 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Memory and Context</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>How do agents share information? Through context. When you set up a sequential crew, each task's output is automatically passed to the next task as context. The writer does not just know its own instructions -- it knows what the researcher found.</p>
+      <p>CrewAI also supports short-term memory within a crew run and long-term memory across runs. Short-term memory lets agents reference earlier results. Long-term memory lets a crew learn from past executions.</p>
+      <p>For this module, focus on the basics -- task output flowing as context. That alone is enough to build powerful multi-agent systems.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Context Flow Diagram</span>
+        <span class="placeholder-desc">Data panel flowing from task to task -- Researcher output feeds into Analyst context, Analyst output feeds into Writer context. Each context panel grows as more information accumulates.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Real-World Patterns</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Where are multi-agent systems actually being used?</p>
+      <p>Cognition's Devin uses multiple specialized agents -- a planner, a coder, a debugger, and a tester -- working together to complete software engineering tasks. Valued at two billion dollars.</p>
+      <p>Harvey uses multi-agent workflows for legal research -- one agent finds case law, another analyzes precedents, a third drafts arguments. Used by elite law firms.</p>
+      <p>The pattern is the same everywhere. Break a complex task into specialized roles. Let each role do what it does best. Orchestrate the handoffs. That is multi-agent AI.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Company Cards</span>
+        <span class="placeholder-desc">Cognition (Devin) and Harvey cards with brief descriptions and valuation numbers. Same style as M07 startup cards but for multi-agent companies.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Wrap-Up                                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: "Module 8 Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">What You Accomplished</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Look at what you built this week.</p>
+      <p>You learned why single agents hit a ceiling -- and how specialization breaks through it. You learned CrewAI's three building blocks: agents, tasks, and crews. You built sequential pipelines and explored hierarchical orchestration. You saw how agents can delegate to each other, sharing context and collaborating like real teams.</p>
+      <p>You went from building one agent to building a team of agents. That is not an incremental improvement. That is a fundamentally different way of building AI systems.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same studio setup as opening. Reflective delivery. Let the accomplishment land.</p>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Next Module Preview</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next week, we shift gears. You have built powerful backends -- APIs, chains, RAG, agents, multi-agent crews. But if nobody can use what you built, it does not exist.</p>
+      <p>Next module: Vision and Evaluation. How do you test, evaluate, and trust the AI systems you are building? See you there.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Card</span>
+        <span class="placeholder-desc">"Next: M09 -- Vision &amp; Evaluation" with module cover graphic. Hold 5 sec.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- Student Discussion Guide (separate from video tabs) -->
+<div style="margin-top:48px; padding-top:24px; border-top:1px solid rgba(37,99,235,0.08);">
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number" style="background:rgba(20,184,166,0.1);color:#0d9488;">DISC</span>
+      <span class="segment-title">Student Discussion Guide -- Multi-Agent at Work</span>
+      <div class="segment-badges">
+        <span class="badge badge-discussion">STUDENT DISCUSSION</span>
+        <span class="badge badge-duration">~10 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="discussion-guidelines">
+        <h4>STUDENT DISCUSSION GUIDE</h4>
+        <p class="disc-intro">Two former students join Prof. Dehghani to discuss real-world multi-agent projects. Semi-structured, conversation-driven.</p>
+        <ol>
+          <li>Have you encountered a workflow at your job that would benefit from multiple AI agents working together?</li>
+          <li>What is the hardest part of coordinating multiple agents -- defining roles, managing handoffs, or handling failures?</li>
+          <li>When would you choose sequential versus hierarchical orchestration?</li>
+          <li>How do you decide when a problem needs multi-agent versus a single well-prompted agent?</li>
+          <li>What advice would you give someone deploying their first multi-agent system in production?</li>
+        </ol>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Note</span>
+      <div class="media-note">
+        MEDIA TEAM: Three-person setup -- Prof. and two students. Relaxed conversation. No slides. 10-12 minutes. Can be edited down to 8-10 for final cut.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- References -->
+<div class="references-section">
+  <h3>References &amp; Resources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Resource</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td>CrewAI Documentation</td><td><a href="https://docs.crewai.com/" target="_blank">docs.crewai.com</a></td></tr>
+      <tr><td>CrewAI GitHub</td><td><a href="https://github.com/crewAIInc/crewAI" target="_blank">github.com/crewAIInc/crewAI</a></td></tr>
+      <tr><td>Multi-Agent Systems Survey</td><td><a href="https://arxiv.org/abs/2402.01680" target="_blank">arxiv.org/abs/2402.01680</a></td></tr>
+      <tr><td>Cognition (Devin)</td><td><a href="https://www.cognition.ai/" target="_blank">cognition.ai</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) { stopAutoScroll(); }
+}
+
+let scrollInterval = null;
+let isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) { stopAutoScroll(); } else { startAutoScroll(); } }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+});
+</script>
+
+</body>
+</html>

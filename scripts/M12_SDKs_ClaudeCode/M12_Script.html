@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M12 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M12 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: Claude Agent SDK</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: Google ADK</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: Beer Game Workshop</button>
+    <button class="video-tab" onclick="switchVideo(5)">V5: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- The Smartphone Moment                    -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark" -- The Smartphone Moment</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The best agent framework is the one that gets out of your way.</span>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">The Smartphone Analogy</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Think about the first time you used a smartphone. Before that, you needed a separate camera, GPS, MP3 player, calculator, and phone. The smartphone put them all in one device.</p>
+      <p>Claude Agent SDK and Google ADK did the same thing for agent development. Built-in tools. No setup. Just build.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Smartphone Analogy</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Before: separate camera, GPS, MP3, phone, calculator on a table. After: all inside one device. Then: Before (LangChain + tools + memory + glue code). After (Claude SDK with everything built in).</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Two-phase animation. Phase 1: five separate gadgets slide together and morph into a smartphone. Phase 2: five separate Python packages/libraries slide together and morph into a single SDK icon. Same visual rhythm. Clean, minimal.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">The Platform Shift</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>In 2024, building an AI agent meant choosing a framework, writing glue code, debugging tool integrations, and hoping everything worked together. LangChain, CrewAI, AutoGen -- each had strengths, but all required significant scaffolding.</p>
+      <p>In 2026, the major AI companies released their own SDKs. Anthropic shipped the Claude Agent SDK with built-in tools -- Read, Write, Bash, WebSearch. Google released the Agent Development Kit with multi-agent support and deployment flexibility. These are not frameworks. They are platforms.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Direct to camera. Authoritative delivery. Slight pause after "These are not frameworks. They are platforms." for emphasis.</p>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">Workshop Preview</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~40 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>This module is a workshop. Less lecture, more building. You will use both SDKs. You will rebuild the Beer Game with modern tools. And you will see why the best agent framework is the one that gets out of your way.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"The best agent framework is the one that gets out of your way." -- white text on dark bar, lower third.</span>
+        <span class="placeholder-duration">Hold 4 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: Claude Agent SDK                                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: Claude Agent SDK</h2>
+    <div class="video-meta">Voiceover + code walkthrough -- 6-8 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Built-In Tools</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The Claude Agent SDK is Anthropic's official toolkit for building AI agents. Let me walk you through what makes it different.</p>
+      <p>First, built-in tools. The SDK comes with tools like Read (read files), Write (create files), Bash (run commands), and WebSearch. You do not need to implement these yourself. They just work.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: SDK Comparison</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Three Columns</span>
+        <span class="placeholder-desc">Claude SDK, OpenAI SDK, Google ADK. Each with code snippets showing how to build the same agent. Highlight differences and similarities.</span>
+        <span class="placeholder-duration">Hold 15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Three-column layout. Same task in each SDK. Highlight lines of code needed (Claude = fewest due to built-in tools). Use the course blue palette for Claude column, neutral for others.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Skills and Subagents</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Diagrams</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Second, Skills versus Tools. Tools are atomic actions. Skills are higher-level capabilities -- reusable instruction sets that the agent can invoke. Think of tools as functions and skills as libraries.</p>
+      <p>Third, subagents. You can create specialized agents that work under a main orchestrator. Each subagent has its own tools and instructions. The orchestrator delegates tasks and collects results.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Architecture Diagram</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Diagram</span>
+        <span class="placeholder-desc">Orchestrator agent at top. Three subagents below (Research, Analysis, Writing). Each with their own tool icons. Arrows show delegation and result collection.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Mental Model</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Screen</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The mental model is simple -- you define what the agent should do (instructions), what it can do (tools), and how it should work with others (subagents). The SDK handles the rest.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Claude Code</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Screen Recording</span>
+        <span class="placeholder-desc">Terminal showing Claude Code building a feature in real-time. Commands flow, files get created, tests pass. Show the power of agent-driven development.</span>
+        <span class="placeholder-duration">~20 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: Google ADK                                              -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: Google ADK</h2>
+    <div class="video-meta">Voiceover + code walkthrough -- 5-6 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Code-First Approach</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Google's Agent Development Kit takes a code-first approach. If you are a developer who thinks in functions and classes, ADK will feel natural.</p>
+      <p>The core concept is the Agent class. You define an agent with a name, model, instructions, and tools. Tools are Python functions decorated with metadata. The agent calls them as needed.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Walkthrough</span>
+        <span class="placeholder-desc">Google ADK Agent class definition. Show the Agent constructor with name, model, instructions, tools. Highlight the decorator pattern for tools.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Multi-Agent Orchestration</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Diagrams</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>What makes ADK interesting is multi-agent orchestration. You can define multiple agents that collaborate on complex tasks. A research agent gathers information. An analysis agent processes it. A writing agent produces the final output.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Diagram</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Flow Diagram</span>
+        <span class="placeholder-desc">Three agents in sequence: Research arrow to Analysis arrow to Writing. Data flows between them. Each agent box shows its tools and model.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Deployment Flexibility</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Screen</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Deployment is flexible -- run locally, deploy to Cloud Run, or use Vertex AI. Same code, different environments.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Deployment Options</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Diagram</span>
+        <span class="placeholder-desc">Same code box pointing to three deployment targets: Local, Cloud Run, Vertex AI. Each with an icon and use case description.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Beer Game V2 -- Workshop                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: Beer Game V2 -- Workshop Introduction</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">From M04 to M12</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Remember the Beer Game from Module 4? You built a supply chain simulation with simple LLM-powered decision making. That was a great start. Now we are going to rebuild it with everything you have learned since then.</p>
+      <p>Beer Game V2 uses Claude Code and the Agent SDK. The agents are smarter -- they have memory, they analyze trends, they coordinate. The visualization dashboard shows real-time supply chain dynamics. And the whole system is built using modern AI engineering practices.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Beer Game V2</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split Screen</span>
+        <span class="placeholder-desc">M04 basic version (left, simple text output) vs M12 advanced version (right, visual dashboard with charts, real-time decisions, AI explanations).</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Dramatic before/after. Left side: plain text terminal output from M04. Right side: rich dashboard with supply chain charts, inventory levels, order decisions with AI explanations. The contrast should be striking -- same game, completely different experience.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Workshop Instructions</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>This workshop will take about 25 minutes. Follow the steps. Experiment. Break things and fix them. That is how you learn.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Direct to camera. Encouraging, energetic. This is the hands-on part -- build excitement for the workshop.</p>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 5: Wrap-Up                                                 -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: Wrap-Up</h2>
+    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Engineering Session Complete</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You just built three working projects using two different SDKs and Claude Code. That is not a lecture. That is an engineering session.</p>
+      <p>The tools will keep evolving. New SDKs will launch. But the skill you built today -- the ability to pick up a new platform and build something real with it quickly -- that is permanent.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Warm lighting, direct to camera. Proud of the students. Let "that is permanent" land with a pause.</p>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Next Module Preview</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next module, we shift to business deployment. n8n, workflow automation, and applying everything you know to real business problems.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">DADS 5250 -- Module 12 Complete. Next: M13 -- Applied Business GenAI and n8n.</span>
+        <span class="placeholder-duration">Hold 3 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- References -->
+<div class="references-section">
+  <h3>References &amp; Fact-Check Sources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Claim</th><th>Detail</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Claude Agent SDK</td>
+        <td>Anthropic official agent toolkit; built-in tools (Read, Write, Bash, WebSearch)</td>
+        <td><a href="https://docs.anthropic.com/en/docs/agents-and-tools" target="_blank">docs.anthropic.com</a></td>
+      </tr>
+      <tr>
+        <td>Google ADK</td>
+        <td>Agent Development Kit; multi-agent, code-first, deploy to Cloud Run/Vertex AI</td>
+        <td><a href="https://google.github.io/adk-docs/" target="_blank">google.github.io/adk-docs</a></td>
+      </tr>
+      <tr>
+        <td>Beer Game (supply chain)</td>
+        <td>Classic MIT Sloan simulation game; bullwhip effect demonstration</td>
+        <td><a href="https://mitsloan.mit.edu/LearningEdge/simulations/beergame/Pages/the-beer-game.aspx" target="_blank">MIT Sloan</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) stopAutoScroll();
+}
+
+let scrollInterval = null, isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) stopAutoScroll(); else startAutoScroll(); }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') toggleTeleprompter();
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4','5'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
+});
+</script>
+</body>
+</html>

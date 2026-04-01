@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M11 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M11 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: Vision APIs</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: LLM Evaluation</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Engineering Drawings                     -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark" -- Engineering Drawings</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">If you cannot measure it, you cannot trust it.</span>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Personal Story -- CAD Diagrams</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>I was reviewing engineering drawings last month -- complex CAD diagrams with dozens of components. I uploaded one to GPT-4 Vision and asked it to identify potential stress points. It found three issues my team had missed. That is when I realized -- these models do not just read text anymore. They see.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Vision Before/After</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Before/After</span>
+        <span class="placeholder-desc">"What AI sees" -- upload a complex engineering diagram, AI annotations appear labeling components, identifying issues, suggesting improvements.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Left side: raw CAD diagram, dense and technical. Right side: same diagram with AI-generated annotations -- colored highlights on stress points, labels on components, red circles on issues. The annotations should appear progressively, as if the AI is analyzing in real time.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">The Multimodal Shift</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>For years, AI was a text-only game. You type, it responds. But something shifted. The latest models -- GPT-4V, Gemini, Claude -- they process images, audio, even video. They do not just read your question about a chart. They look at the chart.</p>
+      <p>This changes everything. Medical imaging. Manufacturing quality control. Document analysis. Architectural review. Any domain where visual information matters -- and that is most domains -- multimodal AI is now relevant.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Multimodal</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Three input types (text, image, audio) flowing into one model, three output types emerging. Shows the versatility of multimodal processing.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">The Measurement Problem</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~40 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>But here is the catch. If these models can see, how do you know they are seeing correctly? How do you measure whether the output is good? That is the second half of this module -- evaluation. Because if you cannot measure it, you cannot trust it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"If you cannot measure it, you cannot trust it." -- white text on dark bar, lower third.</span>
+        <span class="placeholder-duration">Hold 4 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: Vision APIs                                             -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: Vision APIs -- Sending Images to AI</h2>
+    <div class="video-meta">Voiceover + code walkthrough -- 6-8 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">How to Send Images</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me show you how to send an image to an AI model. It is simpler than you think.</p>
+      <p>With GPT-4 Vision, you send a message that contains both text and an image. The image can be a URL or a base64-encoded file. The model processes both together and responds.</p>
+      <p>With Gemini Vision, the approach is similar but the API structure differs slightly. You can send images, PDFs, even short video clips.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Walkthrough</span>
+        <span class="placeholder-desc">Side-by-side: GPT-4V API call (left) vs Gemini Vision API call (right). Highlight the image parameter in both. Show the response with image analysis.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">What Vision Models Can Do</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Demos</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>What can these models actually do with images? Object detection, text extraction from photos, diagram analysis, comparing two images, describing scenes, reading handwriting. The accuracy varies by task, but for many practical applications it is remarkably good.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Model Comparison</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split Screen</span>
+        <span class="placeholder-desc">GPT-4V vs Gemini Vision -- same image, different analyses side by side. Strengths and weaknesses of each highlighted.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Use a complex image (engineering diagram or data-rich chart). Show both model outputs side by side. Highlight where they agree (green) and where they differ (amber). This sets up the evaluation discussion in V3.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Conversational Vision</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Screen</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The key insight is this -- vision is not a separate capability. It is integrated into the same conversation. You can ask follow-up questions about an image. You can send multiple images and ask the model to compare them. It is a conversation, not a one-shot analysis.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo</span>
+      <p class="shot-note">Show a multi-turn conversation: upload image, ask question, get answer, ask follow-up about a specific region, get detailed analysis. The AI remembers the image across turns.</p>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: LLM Evaluation                                          -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: LLM Evaluation -- Metrics and Frameworks</h2>
+    <div class="video-meta">Voiceover + diagrams -- 6-8 minutes -- 4 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">The Hard Problem</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You have built a RAG system. You have built agents. But here is the question nobody asks until it is too late -- how do you know if they are working well?</p>
+      <p>LLM evaluation is one of the hardest problems in AI engineering. Traditional software has unit tests -- input X, expect output Y. But LLMs are non-deterministic. The same input can produce different outputs every time.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Traditional testing: input arrow to function arrow to expected output (checkmark). LLM testing: same input, three different outputs fan out. Question mark -- which one is "correct"?</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Automated Metrics</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Diagrams</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>So what do we measure? There are automated metrics like BLEU and ROUGE -- they compare generated text against reference text. Useful for translation and summarization. There is semantic similarity -- embedding the output and comparing it to expected answers. And there is human evaluation -- having people rate quality, accuracy, helpfulness.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Demo: Evaluation Dashboard</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Dashboard</span>
+        <span class="placeholder-desc">Professional metrics visualization -- bar charts of model scores, confusion matrix, precision/recall curves. Like a testing dashboard for AI.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Clean dashboard layout. Top row: overall score cards. Middle: bar chart comparing BLEU, ROUGE, semantic similarity across models. Bottom: precision/recall curve. Use the course blue palette. No decorative elements -- this should feel like a real engineering tool.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">RAG Evaluation with RAGAS</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>For RAG systems specifically, you measure retrieval quality (did we find the right documents?) and generation quality (did the answer correctly use those documents?). Frameworks like RAGAS give you metrics for both.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Walkthrough</span>
+        <span class="placeholder-desc">RAGAS evaluation code: test dataset, retrieval metrics (context precision, recall), generation metrics (faithfulness, answer relevancy). Show the output scores.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG D -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG D</span>
+      <span class="segment-title">Practical Approach -- Regression Testing for AI</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Screen</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The practical approach? Build a test suite. A set of questions with known good answers. Run your system against it regularly. Track the scores over time. That is regression testing for AI.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Diagram</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Flow Diagram</span>
+        <span class="placeholder-desc">Build test suite (questions + expected answers) arrow to Run system arrow to Compare outputs arrow to Track scores over time (line chart trending). Feedback loop.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Wrap-Up                                                 -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: Wrap-Up</h2>
+    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">Production-Ready</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>This module covered two capabilities that make your AI systems production-ready. Vision gives your applications the ability to process the visual world. Evaluation gives you the confidence that they are doing it correctly.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Warm lighting, direct to camera. Confident, measured delivery.</p>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Next Module Preview</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next module, we shift to the cutting edge -- Claude Agent SDK, Google ADK, and Claude Code. It is workshop time.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">DADS 5250 -- Module 11 Complete. Next: M12 -- SDKs, Claude Code and Workshop.</span>
+        <span class="placeholder-duration">Hold 3 sec</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- References -->
+<div class="references-section">
+  <h3>References &amp; Fact-Check Sources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Claim</th><th>Detail</th><th>Source</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>GPT-4V, Gemini Vision, Claude vision</td>
+        <td>Multimodal capabilities across major LLMs</td>
+        <td><a href="https://platform.openai.com/docs/guides/vision" target="_blank">OpenAI Vision Docs</a></td>
+      </tr>
+      <tr>
+        <td>BLEU, ROUGE metrics</td>
+        <td>Standard NLP evaluation metrics</td>
+        <td><a href="https://aclanthology.org/" target="_blank">ACL Anthology</a></td>
+      </tr>
+      <tr>
+        <td>RAGAS framework</td>
+        <td>RAG evaluation: context precision, faithfulness, answer relevancy</td>
+        <td><a href="https://docs.ragas.io" target="_blank">docs.ragas.io</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) stopAutoScroll();
+}
+
+let scrollInterval = null, isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) stopAutoScroll(); else startAutoScroll(); }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') toggleTeleprompter();
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M06 Production Script -- DADS 5250</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #2563EB;
+  --accent-light: #dbeafe;
+  --accent-dark: #1d4ed8;
+  --text: #1e293b;
+  --text-muted: #64748b;
+  --card-bg: rgba(255,255,255,0.72);
+  --card-border: rgba(255,255,255,0.5);
+  --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
+  --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
+}
+
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+.badge-ta { background: rgba(245,158,11,0.12); color: #b45309; font-weight: 600; letter-spacing: 0.04em; }
+.badge-expert { background: rgba(120,113,108,0.1); color: #78716c; font-weight: 600; letter-spacing: 0.04em; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.code-block { background: #1e293b; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin: 12px 0; }
+.code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-block .kw { color: #93c5fd; } .code-block .str { color: #86efac; } .code-block .fn { color: #fde68a; } .code-block .cm { color: #64748b; }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+/* Expert conversation card */
+.expert-guidelines { background: rgba(120,113,108,0.03); border: 1px solid rgba(120,113,108,0.2); border-radius: 10px; padding: 24px; }
+.expert-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #78716c; letter-spacing: 0.06em; margin-bottom: 12px; }
+.expert-guidelines .expert-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.expert-guidelines .expert-section { margin-bottom: 14px; }
+.expert-guidelines .expert-section h5 { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.expert-guidelines .expert-section ol { padding-left: 18px; }
+.expert-guidelines .expert-section li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 4px; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+/* Teleprompter mode */
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
+</style>
+</head>
+<body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">M06 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab" onclick="switchVideo(2)">V2: What Is an Agent</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: Tools</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: LangGraph Intro</button>
+    <button class="video-tab" onclick="switchVideo(5)">V5: Building with LangGraph</button>
+    <button class="video-tab" onclick="switchVideo(6)">V6: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+  </div>
+</div>
+
+<div class="container">
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Chess Analogy                           -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "The Spark" -- Chess Analogy</h2>
+    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The leap from chains to agents is the leap from scripts to intelligence.</span>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">The Chess Opening</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me tell you about two chess players.</p>
+      <p>The first one memorized openings. Move one: pawn to e4. Move two: knight to f3. Move three: bishop to c4. It works great -- until the opponent does something unexpected. Then the player is lost, because they only know the script.</p>
+      <p>The second player understands the game. They look at the board, assess the position, decide on a strategy, make a move, and then reassess. They adapt. They think.</p>
+      <p>In AI, the first player is a chain. The second player is an agent. And today, you become the second player.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Slight lean forward on "they think." Pause after "you become the second player."</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays. Clean shot. Consider having a chess board subtly visible in background -- out of focus.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Chains vs Agents</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~40 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Until now, you have built chains. Step one feeds into step two feeds into step three. Same path every time. That is powerful -- and for many tasks, it is all you need.</p>
+      <p>But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can decide what to do next. That is an agent.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split-Screen Animation</span>
+        <span class="placeholder-desc">LEFT: Train on tracks -- fixed path, cannot deviate, predictable. RIGHT: Self-driving car -- makes real-time decisions, routes around obstacles. Same destination, fundamentally different approach.</span>
+        <span class="placeholder-duration">~10 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG 03 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">Key Message</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~15 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The leap from chains to agents is the leap from scripts to intelligence. And this module teaches you to build intelligence.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Overlay</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Overlay</span>
+        <span class="placeholder-desc">"The leap from chains to agents is the leap from scripts to intelligence." -- white on dark bar, lower third. Hold 4 sec.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: What Is an Agent?                                      -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "What Is an Agent?"</h2>
+    <div class="video-meta">Voiceover + animation -- 7-8 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Defining an Agent</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>An agent is an AI system that reasons, plans, and takes actions autonomously. Let me break that down.</p>
+      <p>A chain runs the same steps every time. An agent decides what to do at each step. It looks at the current situation, reasons about what information it needs, picks a tool to get that information, observes the result, and then decides what to do next. It keeps going until the task is done.</p>
+      <p>The key distinction: a chain is a script. An agent is a decision-maker.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Comparison Animation</span>
+        <span class="placeholder-desc">Chain: linear arrows, A to B to C, same every time. Agent: branching flowchart, decisions at each node, different paths light up on different runs.</span>
+        <span class="placeholder-duration">~12 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The ReAct Loop</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Every modern agent runs on the same loop. It is called ReAct -- Reason, Act, Observe.</p>
+      <p>First, the agent reasons. "What do I know? What do I need?" Then it acts -- it calls a tool. A search, a calculator, a database query. Then it observes the result. "What did I learn?" And then it reasons again. "Is the task done? Do I need another step?" The loop continues until the agent decides it has enough information to respond.</p>
+      <p>Let me give you a concrete example. A user asks: "What is the weather in Boston, and should I bring an umbrella?" The agent reasons: I need weather data. It acts: calls the weather API. It observes: 62 degrees, 40 percent chance of rain. It reasons again: 40 percent rain means bring an umbrella. Done.</p>
+      <p>That is three lines of reasoning, one tool call, and a complete answer. A chain could not do this -- it would need the weather tool hardcoded into a fixed pipeline. The agent decided to use it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- ReAct Loop</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Circular Animation</span>
+        <span class="placeholder-desc">Brain icon (Reason) -- hand icon (Act) -- eye icon (Observe) -- loops back. Each cycle adds information. The Boston weather example plays out concretely in the loop: Reason step shows thinking text, Act step shows API call, Observe step shows result.</span>
+        <span class="placeholder-duration">~20 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Use blue for Reason, green for Act, amber for Observe. The loop should feel like a thinking process. Show the concrete example playing out step by step inside the loop, not just abstract icons.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">When to Use Agents</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>So when do you use an agent versus a chain?</p>
+      <p>Use a chain when you have a predictable workflow with known steps. Summarize a document. Translate text. Extract data from a form. The path is always the same, and that is fine.</p>
+      <p>Use an agent when the task is open-ended. Research a topic -- you do not know how many searches it will take. Debug a problem -- you do not know which files to check. Answer a question that might require multiple tools in an unpredictable order. The agent figures out the path at runtime.</p>
+      <p>Chains are efficient and predictable. Agents are flexible and smart. You want both in your toolkit.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Two-Column Comparison</span>
+        <span class="placeholder-desc">Chain column: summarize, translate, extract (fixed tasks). Agent column: research, debug, multi-step Q&amp;A (open-ended tasks). Clear divider between predictable and unpredictable workflows.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: Tools                                                  -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: "Tools: Teaching AI to Use Functions"</h2>
+    <div class="video-meta">Voiceover + animation -- 5-6 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">What Is a Tool</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>A tool is a function the agent can call. That is it. A Python function with a name, a description, and parameters.</p>
+      <p>The agent sees a list of available tools with their descriptions. When it decides it needs information, it picks a tool, fills in the arguments, and calls it. The result comes back, and the agent uses it to continue reasoning.</p>
+      <p>You already learned function calling in Module 3. One call, one response. Agents use function calling in a loop -- chaining multiple tool calls until the task is complete. That is the difference. Same mechanism, repeated intelligently.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- Toolbox</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Animation</span>
+        <span class="placeholder-desc">Toolbox opens -- each tool is a card that flips to show its schema: name, description, parameters. Four tools: Search (magnifying glass), Calculate (abacus), Read (document), Execute (terminal). Agent picks one, card animates into action.</span>
+        <span class="placeholder-duration">~12 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Tool Schema and Selection</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is what a tool definition looks like.</p>
+      <div class="code-block"><pre><span class="kw">def</span> <span class="fn">get_weather</span>(city: <span class="fn">str</span>) -> <span class="fn">str</span>:
+    <span class="str">"""Get the current weather for a city.
+
+    Args:
+        city: The city name, e.g. 'Boston, MA'
+    Returns:
+        Current weather conditions as a string.
+    """</span>
+    <span class="cm"># ... actual API call ...</span>
+    <span class="kw">return</span> weather_data</pre></div>
+      <p>The agent reads the docstring to understand what the tool does and when to use it. Good descriptions are critical -- if the agent does not understand the tool, it will not use it correctly. Think of it as writing a manual for a coworker.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code Display</span>
+        <span class="placeholder-desc">Code appears with typing effect. Highlight the docstring -- zoom in on the description, showing that this is what the agent reads to decide whether to use the tool.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Introduction to LangGraph                              -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: "Introduction to LangGraph"</h2>
+    <div class="video-meta">Voiceover + animation -- 6-7 minutes -- 3 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Why LangGraph</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You understand agents. You understand tools. Now you need a framework to build them properly. That framework is LangGraph.</p>
+      <p>LangGraph models your agent workflow as a graph. Nodes are steps -- LLM calls, tool calls, decisions. Edges are transitions -- what happens next. And state is shared memory that flows through the entire graph.</p>
+      <p>Think of it as a flowchart that the AI navigates at runtime. You design the flowchart. The AI decides which path to take.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation -- LangGraph</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Interactive Flowchart</span>
+        <span class="placeholder-desc">Flowchart builds itself: nodes appear one by one (boxes), edges connect them (arrows). Data flows through, nodes light up as activated. Conditional edges show branching. State updates visible at each node as a small data panel.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: This is the key visual for LangGraph. Nodes should be clean boxes with labels. Conditional edges should show a diamond decision point. Use the blue accent color for active nodes, gray for inactive. Data flow should be animated as a glowing line traveling along edges.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Nodes, Edges, State</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me define the three building blocks.</p>
+      <p>Nodes are functions. Each node takes the current state, does something -- calls the LLM, runs a tool, makes a decision -- and returns updated state. That is it. A function in, updated state out.</p>
+      <p>Edges connect nodes. A normal edge says "after this node, always go to that node." A conditional edge says "after this node, look at the state and decide where to go." This is where the intelligence lives -- the graph makes different decisions based on the data.</p>
+      <p>State is a dictionary that every node can read and write. It is how nodes communicate. The LLM node writes its response to state. The tool node reads the response and writes its result. Everything flows through state.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation Spec</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Three-Part Animation</span>
+        <span class="placeholder-desc">Part 1: Node as a box, function goes in, state comes out. Part 2: Normal edge (straight arrow) vs conditional edge (diamond + branching arrows). Part 3: State as a flowing dictionary panel moving along edges between nodes.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">LangGraph in Context</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Why LangGraph when model providers now ship their own agent SDKs?</p>
+      <p>In 2024, you had to pick a framework -- LangChain agents, AutoGen, custom ReAct loops. Lots of boilerplate. In 2026, Claude Agent SDK, OpenAI Agents SDK, and Google ADK handle most simple agent tasks out of the box.</p>
+      <p>But LangGraph still matters for complex orchestration. When you need multi-step workflows with branching logic. When you need fine-grained control over every decision point. When you want to mix different LLMs in one workflow. LangGraph gives you that control. We will cover the newer SDKs in Module 12.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Visual Reference</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Timeline</span>
+        <span class="placeholder-desc">Timeline: 2024 "Framework Era" (gray, many logos) -- 2026 "SDK Era" (blue, three SDK logos) -- "LangGraph still matters for complex workflows" (highlighted).</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 5: Building with LangGraph                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: "Building with LangGraph"</h2>
+    <div class="video-meta">Voiceover + code display -- 5-6 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">The 5-Step Pattern</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Building a LangGraph agent follows five steps. Every time.</p>
+      <p>Step one: define the state. What information flows through the graph? Messages, tool results, decisions -- all stored in a typed dictionary.</p>
+      <p>Step two: create nodes. Each node is a Python function that takes state and returns updated state.</p>
+      <p>Step three: add edges. Connect your nodes. "After classify, go to respond."</p>
+      <p>Step four: add conditional edges. "After the LLM responds, check: did it want to call a tool? If yes, go to the tool node. If no, go to the end." This is the decision-making.</p>
+      <p>Step five: compile and run. Call <code>graph.compile()</code> to get a runnable object. Invoke it with your initial state.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Step-by-Step Build</span>
+        <span class="placeholder-desc">Five numbered steps building a graph visually: (1) state schema appears, (2) node boxes appear, (3) arrows connect them, (4) a diamond decision point adds branching, (5) a "compile" button turns everything into a runnable agent.</span>
+        <span class="placeholder-duration">~15 sec</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The Code</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is a minimal LangGraph agent.</p>
+      <div class="code-block"><pre><span class="kw">from</span> langgraph.graph <span class="kw">import</span> StateGraph, START, END
+<span class="kw">from</span> typing <span class="kw">import</span> TypedDict, Annotated
+
+<span class="kw">class</span> <span class="fn">State</span>(TypedDict):
+    messages: Annotated[<span class="fn">list</span>, <span class="str">"append"</span>]
+
+graph = StateGraph(State)
+graph.<span class="fn">add_node</span>(<span class="str">"agent"</span>, call_model)
+graph.<span class="fn">add_node</span>(<span class="str">"tools"</span>, call_tools)
+
+graph.<span class="fn">add_edge</span>(START, <span class="str">"agent"</span>)
+graph.<span class="fn">add_conditional_edges</span>(<span class="str">"agent"</span>, should_use_tool,
+    {<span class="str">"yes"</span>: <span class="str">"tools"</span>, <span class="str">"no"</span>: END})
+graph.<span class="fn">add_edge</span>(<span class="str">"tools"</span>, <span class="str">"agent"</span>)
+
+app = graph.<span class="fn">compile</span>()</pre></div>
+      <p>The conditional edge is the heart of it. After the agent responds, we check: does it want a tool? If yes, route to tools. If no, finish. The tools node runs the function and routes back to the agent. That loop is the ReAct pattern -- expressed as a graph.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Code Display</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Code + Graph Side-by-Side</span>
+        <span class="placeholder-desc">Left: code appearing line by line. Right: the graph building itself as code appears -- nodes and edges appear in sync with the code that defines them.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 6: Wrap-Up                                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Module 6 Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- SEG 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 01</span>
+      <span class="segment-title">What You Accomplished</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let us look at what you built.</p>
+      <p>You learned the difference between chains and agents -- scripts versus intelligence. You learned the ReAct loop -- reason, act, observe, repeat. You learned how tools give agents the ability to interact with the real world. And you built LangGraph agents with nodes, edges, conditional routing, and state management.</p>
+      <p>That is a massive leap. You went from fixed pipelines to dynamic AI systems that make their own decisions.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same studio setup as opening. Reflective delivery. Let the accomplishment land.</p>
+    </div>
+  </div>
+
+  <!-- SEG 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Next: The Hackathon</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next week is different. No new concepts. No new frameworks. Just building.</p>
+      <p>You have LLM APIs, prompt engineering, structured output, LangChain, RAG, and agents in your toolkit. Next week, you put them all together in the hackathon. Forty-eight hours. Build something real. Break something. Ship it. See you there.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Text Card</span>
+        <span class="placeholder-desc">"Next: M07 -- HACKATHON" with a countdown timer graphic. Hold 5 sec.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-6 -->
+
+
+<!-- Expert Conversation Guide (separate from video tabs) -->
+<div style="margin-top:48px; padding-top:24px; border-top:1px solid rgba(37,99,235,0.08);">
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number" style="background:rgba(120,113,108,0.1);color:#78716c;">EXPERT</span>
+      <span class="segment-title">Expert Conversation Guide -- Agents in Industry</span>
+      <div class="segment-badges">
+        <span class="badge badge-expert">EXPERT CONVERSATION</span>
+        <span class="badge badge-duration">15-20 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="expert-guidelines">
+        <h4>EXPERT CONVERSATION GUIDE</h4>
+        <p class="expert-intro">Prof. Dehghani hosts an industry expert. Semi-structured conversation about agents in production.</p>
+        <div class="expert-section">
+          <h5>Discussion Prompts</h5>
+          <ol>
+            <li>"What real agent systems are you seeing in production?"</li>
+            <li>"What are the biggest challenges in deploying agents?"</li>
+            <li>"How do you handle agent failures and errors?"</li>
+            <li>"What skills should students focus on for agent development?"</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Note</span>
+      <div class="media-note">
+        MEDIA TEAM: Two-camera setup -- Prof. and guest. Relaxed conversation format. No slides needed. Capture both speakers clearly. 15-20 minutes, can be edited down to 12-15 for final cut.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- References -->
+<div class="references-section">
+  <h3>References &amp; Resources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Resource</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td>ReAct Paper (Yao et al., 2023)</td><td><a href="https://arxiv.org/abs/2210.03629" target="_blank">arxiv.org/abs/2210.03629</a></td></tr>
+      <tr><td>LangGraph Documentation</td><td><a href="https://langchain-ai.github.io/langgraph/" target="_blank">langchain-ai.github.io/langgraph</a></td></tr>
+      <tr><td>OpenAI Function Calling</td><td><a href="https://platform.openai.com/docs/guides/function-calling" target="_blank">platform.openai.com/docs</a></td></tr>
+      <tr><td>LangChain Agents Guide</td><td><a href="https://python.langchain.com/docs/how_to/#agents" target="_blank">python.langchain.com</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) { stopAutoScroll(); }
+}
+
+let scrollInterval = null;
+let isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) { stopAutoScroll(); } else { startAutoScroll(); } }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+});
+</script>
+
+</body>
+</html>

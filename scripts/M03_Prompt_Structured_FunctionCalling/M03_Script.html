@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>M02 Production Script — DADS 5250</title>
+<title>M03 Production Script — DADS 5250</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -21,7 +21,6 @@
   --radius: 14px;
   --green: #10b981;
   --amber: #f59e0b;
-  --teal: #14b8a6;
   --muted: #94a3b8;
   --col-left: 60%;
   --col-right: 40%;
@@ -37,7 +36,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Subtle blue orb */
 body::before {
   content: '';
   position: fixed;
@@ -51,7 +49,6 @@ body::before {
   z-index: 0;
 }
 
-/* ── Top bar ── */
 .topbar {
   position: sticky;
   top: 0;
@@ -68,638 +65,104 @@ body::before {
   flex-wrap: wrap;
 }
 
-.topbar-left {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+.topbar-left { display: flex; align-items: center; gap: 16px; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
 
-.topbar-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-}
+.video-tabs { display: flex; gap: 4px; }
+.video-tab { padding: 6px 18px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.topbar-subtitle {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-  font-weight: 400;
-}
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
 
-/* Video tabs */
-.video-tabs {
-  display: flex;
-  gap: 4px;
-}
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
 
-.video-tab {
-  padding: 6px 18px;
-  border-radius: 999px;
-  border: 1px solid rgba(37,99,235,0.15);
-  background: transparent;
-  color: var(--text-muted);
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.82rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  white-space: nowrap;
-}
+.video-section { display: none; }
+.video-section.active { display: block; }
 
-.video-tab:hover {
-  background: var(--accent-light);
-  color: var(--accent);
-}
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
 
-.video-tab.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
 
-/* Action buttons */
-.topbar-actions {
-  display: flex;
-  gap: 8px;
-}
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
 
-.btn-action {
-  padding: 6px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(37,99,235,0.18);
-  background: var(--card-bg);
-  color: var(--text);
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.8rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.2s;
-  backdrop-filter: blur(8px);
-}
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
 
-.btn-action:hover {
-  background: var(--accent-light);
-  color: var(--accent);
-}
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+.media-placeholder .placeholder-style { font-size: 0.7rem; color: var(--accent); font-weight: 500; line-height: 1.4; max-width: 280px; }
+.media-placeholder .placeholder-deliverable { font-family: 'JetBrains Mono', monospace; font-size: 0.62rem; color: var(--muted); background: rgba(148,163,184,0.08); padding: 2px 8px; border-radius: 4px; }
 
-.btn-action.teleprompter-active {
-  background: #0f172a;
-  color: #fff;
-  border-color: #0f172a;
-}
+.code-block { background: #1e293b; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin: 12px 0; }
+.code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-block .kw { color: #93c5fd; } .code-block .str { color: #86efac; } .code-block .fn { color: #fde68a; } .code-block .cm { color: #64748b; }
 
-/* ── Container ── */
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 28px 32px 80px;
-  position: relative;
-  z-index: 1;
-}
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
 
-/* ── Video section ── */
-.video-section {
-  display: none;
-}
-
-.video-section.active {
-  display: block;
-}
-
-/* Video header */
-.video-header {
-  margin-bottom: 28px;
-}
-
-.video-header h2 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--text);
-  margin-bottom: 4px;
-}
-
-.video-header .video-meta {
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  font-weight: 400;
-}
-
-/* ── Segment row (two columns) ── */
-.segment {
-  display: grid;
-  grid-template-columns: var(--col-left) var(--col-right);
-  gap: 24px;
-  margin-bottom: 28px;
-  min-height: 120px;
-}
-
-/* Segment header spans both columns */
-.segment-header {
-  grid-column: 1 / -1;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid rgba(37,99,235,0.08);
-  margin-bottom: 4px;
-}
-
-.segment-number {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--accent);
-  background: var(--accent-light);
-  padding: 3px 10px;
-  border-radius: 999px;
-}
-
-.segment-title {
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.segment-badges {
-  display: flex;
-  gap: 6px;
-  margin-left: auto;
-}
-
-.badge {
-  font-size: 0.7rem;
-  font-weight: 500;
-  padding: 2px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.badge-type {
-  background: rgba(37,99,235,0.1);
-  color: var(--accent);
-}
-
-.badge-duration {
-  background: rgba(16,185,129,0.1);
-  color: var(--green);
-}
-
-.badge-shot {
-  background: rgba(245,158,11,0.1);
-  color: #b45309;
-}
-
-.badge-ta {
-  background: rgba(245,158,11,0.12);
-  color: #b45309;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-}
-
-/* Left column — Script */
-.script-col {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius);
-  box-shadow: var(--card-shadow);
-  padding: 28px 32px;
-}
-
-.script-col p {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: var(--text);
-  margin-bottom: 16px;
-}
-
-.script-col p:last-child {
-  margin-bottom: 0;
-}
-
-/* Right column — Media */
-.media-col {
-  background: rgba(255,255,255,0.55);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(37,99,235,0.06);
-  border-radius: var(--radius);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.media-col .media-label {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  margin-bottom: 4px;
-}
-
-.media-col .media-note {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-  background: rgba(37,99,235,0.04);
-  border-left: 2px solid var(--accent);
-  padding: 10px 14px;
-  border-radius: 0 8px 8px 0;
-}
-
-.media-col .shot-note {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-  font-style: italic;
-}
-
-/* Media placeholder box */
-.media-placeholder {
-  background: #f8fafc;
-  border: 1px dashed rgba(37,99,235,0.2);
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  min-height: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.media-placeholder .placeholder-type {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--accent);
-  background: var(--accent-light);
-  padding: 2px 10px;
-  border-radius: 999px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.media-placeholder .placeholder-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.5;
-  max-width: 280px;
-}
-
-.media-placeholder .placeholder-duration {
-  font-size: 0.72rem;
-  color: var(--muted);
-}
-
-/* Code block */
-.code-block {
-  background: #1e293b;
-  border-radius: 10px;
-  padding: 20px 24px;
-  overflow-x: auto;
-  margin: 12px 0;
-}
-
-.code-block pre {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.82rem;
-  line-height: 1.7;
-  color: #e2e8f0;
-  margin: 0;
-  white-space: pre;
-}
-
-.code-block .kw { color: #93c5fd; }
-.code-block .str { color: #86efac; }
-.code-block .fn { color: #fde68a; }
-.code-block .cm { color: #64748b; }
-
-/* Key message bar */
-.key-message-bar {
-  background: rgba(37,99,235,0.06);
-  border: 1px solid rgba(37,99,235,0.15);
-  border-radius: 10px;
-  padding: 14px 24px;
-  margin-bottom: 28px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.key-message-bar .km-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: var(--accent-light);
-  padding: 2px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-  letter-spacing: 0.04em;
-}
-
-.key-message-bar .km-text {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.5;
-}
-
-/* Discussion card */
-.discussion-card {
-  background: rgba(20,184,166,0.04);
-  border: 1px solid rgba(20,184,166,0.2);
-  border-radius: var(--radius);
-  padding: 24px 28px;
-}
-
-.discussion-card h4 {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: var(--teal);
-  margin-bottom: 8px;
-}
-
-.discussion-card .disc-meta {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  margin-bottom: 14px;
-  font-style: italic;
-}
-
-.discussion-card ol {
-  padding-left: 18px;
-}
-
-.discussion-card li {
-  font-size: 0.88rem;
-  color: var(--text);
-  line-height: 1.7;
-  margin-bottom: 6px;
-}
-
-/* AI Spotlight card */
-.spotlight-card {
-  background: rgba(37,99,235,0.03);
-  border: 1px solid rgba(37,99,235,0.12);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  margin-top: 8px;
-}
-
-.spotlight-card .spot-label {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.65rem;
-  font-weight: 600;
-  color: var(--accent);
-  background: var(--accent-light);
-  padding: 2px 10px;
-  border-radius: 999px;
-  letter-spacing: 0.04em;
-  display: inline-block;
-  margin-bottom: 8px;
-}
-
-.spotlight-card .spot-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-bottom: 6px;
-}
-
-.spotlight-card .spot-desc {
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  line-height: 1.55;
-}
-
-/* ── References section ── */
-.references-section {
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid rgba(37,99,235,0.06);
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.references-section h3 {
-  font-size: 0.68rem;
-  font-weight: 600;
-  color: var(--text-muted);
-  margin-bottom: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.ref-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.62rem;
-}
-
-.ref-table th {
-  text-align: left;
-  font-weight: 600;
-  color: var(--text-muted);
-  padding: 3px 6px;
-  border-bottom: 1px solid rgba(37,99,235,0.08);
-  font-size: 0.6rem;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-}
-
-.ref-table td {
-  padding: 3px 6px;
-  border-bottom: 1px solid rgba(37,99,235,0.03);
-  color: var(--text-muted);
-  vertical-align: top;
-  line-height: 1.4;
-}
-
-.ref-table a {
-  color: var(--accent);
-  text-decoration: none;
-  font-size: 0.62rem;
-}
-
-.ref-table a:hover {
-  text-decoration: underline;
-}
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
 
 /* ── Teleprompter mode ── */
-body.teleprompter {
-  background: #0a0a0a;
-}
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
 
-body.teleprompter::before {
-  display: none;
-}
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-body.teleprompter .topbar {
-  background: rgba(10,10,10,0.92);
-  border-bottom-color: rgba(255,255,255,0.06);
-}
-
-body.teleprompter .topbar-title,
-body.teleprompter .topbar-subtitle {
-  color: rgba(255,255,255,0.5);
-}
-
-body.teleprompter .video-tab {
-  color: rgba(255,255,255,0.4);
-  border-color: rgba(255,255,255,0.1);
-}
-
-body.teleprompter .video-tab.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-body.teleprompter .btn-action {
-  color: rgba(255,255,255,0.5);
-  border-color: rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.05);
-}
-
-body.teleprompter .video-header h2 {
-  color: rgba(255,255,255,0.3);
-}
-
-body.teleprompter .video-header .video-meta {
-  color: rgba(255,255,255,0.15);
-}
-
-body.teleprompter .media-col {
-  display: none;
-}
-
-body.teleprompter .key-message-bar {
-  background: rgba(37,99,235,0.08);
-  border-color: rgba(37,99,235,0.2);
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.teleprompter .key-message-bar .km-text {
-  color: rgba(255,255,255,0.85);
-}
-
-body.teleprompter .segment {
-  grid-template-columns: 1fr;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-body.teleprompter .segment-header {
-  border-bottom-color: rgba(255,255,255,0.06);
-}
-
-body.teleprompter .segment-number {
-  background: rgba(37,99,235,0.15);
-  color: var(--accent);
-}
-
-body.teleprompter .segment-title {
-  color: rgba(255,255,255,0.4);
-}
-
-body.teleprompter .badge {
-  opacity: 0.5;
-}
-
-body.teleprompter .script-col {
-  background: transparent;
-  border: none;
-  box-shadow: none;
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  padding: 20px 0;
-}
-
-body.teleprompter .script-col p {
-  font-size: 1.55rem;
-  line-height: 2;
-  color: rgba(255,255,255,0.92);
-  font-weight: 400;
-}
-
-body.teleprompter .references-section {
-  display: none;
-}
-
-body.teleprompter .discussion-card,
-body.teleprompter .spotlight-card {
-  display: none;
-}
-
-/* Auto-scroll controls */
-.scroll-controls {
-  display: none;
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 200;
-  background: rgba(30,30,30,0.9);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 12px;
-  padding: 10px 16px;
-  gap: 10px;
-  align-items: center;
-}
-
-body.teleprompter .scroll-controls {
-  display: flex;
-}
-
-.scroll-controls label {
-  font-size: 0.78rem;
-  color: rgba(255,255,255,0.5);
-  font-weight: 500;
-}
-
-.scroll-controls input[type="range"] {
-  width: 100px;
-  accent-color: var(--accent);
-}
-
-.scroll-controls button {
-  padding: 4px 14px;
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,0.15);
-  background: transparent;
-  color: rgba(255,255,255,0.7);
-  font-family: 'Outfit', sans-serif;
-  font-size: 0.78rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.scroll-controls button:hover {
-  background: rgba(255,255,255,0.1);
-}
-
-.scroll-controls button.active {
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
-}
-
-/* ── Print styles ── */
 @media print {
   .topbar, .scroll-controls { display: none !important; }
-  body { background: #fff; }
-  body::before { display: none; }
+  body { background: #fff; } body::before { display: none; }
   .container { max-width: 100%; padding: 16px; }
   .video-section { display: block !important; page-break-before: always; }
   .video-section:first-of-type { page-break-before: avoid; }
@@ -708,19 +171,10 @@ body.teleprompter .scroll-controls {
   .media-col { background: #f8fafc; border: 1px solid #e2e8f0; }
 }
 
-/* ── Responsive ── */
 @media (max-width: 900px) {
-  .segment {
-    grid-template-columns: 1fr;
-  }
-  .topbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-  }
-  .video-tabs {
-    flex-wrap: wrap;
-  }
+  .segment { grid-template-columns: 1fr; }
+  .topbar { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .video-tabs { flex-wrap: wrap; }
 }
 </style>
 </head>
@@ -730,15 +184,15 @@ body.teleprompter .scroll-controls {
 <!-- ── Top Bar ── -->
 <div class="topbar">
   <div class="topbar-left">
-    <span class="topbar-title">M02 Production Script</span>
+    <span class="topbar-title">M03 Production Script</span>
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
     <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab" onclick="switchVideo(2)">V2: Prompting Foundations</button>
-    <button class="video-tab" onclick="switchVideo(3)">V3: System Messages &amp; Advanced</button>
-    <button class="video-tab" onclick="switchVideo(4)">V4: Lab Walkthroughs</button>
-    <button class="video-tab" onclick="switchVideo(5)">V5: Discussion</button>
+    <button class="video-tab" onclick="switchVideo(3)">V3: Prompting Strategies</button>
+    <button class="video-tab" onclick="switchVideo(4)">V4: Text to Structure</button>
+    <button class="video-tab" onclick="switchVideo(5)">V5: Function Calling</button>
     <button class="video-tab" onclick="switchVideo(6)">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
@@ -751,43 +205,44 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 1: "The Spark" — Opening                          -->
+<!-- VIDEO 1: "The Spark" -- The Coffee Order                -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section active" id="video-1">
 
   <div class="video-header">
-    <h2>Video 1: "The Spark"</h2>
+    <h2>Video 1: "The Spark" -- The Coffee Order</h2>
     <div class="video-meta">Opening -- Prof on camera -- 3-4 minutes -- 2 segments</div>
   </div>
 
-  <!-- Key Message Bar -->
   <div class="key-message-bar">
     <span class="km-label">KEY MESSAGE</span>
-    <span class="km-text">A well-written prompt is the difference between a useful tool and a random generator.</span>
+    <span class="km-text">Control what AI says, how it formats the answer, and what actions it takes.</span>
   </div>
 
-  <!-- ── SEGMENT 1 ── -->
+  <!-- ── SEGMENT 1 ��─ -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 01</span>
-      <span class="segment-title">Opening Hook</span>
+      <span class="segment-title">The Coffee Order Analogy</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~45 sec</span>
+        <span class="badge badge-duration">~1 min</span>
         <span class="badge badge-shot">Medium close-up</span>
       </div>
     </div>
     <div class="script-col">
       <p>Every morning I place the same coffee order. Medium dark roast, whole milk on the side, cinnamon on top. My barista knows it by heart. I never have to explain myself twice.</p>
       <p>That is exactly the standard we should hold ourselves to when we communicate with AI models.</p>
-      <p>Last module, you learned to connect to these models through code. You made API calls. You got responses. But here is the thing -- the quality of what comes back depends entirely on the quality of what you send in.</p>
-      <p>That is prompt engineering. And it is the single most important skill in applied AI.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Same studio setup as M00/M01. Conversational delivery -- slight smile at the coffee order, then shift to authoritative for the prompt engineering statement.</p>
-      <div class="media-note">
-        MEDIA TEAM: Lower-third appears at start: "Prof. Mohammad Dehghani, Ph.D." Same glass bar style as M00/M01 name card. No overlays on the hook -- let the coffee story carry. Clean shot, shallow depth-of-field.
+      <span class="media-label">Opening Visual</span>
+      <p class="shot-note">Medium close-up, warm lighting. Prof holds an actual coffee cup (dark ceramic, no branding). Conversational, relatable tone. The coffee cup is a physical prop that anchors the analogy.</p>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Lower-Third Animation</span>
+        <span class="placeholder-desc">As Prof describes the order, a stylized coffee receipt materializes in the lower-third: each item appears line by line -- "Medium dark roast," "Whole milk, side," "Cinnamon, top" -- like a thermal printer receipt unfurling. Clean monospace font on semi-transparent dark bar.</span>
+        <span class="placeholder-duration">~8 sec, synced to narration</span>
+        <span class="placeholder-style">Receipt paper texture, JetBrains Mono font, warm amber text on translucent dark bar. Each line prints with a subtle typewriter click sound. Receipt curls slightly at the bottom edge.</span>
+        <span class="placeholder-deliverable">MP4 overlay with alpha channel</span>
       </div>
     </div>
   </div>
@@ -796,24 +251,28 @@ body.teleprompter .scroll-controls {
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 02</span>
-      <span class="segment-title">Key Message</span>
+      <span class="segment-title">The Three Levels of Control</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~10 sec</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>A well-written prompt is the difference between a useful tool and a random generator.</p>
+      <p>In Module 2, you built an Excel GPT and a Bitcoin analyzer. They worked -- mostly. But sometimes the output was inconsistent. Sometimes the model gave you a paragraph when you needed a formula.</p>
+      <p>This module fixes that. You will learn three levels of control. First -- how to write prompts that get exactly the response you need. Second -- how to force the output into structured JSON that code can use. Third -- how to make the model decide when to call a function and take action.</p>
+      <p>By the end of this module, your AI outputs will be reliable, structured, and actionable. Every single time.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Lower-Third Overlay</span>
+      <span class="media-label">Three-Level Staircase Animation</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Text Overlay</span>
-        <span class="placeholder-desc">"A well-written prompt is the difference between a useful tool and a random generator." -- white text on dark semi-transparent bar, lower third of frame.</span>
-        <span class="placeholder-duration">Hold 4 sec</span>
+        <span class="placeholder-type">3D Isometric Animation</span>
+        <span class="placeholder-desc">Three ascending glass steps appear one by one. Step 1: "Prompt Control" -- text bubble icon, glowing blue. Step 2: "Output Structure" -- JSON bracket icon { }, glowing green. Step 3: "Action Control" -- gear/function icon, glowing amber. Each step illuminates as narrator reaches that level. A subtle connecting line traces up the staircase.</span>
+        <span class="placeholder-duration">~12 sec</span>
+        <span class="placeholder-style">Isometric 3D perspective on dark bg (#0f172a). Steps: frosted glass with subtle refraction. Icons: minimal line art. Colors: blue (#2563EB), green (#10b981), amber (#f59e0b). Connecting line: dotted, animated draw-on.</span>
+        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
       </div>
       <div class="media-note">
-        MEDIA TEAM: Lower-third text overlay appears as Prof. says the line. Subtle slide-up animation. Same glass bar style as M00/M01 key message cards. Hold for 4 seconds after Prof. finishes.
+        MEDIA TEAM: This staircase visual becomes the recurring motif for M03. It reappears at the start of V2, V4, and V5 with the corresponding step highlighted. Build it as a reusable asset. The glass material should match the course design language.
       </div>
     </div>
   </div>
@@ -822,195 +281,101 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 2: "Prompting Foundations"                         -->
+<!-- VIDEO 2: Prompting Foundations                           -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-2">
 
   <div class="video-header">
     <h2>Video 2: "Prompting Foundations"</h2>
-    <div class="video-meta">Voiceover + animation + code -- 10-12 minutes -- 6 segments</div>
+    <div class="video-meta">Voiceover + animation -- 6-8 minutes -- 3 segments</div>
   </div>
 
-  <!-- ── SEGMENT A — Three-Layer Framework ── -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">Every good prompt has four elements: Role, Task, Context, Format.</span>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
-      <span class="segment-title">The Three-Layer Framework</span>
+      <span class="segment-title">The Three-Layer API Call</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-duration">~2.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Every API call you make has three layers. Think of them as three voices in a conversation.</p>
-      <p>The first is the System layer. This is where you define who the model is -- its role, its rules, its constraints. "You are a data analyst who provides concise, evidence-based responses." This sets the tone for everything that follows.</p>
-      <p>The second is the User layer. This is your actual request. "Summarize the key findings in this quarterly report." Specific, clear, actionable.</p>
-      <p>The third is the Assistant layer. This captures the model's previous responses. In multi-turn conversations, this is how the model remembers what it already said.</p>
-      <p>System, User, Assistant. Every API call you will ever make follows this structure.</p>
+      <p>Let us start with the most fundamental concept: how you talk to an AI model through code.</p>
+      <p>Every API call has three layers. The system message sets the persona -- who the model is. The user message is your question or request. And the assistant message is what the model generates back.</p>
+      <p>Let me show you something. Same question, two different system messages. With a "You are a helpful assistant" system message, the model gives you a general answer. With "You are a senior Python developer who writes production-ready code" -- the exact same question produces code with error handling, type hints, and documentation.</p>
+      <p>That is the power of the system message. Same engine, different driver.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Animation Spec</span>
+      <span class="media-label">Layered Message Animation</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Three stacked layers appearing one at a time -- System (blue), User (green), Assistant (gray). Each layer shows its example text. Layers stack into a complete API call.</span>
-        <span class="placeholder-duration">~20 sec loop</span>
+        <span class="placeholder-type">3D Layered Card Animation</span>
+        <span class="placeholder-desc">Three translucent cards stack vertically with depth: bottom "system" (blue tint), middle "user" (white), top "assistant" (green tint). Each slides forward as narrator describes it. Then the demo: left side shows generic system message producing bland output. Right side: specific system message producing polished code. The system card on the right glows brighter.</span>
+        <span class="placeholder-duration">~20 sec</span>
+        <span class="placeholder-style">Cards: frosted glass, 2px border, slight shadow. Depth with CSS perspective. System: blue border (#2563EB). User: neutral. Assistant: green border (#10b981). Background: #0f172a. Text: JetBrains Mono, 0.8rem.</span>
+        <span class="placeholder-deliverable">HTML Canvas animation + MP4 fallback</span>
       </div>
       <div class="media-note">
-        MEDIA TEAM: Layers appear top-to-bottom as narrator introduces each one. System = blue (#2563EB), User = green (#10b981), Assistant = gray (#94a3b8). After all three appear, they compress into a single API call block with a subtle glow. Clean, minimal aesthetic matching course style.
+        MEDIA TEAM: The split comparison (generic vs specific system message) is the "aha" moment. Left output: short, vague paragraph. Right output: clean code with syntax highlighting. Hold the comparison for 4 seconds.
       </div>
     </div>
   </div>
 
-  <!-- ── SEGMENT A2 — Framework Live Example ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A2</span>
-      <span class="segment-title">Framework Live Example</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Let me show you what this looks like in practice.</p>
-      <p>System message: "You are a customer support agent for an online electronics store. Be friendly and professional. Keep responses under three sentences. If you do not know the answer, say: Let me connect you with a specialist. Never discuss competitor products."</p>
-      <p>User message: "Hi, I ordered a laptop last week and it still has not arrived. Order number 12345."</p>
-      <p>Now watch what happens. The model responds within the rules -- friendly tone, under three sentences, asks a follow-up question. That is the system message doing its job.</p>
-      <p>But here is the key insight -- change the system message to "You are a sarcastic comedian who works at a tech store," and the same user question gets a completely different response. Same input. Different persona. The system message is the control panel.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Split Screen Spec</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Split Screen Animation</span>
-        <span class="placeholder-desc">Left side -- professional system message + professional response. Right side -- comedian system message + funny response. Same user question in the middle. Shows the power of system messages.</span>
-        <span class="placeholder-duration">~15 sec</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Split screen appears after the first response is shown. Left = professional (blue tint), Right = comedian (amber tint). Same user message centered between both. Highlight the contrast in tone. The user message stays constant while the responses differ -- drives home the point visually.
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SEGMENT B — Four Essential Elements ── -->
+  <!-- ── SEGMENT B ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG B</span>
-      <span class="segment-title">Four Essential Elements</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~3 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Let me show you the difference four elements make.</p>
-      <p>Bad prompt: "Tell me about renewable energy."</p>
-      <p>What you get back: a generic, unfocused, 500-word essay that covers everything and nothing.</p>
-      <p>Good prompt: "You are an energy policy analyst specializing in US manufacturing. Summarize the three most impactful renewable energy technologies for US factories in 2026. For each technology, provide: the name, current adoption rate as a percentage, and one key advantage over fossil fuels. Format your response as a numbered list with bold headings."</p>
-      <p>What you get back: a focused, structured, actionable summary -- exactly three items, with data, in the format you specified.</p>
-      <p>The four elements: Role -- energy policy analyst. Task -- summarize three technologies. Context -- US manufacturing in 2026. Format -- numbered list with bold headings.</p>
-      <p>Same model. Same API call. Dramatically different output. The prompt is the variable.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Animation Spec -- Build-Up</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Start with the bad prompt and its messy output. Then add Role, Task, Context, Format one by one -- each addition highlights in the prompt text and shows the output improving. Final frame: clean, structured result with the four elements color-coded.</span>
-        <span class="placeholder-duration">~25 sec</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Four-step build animation. Step 1: bad prompt with messy wall of text. Step 2: Role added (blue highlight) -- output narrows. Step 3: Task added (green highlight) -- output gets structured. Step 4: Context + Format added (amber, teal) -- output is clean and numbered. Color-code the four elements in the final prompt: Role (blue), Task (green), Context (amber), Format (teal).
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SEGMENT C1 — Zero-Shot ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C1</span>
-      <span class="segment-title">Zero-Shot Prompting</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Zero-shot means asking the model to perform a task with no examples -- just instructions.</p>
-      <p>Here is the prompt: "Classify the sentiment of this restaurant review as positive, negative, or neutral. Reply with just the label. Review: The food was decent but the service was painfully slow."</p>
-      <p>The model responds: "negative." That worked.</p>
-      <p>But try an ambiguous review: "The dessert was amazing but I found a hair in my soup."</p>
-      <p>The model might say "negative" or "mixed." There is no consistency because you gave it no examples of how you define the boundaries. This is where zero-shot breaks down -- on edge cases. And that is exactly when you need few-shot.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Code Display Spec</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Code + Response</span>
-        <span class="placeholder-desc">Show the prompt, then the response appearing. Then the ambiguous review -- show the model hesitating between labels. Transition arrow: "Solution -- Few-shot"</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Two-step display. First: clean prompt with "negative" response (green check). Second: ambiguous review with flickering labels -- "negative" / "mixed" / "negative" -- showing inconsistency (amber warning icon). Arrow transition at bottom pointing to next segment: "Solution: Few-shot"
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SEGMENT C2 — Few-Shot ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C2</span>
-      <span class="segment-title">Few-Shot Prompting</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Few-shot means including examples in your prompt. Watch how this fixes the edge case problem.</p>
-      <p>Prompt: "Classify the sentiment. Reply with just the label.</p>
-      <p>Review: Loved the food, great atmosphere! -- positive<br>
-         Review: Terrible service, cold food, never coming back. -- negative<br>
-         Review: It was okay. Nothing special. -- neutral<br>
-         Review: The dessert was amazing but I found a hair in my soup. -- "</p>
-      <p>Now the model has a pattern. It sees how you handle reviews -- you want a single label, not "mixed." And because the examples show clean single-word labels, the output format is locked in.</p>
-      <p>The model responds: "negative." Consistent. Formatted correctly. Every time. That is the power of few-shot.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Code Display Spec</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Code + Highlighting</span>
-        <span class="placeholder-desc">Show the prompt with examples highlighted in blue. Arrow pointing to the blank last line. Response appears: "negative." Then side-by-side: zero-shot inconsistency vs few-shot consistency.</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Examples in the prompt get a subtle blue highlight. The blank line after the last review pulses gently -- "waiting for response." Then "negative" appears with a green check. Quick side-by-side comparison: zero-shot (flickering labels, amber) vs few-shot (stable label, green). Clean visual proof.
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SEGMENT C3 — Chain-of-Thought ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C3</span>
-      <span class="segment-title">Chain-of-Thought Prompting</span>
+      <span class="segment-title">The Four Elements of a Prompt</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Chain-of-thought means telling the model to reason step by step before answering.</p>
-      <p>Here is the classic test. A bat and a ball cost one dollar and ten cents in total. The bat costs one dollar more than the ball. How much does the ball cost?</p>
-      <p>Most people -- and most models without CoT -- say ten cents. It feels right intuitively. But it is wrong.</p>
-      <p>Now add four words: "Think step by step."</p>
-      <p>The model responds: "Let me work through this. If the ball costs x, the bat costs x plus one dollar. Total: x plus x plus one equals one-ten. So two-x plus one equals one-ten. Two-x equals zero-ten. x equals zero-zero-five. The ball costs five cents."</p>
-      <p>Four words. Correct answer. Google researchers found that chain-of-thought improved math reasoning accuracy by over forty percent. Four words. Forty percent.</p>
+      <p>Now, every good prompt has four essential elements. Role -- who is the model? Task -- what should it do? Context -- what does it need to know? Format -- how should the output look?</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Animation Spec -- Split Screen</span>
+      <span class="media-label">Prompt Builder Animation</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Split Screen Animation</span>
-        <span class="placeholder-desc">Left side -- WITHOUT CoT: question, immediate wrong answer "10 cents" (red X). Right side -- WITH CoT: question, step-by-step reasoning appearing line by line, correct answer "5 cents" (green check).</span>
-        <span class="placeholder-duration">~20 sec</span>
+        <span class="placeholder-type">Animated Assembly</span>
+        <span class="placeholder-desc">A blank prompt canvas sits center-screen. Four labeled blocks orbit: ROLE (blue), TASK (green), CONTEXT (amber), FORMAT (teal). As narrator names each, the block flies in and snaps into the canvas with a satisfying click. After all four land, the canvas pulses once and a quality meter ticks from "Poor" to "Excellent." The assembled prompt glows.</span>
+        <span class="placeholder-duration">~15 sec</span>
+        <span class="placeholder-style">Blocks: rounded rectangles with icon + label. Canvas: dashed outline solidifying as blocks arrive. Quality meter: vertical bar, red-to-green gradient. Background: #0f172a. Snap sound on each landing. Subtle particle burst on final assembly.</span>
+        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT C ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Bad vs Good Prompt</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Split Screen</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me show you a bad prompt versus a good prompt. Bad: "Tell me about supply chains." Good: "You are a supply chain consultant. Analyze the bullwhip effect for a mid-size electronics manufacturer. Provide 3 mitigation strategies, each with expected cost reduction percentage. Format as a numbered list."</p>
+      <p>Same model. Dramatically different output quality. The difference is entirely in the prompt.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Split-Screen Comparison</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Split-Screen Live Comparison</span>
+        <span class="placeholder-desc">Left: red-tinted "BAD PROMPT" -- vague prompt types in, wall of generic text appears (blurry, unstructured). Right: green-tinted "GOOD PROMPT" -- detailed prompt types in, each element highlights (Role underlined, Task bold, Context italic, Format highlighted). Below, a clean numbered list with percentages renders. Element highlights match the RTCF color coding from Segment B.</span>
+        <span class="placeholder-duration">~15 sec</span>
+        <span class="placeholder-style">Left: desaturated, red accent border, chaotic output. Right: full color, green accent border, clean structure. Dividing line: 1px white. Pause on final comparison for 3 seconds.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
       </div>
       <div class="media-note">
-        MEDIA TEAM: Left panel (red tint): question appears, instant wrong answer "10 cents" with red X. Right panel (green tint): same question + "Think step by step." then reasoning appears line by line like a typewriter -- each algebraic step. Final answer: "5 cents" with green check. Citation bar at bottom: "Wei et al., Google Research, 2022 -- 40%+ improvement in math reasoning"
+        MEDIA TEAM: The contrast should be visceral. Left = chaos, right = clarity. The left output should be visibly messy. The right output beautifully formatted. Hold the final comparison for 3 seconds.
       </div>
     </div>
   </div>
@@ -1019,99 +384,97 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 3: "System Messages & Advanced Patterns"          -->
+<!-- VIDEO 3: Prompting Strategies                           -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-3">
 
   <div class="video-header">
-    <h2>Video 3: "System Messages &amp; Advanced Patterns"</h2>
-    <div class="video-meta">Voiceover + code -- 7-8 minutes -- 3 segments</div>
+    <h2>Video 3: "Prompting Strategies"</h2>
+    <div class="video-meta">Voiceover + animation -- 5-7 minutes -- 3 segments</div>
   </div>
 
-  <!-- ── SEGMENT A — System Message Deep Dive ── -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">Zero-shot for simple, few-shot for consistency, chain-of-thought for reasoning.</span>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
-      <span class="segment-title">System Message Deep Dive</span>
+      <span class="segment-title">Zero-Shot Prompting</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>The system message is your control panel. It is the one place where you define everything about how the model behaves -- before the user says a single word.</p>
-      <p>A strong system message includes: the role, behavioral rules, output constraints, and what not to do.</p>
+      <p>Now that you know the anatomy of a prompt, let us talk about strategies -- the techniques that make prompts consistently reliable.</p>
+      <p>Strategy one: zero-shot. You give the model a task with no examples. "Classify this review as positive, negative, or neutral." It works most of the time. But what about edge cases? "The food was amazing but the service ruined everything." Is that positive or negative? The model might say either one.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Visual Spec</span>
+      <span class="media-label">Zero-Shot Visualization</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Text Card</span>
-        <span class="placeholder-desc">Four components of a system message: Role, Behavioral Rules, Output Constraints, What NOT To Do. Clean card layout, one row per component.</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Simple text card on dark background. Four rows, each with an icon and label. Role (user icon), Rules (shield icon), Constraints (ruler icon), Negatives (X icon). Appears as narrator lists each one. Minimal, readable, stays on screen through next segment.
+        <span class="placeholder-type">Animated Classifier</span>
+        <span class="placeholder-desc">A review card slides in from left. Classification box with three slots (Positive / Negative / Neutral) on the right. Arrow connects them -- no examples between. Simple review ("Great product!") gets confident green "Positive." Then the ambiguous review slides in -- classification flickers between Positive and Negative, question mark appears, confidence meter drops. Arrow pulses red.</span>
+        <span class="placeholder-duration">~12 sec</span>
+        <span class="placeholder-style">Review cards: white glass, rounded. Classification slots: pill-shaped, color-coded (green/red/gray). Confidence meter: horizontal bar. Flickering: 200ms toggle. Background: #0f172a.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
       </div>
     </div>
   </div>
 
-  <!-- ── SEGMENT A2 — System Message Showcase ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A2</span>
-      <span class="segment-title">System Message Showcase</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~3 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>System message: "You are a senior financial analyst at a Fortune 500 company. Rules: Every claim must include a specific number or percentage. Never say probably or maybe -- either cite data or say insufficient data. Maximum three paragraphs. End every response with one actionable recommendation."</p>
-      <p>Watch what happens. Ask it: "How is the AI market growing?"</p>
-      <p>Without this system message, you get a fluffy essay. With it, you get: specific numbers, no hedging, three paragraphs, and an actionable recommendation at the end. The system message turned a chatbot into an analyst.</p>
-      <p>Now let me show you a second persona. System message: "You are a senior Python developer conducting a code review. Rules: Point out bugs, not style preferences. For each issue, explain why it is a problem and provide corrected code. Rate the overall code quality as A through F. If the code is production-ready, say so."</p>
-      <p>Paste in a Python function. The model reviews it exactly like a senior engineer would -- prioritizing bugs over style, showing fixes, giving a grade. That structured feedback loop came entirely from the system message.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Code Display -- Two Personas</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Code Display</span>
-        <span class="placeholder-desc">Two panels: Persona 1 (analyst) -- system message, prompt, structured response with numbers. Persona 2 (code reviewer) -- system message, code input, review with grade.</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Two sequential panels. Panel 1: Financial analyst system message (blue header), question, response with bold numbers and recommendation. Panel 2: Code reviewer system message (green header), Python function input, review output with letter grade. Show the complete flow for each persona. Transition between panels with a clean slide.
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SEGMENT B — Prompt Templates ── -->
+  <!-- ── SEGMENT B ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG B</span>
-      <span class="segment-title">Prompt Templates</span>
+      <span class="segment-title">Few-Shot Prompting</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>In production, you do not write prompts from scratch every time. You build templates.</p>
-      <p>A template has fixed structure with variable placeholders. Same skeleton, different inputs.</p>
-      <p>"You are a {role}. Analyze the following {document_type} for {audience}. Focus on {focus_area}. Return your analysis as {format}."</p>
-      <p>Now watch me run the same template three times with different variables:</p>
-      <p>Run 1: role equals data analyst, document type equals quarterly earnings, audience equals executive team, format equals three bullet points.</p>
-      <p>Run 2: role equals HR manager, document type equals employee survey, audience equals department heads, format equals table.</p>
-      <p>Run 3: role equals supply chain engineer, document type equals vendor performance data, audience equals procurement team, format equals ranked list.</p>
-      <p>Same template. Three completely different analyses. That is scalability. That is how production AI systems work.</p>
+      <p>Strategy two: few-shot. You give the model a few examples before the actual task. "Here are three reviews with their classifications. Now classify this one." Suddenly the edge case gets consistent results. The model learns the pattern from your examples.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Animation Spec</span>
+      <span class="media-label">Few-Shot Example Chain</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Show the template with colored {placeholders}. Three runs -- each fills in the variables with different values, and a different styled output appears. The template stays constant, the outputs change.</span>
+        <span class="placeholder-type">Sequential Card Animation</span>
+        <span class="placeholder-desc">Three example cards stack vertically between input and classifier, each showing a review with its correct label (color-coded). They form an "example bridge." The same ambiguous review passes through the bridge and emerges with confident, consistent classification. Confidence meter solidly green. Counter: "3 examples = consistent results."</span>
+        <span class="placeholder-duration">~12 sec</span>
+        <span class="placeholder-style">Example cards: slightly smaller, subtle "EXAMPLE" watermark. Bridge metaphor: cards connected by thin lines. Passage through examples feels like a filter refining output.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT C ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Chain-of-Thought -- The Bat and Ball</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2.5 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Strategy three: chain-of-thought. You tell the model to think step by step. Here is the classic example. "A bat and a ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost?"</p>
+      <p>Without chain-of-thought, most models say 10 cents. That is wrong. With chain-of-thought -- "Think step by step" -- the model works through the algebra and gets 5 cents. Just four words improved accuracy by 40% on reasoning tasks.</p>
+      <p>When do you use which? Zero-shot for simple tasks. Few-shot when you need consistent formatting. Chain-of-thought when the task requires reasoning. You will practice all three in Lab 1.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Bat-and-Ball Reasoning Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Step-by-Step Reveal Animation</span>
+        <span class="placeholder-desc">Screen splits horizontally. Top: "Without CoT" -- question appears, fast spinner, "10 cents" slams in with red X. Bottom: "With CoT" -- question appears, reasoning steps materialize like a professor writing on a blackboard: "Let ball = x," "bat = x + $1.00," "x + (x + $1.00) = $1.10," "2x = $0.10," "x = $0.05." Each step fades in with chalk-writing sound. "5 cents" with green checkmark. Stat badge: "+40% accuracy with 4 words."</span>
         <span class="placeholder-duration">~20 sec</span>
+        <span class="placeholder-style">Top: rushed, red accent. Bottom: deliberate, blue accent. Blackboard texture (dark slate with grain). Chalk-style font for equations. Stat badge: green bg, white text, pill shape.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080 + Lottie for web</span>
       </div>
       <div class="media-note">
-        MEDIA TEAM: Template at top with placeholders as colored chips: {role} = blue, {document_type} = green, {audience} = amber, {format} = teal. Three runs below: each run fills in the chips with real values and shows a mini output card. The template bar stays fixed at top while runs 1, 2, 3 appear sequentially below. Shows reusability visually.
+        MEDIA TEAM: This is the signature animation for M03. The wrong answer should feel impulsive. The correct reasoning should feel satisfying and inevitable. Each algebra step at reading pace. The "+40% accuracy" stat is the punchline.
       </div>
     </div>
   </div>
@@ -1120,57 +483,101 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 4: Lab Walkthroughs (compact placeholders)        -->
+<!-- VIDEO 4: From Text to Structure                         -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-4">
 
   <div class="video-header">
-    <h2>Video 4: Lab Walkthroughs</h2>
-    <div class="video-meta">Lab demos -- variable length -- 2 items</div>
+    <h2>Video 4: "From Text to Structure"</h2>
+    <div class="video-meta">Voiceover + animation + code -- 6-8 minutes -- 3 segments</div>
   </div>
 
-  <!-- Lab 1 -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">JSON mode guarantees parseable output. Pydantic guarantees correct structure.</span>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">LAB 1</span>
-      <span class="segment-title">Prompting Techniques</span>
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">The Problem with Text</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Screen Recording</span>
-        <span class="badge badge-duration">10-15 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Walkthrough of Lab 1: Prompting Techniques. Students practice zero-shot, few-shot, and chain-of-thought prompting through hands-on exercises. They compare output quality across techniques and learn to select the right approach for different tasks.</p>
-      <p>Notebook: <a href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/M02_Lab1_Prompting_Techniques.ipynb" style="color: var(--accent); text-decoration: none;">M02_Lab1_Prompting_Techniques.ipynb</a></p>
+      <p>You now control what the model says and how it behaves. But there is still a problem.</p>
+      <p>The output is text. Free-form, unstructured text. And text is great for humans -- but terrible for code.</p>
+      <p>You cannot put a paragraph into a database. You cannot feed prose into an analytics pipeline. You need structure. You need JSON.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Lab Resource</span>
+      <span class="media-label">Text-to-Structure Morph</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Colab Notebook</span>
-        <span class="placeholder-desc">Screen recording walkthrough of the Colab notebook. Run each cell, explain outputs, highlight the difference between prompting techniques.</span>
+        <span class="placeholder-type">Morph Animation</span>
+        <span class="placeholder-desc">A paragraph of AI output text sits center-screen, messy and organic. A "database" icon appears on the right with a slot. The paragraph tries to fit -- bounces off, red flash, "ERROR: cannot parse." Then the same content reorganizes: words slide into labeled fields, punctuation morphs into JSON brackets and colons. Clean JSON slides smoothly into the database slot -- green flash, "SUCCESS."</span>
+        <span class="placeholder-duration">~15 sec</span>
+        <span class="placeholder-style">Text: serif font, organic, slightly tilted. JSON: JetBrains Mono, perfectly aligned, syntax colored. Database: minimal cylinder. Error: red (#ef4444). Success: green (#10b981). Morph: 2 seconds, individual characters moving.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
       </div>
     </div>
   </div>
 
-  <!-- Lab 2 -->
+  <!-- ── SEGMENT B ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">LAB 2</span>
-      <span class="segment-title">System Messages &amp; Templates</span>
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">JSON Mode</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Screen Recording</span>
-        <span class="badge badge-duration">10-15 min</span>
+        <span class="badge badge-type">Voiceover + Code Display</span>
+        <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Walkthrough of Lab 2: System Messages and Templates. Students build system messages for different personas, experiment with behavioral rules, and create reusable prompt templates with variable placeholders.</p>
-      <p>Notebook: <a href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/M02_Lab2_System_Messages_Templates.ipynb" style="color: var(--accent); text-decoration: none;">M02_Lab2_System_Messages_Templates.ipynb</a></p>
+      <p>JSON mode forces the model to return valid JSON -- guaranteed parseable, guaranteed structured.</p>
+      <p>Let me show you the difference. Same question, two modes.</p>
+      <p>Text mode: "The sentiment of the review is positive. The customer expressed satisfaction with the product quality and delivery speed."</p>
+      <p>JSON mode: {"sentiment": "positive", "confidence": 0.92, "keywords": ["quality", "delivery speed"]}</p>
+      <p>Same information. But the JSON version can be parsed by code in one line. No regex. No string manipulation. Just json.loads() and you have a Python dictionary.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Lab Resource</span>
+      <span class="media-label">Side-by-Side Output Comparison</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Colab Notebook</span>
-        <span class="placeholder-desc">Screen recording walkthrough. Emphasize the persona experiments and template reusability exercises.</span>
+        <span class="placeholder-type">Animated Code Comparison</span>
+        <span class="placeholder-desc">Split screen. Left: "TEXT MODE" -- prose output, then Python code extracting data (regex, string splits, 12 lines of messy parsing). Right: "JSON MODE" -- clean JSON, then one line: json.loads(response). Line counter: 12 lines vs 1 line. Right side glows green.</span>
+        <span class="placeholder-duration">~12 sec</span>
+        <span class="placeholder-style">Code: dark editor (#1e293b). Left code: red warning highlights on fragile regex. Right code: clean, minimal, green accent. Line counter: JetBrains Mono, large numerals.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT C ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Pydantic Validation</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>But JSON mode has a gap. It guarantees valid JSON, but it does not guarantee the right fields or the right types. That is where Pydantic comes in.</p>
+      <p>Pydantic lets you define a schema -- a class that says "I expect a field called sentiment of type string, a field called confidence of type float between 0 and 1." If the model returns something that does not match, Pydantic catches it immediately. No silent bugs. No bad data reaching your database.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Schema Gatekeeper Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Gatekeeper Animation</span>
+        <span class="placeholder-desc">A Pydantic schema sits on screen as a blueprint. JSON objects approach on a conveyor belt. Valid JSON passes through a gate (green flash, checkmark). Invalid JSON (wrong type, missing field) bounces back (red flash, error: "confidence must be float, got string"). Counter: "3 passed, 1 caught." The database downstream only receives clean data.</span>
+        <span class="placeholder-duration">~18 sec</span>
+        <span class="placeholder-style">Blueprint: technical drawing, blue lines on dark bg. Conveyor: horizontal, left to right. Gate: glowing frame. Valid: green glow. Invalid: red glow with shake. Error messages: monospace, specific, readable.</span>
+        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: The gatekeeper should feel protective. The error catch = near-miss prevented. Show the specific error message clearly. The database at end of conveyor only receives clean data.
       </div>
     </div>
   </div>
@@ -1179,45 +586,78 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 5: Student Discussion                             -->
+<!-- VIDEO 5: Function Calling                               -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-5">
 
   <div class="video-header">
-    <h2>Video 5: Student Discussion</h2>
-    <div class="video-meta">Discussion panel -- 8-10 minutes</div>
+    <h2>Video 5: "Function Calling -- From Text to Action"</h2>
+    <div class="video-meta">Voiceover + animation + code -- 6-8 minutes -- 2 segments</div>
   </div>
 
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The model decides which function to call. Your code does the work. That is the bridge to agents.</span>
+  </div>
+
+  <!-- ── SEGMENT A ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">DISC</span>
-      <span class="segment-title">How I Use Prompt Engineering Every Day</span>
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">What Is Function Calling</span>
       <div class="segment-badges">
-        <span class="badge badge-type" style="background: rgba(20,184,166,0.1); color: var(--teal);">Discussion</span>
-        <span class="badge badge-duration">8-10 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <div class="discussion-card">
-        <h4>STUDENT DISCUSSION PANEL</h4>
-        <p class="disc-meta">Topic: "How I Use Prompt Engineering Every Day" -- 2 former students + Prof. Dehghani</p>
-        <ol>
-          <li>What was the first time you realized a better prompt changed the output dramatically?</li>
-          <li>Walk us through your go-to prompt structure. Do you always start with a role?</li>
-          <li>What is the biggest prompting mistake you see beginners make?</li>
-          <li>How do you decide between zero-shot, few-shot, and chain-of-thought for a given task?</li>
-          <li>If you could give one prompting tip to someone just starting out, what would it be?</li>
-        </ol>
-      </div>
+      <p>Until now, the model only produces text -- or structured text. Function calling lets it produce actions.</p>
+      <p>You define tools -- functions with names, descriptions, and parameter schemas. The model reads the user request and decides: which tool should I use? What arguments should I pass?</p>
+      <p>The model does not execute the function. It generates a structured call -- a JSON object saying "call this function with these arguments." Your code handles execution.</p>
+      <p>This is the bridge between a chatbot and an agent. The model reasons about which tool to use. Your code does the work.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Recording Spec</span>
+      <span class="media-label">Chatbot-to-Agent Bridge</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">Discussion Panel</span>
-        <span class="placeholder-desc">Multi-camera setup: Prof. Dehghani + 2 former students. Conversational, relaxed. Each participant has a lower-third name card.</span>
+        <span class="placeholder-type">Conceptual Animation</span>
+        <span class="placeholder-desc">Left: chatbot icon produces only text bubbles (limited). A bridge extends toward the right. As it crosses, tool icons (wrench, database, API, calculator) attach like armor. Right side: an agent icon -- same entity but now equipped with tools. Below the bridge: "Function Calling." The agent activates a tool, which executes and returns data.</span>
+        <span class="placeholder-duration">~15 sec</span>
+        <span class="placeholder-style">Chatbot: simple circle with speech bubble. Agent: same circle with orbiting tool icons. Bridge: glass and steel aesthetic. Tool icons: minimal line art, different accent colors. Background: #0f172a with subtle grid.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT B ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The Five-Step Weather Example</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Step Animation</span>
+        <span class="badge badge-duration">~3 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me walk through a complete example.</p>
+      <p>Step 1: You define a function called get_weather with parameters city and units.</p>
+      <p>Step 2: User says "What is the weather in Boston?"</p>
+      <p>Step 3: The model does not answer directly. Instead it returns: {"name": "get_weather", "arguments": {"city": "Boston", "units": "fahrenheit"}}</p>
+      <p>Step 4: Your code calls the real weather API with those arguments.</p>
+      <p>Step 5: You send the result back to the model. Now it generates a human-readable response: "It is currently 72 degrees in Boston with partly cloudy skies."</p>
+      <p>Five steps. The model decided which function to call. Your code did the work. That is function calling.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Five-Step Flow Animation</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Sequential Flow Animation</span>
+        <span class="placeholder-desc">Five connected nodes in horizontal flow, each appearing as narrator describes. (1) "DEFINE" -- function schema card. (2) "USER" -- speech bubble "Weather in Boston?" (3) "MODEL REASONS" -- AI node glows, JSON function call materializes (not text). (4) "EXECUTE" -- code catches JSON, fires API, data returns. (5) "RESPOND" -- model produces human sentence. Arrows with animated data packets. Flow loops once to reinforce.</span>
+        <span class="placeholder-duration">~25 sec</span>
+        <span class="placeholder-style">Nodes: rounded squares with number badges. Flow arrows: animated dashed lines with traveling dots. JSON: syntax-highlighted. Code execution: terminal flash. Human response: chat bubble with warm glow. Background: #0f172a. Step numbers: accent blue circles.</span>
+        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
       </div>
       <div class="media-note">
-        MEDIA TEAM: Three-person panel. Split screen or switch between speakers. Lower-thirds for each participant. Casual, conversational tone -- not a formal interview. Film in a comfortable setting (office or lounge, not lecture hall). Each question runs 1.5-2 min of discussion.
+        MEDIA TEAM: Most complex animation in M03. Each step must be clear -- do not rush. Key insight at Step 3: model produces function call JSON instead of text answer. Highlight with brief pause and "decision" indicator. The loop reinforces the pattern.
       </div>
     </div>
   </div>
@@ -1226,50 +666,71 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: "Module 2 Wrap-Up"                             -->
+<!-- VIDEO 6: Module 3 Wrap-Up                               -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-6">
 
   <div class="video-header">
-    <h2>Video 6: "Module 2 Wrap-Up"</h2>
-    <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 1 segment</div>
+    <h2>Video 6: "Module 3 Wrap-Up"</h2>
+    <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
   <!-- ── SEGMENT 1 ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 01</span>
-      <span class="segment-title">Closing</span>
+      <span class="segment-title">The Complete Pipeline</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-duration">~1.5 min</span>
         <span class="badge badge-shot">Medium close-up</span>
       </div>
     </div>
     <div class="script-col">
-      <p>This week you learned three levels of control. The system message controls who the model is. The prompt controls what it does. And the technique -- zero-shot, few-shot, chain-of-thought -- controls how well it does it.</p>
-      <p>You are no longer just sending messages to AI. You are engineering the communication. That is a fundamentally different skill.</p>
-      <p>Next module -- what happens when you need the model to give you JSON, not prose? What if you need it to call a function? That is structured output. See you in Module 3.</p>
+      <p>This was the biggest module in the course -- and for good reason.</p>
+      <p>You learned to engineer prompts that produce reliable output. You learned to force that output into structured JSON and validate it with Pydantic. And you learned to let the model decide when to call functions and take actions.</p>
+      <p>That is the complete pipeline. Input control. Output control. Action control.</p>
+      <p>Think about what you can build now. An AI that reads invoices and validates the data before it touches your database. An AI that answers questions by querying a real database. An AI assistant with tools.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Shot Notes</span>
-      <p class="shot-note">On camera closing. Same warm studio setup. Reflective tone for the recap. Energy picks up at "Next module" -- lean in slightly, hint of curiosity at "JSON, not prose."</p>
+      <span class="media-label">Three-Level Staircase Callback</span>
       <div class="media-placeholder">
-        <span class="placeholder-type">End Card</span>
-        <span class="placeholder-desc">DADS 5250 -- Generative AI in Practice. "Next: M03 -- Structured Output &amp; Function Calling." Prof. Mohammad Dehghani -- Northeastern University.</span>
-        <span class="placeholder-duration">Hold 4 sec, fade to black</span>
-      </div>
-      <div class="media-note">
-        MEDIA TEAM: Hold on Prof. for full segment. After final line ("See you in Module 3"), 1-second pause, then cut to end card. End card uses same dark background (#0f172a) as M00/M01 end cards. Hold for 4 seconds. Fade to black.
+        <span class="placeholder-type">Callback Animation</span>
+        <span class="placeholder-desc">The three-step staircase from V1 returns, now fully illuminated with flowing data line connecting all steps. Below each step, real-world examples fade in: "Invoice Reader," "Database Query," "Tool-Equipped Assistant." The staircase transforms into a horizontal pipeline.</span>
+        <span class="placeholder-duration">~10 sec</span>
+        <span class="placeholder-style">Same staircase asset from V1, fully lit. Data flow: blue particles. Examples: white text, 0.8rem. Pipeline transformation: smooth 2-second morph.</span>
+        <span class="placeholder-deliverable">MP4 1920x1080 (reuse V1 Lottie asset)</span>
       </div>
     </div>
   </div>
 
-  <!-- AI Spotlight -->
-  <div class="spotlight-card">
-    <span class="spot-label">AI SPOTLIGHT</span>
-    <p class="spot-title">Napkin.ai</p>
-    <p class="spot-desc">AI-powered tool that transforms text into visual diagrams, flowcharts, and infographics. Relevant to this module: paste a prompt engineering framework description and Napkin.ai generates a clean visual -- demonstrating how structured prompts produce structured output even in non-LLM tools. Students can use it to visualize their prompt templates and workflows.</p>
+  <!-- ── SEGMENT 2 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 02</span>
+      <span class="segment-title">Bridge to Module 4</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~1 min</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next module -- we chain these operations into multi-step workflows. That is LangChain. And we put it to the test with a supply chain simulation called the Beer Game.</p>
+      <p>See you in Module 4.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Teaser + End Card</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Teaser + End Card</span>
+        <span class="placeholder-desc">Brief flash: chain links connecting together (2 sec teaser). Then supply chain silhouette with four nodes. End card: "Next: M04 -- LangChain &amp; Beer Game." Dark background (#0f172a), white text, Outfit font.</span>
+        <span class="placeholder-duration">End card hold 4 sec, fade to black</span>
+        <span class="placeholder-deliverable">MP4 1920x1080</span>
+      </div>
+      <div class="media-note">
+        MEDIA TEAM: Chain-link teaser should spark curiosity. Keep it abstract. Supply chain silhouette plants the Beer Game seed. End card matches M01/M02 style. Hold 4 seconds. Fade to black.
+      </div>
+    </div>
   </div>
 
 </div><!-- end video-6 -->
@@ -1290,24 +751,29 @@ body.teleprompter .scroll-controls {
     </thead>
     <tbody>
       <tr>
-        <td>CoT 40%+ improvement</td>
-        <td>Chain-of-thought prompting improved math reasoning accuracy by 40%+ on GSM8K benchmark</td>
-        <td><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Wei et al., "Chain-of-Thought Prompting Elicits Reasoning in Large Language Models," Google Research, 2022</a></td>
+        <td>CoT +40% accuracy on reasoning</td>
+        <td>Chain-of-thought prompting improved accuracy on GSM8K math benchmark by ~40%</td>
+        <td><a href="https://arxiv.org/abs/2201.11903" target="_blank" rel="noopener">Wei et al., "Chain-of-Thought Prompting," NeurIPS 2022</a></td>
       </tr>
       <tr>
-        <td>Bat and ball problem</td>
-        <td>Classic cognitive reflection test (Frederick, 2005); widely used in CoT demonstrations</td>
-        <td><a href="https://doi.org/10.1257/089533005775196732" target="_blank" rel="noopener">Frederick, S. (2005). J. of Economic Perspectives, 19(4), 25-42</a></td>
+        <td>Bat-and-ball problem</td>
+        <td>Classic cognitive reflection test (Kahneman, Thinking Fast and Slow)</td>
+        <td><a href="https://en.wikipedia.org/wiki/Cognitive_reflection_test" target="_blank" rel="noopener">Frederick, 2005; Kahneman, 2011</a></td>
       </tr>
       <tr>
-        <td>System / User / Assistant roles</td>
-        <td>Standard chat completion message structure across OpenAI, Anthropic, Google APIs</td>
-        <td><a href="https://platform.openai.com/docs/guides/text-generation" target="_blank" rel="noopener">OpenAI Chat Completions API Documentation</a></td>
+        <td>OpenAI JSON mode</td>
+        <td>response_format: {"type": "json_object"} guarantees valid JSON</td>
+        <td><a href="https://platform.openai.com/docs/guides/text-generation" target="_blank" rel="noopener">OpenAI API Docs</a></td>
       </tr>
       <tr>
-        <td>Few-shot prompting</td>
-        <td>In-context learning via examples first demonstrated at scale in GPT-3</td>
-        <td><a href="https://arxiv.org/abs/2005.14165" target="_blank" rel="noopener">Brown et al., "Language Models are Few-Shot Learners," NeurIPS 2020</a></td>
+        <td>OpenAI Function Calling</td>
+        <td>tools parameter with function definitions, model returns structured tool_calls</td>
+        <td><a href="https://platform.openai.com/docs/guides/function-calling" target="_blank" rel="noopener">OpenAI Function Calling Docs</a></td>
+      </tr>
+      <tr>
+        <td>Pydantic validation</td>
+        <td>Pydantic v2 provides runtime type validation for Python dataclasses</td>
+        <td><a href="https://docs.pydantic.dev/" target="_blank" rel="noopener">docs.pydantic.dev</a></td>
       </tr>
     </tbody>
   </table>
@@ -1315,7 +781,6 @@ body.teleprompter .scroll-controls {
 
 </div><!-- end container -->
 
-<!-- ── Auto-scroll controls (teleprompter) ── -->
 <div class="scroll-controls" id="scrollControls">
   <label>Speed</label>
   <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
@@ -1323,7 +788,6 @@ body.teleprompter .scroll-controls {
 </div>
 
 <script>
-// ── Video tab switching ──
 function switchVideo(num) {
   document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
@@ -1332,7 +796,6 @@ function switchVideo(num) {
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── Teleprompter mode ──
 let teleMode = false;
 function toggleTeleprompter() {
   teleMode = !teleMode;
@@ -1340,21 +803,15 @@ function toggleTeleprompter() {
   const btn = document.getElementById('teleBtn');
   btn.classList.toggle('teleprompter-active', teleMode);
   btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
-  if (!teleMode) {
-    stopAutoScroll();
-  }
+  if (!teleMode) stopAutoScroll();
 }
 
-// ── Auto-scroll ──
 let scrollInterval = null;
 let isScrolling = false;
 
 function toggleAutoScroll() {
-  if (isScrolling) {
-    stopAutoScroll();
-  } else {
-    startAutoScroll();
-  }
+  if (isScrolling) stopAutoScroll();
+  else startAutoScroll();
 }
 
 function startAutoScroll() {
@@ -1373,27 +830,13 @@ function stopAutoScroll() {
   const btn = document.getElementById('scrollToggle');
   btn.textContent = 'Start';
   btn.classList.remove('active');
-  if (scrollInterval) {
-    clearInterval(scrollInterval);
-    scrollInterval = null;
-  }
+  if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; }
 }
 
-// ── Keyboard shortcuts ──
 document.addEventListener('keydown', function(e) {
-  // T = toggle teleprompter
-  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
-    toggleTeleprompter();
-  }
-  // Space = toggle auto-scroll (in teleprompter mode)
-  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') {
-    e.preventDefault();
-    toggleAutoScroll();
-  }
-  // 1-6 = switch videos
-  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') {
-    switchVideo(parseInt(e.key));
-  }
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') toggleTeleprompter();
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
 });
 </script>
 
