@@ -287,12 +287,42 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>What if you automated the entire thing with n8n. It runs at 6 AM while you sleep. That is the difference between knowing AI and deploying AI.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Morning Routine</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Clock showing 6 AM. Automated workflow visualization: email check, AI summarizes, Slack notification, task list update, team report. All happening automatically while person sleeps.</span>
-        <span class="placeholder-duration">~15 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- 6 AM Workflow Runs Itself</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">While You Sleep · While Your Workflow Runs</text>
+        <!-- Clock -->
+        <circle cx="60" cy="100" r="32" fill="rgba(96,165,250,0.08)" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="60" y="92" text-anchor="middle" font-family="JetBrains Mono" font-size="14" fill="#bfdbfe" font-weight="600">06:00</text>
+        <text x="60" y="108" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">AM</text>
+        <text x="60" y "144" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">trigger fires</text>
+        <line x1="92" y1="100" x2="120" y2="100" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#m13mrArrow)"/>
+        <!-- Workflow nodes -->
+        <rect x="124" y="60" width="76" height="22" rx="4" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
+        <text x="162" y "74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">📧 fetch email</text>
+        <line x1="200" y1="71" x2="216" y2="92" stroke="#60a5fa" stroke-width="1" marker-end="url(#m13mrArrow)"/>
+        <rect x="124" y "92" width="76" height="22" rx="4" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="162" y "106" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">🔔 alerts</text>
+        <line x1="200" y1="103" x2="216" y2="115" stroke="#60a5fa" stroke-width="1" marker-end="url(#m13mrArrow)"/>
+        <rect x="124" y "124" width="76" height="22" rx="4" fill="rgba(245,158,11,0.18)" stroke="#f59e0b"/>
+        <text x="162" y "138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">✓ tasks</text>
+        <line x1="200" y1="135" x2="216" y2="148" stroke="#60a5fa" stroke-width="1" marker-end="url(#m13mrArrow)"/>
+        <rect x="124" y "156" width="76" height="22" rx="4" fill="rgba(168,85,247,0.18)" stroke="#a855f7"/>
+        <text x="162" y "170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">📤 summary</text>
+        <!-- AI processes everything -->
+        <circle cx="252" cy="118" r="28" fill="rgba(96,165,250,0.12)" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="252" y="115" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">AI</text>
+        <text x="252" y="128" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">summarize</text>
+        <line x1="280" y1="118" x2="304" y2="118" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#m13mrArrow)"/>
+        <rect x="306" y="100" width="80" height="36" rx="4" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="346" y="116" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0">→ Slack</text>
+        <text x="346" y "128" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">team channel</text>
+        <text x "60" y "180" text-anchor="middle" font-family="Outfit" font-size="20">😴</text>
+        <text x="60" y "200" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">you · still asleep</text>
+        <text x="200" y "224" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">45 minutes manually → 0 minutes with n8n</text>
+        <defs>
+          <marker id="m13mrArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker>
+        </defs>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Dark background with glowing clock at 6:00 AM. Workflow nodes light up sequentially: email icon, AI brain icon, Slack icon, task list icon, report icon. Each connection wire glows as data flows. Meanwhile, a bed icon in the corner shows someone sleeping. Contrast: automation vs manual effort.
       </div>
@@ -314,12 +344,34 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>This module bridges that gap. First, we look at how real companies are deploying GenAI across industries. Then we get hands-on with n8n -- a visual workflow automation tool that connects AI to email, databases, APIs, and everything else your business runs on.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Business Use Cases</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Industry Panels</span>
-        <span class="placeholder-desc">4 industry panels -- Finance (fraud detection flow), Healthcare (triage pipeline), Marketing (content generation pipeline), Legal (contract review pipeline). Each with a mini workflow diagram.</span>
-        <span class="placeholder-duration">~10 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- GenAI Across Industries</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Real Companies · Real Workflows</text>
+        <rect x="14" y="38" width="180" height="68" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="34" y "58" font-family="Outfit" font-size="14">💰</text>
+        <text x="60" y "56" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">Finance</text>
+        <text x "60" y "72" font-family="Outfit" font-size="7" fill="#475569">tx → AI score → flag → review</text>
+        <text x "60" y "84" font-family="Outfit" font-size="7" fill="#94a3b8">fraud detection</text>
+        <text x "60" y "96" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">JPMorgan, Mastercard</text>
+        <rect x="206" y="38" width="180" height="68" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="226" y "58" font-family="Outfit" font-size="14">🏥</text>
+        <text x="252" y "56" font-family="Outfit" font-size="10" fill="#10b981" font-weight="600">Healthcare</text>
+        <text x "252" y "72" font-family="Outfit" font-size="7" fill="#475569">intake → triage → route</text>
+        <text x "252" y "84" font-family="Outfit" font-size="7" fill="#94a3b8">patient triage pipeline</text>
+        <text x "252" y "96" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">Mayo, Ada Health</text>
+        <rect x="14" y="114" width="180" height="68" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="34" y "134" font-family="Outfit" font-size="14">📣</text>
+        <text x "60" y "132" font-family="Outfit" font-size="10" fill="#f59e0b" font-weight="600">Marketing</text>
+        <text x "60" y "148" font-family="Outfit" font-size="7" fill="#475569">brief → AI draft → schedule</text>
+        <text x "60" y "160" font-family="Outfit" font-size="7" fill="#94a3b8">content generation</text>
+        <text x "60" y "172" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">HubSpot, Jasper</text>
+        <rect x="206" y="114" width="180" height="68" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
+        <text x="226" y "134" font-family="Outfit" font-size="14">⚖</text>
+        <text x="252" y "132" font-family="Outfit" font-size="10" fill="#a855f7" font-weight="600">Legal</text>
+        <text x "252" y "148" font-family="Outfit" font-size="7" fill="#475569">contract → AI review → flag</text>
+        <text x "252" y "160" font-family="Outfit" font-size="7" fill="#94a3b8">contract analysis</text>
+        <text x "252" y "172" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">Harvey, Casetext</text>
+      </svg>
     </div>
   </div>
 
@@ -337,12 +389,13 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Theory is over. This module is about deployment and business impact.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Lower-Third + Startup Cards</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Cards</span>
-        <span class="placeholder-desc">Startup success logos with revenue/valuation numbers (Jasper $1.5B, Perplexity $9B, etc.) -- animated counters going up. Shows the business opportunity.</span>
-        <span class="placeholder-duration">~8 sec</span>
-      </div>
+      <span class="media-label">Lower-Third Quote Card</span>
+      <svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="6" height="140" fill="#2563EB"/>
+        <text x="32" y="44" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="500" letter-spacing="0.1em">M13 · KEY MESSAGE</text>
+        <text x="32" y="80" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">Theory is over.</text>
+        <text x="32" y="110" font-family="Outfit" font-size="20" fill="#60a5fa" font-weight="700" font-style="italic">This is deployment.</text>
+      </svg>
     </div>
   </div>
 
@@ -374,12 +427,43 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>You connect nodes with wires. Data flows from one node to the next. When something triggers the workflow -- a new email, a scheduled time, a webhook -- the entire pipeline runs automatically.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: n8n Canvas</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Screen Recording</span>
-        <span class="placeholder-desc">The actual n8n workflow builder -- nodes connecting with wires. Email trigger, AI processing node, database node, notification node. Visual, no-code, intuitive.</span>
-        <span class="placeholder-duration">~20 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- n8n Visual Canvas</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Drag · Drop · Connect · Done</text>
+        <rect x="14" y="36" width="372" height="170" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <!-- Trigger node -->
+        <rect x "30" y "70" width "70" height "44" rx="6" fill="rgba(96,165,250,0.18)" stroke="#60a5fa"/>
+        <text x "65" y "84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa" font-weight="600">TRIGGER</text>
+        <text x "65" y "97" text-anchor="middle" font-family="Outfit" font-size="11">📧</text>
+        <text x "65" y "110" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">new email</text>
+        <line x1="100" y1="92" x2="124" y2="92" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#m13ncArrow)"/>
+        <!-- AI node -->
+        <rect x "126" y "70" width "70" height "44" rx="6" fill="rgba(168,85,247,0.18)" stroke="#a855f7"/>
+        <text x "161" y "84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#a855f7" font-weight="600">AI</text>
+        <text x "161" y "97" text-anchor="middle" font-family="Outfit" font-size="11">🧠</text>
+        <text x "161" y "110" text-anchor="middle" font-family="Outfit" font-size="6" fill="#c4b5fd">classify</text>
+        <line x1="196" y1="92" x2="220" y2="92" stroke="#a855f7" stroke-width="1.5" marker-end="url(#m13ncArrowP)"/>
+        <!-- Decision -->
+        <rect x "222" y "70" width "70" height "44" rx="6" fill="rgba(245,158,11,0.18)" stroke="#f59e0b"/>
+        <text x "257" y "84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#f59e0b" font-weight="600">ROUTER</text>
+        <text x "257" y "97" text-anchor="middle" font-family="Outfit" font-size="11">↔</text>
+        <text x "257" y "110" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fde68a">if priority</text>
+        <line x1="292" y1="86" x2="320" y2="60" stroke="#f59e0b" stroke-width="1" marker-end="url(#m13ncArrow)"/>
+        <line x1="292" y1="98" x2="320" y2="124" stroke="#f59e0b" stroke-width="1" marker-end="url(#m13ncArrow)"/>
+        <!-- Outputs -->
+        <rect x "320" y "44" width "60" height "32" rx="6" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x "350" y "58" text-anchor="middle" font-family="Outfit" font-size="14">🔔</text>
+        <text x "350" y "72" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">slack alert</text>
+        <rect x "320" y "108" width "60" height "32" rx="6" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x "350" y "122" text-anchor="middle" font-family="Outfit" font-size="14">📁</text>
+        <text x "350" y "136" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">archive</text>
+        <text x "200" y "168" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">No code visible · just nodes connected by wires</text>
+        <text x "200" y "188" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Same logic you'd write in 100+ lines of Python.</text>
+        <defs>
+          <marker id="m13ncArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker>
+          <marker id="m13ncArrowP" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a855f7"/></marker>
+        </defs>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Record the n8n canvas in action. Show nodes being dragged onto canvas, wires connecting them, data flowing through on execution. Highlight the visual nature -- no code visible, just connected nodes. Use a simple 3-node workflow for clarity.
       </div>
@@ -419,11 +503,49 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>It is open-source, self-hostable, and has hundreds of integrations. For our purposes, it is the fastest way to go from "I built an AI prototype" to "I deployed an AI system."</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Integration Grid</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Logo Grid</span>
-        <span class="placeholder-desc">Grid of integration logos: Gmail, Slack, PostgreSQL, OpenAI, Google Sheets, GitHub, Stripe, etc. "400+ integrations" counter.</span>
-      </div>
+      <span class="media-label">Storyboard -- Hundreds of Integrations</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Connect Anything · Out of the Box</text>
+        <!-- Grid of integration tiles -->
+        <rect x="14" y "38" width="56" height="40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "42" y "62" text-anchor="middle" font-family="Outfit" font-size="14">📧</text>
+        <text x "42" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Gmail</text>
+        <rect x "78" y "38" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "106" y "62" text-anchor="middle" font-family="Outfit" font-size="14">💬</text>
+        <text x "106" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Slack</text>
+        <rect x "142" y "38" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "170" y "62" text-anchor="middle" font-family="Outfit" font-size="14">🗄</text>
+        <text x "170" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Postgres</text>
+        <rect x "206" y "38" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "234" y "62" text-anchor="middle" font-family="Outfit" font-size="14">🤖</text>
+        <text x "234" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">OpenAI</text>
+        <rect x "270" y "38" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "298" y "62" text-anchor="middle" font-family="Outfit" font-size="14">📊</text>
+        <text x "298" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Sheets</text>
+        <rect x "334" y "38" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "362" y "62" text-anchor="middle" font-family="Outfit" font-size="14">🐙</text>
+        <text x "362" y "74" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">GitHub</text>
+        <rect x="14" y "86" width="56" height="40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "42" y "110" text-anchor="middle" font-family="Outfit" font-size="14">💳</text>
+        <text x "42" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Stripe</text>
+        <rect x "78" y "86" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "106" y "110" text-anchor="middle" font-family="Outfit" font-size="14">📅</text>
+        <text x "106" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Calendar</text>
+        <rect x "142" y "86" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "170" y "110" text-anchor="middle" font-family="Outfit" font-size="14">📞</text>
+        <text x "170" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Twilio</text>
+        <rect x "206" y "86" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "234" y "110" text-anchor="middle" font-family="Outfit" font-size="14">🔗</text>
+        <text x "234" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Webhook</text>
+        <rect x "270" y "86" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "298" y "110" text-anchor="middle" font-family="Outfit" font-size="14">📂</text>
+        <text x "298" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Drive</text>
+        <rect x "334" y "86" width "56" height "40" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x "362" y "110" text-anchor="middle" font-family="Outfit" font-size="14">📋</text>
+        <text x "362" y "122" text-anchor="middle" font-family="Outfit" font-size="6" fill="#1e293b">Notion</text>
+        <text x "200" y "162" text-anchor="middle" font-family="JetBrains Mono" font-size="14" fill="#2563EB" font-weight="700">+ hundreds more</text>
+        <text x "200" y "184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">"I built it" → "I deployed it" — fastest path</text>
+      </svg>
     </div>
   </div>
 
@@ -455,11 +577,34 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>The pattern is simple. A trigger fires. Data comes in. An AI node processes it -- classifying, extracting, summarizing, or generating. The result flows to the next node -- database, email, Slack, spreadsheet.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Flow Diagram</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Diagram</span>
-        <span class="placeholder-desc">Trigger arrow to Data arrow to AI Processing arrow to Output (database/email/Slack). The universal n8n+AI pattern.</span>
-      </div>
+      <span class="media-label">Storyboard -- The Universal LLM Pattern</span>
+      <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Trigger → Data → AI → Output</text>
+        <rect x="14" y "44" width="80" height "70" rx="8" fill="rgba(96,165,250,0.12)" stroke="#60a5fa"/>
+        <text x="54" y "62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">TRIGGER</text>
+        <text x "54" y "82" text-anchor="middle" font-family="Outfit" font-size="18">⚡</text>
+        <text x "54" y "100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">webhook · cron · email</text>
+        <line x1="94" y1="79" x2="116" y2="79" stroke="#475569" marker-end="url(#m13fdArrow)"/>
+        <rect x="118" y "44" width="80" height "70" rx="8" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="158" y "62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">DATA</text>
+        <text x "158" y "82" text-anchor="middle" font-family="Outfit" font-size="18">📦</text>
+        <text x "158" y "100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">file · row · message</text>
+        <line x1="198" y1="79" x2="220" y2="79" stroke="#475569" marker-end="url(#m13fdArrow)"/>
+        <rect x="222" y "44" width="80" height "70" rx="8" fill="rgba(168,85,247,0.12)" stroke="#a855f7"/>
+        <text x="262" y "62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a855f7" font-weight="600">AI</text>
+        <text x "262" y "82" text-anchor="middle" font-family="Outfit" font-size="18">🧠</text>
+        <text x "262" y "100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">classify · extract · gen</text>
+        <line x1="302" y1="79" x2="324" y2="79" stroke="#475569" marker-end="url(#m13fdArrow)"/>
+        <rect x="326" y "44" width="60" height "70" rx="8" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="356" y "62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">OUT</text>
+        <text x "356" y "82" text-anchor="middle" font-family="Outfit" font-size="18">📤</text>
+        <text x "356" y "100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">DB · email · Slack</text>
+        <text x "200" y "146" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Same shape every time. Trigger fires, AI thinks, output flows.</text>
+        <text x "200" y "166" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">in: anything · out: anywhere</text>
+        <defs>
+          <marker id="m13fdArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -478,12 +623,41 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>These are not toy examples. These are the exact patterns businesses use in production today.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Three Patterns</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Screen Recording</span>
-        <span class="placeholder-desc">Show each of the three workflows in the n8n canvas: (1) document extraction pipeline, (2) email routing pipeline, (3) report generation pipeline. Quick cuts between them.</span>
-        <span class="placeholder-duration">~30 sec total</span>
-      </div>
+      <span class="media-label">Storyboard -- Three Production Patterns</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Three Patterns Businesses Use Right Now</text>
+        <text x="14" y "46" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600" letter-spacing="0.06em">1 · DOCUMENT PROCESSING</text>
+        <rect x "14" y "52" width "60" height "20" rx="3" fill="rgba(96,165,250,0.15)" stroke="#60a5fa"/>
+        <text x "44" y "65" text-anchor="middle" font-family="Outfit" font-size="7" fill="#bfdbfe">📄 file</text>
+        <text x "78" y "65" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "92" y "52" width "70" height "20" rx="3" fill="rgba(168,85,247,0.15)" stroke="#a855f7"/>
+        <text x "127" y "65" text-anchor="middle" font-family="Outfit" font-size="7" fill="#c4b5fd">🧠 extract</text>
+        <text x "166" y "65" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "180" y "52" width "70" height "20" rx="3" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <text x "215" y "65" text-anchor="middle" font-family="Outfit" font-size="7" fill="#a7f3d0">🗄 database</text>
+        <text x "256" y "65" font-family="Outfit" font-size="7" fill="#94a3b8">invoices, receipts, forms</text>
+        <text x "14" y "100" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.06em">2 · INTELLIGENT ROUTING</text>
+        <rect x "14" y "106" width "60" height "20" rx="3" fill="rgba(96,165,250,0.15)" stroke="#60a5fa"/>
+        <text x "44" y "119" text-anchor="middle" font-family="Outfit" font-size="7" fill="#bfdbfe">📧 email</text>
+        <text x "78" y "119" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "92" y "106" width "70" height "20" rx="3" fill="rgba(168,85,247,0.15)" stroke="#a855f7"/>
+        <text x "127" y "119" text-anchor="middle" font-family="Outfit" font-size="7" fill="#c4b5fd">🧠 classify</text>
+        <text x "166" y "119" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "180" y "106" width "70" height "20" rx="3" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <text x "215" y "119" text-anchor="middle" font-family="Outfit" font-size="7" fill="#a7f3d0">→ team</text>
+        <text x "256" y "119" font-family="Outfit" font-size="7" fill="#94a3b8">support tickets, leads</text>
+        <text x "14" y "154" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600" letter-spacing="0.06em">3 · CONTENT GENERATION</text>
+        <rect x "14" y "160" width "60" height "20" rx="3" fill="rgba(96,165,250,0.15)" stroke="#60a5fa"/>
+        <text x "44" y "173" text-anchor="middle" font-family="Outfit" font-size="7" fill="#bfdbfe">⏰ cron</text>
+        <text x "78" y "173" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "92" y "160" width "70" height "20" rx="3" fill="rgba(168,85,247,0.15)" stroke="#a855f7"/>
+        <text x "127" y "173" text-anchor="middle" font-family="Outfit" font-size="7" fill="#c4b5fd">🧠 generate</text>
+        <text x "166" y "173" font-family="Outfit" font-size="9" fill="#475569">→</text>
+        <rect x "180" y "160" width "70" height "20" rx="3" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <text x "215" y "173" text-anchor="middle" font-family="Outfit" font-size="7" fill="#a7f3d0">📤 stakeholders</text>
+        <text x "256" y "173" font-family="Outfit" font-size="7" fill="#94a3b8">weekly reports, summaries</text>
+        <text x "200" y "212" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Not toy examples — exact patterns running in production today.</text>
+      </svg>
     </div>
   </div>
 
@@ -596,11 +770,18 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="media-col">
       <span class="media-label">End Card</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Text Overlay</span>
-        <span class="placeholder-desc">DADS 5250 -- Module 13 Complete. Next: M14 -- Final Project.</span>
-        <span class="placeholder-duration">Hold 3 sec</span>
-      </div>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
+        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
+        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 13 / 14</text>
+        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 13 Complete</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">Business GenAI · n8n · Workflow Automation</text>
+        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK · THE FINALE</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#fbbf24" font-weight="600">Module 14 — Final Project</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Everything you have learned · One project · Make it count</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani — Northeastern University</text>
+      </svg>
     </div>
   </div>
 
