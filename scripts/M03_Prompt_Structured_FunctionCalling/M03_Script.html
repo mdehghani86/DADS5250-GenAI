@@ -342,13 +342,20 @@ body.teleprompter .scroll-controls { display: flex; }
     <div class="media-col">
       <span class="media-label">Opening Visual</span>
       <p class="shot-note">Medium close-up, warm lighting. Prof holds an actual coffee cup (dark ceramic, no branding). Conversational, relatable tone. The coffee cup is a physical prop that anchors the analogy.</p>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Lower-Third Animation</span>
-        <span class="placeholder-desc">As Prof describes the order, a stylized coffee receipt materializes in the lower-third: each item appears line by line -- "Medium dark roast," "Whole milk, side," "Cinnamon, top" -- like a thermal printer receipt unfurling. Clean monospace font on semi-transparent dark bar.</span>
-        <span class="placeholder-duration">~8 sec, synced to narration</span>
-        <span class="placeholder-style">Receipt paper texture, JetBrains Mono font, warm amber text on translucent dark bar. Each line prints with a subtle typewriter click sound. Receipt curls slightly at the bottom edge.</span>
-        <span class="placeholder-deliverable">MP4 overlay with alpha channel</span>
-      </div>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="24" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">My Coffee Order — Same Standard for AI</text>
+        <!-- Receipt -->
+        <rect x="120" y="48" width="160" height="160" rx="2" fill="#fef3c7" stroke="#f59e0b" stroke-width="1"/>
+        <line x1="120" y1="60" x2="280" y2="60" stroke="#f59e0b" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <text x="200" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#92400e" font-weight="600">DAILY ORDER — REG.</text>
+        <line x1="130" y1="86" x2="270" y2="86" stroke="#f59e0b" stroke-width="0.4" stroke-dasharray="1,2"/>
+        <text x="135" y="106" font-family="JetBrains Mono" font-size="9" fill="#451a03">▪ Medium dark roast</text>
+        <text x="135" y="124" font-family="JetBrains Mono" font-size="9" fill="#451a03">▪ Whole milk, side</text>
+        <text x="135" y="142" font-family="JetBrains Mono" font-size="9" fill="#451a03">▪ Cinnamon, top</text>
+        <line x1="130" y1="156" x2="270" y2="156" stroke="#f59e0b" stroke-width="0.4" stroke-dasharray="1,2"/>
+        <text x="200" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#92400e">never explained twice</text>
+        <text x="200" y="194" text-anchor="middle" font-family="Outfit" font-size="7" fill="#a16207" font-style="italic">— same as a great prompt</text>
+      </svg>
     </div>
   </div>
 
@@ -368,14 +375,28 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>By the end of this module, your AI outputs will be reliable, structured, and actionable. Every single time.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Three-Level Staircase Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">3D Isometric Animation</span>
-        <span class="placeholder-desc">Three ascending glass steps appear one by one. Step 1: "Prompt Control" -- text bubble icon, glowing blue. Step 2: "Output Structure" -- JSON bracket icon { }, glowing green. Step 3: "Action Control" -- gear/function icon, glowing amber. Each step illuminates as narrator reaches that level. A subtle connecting line traces up the staircase.</span>
-        <span class="placeholder-duration">~12 sec</span>
-        <span class="placeholder-style">Isometric 3D perspective on dark bg (#0f172a). Steps: frosted glass with subtle refraction. Icons: minimal line art. Colors: blue (#2563EB), green (#10b981), amber (#f59e0b). Connecting line: dotted, animated draw-on.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Three Levels of Control</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">From Vague Outputs to Reliable Actions</text>
+        <!-- Step 1: Prompt Control (lowest) -->
+        <rect x="30" y="160" width="110" height="50" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="85" y="178" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">LEVEL 1</text>
+        <text x="85" y="194" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">Prompt Control</text>
+        <text x="85" y="206" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">say it right</text>
+        <!-- Step 2: Output Structure (middle) -->
+        <rect x="145" y="100" width="110" height="50" rx="6" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="118" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600" letter-spacing="0.08em">LEVEL 2</text>
+        <text x="200" y="134" text-anchor="middle" font-family="Outfit" font-size="10" fill="#a7f3d0" font-weight="600">Output Structure</text>
+        <text x="200" y="146" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">force JSON · validate</text>
+        <!-- Step 3: Action Control (highest) -->
+        <rect x="260" y="40" width="110" height="50" rx="6" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="315" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600" letter-spacing="0.08em">LEVEL 3</text>
+        <text x="315" y="74" text-anchor="middle" font-family="Outfit" font-size="10" fill="#fde68a" font-weight="600">Action Control</text>
+        <text x="315" y="86" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">call functions</text>
+        <!-- Connecting climbing line -->
+        <path d="M 85 160 L 85 150 L 200 150 L 200 90 L 315 90" stroke="#475569" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+        <text x="200" y="232" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Reliable. Structured. Actionable. Every single time.</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: This staircase visual becomes the recurring motif for M03. It reappears at the start of V2, V4, and V5 with the corresponding step highlighted. Build it as a reusable asset. The glass material should match the course design language.
       </div>
@@ -417,14 +438,35 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>That is the power of the system message. Same engine, different driver.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Layered Message Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">3D Layered Card Animation</span>
-        <span class="placeholder-desc">Three translucent cards stack vertically with depth: bottom "system" (blue tint), middle "user" (white), top "assistant" (green tint). Each slides forward as narrator describes it. Then the demo: left side shows generic system message producing bland output. Right side: specific system message producing polished code. The system card on the right glows brighter.</span>
-        <span class="placeholder-duration">~20 sec</span>
-        <span class="placeholder-style">Cards: frosted glass, 2px border, slight shadow. Depth with CSS perspective. System: blue border (#2563EB). User: neutral. Assistant: green border (#10b981). Background: #0f172a. Text: JetBrains Mono, 0.8rem.</span>
-        <span class="placeholder-deliverable">HTML Canvas animation + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Three-Layer API Call</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Engine, Different Driver</text>
+        <!-- Three layers stacked -->
+        <rect x="80" y="42" width="240" height="34" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="92" y="56" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">SYSTEM</text>
+        <text x="92" y="68" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">"You are a senior Python developer..."</text>
+        <rect x="80" y="80" width="240" height="34" rx="6" fill="rgba(148,163,184,0.1)" stroke="#94a3b8" stroke-width="1.2"/>
+        <text x="92" y="94" font-family="Outfit" font-size="8" fill="#94a3b8" font-weight="600" letter-spacing="0.08em">USER</text>
+        <text x="92" y="106" font-family="JetBrains Mono" font-size="8" fill="#cbd5e1">"Write a function to read a CSV"</text>
+        <rect x="80" y="118" width="240" height="34" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="92" y="132" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600" letter-spacing="0.08em">ASSISTANT</text>
+        <text x="92" y="144" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">→ generated code</text>
+        <!-- Comparison: same user, two systems -->
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Same user message · two system messages</text>
+        <!-- Generic side -->
+        <rect x="14" y="184" width="180" height="78" rx="6" fill="rgba(148,163,184,0.06)" stroke="#475569"/>
+        <text x="22" y="200" font-family="Outfit" font-size="7" fill="#94a3b8">SYSTEM: helpful assistant</text>
+        <text x="22" y="216" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">def read(f):</text>
+        <text x="22" y="226" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">  return open(f).read()</text>
+        <text x="104" y="252" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">bare minimum</text>
+        <!-- Specific side -->
+        <rect x="206" y="184" width="180" height="78" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="214" y="200" font-family="Outfit" font-size="7" fill="#60a5fa">SYSTEM: senior dev, prod-ready</text>
+        <text x="214" y="216" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">def read_csv(path: Path) -&gt; pd.DataFrame:</text>
+        <text x="214" y="226" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">  """Load CSV with type-safe parsing."""</text>
+        <text x="214" y="236" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">  if not path.exists(): raise ...</text>
+        <text x="296" y="256" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa" font-style="italic">type hints · errors · docs</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The split comparison (generic vs specific system message) is the "aha" moment. Left output: short, vague paragraph. Right output: clean code with syntax highlighting. Hold the comparison for 4 seconds.
       </div>
@@ -445,14 +487,32 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Now, every good prompt has four essential elements. Role -- who is the model? Task -- what should it do? Context -- what does it need to know? Format -- how should the output look?</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Prompt Builder Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Assembly</span>
-        <span class="placeholder-desc">A blank prompt canvas sits center-screen. Four labeled blocks orbit: ROLE (blue), TASK (green), CONTEXT (amber), FORMAT (teal). As narrator names each, the block flies in and snaps into the canvas with a satisfying click. After all four land, the canvas pulses once and a quality meter ticks from "Poor" to "Excellent." The assembled prompt glows.</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Blocks: rounded rectangles with icon + label. Canvas: dashed outline solidifying as blocks arrive. Quality meter: vertical bar, red-to-green gradient. Background: #0f172a. Snap sound on each landing. Subtle particle burst on final assembly.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- The Four Elements (RTCF)</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Every Good Prompt Has Four Elements</text>
+        <!-- 4 cards in 2x2 grid -->
+        <rect x="20" y="44" width="170" height="76" rx="8" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="34" y="64" font-family="Outfit" font-size="11" fill="#60a5fa" font-weight="700">ROLE</text>
+        <text x="34" y="82" font-family="Outfit" font-size="8" fill="#bfdbfe">Who is the model?</text>
+        <text x="34" y="102" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"You are a senior</text>
+        <text x="34" y="112" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">supply chain consultant..."</text>
+        <rect x="210" y="44" width="170" height="76" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="224" y="64" font-family="Outfit" font-size="11" fill="#34d399" font-weight="700">TASK</text>
+        <text x="224" y="82" font-family="Outfit" font-size="8" fill="#a7f3d0">What should it do?</text>
+        <text x="224" y="102" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"Analyze the bullwhip</text>
+        <text x="224" y="112" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">effect for..."</text>
+        <rect x="20" y="130" width="170" height="76" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="34" y="150" font-family="Outfit" font-size="11" fill="#fbbf24" font-weight="700">CONTEXT</text>
+        <text x="34" y="168" font-family="Outfit" font-size="8" fill="#fde68a">What does it need to know?</text>
+        <text x="34" y="188" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"...for a mid-size</text>
+        <text x="34" y="198" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">electronics manufacturer."</text>
+        <rect x="210" y="130" width="170" height="76" rx="8" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="1.5"/>
+        <text x="224" y="150" font-family="Outfit" font-size="11" fill="#5eead4" font-weight="700">FORMAT</text>
+        <text x="224" y="168" font-family="Outfit" font-size="8" fill="#99f6e4">How should output look?</text>
+        <text x="224" y="188" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"3 strategies, numbered,</text>
+        <text x="224" y="198" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">with cost reduction %"</text>
+        <text x="200" y="228" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Role + Task + Context + Format = a prompt that lands every time.</text>
+      </svg>
     </div>
   </div>
 
@@ -471,14 +531,40 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Same model. Dramatically different output quality. The difference is entirely in the prompt.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Split-Screen Comparison</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Split-Screen Live Comparison</span>
-        <span class="placeholder-desc">Left: red-tinted "BAD PROMPT" -- vague prompt types in, wall of generic text appears (blurry, unstructured). Right: green-tinted "GOOD PROMPT" -- detailed prompt types in, each element highlights (Role underlined, Task bold, Context italic, Format highlighted). Below, a clean numbered list with percentages renders. Element highlights match the RTCF color coding from Segment B.</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Left: desaturated, red accent border, chaotic output. Right: full color, green accent border, clean structure. Dividing line: 1px white. Pause on final comparison for 3 seconds.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Bad vs Good Prompt</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Model, Dramatically Different Output</text>
+        <!-- BAD -->
+        <rect x="14" y="42" width="180" height="220" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="104" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600" letter-spacing="0.1em">BAD PROMPT</text>
+        <rect x="26" y="72" width="156" height="22" rx="3" fill="#0a1428" stroke="#1e293b"/>
+        <text x="34" y="86" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">"Tell me about supply chains."</text>
+        <text x="104" y="112" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">↓ output</text>
+        <rect x="26" y="120" width="156" height="120" rx="3" fill="rgba(148,163,184,0.05)" stroke="#475569"/>
+        <text x="34" y="138" font-family="Outfit" font-size="7" fill="#94a3b8">Supply chains are systems</text>
+        <text x="34" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">that move products from</text>
+        <text x="34" y="162" font-family="Outfit" font-size="7" fill="#94a3b8">producers to consumers.</text>
+        <text x="34" y="174" font-family="Outfit" font-size="7" fill="#94a3b8">They are very important</text>
+        <text x="34" y="186" font-family="Outfit" font-size="7" fill="#94a3b8">to global trade and...</text>
+        <text x="34" y="206" font-family="Outfit" font-size="7" fill="#475569" font-style="italic">vague · unstructured</text>
+        <text x="34" y="218" font-family="Outfit" font-size="7" fill="#475569" font-style="italic">no actionable detail</text>
+        <!-- GOOD -->
+        <rect x="206" y="42" width="180" height="220" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="296" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600" letter-spacing="0.1em">GOOD PROMPT</text>
+        <rect x="218" y="72" width="156" height="40" rx="3" fill="#0a1428" stroke="#1e293b"/>
+        <text x="226" y="84" font-family="JetBrains Mono" font-size="6.5" fill="#60a5fa">[ROLE] supply chain consultant</text>
+        <text x="226" y="93" font-family="JetBrains Mono" font-size="6.5" fill="#34d399">[TASK] analyze bullwhip effect</text>
+        <text x="226" y="102" font-family="JetBrains Mono" font-size="6.5" fill="#fbbf24">[CONTEXT] mid-size electronics</text>
+        <rect x="218" y="120" width="156" height="120" rx="3" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="226" y="138" font-family="Outfit" font-size="8" fill="#a7f3d0">1. Vendor-managed inventory</text>
+        <text x="232" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~12% reduction in stockouts</text>
+        <text x="226" y="166" font-family="Outfit" font-size="8" fill="#a7f3d0">2. Demand-signal sharing</text>
+        <text x="232" y="178" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~18% lower safety stock</text>
+        <text x="226" y="194" font-family="Outfit" font-size="8" fill="#a7f3d0">3. Smaller order batches</text>
+        <text x="232" y="206" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~9% reduction in WIP</text>
+        <text x="226" y="226" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">structured · numbered</text>
+        <text x="226" y="238" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">specific · usable</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The contrast should be visceral. Left = chaos, right = clarity. The left output should be visibly messy. The right output beautifully formatted. Hold the final comparison for 3 seconds.
       </div>
@@ -518,14 +604,38 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Strategy one: zero-shot. You give the model a task with no examples. "Classify this review as positive, negative, or neutral." It works most of the time. But what about edge cases? "The food was amazing but the service ruined everything." Is that positive or negative? The model might say either one.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Zero-Shot Visualization</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Classifier</span>
-        <span class="placeholder-desc">A review card slides in from left. Classification box with three slots (Positive / Negative / Neutral) on the right. Arrow connects them -- no examples between. Simple review ("Great product!") gets confident green "Positive." Then the ambiguous review slides in -- classification flickers between Positive and Negative, question mark appears, confidence meter drops. Arrow pulses red.</span>
-        <span class="placeholder-duration">~12 sec</span>
-        <span class="placeholder-style">Review cards: white glass, rounded. Classification slots: pill-shaped, color-coded (green/red/gray). Confidence meter: horizontal bar. Flickering: 200ms toggle. Background: #0f172a.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Zero-Shot · Works, but Edge Cases Wobble</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Zero-Shot — No Examples, Just Trust</text>
+        <!-- Easy case (top, confident) -->
+        <text x="14" y="56" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">CASE 1 · CLEAR</text>
+        <rect x="14" y="62" width="180" height="34" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+        <text x="24" y="84" font-family="Outfit" font-size="9" fill="#1e293b">"Great product, fast delivery!"</text>
+        <line x1="200" y1="80" x2="234" y2="80" stroke="#10b981" stroke-width="1.5" marker-end="url(#m03zsArrow)"/>
+        <rect x="240" y="62" width="146" height="34" rx="6" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="313" y="84" text-anchor="middle" font-family="Outfit" font-size="10" fill="#34d399" font-weight="600">POSITIVE · 96%</text>
+        <!-- Hard case (bottom, wobble) -->
+        <text x="14" y="120" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">CASE 2 · AMBIGUOUS</text>
+        <rect x="14" y="126" width="180" height="50" rx="6" fill="#ffffff" stroke="#cbd5e1"/>
+        <text x="24" y="146" font-family="Outfit" font-size="9" fill="#1e293b">"The food was amazing</text>
+        <text x="24" y="160" font-family="Outfit" font-size="9" fill="#1e293b">but the service ruined</text>
+        <text x="24" y="174" font-family="Outfit" font-size="9" fill="#1e293b">everything."</text>
+        <line x1="200" y1="150" x2="234" y2="150" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="3,2" marker-end="url(#m03zsArrow)"/>
+        <text x="217" y="142" font-family="Outfit" font-size="8" fill="#fbbf24">?</text>
+        <rect x="240" y="126" width="68" height="22" rx="4" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="274" y="141" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">POSITIVE</text>
+        <rect x="316" y="126" width="68" height="22" rx="4" fill="rgba(239,68,68,0.12)" stroke="#ef4444"/>
+        <text x="350" y="141" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">NEGATIVE</text>
+        <text x="313" y="166" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24">flickers · confidence drops</text>
+        <text x="313" y="178" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#fbbf24" font-weight="600">52% / 48%</text>
+        <text x="200" y="206" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Zero-shot wins on simple. Edge cases need more.</text>
+        <text x="200" y="222" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa">→ try few-shot next</text>
+        <defs>
+          <marker id="m03zsArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -543,14 +653,42 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Strategy two: few-shot. You give the model a few examples before the actual task. "Here are three reviews with their classifications. Now classify this one." Suddenly the edge case gets consistent results. The model learns the pattern from your examples.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Few-Shot Example Chain</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Sequential Card Animation</span>
-        <span class="placeholder-desc">Three example cards stack vertically between input and classifier, each showing a review with its correct label (color-coded). They form an "example bridge." The same ambiguous review passes through the bridge and emerges with confident, consistent classification. Confidence meter solidly green. Counter: "3 examples = consistent results."</span>
-        <span class="placeholder-duration">~12 sec</span>
-        <span class="placeholder-style">Example cards: slightly smaller, subtle "EXAMPLE" watermark. Bridge metaphor: cards connected by thin lines. Passage through examples feels like a filter refining output.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Few-Shot · Show, Then Ask</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Few-Shot — Three Examples Lock the Pattern</text>
+        <!-- 3 example cards (left) -->
+        <text x="80" y="46" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">EXAMPLES</text>
+        <rect x="14" y="56" width="132" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
+        <text x="22" y="68" font-family="Outfit" font-size="7" fill="#e2e8f0">"Loved it!"</text>
+        <rect x="106" y="62" width="36" height="14" rx="3" fill="rgba(16,185,129,0.2)"/>
+        <text x="124" y="72" text-anchor="middle" font-family="Outfit" font-size="6" fill="#34d399">POS</text>
+        <rect x="14" y="90" width="132" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
+        <text x="22" y="102" font-family="Outfit" font-size="7" fill="#e2e8f0">"Total disappointment"</text>
+        <rect x="106" y="96" width="36" height="14" rx="3" fill="rgba(239,68,68,0.2)"/>
+        <text x="124" y="106" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fca5a5">NEG</text>
+        <rect x="14" y="124" width="132" height="28" rx="4" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
+        <text x="22" y="136" font-family="Outfit" font-size="7" fill="#e2e8f0">"Good food, bad service"</text>
+        <rect x="106" y="130" width="36" height="14" rx="3" fill="rgba(239,68,68,0.2)"/>
+        <text x="124" y="140" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fca5a5">NEG</text>
+        <!-- Bridge arrow -->
+        <line x1="152" y1="104" x2="186" y2="104" stroke="#60a5fa" stroke-width="2" marker-end="url(#m03fsArrow)"/>
+        <text x="169" y="96" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa">learns</text>
+        <!-- New ambiguous review passes through -->
+        <text x="280" y="46" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">NEW INPUT</text>
+        <rect x="194" y="60" width="180" height="46" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1.2"/>
+        <text x="204" y="78" font-family="Outfit" font-size="9" fill="#1e293b">"The food was amazing</text>
+        <text x="204" y="90" font-family="Outfit" font-size="9" fill="#1e293b">but the service ruined it."</text>
+        <line x1="284" y1="112" x2="284" y2="130" stroke="#10b981" stroke-width="1.5" marker-end="url(#m03fsArrow)"/>
+        <rect x="194" y="134" width="180" height="34" rx="6" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="284" y="156" text-anchor="middle" font-family="Outfit" font-size="11" fill="#fca5a5" font-weight="600">NEGATIVE · 91%</text>
+        <text x="200" y="194" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">3 examples · the model now matches your pattern.</text>
+        <text x="200" y="212" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399" font-weight="600">consistent · repeatable</text>
+        <defs>
+          <marker id="m03fsArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -570,14 +708,33 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>When do you use which? Zero-shot for simple tasks. Few-shot when you need consistent formatting. Chain-of-thought when the task requires reasoning. You will practice all three in Lab 1.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Bat-and-Ball Reasoning Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Step-by-Step Reveal Animation</span>
-        <span class="placeholder-desc">Screen splits horizontally. Top: "Without CoT" -- question appears, fast spinner, "10 cents" slams in with red X. Bottom: "With CoT" -- question appears, reasoning steps materialize like a professor writing on a blackboard: "Let ball = x," "bat = x + $1.00," "x + (x + $1.00) = $1.10," "2x = $0.10," "x = $0.05." Each step fades in with chalk-writing sound. "5 cents" with green checkmark. Stat badge: "+40% accuracy with 4 words."</span>
-        <span class="placeholder-duration">~20 sec</span>
-        <span class="placeholder-style">Top: rushed, red accent. Bottom: deliberate, blue accent. Blackboard texture (dark slate with grain). Chalk-style font for equations. Stat badge: green bg, white text, pill shape.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080 + Lottie for web</span>
-      </div>
+      <span class="media-label">Storyboard -- Chain-of-Thought · Bat &amp; Ball</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">"Think step by step." — Four Words That Change Everything</text>
+        <!-- Question bar -->
+        <rect x="14" y="38" width="372" height="34" rx="6" fill="#1e293b"/>
+        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#e2e8f0" font-style="italic">"A bat and a ball cost $1.10. The bat costs $1.00 more than the ball. Ball cost?"</text>
+        <!-- Without CoT -->
+        <rect x="14" y="86" width="180" height="186" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="104" y="104" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600" letter-spacing="0.08em">WITHOUT CoT</text>
+        <text x="104" y="146" text-anchor="middle" font-family="Outfit" font-size="36" fill="#ef4444" font-weight="700">10¢</text>
+        <text x="124" y="138" font-family="Outfit" font-size="22" fill="#ef4444" font-weight="700">✗</text>
+        <text x="104" y="180" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">"Bat is $1, ball is 10¢."</text>
+        <text x="104" y="194" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">— gut answer, wrong</text>
+        <text x="104" y="232" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">No reasoning shown</text>
+        <text x="104" y="246" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">No self-check</text>
+        <!-- With CoT -->
+        <rect x="206" y="86" width="180" height="186" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="296" y="104" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">WITH "STEP BY STEP"</text>
+        <text x="218" y="124" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">Let ball = x</text>
+        <text x="218" y="138" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">bat = x + $1.00</text>
+        <text x="218" y="152" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">x + (x + 1.00) = 1.10</text>
+        <text x="218" y="166" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">2x = 0.10</text>
+        <text x="218" y="180" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">x = $0.05</text>
+        <text x="296" y="216" text-anchor="middle" font-family="Outfit" font-size="22" fill="#34d399" font-weight="700">5¢ ✓</text>
+        <text x="296" y="246" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Reasoning shown · self-checks</text>
+        <text x="296" y="258" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Math holds together</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: This is the signature animation for M03. The wrong answer should feel impulsive. The correct reasoning should feel satisfying and inevitable. Each algebra step at reading pace. The "+40% accuracy" stat is the punchline.
       </div>
@@ -618,14 +775,52 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>You cannot put a paragraph into a database. You cannot feed prose into an analytics pipeline. You need structure. You need JSON.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Text-to-Structure Morph</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Morph Animation</span>
-        <span class="placeholder-desc">A paragraph of AI output text sits center-screen, messy and organic. A "database" icon appears on the right with a slot. The paragraph tries to fit -- bounces off, red flash, "ERROR: cannot parse." Then the same content reorganizes: words slide into labeled fields, punctuation morphs into JSON brackets and colons. Clean JSON slides smoothly into the database slot -- green flash, "SUCCESS."</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Text: serif font, organic, slightly tilted. JSON: JetBrains Mono, perfectly aligned, syntax colored. Database: minimal cylinder. Error: red (#ef4444). Success: green (#10b981). Morph: 2 seconds, individual characters moving.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Text Is Great for Humans, Bad for Code</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">From Prose to Parseable</text>
+        <!-- Top: text trying to enter DB -->
+        <text x="14" y="48" font-family="Outfit" font-size="8" fill="#fca5a5" letter-spacing="0.06em">FREE-FORM TEXT</text>
+        <rect x="14" y="56" width="220" height="48" rx="6" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
+        <text x="22" y="74" font-family="Outfit" font-size="8" fill="#cbd5e1" font-style="italic">"The customer was satisfied with</text>
+        <text x="22" y="86" font-family="Outfit" font-size="8" fill="#cbd5e1" font-style="italic">the product, especially the quality</text>
+        <text x="22" y="98" font-family="Outfit" font-size="8" fill="#cbd5e1" font-style="italic">and the fast delivery time."</text>
+        <line x1="240" y1="80" x2="276" y2="80" stroke="#ef4444" stroke-width="1.5" marker-end="url(#m03tsArrow)"/>
+        <!-- Database cylinder -->
+        <ellipse cx="320" cy="62" rx="34" ry="6" fill="rgba(148,163,184,0.15)" stroke="#94a3b8"/>
+        <path d="M 286 62 L 286 102 Q 286 108 320 108 Q 354 108 354 102 L 354 62" fill="rgba(148,163,184,0.08)" stroke="#94a3b8"/>
+        <ellipse cx="320" cy="62" rx="34" ry="6" fill="none" stroke="#94a3b8"/>
+        <text x="320" y="86" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">DB</text>
+        <text x="278" y="116" font-family="Outfit" font-size="8" fill="#fca5a5">✗ ERROR: cannot parse</text>
+        <!-- Bottom: JSON enters cleanly -->
+        <text x="14" y="146" font-family="Outfit" font-size="8" fill="#34d399" letter-spacing="0.06em">STRUCTURED JSON</text>
+        <rect x="14" y="154" width="220" height="56" rx="6" fill="#0a1428" stroke="#10b981"/>
+        <text x="22" y="170" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">{</text>
+        <text x="32" y="180" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"sentiment"</text>
+        <text x="92" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">:</text>
+        <text x="100" y="180" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">"positive"</text>
+        <text x="155" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
+        <text x="32" y="192" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"keywords"</text>
+        <text x="86" y="192" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">: [</text>
+        <text x="102" y="192" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">"quality"</text>
+        <text x="148" y="192" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
+        <text x="156" y="192" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">"delivery"</text>
+        <text x="206" y="192" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">]</text>
+        <text x="22" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">}</text>
+        <line x1="240" y1="180" x2="276" y2="180" stroke="#10b981" stroke-width="1.5" marker-end="url(#m03tsArrowG)"/>
+        <ellipse cx="320" cy="162" rx="34" ry="6" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <path d="M 286 162 L 286 202 Q 286 208 320 208 Q 354 208 354 202 L 354 162" fill="rgba(16,185,129,0.08)" stroke="#10b981"/>
+        <ellipse cx="320" cy="162" rx="34" ry="6" fill="none" stroke="#10b981"/>
+        <text x="320" y="186" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">DB</text>
+        <text x="278" y="222" font-family="Outfit" font-size="8" fill="#34d399">✓ json.loads() · done</text>
+        <defs>
+          <marker id="m03tsArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/>
+          </marker>
+          <marker id="m03tsArrowG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -647,14 +842,30 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Same information. But the JSON version can be parsed by code in one line. No regex. No string manipulation. Just json.loads() and you have a Python dictionary.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Side-by-Side Output Comparison</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Code Comparison</span>
-        <span class="placeholder-desc">Split screen. Left: "TEXT MODE" -- prose output, then Python code extracting data (regex, string splits, 12 lines of messy parsing). Right: "JSON MODE" -- clean JSON, then one line: json.loads(response). Line counter: 12 lines vs 1 line. Right side glows green.</span>
-        <span class="placeholder-duration">~12 sec</span>
-        <span class="placeholder-style">Code: dark editor (#1e293b). Left code: red warning highlights on fragile regex. Right code: clean, minimal, green accent. Line counter: JetBrains Mono, large numerals.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- 12 Lines vs 1 Line</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">JSON Mode — Stop Parsing, Start Loading</text>
+        <!-- TEXT MODE -->
+        <text x="14" y="46" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600" letter-spacing="0.08em">TEXT MODE · 12 LINES TO PARSE</text>
+        <rect x="14" y="52" width="372" height="100" rx="6" fill="#0a1428" stroke="#ef4444"/>
+        <text x="22" y="68" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">import re</text>
+        <text x="22" y="80" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">text = response.choices[0].message.content</text>
+        <text x="22" y="92" font-family="JetBrains Mono" font-size="7" fill="#fbbf24">sentiment = re.search(r'sentiment.*?(\w+)', text)</text>
+        <text x="22" y="104" font-family="JetBrains Mono" font-size="7" fill="#fbbf24">if sentiment: sentiment = sentiment.group(1)</text>
+        <text x="22" y="116" font-family="JetBrains Mono" font-size="7" fill="#fbbf24">conf = re.search(r'(\d+\.\d+)', text)</text>
+        <text x="22" y="128" font-family="JetBrains Mono" font-size="7" fill="#fbbf24">try: conf = float(conf.group(1))</text>
+        <text x="22" y="140" font-family="JetBrains Mono" font-size="7" fill="#fbbf24">except: conf = None  # fragile</text>
+        <rect x="338" y="58" width="44" height="14" rx="3" fill="rgba(239,68,68,0.2)"/>
+        <text x="360" y="68" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#fca5a5">12 lines</text>
+        <!-- JSON MODE -->
+        <text x="14" y="174" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600" letter-spacing="0.08em">JSON MODE · 1 LINE</text>
+        <rect x="14" y="180" width="372" height="56" rx="6" fill="#0a1428" stroke="#10b981"/>
+        <text x="22" y="200" font-family="JetBrains Mono" font-size="9" fill="#a78bfa">import json</text>
+        <text x="22" y="218" font-family="JetBrains Mono" font-size="9" fill="#34d399">data = json.loads(response.choices[0].message.content)</text>
+        <rect x="338" y="186" width="44" height="14" rx="3" fill="rgba(16,185,129,0.2)"/>
+        <text x="360" y="196" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#34d399">1 line</text>
+        <text x="200" y="262" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Same information. Twelve times less code. Zero regex.</text>
+      </svg>
     </div>
   </div>
 
@@ -673,14 +884,44 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Pydantic lets you define a schema -- a class that says "I expect a field called sentiment of type string, a field called confidence of type float between 0 and 1." If the model returns something that does not match, Pydantic catches it immediately. No silent bugs. No bad data reaching your database.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Schema Gatekeeper Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Gatekeeper Animation</span>
-        <span class="placeholder-desc">A Pydantic schema sits on screen as a blueprint. JSON objects approach on a conveyor belt. Valid JSON passes through a gate (green flash, checkmark). Invalid JSON (wrong type, missing field) bounces back (red flash, error: "confidence must be float, got string"). Counter: "3 passed, 1 caught." The database downstream only receives clean data.</span>
-        <span class="placeholder-duration">~18 sec</span>
-        <span class="placeholder-style">Blueprint: technical drawing, blue lines on dark bg. Conveyor: horizontal, left to right. Gate: glowing frame. Valid: green glow. Invalid: red glow with shake. Error messages: monospace, specific, readable.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Pydantic Gatekeeper</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Pydantic — Catches Bad Data Before Your Database Sees It</text>
+        <!-- Schema blueprint at top -->
+        <rect x="14" y="38" width="372" height="76" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1"/>
+        <text x="22" y="54" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">SCHEMA · class Review(BaseModel)</text>
+        <text x="22" y="72" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">sentiment: Literal["positive", "negative", "neutral"]</text>
+        <text x="22" y="86" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">confidence: float = Field(ge=0, le=1)</text>
+        <text x="22" y="100" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">keywords: list[str]</text>
+        <!-- Conveyor: 3 incoming objects -->
+        <text x="14" y="138" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">INCOMING JSON</text>
+        <!-- Object 1: valid -->
+        <rect x="14" y="146" width="118" height="36" rx="4" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="20" y="158" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0">{sentiment: "positive",</text>
+        <text x="20" y="168" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0"> confidence: 0.92, ...}</text>
+        <text x="73" y="178" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">✓ valid</text>
+        <!-- Object 2: invalid type -->
+        <rect x="142" y="146" width="118" height="36" rx="4" fill="rgba(239,68,68,0.06)" stroke="#ef4444"/>
+        <text x="148" y="158" font-family="JetBrains Mono" font-size="7" fill="#fca5a5">{sentiment: "positive",</text>
+        <text x="148" y="168" font-family="JetBrains Mono" font-size="7" fill="#fca5a5"> confidence: "high"}</text>
+        <text x="201" y="178" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">✗ wrong type</text>
+        <!-- Object 3: valid -->
+        <rect x="270" y="146" width="116" height="36" rx="4" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="276" y="158" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0">{sentiment: "neutral",</text>
+        <text x="276" y="168" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0"> confidence: 0.61, ...}</text>
+        <text x="328" y="178" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">✓ valid</text>
+        <!-- Pydantic gate -->
+        <line x1="14" y1="200" x2="386" y2="200" stroke="#475569" stroke-width="0.8"/>
+        <text x="200" y="216" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">PYDANTIC GATE</text>
+        <line x1="14" y1="222" x2="386" y2="222" stroke="#475569" stroke-width="0.8"/>
+        <!-- Below gate: passed/error -->
+        <rect x="14" y="234" width="220" height="34" rx="4" fill="rgba(16,185,129,0.08)" stroke="#10b981"/>
+        <text x="22" y="248" font-family="Outfit" font-size="8" fill="#34d399">2 passed → ready for database</text>
+        <text x="22" y="260" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0">Review(sentiment="positive", confidence=0.92, ...)</text>
+        <rect x="244" y="234" width="142" height="34" rx="4" fill="rgba(239,68,68,0.08)" stroke="#ef4444"/>
+        <text x="252" y="248" font-family="Outfit" font-size="8" fill="#fca5a5">1 caught → ValidationError</text>
+        <text x="252" y="260" font-family="JetBrains Mono" font-size="7" fill="#fca5a5">confidence: float required</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The gatekeeper should feel protective. The error catch = near-miss prevented. Show the specific error message clearly. The database at end of conveyor only receives clean data.
       </div>
@@ -722,14 +963,39 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>This is the bridge between a chatbot and an agent. The model reasons about which tool to use. Your code does the work.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Chatbot-to-Agent Bridge</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Conceptual Animation</span>
-        <span class="placeholder-desc">Left: chatbot icon produces only text bubbles (limited). A bridge extends toward the right. As it crosses, tool icons (wrench, database, API, calculator) attach like armor. Right side: an agent icon -- same entity but now equipped with tools. Below the bridge: "Function Calling." The agent activates a tool, which executes and returns data.</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Chatbot: simple circle with speech bubble. Agent: same circle with orbiting tool icons. Bridge: glass and steel aesthetic. Tool icons: minimal line art, different accent colors. Background: #0f172a with subtle grid.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- From Chatbot to Agent</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">The Bridge from Text to Action</text>
+        <!-- LEFT: Chatbot -->
+        <text x="70" y="52" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-weight="600" letter-spacing="0.08em">CHATBOT</text>
+        <circle cx="70" cy="120" r="36" fill="rgba(148,163,184,0.1)" stroke="#94a3b8" stroke-width="1.5"/>
+        <text x="70" y="125" text-anchor="middle" font-family="Outfit" font-size="10" fill="#cbd5e1" font-weight="600">LLM</text>
+        <rect x="42" y="168" width="56" height="18" rx="4" fill="rgba(148,163,184,0.12)" stroke="#475569"/>
+        <text x="70" y="180" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">text only</text>
+        <text x="70" y="210" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b" font-style="italic">can describe things</text>
+        <!-- Bridge -->
+        <line x1="110" y1="120" x2="290" y2="120" stroke="#2563EB" stroke-width="2" stroke-dasharray="6,4"/>
+        <text x="200" y="110" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">FUNCTION CALLING</text>
+        <text x="200" y="138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">model decides which tool</text>
+        <!-- RIGHT: Agent -->
+        <text x="330" y="52" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">AGENT</text>
+        <circle cx="330" cy="120" r="36" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="2"/>
+        <text x="330" y="125" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">LLM</text>
+        <!-- Orbiting tool icons -->
+        <circle cx="286" cy="84" r="11" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <text x="286" y="88" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#34d399">DB</text>
+        <circle cx="374" cy="84" r="11" fill="rgba(245,158,11,0.15)" stroke="#f59e0b"/>
+        <text x="374" y="88" text-anchor="middle" font-family="Outfit" font-size="10" fill="#fbbf24">⚙</text>
+        <circle cx="286" cy="156" r="11" fill="rgba(244,114,182,0.15)" stroke="#ec4899"/>
+        <text x="286" y="160" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#f9a8d4">API</text>
+        <circle cx="374" cy="156" r="11" fill="rgba(168,85,247,0.15)" stroke="#a855f7"/>
+        <text x="374" y="160" text-anchor="middle" font-family="Outfit" font-size="10" fill="#c4b5fd">✉</text>
+        <line x1="296" y1="92" x2="310" y2="104" stroke="#475569" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <line x1="364" y1="92" x2="350" y2="104" stroke="#475569" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <line x1="296" y1="148" x2="310" y2="136" stroke="#475569" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <line x1="364" y1="148" x2="350" y2="136" stroke="#475569" stroke-width="0.8" stroke-dasharray="2,2"/>
+        <text x="330" y="210" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-style="italic">can actually DO things</text>
+      </svg>
     </div>
   </div>
 
@@ -753,14 +1019,45 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Five steps. The model decided which function to call. Your code did the work. That is function calling.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Five-Step Flow Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Sequential Flow Animation</span>
-        <span class="placeholder-desc">Five connected nodes in horizontal flow, each appearing as narrator describes. (1) "DEFINE" -- function schema card. (2) "USER" -- speech bubble "Weather in Boston?" (3) "MODEL REASONS" -- AI node glows, JSON function call materializes (not text). (4) "EXECUTE" -- code catches JSON, fires API, data returns. (5) "RESPOND" -- model produces human sentence. Arrows with animated data packets. Flow loops once to reinforce.</span>
-        <span class="placeholder-duration">~25 sec</span>
-        <span class="placeholder-style">Nodes: rounded squares with number badges. Flow arrows: animated dashed lines with traveling dots. JSON: syntax-highlighted. Code execution: terminal flash. Human response: chat bubble with warm glow. Background: #0f172a. Step numbers: accent blue circles.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Five-Step Weather Example</span>
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Five Steps · Model Decides · Your Code Acts</text>
+        <!-- Step 1: Define -->
+        <circle cx="30" cy="58" r="10" fill="#2563EB"/>
+        <text x="30" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ffffff" font-weight="700">1</text>
+        <text x="50" y="56" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">DEFINE the tool</text>
+        <rect x="50" y="64" width="320" height="24" rx="4" fill="#0a1428" stroke="#1e293b"/>
+        <text x="58" y="79" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">get_weather(city: str, units: str = "fahrenheit")</text>
+        <!-- Arrow -->
+        <line x1="30" y1="78" x2="30" y2="108" stroke="#475569" stroke-width="1"/>
+        <!-- Step 2: User asks -->
+        <circle cx="30" cy="118" r="10" fill="#2563EB"/>
+        <text x="30" y="122" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ffffff" font-weight="700">2</text>
+        <text x="50" y="116" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">USER asks</text>
+        <rect x="50" y="124" width="320" height="20" rx="4" fill="rgba(255,255,255,0.05)" stroke="#475569"/>
+        <text x="58" y="138" font-family="Outfit" font-size="9" fill="#cbd5e1" font-style="italic">"What is the weather in Boston?"</text>
+        <line x1="30" y1="138" x2="30" y2="166" stroke="#475569" stroke-width="1"/>
+        <!-- Step 3: Model reasons (JSON) -->
+        <circle cx="30" cy="176" r="10" fill="#f59e0b"/>
+        <text x="30" y="180" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ffffff" font-weight="700">3</text>
+        <text x="50" y="174" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600">MODEL returns JSON call (not text)</text>
+        <rect x="50" y="182" width="320" height="26" rx="4" fill="#0a1428" stroke="#f59e0b"/>
+        <text x="58" y="198" font-family="JetBrains Mono" font-size="8" fill="#fde68a">{"name": "get_weather", "arguments": {"city": "Boston"}}</text>
+        <line x1="30" y1="202" x2="30" y2="228" stroke="#475569" stroke-width="1"/>
+        <!-- Step 4: Execute -->
+        <circle cx="30" cy="238" r="10" fill="#10b981"/>
+        <text x="30" y="242" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ffffff" font-weight="700">4</text>
+        <text x="50" y="236" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600">YOUR CODE executes the call</text>
+        <rect x="50" y="244" width="320" height="20" rx="4" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="58" y="258" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">→ weather_api.fetch("Boston") → 72°F, partly cloudy</text>
+        <line x1="30" y1="258" x2="30" y2="286" stroke="#475569" stroke-width="1"/>
+        <!-- Step 5: Respond -->
+        <circle cx="30" cy="296" r="10" fill="#2563EB"/>
+        <text x="30" y="300" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ffffff" font-weight="700">5</text>
+        <text x="50" y="294" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">MODEL writes the human answer</text>
+        <rect x="50" y="302" width="320" height="14" rx="4" fill="rgba(37,99,235,0.08)" stroke="#2563EB"/>
+        <text x="58" y="312" font-family="Outfit" font-size="8" fill="#bfdbfe">"It's 72°F in Boston right now, partly cloudy."</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Most complex animation in M03. Each step must be clear -- do not rush. Key insight at Step 3: model produces function call JSON instead of text answer. Highlight with brief pause and "decision" indicator. The loop reinforces the pattern.
       </div>
@@ -798,14 +1095,50 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Think about what you can build now. An AI that reads invoices and validates the data before it touches your database. An AI that answers questions by querying a real database. An AI assistant with tools.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Three-Level Staircase Callback</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Callback Animation</span>
-        <span class="placeholder-desc">The three-step staircase from V1 returns, now fully illuminated with flowing data line connecting all steps. Below each step, real-world examples fade in: "Invoice Reader," "Database Query," "Tool-Equipped Assistant." The staircase transforms into a horizontal pipeline.</span>
-        <span class="placeholder-duration">~10 sec</span>
-        <span class="placeholder-style">Same staircase asset from V1, fully lit. Data flow: blue particles. Examples: white text, 0.8rem. Pipeline transformation: smooth 2-second morph.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080 (reuse V1 Lottie asset)</span>
-      </div>
+      <span class="media-label">Storyboard -- The Complete Pipeline</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Input Control · Output Control · Action Control</text>
+        <!-- 3 horizontal panels -->
+        <rect x="14" y="44" width="116" height="100" rx="8" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="72" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">INPUT CONTROL</text>
+        <text x="72" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">Prompt engineering</text>
+        <text x="72" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">RTCF · zero/few-shot</text>
+        <text x="72" y="106" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">chain-of-thought</text>
+        <line x1="22" y1="118" x2="122" y2="118" stroke="#475569" stroke-width="0.5"/>
+        <text x="72" y="132" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"say it right"</text>
+        <line x1="134" y1="94" x2="146" y2="94" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#m03plArrow)"/>
+        <rect x="146" y="44" width="108" height="100" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600">OUTPUT CONTROL</text>
+        <text x="200" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Structured JSON</text>
+        <text x="200" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">JSON mode</text>
+        <text x="200" y="106" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Pydantic validation</text>
+        <line x1="154" y1="118" x2="246" y2="118" stroke="#475569" stroke-width="0.5"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"shape it right"</text>
+        <line x1="258" y1="94" x2="270" y2="94" stroke="#10b981" stroke-width="1.5" marker-end="url(#m03plArrow2)"/>
+        <rect x="270" y="44" width="116" height="100" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="328" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600">ACTION CONTROL</text>
+        <text x="328" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">Function calling</text>
+        <text x="328" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">tools · arguments</text>
+        <text x="328" y="106" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model decides</text>
+        <line x1="278" y1="118" x2="378" y2="118" stroke="#475569" stroke-width="0.5"/>
+        <text x="328" y="132" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"act on it"</text>
+        <!-- Examples below -->
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" letter-spacing="0.06em">WHAT YOU CAN BUILD NOW</text>
+        <text x="72" y="194" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">Invoice reader</text>
+        <text x="72" y="206" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">that validates data</text>
+        <text x="200" y="194" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Database Q&amp;A</text>
+        <text x="200" y="206" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">in plain English</text>
+        <text x="328" y="194" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">Tool-using assistant</text>
+        <text x="328" y="206" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">that takes action</text>
+        <defs>
+          <marker id="m03plArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/>
+          </marker>
+          <marker id="m03plArrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -825,13 +1158,22 @@ body.teleprompter .scroll-controls { display: flex; }
       
     </div>
     <div class="media-col">
-      <span class="media-label">Teaser + End Card</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Teaser + End Card</span>
-        <span class="placeholder-desc">Brief flash: chain links connecting together (2 sec teaser). Then supply chain silhouette with four nodes. End card: "Next: M04 -- LangChain &amp; Beer Game." Dark background (#0f172a), white text, Outfit font.</span>
-        <span class="placeholder-duration">End card hold 4 sec, fade to black</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">End Card</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
+        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
+        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 03 / 14</text>
+        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 3 Complete</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">Prompt Engineering · Structured Output · Function Calling</text>
+        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
+        <!-- Chain link icon -->
+        <ellipse cx="178" cy="155" rx="10" ry="6" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+        <ellipse cx="190" cy="155" rx="10" ry="6" fill="none" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="206" y="160" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Module 4 — LangChain</text>
+        <text x="200" y="176" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Multi-step pipelines · The Beer Game · Bullwhip effect</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani — Northeastern University</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Chain-link teaser should spark curiosity. Keep it abstract. Supply chain silhouette plants the Beer Game seed. End card matches M01/M02 style. Hold 4 seconds. Fade to black.
       </div>
