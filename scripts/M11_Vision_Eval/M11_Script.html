@@ -276,12 +276,34 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Until now, every tool you have built only handled text. Prompts, JSON, function calls, RAG, agents -- all text in, text out. This module breaks that wall. The latest models from OpenAI, Google, and Anthropic process images, audio, even video. They see.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Vision Before/After</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Before/After</span>
-        <span class="placeholder-desc">"What AI sees" -- upload a complex engineering diagram, AI annotations appear labeling components, identifying issues, suggesting improvements.</span>
-        <span class="placeholder-duration">~10 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- AI Looks at a CAD Drawing</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">From Pixels to Engineering Insight</text>
+        <text x="14" y="46" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">RAW DRAWING</text>
+        <rect x="14" y="54" width="180" height="160" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <!-- Mech part outline -->
+        <rect x="40" y="100" width="120" height="50" fill="none" stroke="#94a3b8" stroke-width="1.2"/>
+        <circle cx="70" cy="125" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <circle cx="130" cy="125" r="10" fill="none" stroke="#94a3b8" stroke-width="1"/>
+        <line x1="40" y1="80" x2="40" y2="170" stroke="#475569" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <line x1="160" y1="80" x2="160" y2="170" stroke="#475569" stroke-width="0.5" stroke-dasharray="2,2"/>
+        <text x="40" y="78" font-family="JetBrains Mono" font-size="6" fill="#64748b">120mm</text>
+        <text x="100" y="180" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#64748b">bracket A-12</text>
+        <text x="206" y="46" font-family="Outfit" font-size="8" fill="#60a5fa" letter-spacing="0.06em">AI ANNOTATIONS</text>
+        <rect x="206" y="54" width="180" height="160" rx="6" fill="#0a1428" stroke="#60a5fa"/>
+        <rect x="232" y="100" width="120" height="50" fill="none" stroke="#bfdbfe" stroke-width="1.2"/>
+        <circle cx="262" cy="125" r="10" fill="none" stroke="#bfdbfe" stroke-width="1"/>
+        <circle cx="322" cy="125" r="10" fill="none" stroke="#bfdbfe" stroke-width="1"/>
+        <!-- AI markings -->
+        <circle cx="262" cy="125" r="14" fill="none" stroke="#fbbf24" stroke-width="1.5" stroke-dasharray="2,2"/>
+        <line x1="276" y1="125" x2="296" y2="84" stroke="#fbbf24" stroke-width="0.8"/>
+        <text x="296" y="80" font-family="Outfit" font-size="6" fill="#fbbf24">stress point ⚠</text>
+        <line x1="232" y1="100" x2="216" y2="76" stroke="#34d399" stroke-width="0.8"/>
+        <text x="216" y="72" font-family="Outfit" font-size="6" fill="#34d399">aluminum 6061</text>
+        <line x1="352" y1="150" x2="370" y2="170" stroke="#34d399" stroke-width="0.8"/>
+        <text x="372" y="174" text-anchor="end" font-family="Outfit" font-size="6" fill="#34d399">M8 mounting</text>
+        <text x="296" y="200" text-anchor="middle" font-family="Outfit" font-size="7" fill="#bfdbfe" font-style="italic">"detected: bolt-hole stress"</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Left side: raw CAD diagram, dense and technical. Right side: same diagram with AI-generated annotations -- colored highlights on stress points, labels on components, red circles on issues. The annotations should appear progressively, as if the AI is analyzing in real time.
       </div>
@@ -303,12 +325,38 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>This changes everything. Medical imaging. Manufacturing quality control. Document analysis. Architectural review. Any domain where visual information matters -- and that is most domains -- multimodal AI is now relevant.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Multimodal</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Three input types (text, image, audio) flowing into one model, three output types emerging. Shows the versatility of multimodal processing.</span>
-        <span class="placeholder-duration">~10 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- Multimodal · One Model, Many Senses</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Text · Image · Audio · Video — All In</text>
+        <text x="14" y="50" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">INPUTS</text>
+        <rect x="14" y="60" width="100" height="22" rx="4" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
+        <text x="64" y="74" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe">📝 text</text>
+        <rect x="14" y="88" width="100" height="22" rx="4" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="64" y="102" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0">🖼 image</text>
+        <rect x="14" y="116" width="100" height="22" rx="4" fill="rgba(245,158,11,0.18)" stroke="#f59e0b"/>
+        <text x="64" y="130" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fde68a">🔊 audio</text>
+        <rect x="14" y="144" width="100" height="22" rx="4" fill="rgba(168,85,247,0.18)" stroke="#a855f7"/>
+        <text x="64" y="158" text-anchor="middle" font-family="Outfit" font-size="9" fill="#c4b5fd">🎬 video</text>
+        <line x1="118" y1="113" x2="160" y2="113" stroke="#475569" stroke-width="0.8" stroke-dasharray="3,2" marker-end="url(#m11mmArrow)"/>
+        <circle cx="200" cy="113" r="36" fill="rgba(96,165,250,0.08)" stroke="#60a5fa" stroke-width="1.5"/>
+        <circle cx="200" cy="113" r="22" fill="rgba(37,99,235,0.18)" stroke="#60a5fa" stroke-width="2"/>
+        <text x="200" y="110" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">multimodal</text>
+        <text x="200" y="122" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">model</text>
+        <line x1="240" y1="113" x2="282" y2="113" stroke="#475569" stroke-width="0.8" stroke-dasharray="3,2" marker-end="url(#m11mmArrow)"/>
+        <text x="386" y="50" text-anchor="end" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">USE CASES</text>
+        <rect x="286" y="60" width="100" height="22" rx="4" fill="rgba(37,99,235,0.06)" stroke="#475569"/>
+        <text x="336" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">medical imaging</text>
+        <rect x="286" y="88" width="100" height="22" rx="4" fill="rgba(37,99,235,0.06)" stroke="#475569"/>
+        <text x="336" y="102" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">QC inspection</text>
+        <rect x="286" y="116" width="100" height="22" rx="4" fill="rgba(37,99,235,0.06)" stroke="#475569"/>
+        <text x="336" y="130" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">document OCR</text>
+        <rect x="286" y="144" width="100" height="22" rx="4" fill="rgba(37,99,235,0.06)" stroke="#475569"/>
+        <text x="336" y="158" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">video analytics</text>
+        <text x="200" y="200" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Any domain where visual matters — most domains.</text>
+        <defs>
+          <marker id="m11mmArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -326,12 +374,13 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>But here is the catch. If these models can see, how do you know they are seeing correctly? How do you measure whether the output is good? That is the second half of this module -- evaluation. Because if you cannot measure it, you cannot trust it.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Lower-Third Overlay</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Text Overlay</span>
-        <span class="placeholder-desc">"If you cannot measure it, you cannot trust it." -- white text on dark bar, lower third.</span>
-        <span class="placeholder-duration">Hold 4 sec</span>
-      </div>
+      <span class="media-label">Lower-Third Quote Card</span>
+      <svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="6" height="140" fill="#2563EB"/>
+        <text x="32" y="44" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="500" letter-spacing="0.1em">M11 · KEY MESSAGE</text>
+        <text x="32" y="80" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">If you cannot measure it,</text>
+        <text x="32" y="110" font-family="Outfit" font-size="20" fill="#60a5fa" font-weight="700" font-style="italic">you cannot trust it.</text>
+      </svg>
     </div>
   </div>
 
@@ -364,11 +413,42 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>With Gemini, the approach is similar but the API structure differs slightly. You can send images, PDFs, even short video clips.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Code Display</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Code Walkthrough</span>
-        <span class="placeholder-desc">Side-by-side: GPT-4V API call (left) vs Gemini Vision API call (right). Highlight the image parameter in both. Show the response with image analysis.</span>
-      </div>
+      <span class="media-label">Storyboard -- Sending an Image to a Multimodal API</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Pattern · Two Vendors</text>
+        <rect x="14" y="32" width="186" height="180" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <text x="22" y="50" font-family="JetBrains Mono" font-size="8" fill="#94a3b8"># OpenAI</text>
+        <text x="22" y="64" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">response = client.chat.</text>
+        <text x="22" y="76" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">  completions.create(</text>
+        <text x="32" y="88" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">model=</text>
+        <text x="68" y="88" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"gpt-4.1-mini"</text>
+        <text x="32" y="100" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">messages=[{</text>
+        <text x="42" y="112" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">role:</text>
+        <text x="74" y="112" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"user"</text>
+        <text x="42" y="124" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">content: [</text>
+        <text x="52" y="136" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">{type:</text>
+        <text x="86" y="136" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"text"</text>
+        <text x="116" y="136" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,...},</text>
+        <rect x="50" y="142" width="140" height="14" rx="2" fill="rgba(96,165,250,0.18)" stroke="#60a5fa" stroke-width="0.8"/>
+        <text x="54" y="152" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">{type: "image_url", ...}</text>
+        <text x="42" y "168" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">]</text>
+        <text x="32" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">}])</text>
+        <text x="22" y="200" font-family="JetBrains Mono" font-size="8" fill="#34d399">→ analysis of image</text>
+        <rect x="206" y="32" width="180" height="180" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <text x="214" y="50" font-family="JetBrains Mono" font-size="8" fill="#94a3b8"># Google Gemini</text>
+        <text x="214" y="64" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">model = genai.</text>
+        <text x="214" y="76" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">  GenerativeModel(</text>
+        <text x="224" y="88" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"gemini-2.5-flash"</text>
+        <text x="214" y="100" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">)</text>
+        <text x="214" y="120" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">response = model.</text>
+        <text x="214" y="132" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">  generate_content([</text>
+        <rect x="222" y="138" width="156" height="14" rx="2" fill="rgba(96,165,250,0.18)" stroke="#60a5fa" stroke-width="0.8"/>
+        <text x="226" y="148" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">PIL.Image.open("cad.png"),</text>
+        <text x="222" y="164" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">"What stress points</text>
+        <text x="222" y="176" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">do you see?"</text>
+        <text x="214" y="188" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">])</text>
+        <text x="214" y="208" font-family="JetBrains Mono" font-size="8" fill="#34d399">→ analysis of image</text>
+      </svg>
     </div>
   </div>
 
@@ -386,12 +466,35 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>What can these models actually do with images? Object detection, text extraction from photos, diagram analysis, comparing two images, describing scenes, reading handwriting. The accuracy varies by task, but for many practical applications it is remarkably good.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Model Comparison</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Split Screen</span>
-        <span class="placeholder-desc">GPT-4V vs Gemini Vision -- same image, different analyses side by side. Strengths and weaknesses of each highlighted.</span>
-        <span class="placeholder-duration">~15 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- What Vision Models Can Do</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Six Real Capabilities</text>
+        <rect x="14" y="38" width="120" height="56" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="34" y="60" font-family="Outfit" font-size="14">📦</text>
+        <text x="56" y="58" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Object detection</text>
+        <text x="56" y="74" font-family="Outfit" font-size="7" fill="#94a3b8">"what is in this image"</text>
+        <rect x="140" y="38" width="120" height="56" rx="6" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="160" y="60" font-family="Outfit" font-size="14">🔡</text>
+        <text x="182" y="58" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">OCR / handwriting</text>
+        <text x="182" y="74" font-family="Outfit" font-size="7" fill="#94a3b8">extract text from photos</text>
+        <rect x="266" y="38" width="120" height="56" rx="6" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="286" y="60" font-family="Outfit" font-size="14">📊</text>
+        <text x="308" y="58" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Chart analysis</text>
+        <text x="308" y="74" font-family="Outfit" font-size="7" fill="#94a3b8">read data visualizations</text>
+        <rect x="14" y="100" width="120" height="56" rx="6" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
+        <text x="34" y="122" font-family="Outfit" font-size="14">📐</text>
+        <text x="56" y="120" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Diagram understanding</text>
+        <text x="56" y="136" font-family="Outfit" font-size="7" fill="#94a3b8">CAD, schematics, flowcharts</text>
+        <rect x="140" y="100" width="120" height="56" rx="6" fill="rgba(20,184,166,0.06)" stroke="#14b8a6"/>
+        <text x="160" y="122" font-family="Outfit" font-size="14">🔄</text>
+        <text x="182" y="120" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Image comparison</text>
+        <text x="182" y="136" font-family="Outfit" font-size="7" fill="#94a3b8">"what changed?"</text>
+        <rect x="266" y="100" width="120" height="56" rx="6" fill="rgba(244,114,182,0.06)" stroke="#ec4899"/>
+        <text x="286" y="122" font-family="Outfit" font-size="14">📝</text>
+        <text x="308" y="120" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Scene description</text>
+        <text x="308" y="136" font-family="Outfit" font-size="7" fill="#94a3b8">narrate an image</text>
+        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Accuracy varies — but for most practical tasks, surprisingly good.</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Use a complex image (engineering diagram or data-rich chart). Show both model outputs side by side. Highlight where they agree (green) and where they differ (amber). This sets up the evaluation discussion in V3.
       </div>
@@ -445,12 +548,37 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>LLM evaluation is one of the hardest problems in AI engineering. Traditional software has unit tests -- input X, expect output Y. But LLMs are non-deterministic. The same input can produce different outputs every time.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animation</span>
-        <span class="placeholder-desc">Traditional testing: input arrow to function arrow to expected output (checkmark). LLM testing: same input, three different outputs fan out. Question mark -- which one is "correct"?</span>
-        <span class="placeholder-duration">~10 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- Why Testing LLMs Is Hard</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Traditional Tests Don't Apply</text>
+        <text x="14" y "46" font-family="Outfit" font-size="9" fill="#34d399" letter-spacing="0.06em">TRADITIONAL CODE</text>
+        <rect x="14" y="56" width="60" height="22" rx="4" fill="rgba(255,255,255,0.05)" stroke="#475569"/>
+        <text x="44" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#cbd5e1">add(2,3)</text>
+        <line x1="74" y1="67" x2="120" y2="67" stroke="#34d399" stroke-width="1.2" marker-end="url(#m11htArrow)"/>
+        <rect x="124" y="56" width="50" height="22" rx="4" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="149" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#a7f3d0">5 ✓</text>
+        <text x="186" y="71" font-family="Outfit" font-size="9" fill="#94a3b8">deterministic · easy to test</text>
+        <line x1="14" y1="100" x2="386" y2="100" stroke="#1e293b"/>
+        <text x="14" y="124" font-family="Outfit" font-size="9" fill="#fbbf24" letter-spacing="0.06em">LLM CALL</text>
+        <rect x="14" y="134" width="80" height="22" rx="4" fill="rgba(255,255,255,0.05)" stroke="#475569"/>
+        <text x="54" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#cbd5e1">"summarize"</text>
+        <line x1="94" y1="145" x2="116" y2="120" stroke="#fbbf24" stroke-width="1" marker-end="url(#m11htArrowY)"/>
+        <line x1="94" y1="145" x2="116" y2="145" stroke="#fbbf24" stroke-width="1" marker-end="url(#m11htArrowY)"/>
+        <line x1="94" y1="145" x2="116" y2="170" stroke="#fbbf24" stroke-width="1" marker-end="url(#m11htArrowY)"/>
+        <rect x="120" y="110" width="200" height="20" rx="4" fill="rgba(245,158,11,0.08)" stroke="#fbbf24"/>
+        <text x="128" y="124" font-family="Outfit" font-size="8" fill="#fde68a">"The article discusses..."</text>
+        <rect x="120" y="135" width="200" height="20" rx="4" fill="rgba(245,158,11,0.08)" stroke="#fbbf24"/>
+        <text x="128" y="149" font-family="Outfit" font-size="8" fill="#fde68a">"This piece explores three..."</text>
+        <rect x="120" y="160" width="200" height="20" rx="4" fill="rgba(245,158,11,0.08)" stroke="#fbbf24"/>
+        <text x="128" y="174" font-family="Outfit" font-size="8" fill="#fde68a">"In summary, the author..."</text>
+        <text x="328" y="146" font-family="Outfit" font-size="14" fill="#f59e0b" font-weight="700">?</text>
+        <text x="200" y="208" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Same input · 3 different valid outputs · which is "correct"?</text>
+        <text x="200" y "224" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa">→ need new evaluation methods</text>
+        <defs>
+          <marker id="m11htArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+          <marker id="m11htArrowY" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -468,12 +596,39 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>So what do we measure? There are automated metrics like BLEU and ROUGE -- they compare generated text against reference text. Useful for translation and summarization. There is semantic similarity -- embedding the output and comparing it to expected answers. And there is human evaluation -- having people rate quality, accuracy, helpfulness.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Demo: Evaluation Dashboard</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Dashboard</span>
-        <span class="placeholder-desc">Professional metrics visualization -- bar charts of model scores, confusion matrix, precision/recall curves. Like a testing dashboard for AI.</span>
-        <span class="placeholder-duration">~10 sec</span>
-      </div>
+      <span class="media-label">Storyboard -- Eval Metrics Dashboard</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">BLEU · ROUGE · Semantic Similarity · Human Eval</text>
+        <!-- 3 score cards -->
+        <rect x="14" y="38" width="120" height="50" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="22" y="54" font-family="Outfit" font-size="8" fill="#2563EB" font-weight="600">BLEU</text>
+        <text x="22" y "66" font-family="Outfit" font-size="6" fill="#94a3b8">translation overlap</text>
+        <text x="124" y="78" text-anchor="end" font-family="JetBrains Mono" font-size="14" fill="#2563EB" font-weight="700">0.78</text>
+        <rect x="140" y="38" width="120" height="50" rx="6" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="148" y="54" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">ROUGE-L</text>
+        <text x="148" y="66" font-family="Outfit" font-size="6" fill="#94a3b8">summarization</text>
+        <text x="250" y="78" text-anchor="end" font-family="JetBrains Mono" font-size="14" fill="#10b981" font-weight="700">0.62</text>
+        <rect x="266" y="38" width="120" height="50" rx="6" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="274" y="54" font-family="Outfit" font-size="8" fill="#f59e0b" font-weight="600">SEMANTIC</text>
+        <text x="274" y="66" font-family="Outfit" font-size="6" fill="#94a3b8">embedding similarity</text>
+        <text x="376" y="78" text-anchor="end" font-family="JetBrains Mono" font-size="14" fill="#f59e0b" font-weight="700">0.91</text>
+        <!-- Bar chart -->
+        <text x="14" y="108" font-family="Outfit" font-size="8" fill="#64748b">Model comparison · 50 test prompts</text>
+        <rect x="14" y="116" width="372" height="80" rx="4" fill="#ffffff" stroke="#e2e8f0"/>
+        <text x="22" y="132" font-family="JetBrains Mono" font-size="7" fill="#475569">GPT-4.1</text>
+        <rect x="80" y="124" width="280" height="14" rx="2" fill="#2563EB"/>
+        <text x="368" y="135" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#ffffff">0.91</text>
+        <text x="22" y="152" font-family="JetBrains Mono" font-size="7" fill="#475569">Claude</text>
+        <rect x="80" y="144" width="266" height="14" rx="2" fill="#10b981"/>
+        <text x="354" y="155" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#ffffff">0.86</text>
+        <text x="22" y="172" font-family="JetBrains Mono" font-size="7" fill="#475569">Gemini</text>
+        <rect x="80" y="164" width="248" height="14" rx="2" fill="#f59e0b"/>
+        <text x="336" y="175" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#ffffff">0.81</text>
+        <text x="22" y="192" font-family="JetBrains Mono" font-size="7" fill="#475569">Llama</text>
+        <rect x="80" y="184" width="220" height="14" rx="2" fill="#a855f7"/>
+        <text x="308" y="195" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#ffffff">0.74</text>
+        <text x="200" y="220" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Track every model · every release · every regression.</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Clean dashboard layout. Top row: overall score cards. Middle: bar chart comparing BLEU, ROUGE, semantic similarity across models. Bottom: precision/recall curve. Use the course blue palette. No decorative elements -- this should feel like a real engineering tool.
       </div>
@@ -494,11 +649,30 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>For RAG systems specifically, you measure retrieval quality (did we find the right documents?) and generation quality (did the answer correctly use those documents?). Frameworks like RAGAS give you metrics for both.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Code Display</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Code Walkthrough</span>
-        <span class="placeholder-desc">RAGAS evaluation code: test dataset, retrieval metrics (context precision, recall), generation metrics (faithfulness, answer relevancy). Show the output scores.</span>
-      </div>
+      <span class="media-label">Storyboard -- RAGAS Metrics</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">RAGAS · Two Halves of RAG Quality</text>
+        <rect x="14" y="38" width="180" height="160" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="104" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600" letter-spacing="0.06em">RETRIEVAL QUALITY</text>
+        <text x="104" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">"Did we find the right docs?"</text>
+        <line x1="22" y1="86" x2="186" y2="86" stroke="#dbeafe"/>
+        <text x="22" y="106" font-family="Outfit" font-size="8" fill="#1e293b">▪ Context Precision</text>
+        <text x="32" y="118" font-family="Outfit" font-size="7" fill="#94a3b8">are top chunks relevant?</text>
+        <text x="22" y="138" font-family="Outfit" font-size="8" fill="#1e293b">▪ Context Recall</text>
+        <text x="32" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">did we miss anything?</text>
+        <text x="22" y="170" font-family="Outfit" font-size="8" fill="#1e293b">▪ Context Relevancy</text>
+        <text x="32" y="182" font-family="Outfit" font-size="7" fill="#94a3b8">noise vs signal ratio</text>
+        <rect x="206" y="38" width="180" height="160" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="296" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.06em">GENERATION QUALITY</text>
+        <text x="296" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">"Did the model use them?"</text>
+        <line x1="214" y1="86" x2="378" y2="86" stroke="#dcfce7"/>
+        <text x="214" y="106" font-family="Outfit" font-size="8" fill="#1e293b">▪ Faithfulness</text>
+        <text x="224" y="118" font-family="Outfit" font-size="7" fill="#94a3b8">claims grounded in context?</text>
+        <text x="214" y="138" font-family="Outfit" font-size="8" fill="#1e293b">▪ Answer Relevancy</text>
+        <text x="224" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">does it answer the Q?</text>
+        <text x="214" y="170" font-family="Outfit" font-size="8" fill="#1e293b">▪ Answer Correctness</text>
+        <text x="224" y="182" font-family="Outfit" font-size="7" fill="#94a3b8">vs ground truth</text>
+      </svg>
     </div>
   </div>
 
@@ -516,11 +690,47 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>The practical approach? Build a test suite. A set of questions with known good answers. Run your system against it regularly. Track the scores over time. That is regression testing for AI.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Diagram</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Flow Diagram</span>
-        <span class="placeholder-desc">Build test suite (questions + expected answers) arrow to Run system arrow to Compare outputs arrow to Track scores over time (line chart trending). Feedback loop.</span>
-      </div>
+      <span class="media-label">Storyboard -- Regression Testing for AI</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Build a Test Suite · Track Scores Over Time</text>
+        <rect x="14" y="40" width="80" height="50" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB"/>
+        <text x="54" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">1 · TESTS</text>
+        <text x="54" y "72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Q + expected A</text>
+        <text x="54" y="84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">~50 prompts</text>
+        <line x1="94" y1="65" x2="118" y2="65" stroke="#475569" marker-end="url(#m11rtArrow)"/>
+        <rect x="120" y="40" width="80" height="50" rx="6" fill="rgba(16,185,129,0.1)" stroke="#10b981"/>
+        <text x="160" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">2 · RUN</text>
+        <text x="160" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">your AI system</text>
+        <text x="160" y="84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">on every release</text>
+        <line x1="200" y1="65" x2="224" y2="65" stroke="#475569" marker-end="url(#m11rtArrow)"/>
+        <rect x="226" y="40" width="80" height="50" rx="6" fill="rgba(245,158,11,0.1)" stroke="#f59e0b"/>
+        <text x="266" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">3 · MEASURE</text>
+        <text x="266" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">compare outputs</text>
+        <text x="266" y="84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">→ score per metric</text>
+        <line x1="306" y1="65" x2="330" y2="65" stroke="#475569" marker-end="url(#m11rtArrow)"/>
+        <rect x="332" y="40" width="54" height="50" rx="6" fill="rgba(168,85,247,0.1)" stroke="#a855f7"/>
+        <text x="359" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a855f7" font-weight="600">4 · TRACK</text>
+        <text x="359" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">over time</text>
+        <text x="359" y="84" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">trend chart</text>
+        <line x1="359" y1="92" x2="359" y2="108" stroke="#475569" stroke-dasharray="2,2"/>
+        <line x1="359" y1="108" x2="54" y2="108" stroke="#475569" stroke-dasharray="2,2"/>
+        <line x1="54" y1="108" x2="54" y2="92" stroke="#475569" stroke-dasharray="2,2" marker-end="url(#m11rtArrow)"/>
+        <text x="200" y="124" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">↻ run again on next change</text>
+        <!-- Trend chart -->
+        <text x="14" y "144" font-family="Outfit" font-size="8" fill="#64748b">scores over weeks</text>
+        <rect x="14" y="150" width="372" height="50" rx="3" fill="#f8fafc" stroke="#e2e8f0"/>
+        <polyline points="22,184 60,178 98,180 136,170 174,166 212,158 250,162 288,150 326,144 370,138" stroke="#2563EB" stroke-width="1.5" fill="none"/>
+        <circle cx="22" cy="184" r="2" fill="#2563EB"/>
+        <circle cx="98" cy="180" r="2" fill="#2563EB"/>
+        <circle cx="174" cy="166" r="2" fill="#2563EB"/>
+        <circle cx="250" cy="162" r="2" fill="#2563EB"/>
+        <circle cx="370" cy="138" r="2" fill="#2563EB"/>
+        <text x="22" y "212" font-family="Outfit" font-size="6" fill="#94a3b8">w1</text>
+        <text x="370" y="212" text-anchor="end" font-family="Outfit" font-size="6" fill="#94a3b8">w12</text>
+        <defs>
+          <marker id="m11rtArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -571,11 +781,18 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="media-col">
       <span class="media-label">End Card</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Text Overlay</span>
-        <span class="placeholder-desc">DADS 5250 -- Module 11 Complete. Next: M12 -- SDKs, Claude Code and Workshop.</span>
-        <span class="placeholder-duration">Hold 3 sec</span>
-      </div>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
+        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
+        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 11 / 14</text>
+        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 11 Complete</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">Vision · Multimodal · Evaluation</text>
+        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Module 12 — SDKs &amp; Claude Code</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Claude Agent SDK · Google ADK · workshop time</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani — Northeastern University</text>
+      </svg>
     </div>
   </div>
 
