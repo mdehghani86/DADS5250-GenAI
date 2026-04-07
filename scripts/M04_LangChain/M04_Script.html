@@ -341,13 +341,38 @@ body.teleprompter .scroll-controls { display: flex; }
     <div class="media-col">
       <span class="media-label">Orchestra Visual</span>
       <p class="shot-note">Medium close-up, warm lighting. Prof gestures as if conducting -- subtle, not theatrical. The analogy should feel personal, like a genuine memory.</p>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Cinematic Animation</span>
-        <span class="placeholder-desc">Dark concert hall. Overhead view of an orchestra in silhouette -- sections labeled: "LLMs" (strings), "Memory" (brass), "Tools" (woodwinds), "Chains" (percussion). A conductor figure at center raises a baton. As the baton moves, each section illuminates in sequence: strings glow blue, brass green, woodwinds amber, percussion teal. When all sections play together, the sound merges and a single output line of light streams upward from the ensemble. The conductor morphs subtly into the LangChain logo mark.</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Dark bg (#0f172a) with warm stage lighting pools. Orchestra silhouettes: thin white outlines. Section labels: Outfit font, 0.7rem, positioned above each section. Illumination: radial glow in section color. Light stream: white with rainbow refraction edges. Conductor baton movement: smooth bezier arc.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <defs>
+          <radialGradient id="m04stage" cx="50%" cy="100%" r="80%">
+            <stop offset="0%" stop-color="#fbbf24" stop-opacity="0.15"/>
+            <stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>
+          </radialGradient>
+        </defs>
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">LangChain Is the Conductor</text>
+        <ellipse cx="200" cy="240" rx="200" ry="120" fill="url(#m04stage)"/>
+        <!-- Stage arc -->
+        <path d="M 30 200 Q 200 100 370 200" stroke="#475569" stroke-width="0.8" fill="none" stroke-dasharray="3,3"/>
+        <!-- Sections (musicians as small dots) -->
+        <text x="65" y="146" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">LLMs</text>
+        <circle cx="58" cy="160" r="4" fill="#60a5fa"/><circle cx="68" cy="158" r="4" fill="#60a5fa"/><circle cx="78" cy="162" r="4" fill="#60a5fa"/>
+        <circle cx="56" cy="172" r="4" fill="#60a5fa"/><circle cx="66" cy="170" r="4" fill="#60a5fa"/><circle cx="76" cy="174" r="4" fill="#60a5fa"/>
+        <text x="135" y="126" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600">Prompt Templates</text>
+        <circle cx="128" cy="140" r="4" fill="#34d399"/><circle cx="138" cy="138" r="4" fill="#34d399"/><circle cx="148" cy="142" r="4" fill="#34d399"/>
+        <circle cx="126" cy="152" r="4" fill="#34d399"/><circle cx="136" cy="150" r="4" fill="#34d399"/><circle cx="146" cy="154" r="4" fill="#34d399"/>
+        <text x="265" y="126" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fbbf24" font-weight="600">Memory</text>
+        <circle cx="258" cy="140" r="4" fill="#fbbf24"/><circle cx="268" cy="138" r="4" fill="#fbbf24"/><circle cx="278" cy="142" r="4" fill="#fbbf24"/>
+        <circle cx="256" cy="152" r="4" fill="#fbbf24"/><circle cx="266" cy="150" r="4" fill="#fbbf24"/><circle cx="276" cy="154" r="4" fill="#fbbf24"/>
+        <text x="335" y="146" text-anchor="middle" font-family="Outfit" font-size="8" fill="#5eead4" font-weight="600">Tools</text>
+        <circle cx="328" cy="160" r="4" fill="#5eead4"/><circle cx="338" cy="158" r="4" fill="#5eead4"/><circle cx="348" cy="162" r="4" fill="#5eead4"/>
+        <circle cx="326" cy="172" r="4" fill="#5eead4"/><circle cx="336" cy="170" r="4" fill="#5eead4"/><circle cx="346" cy="174" r="4" fill="#5eead4"/>
+        <!-- Conductor podium center -->
+        <rect x="190" y="188" width="20" height="6" rx="1" fill="#94a3b8"/>
+        <circle cx="200" cy="180" r="8" fill="rgba(96,165,250,0.3)" stroke="#bfdbfe" stroke-width="1.5"/>
+        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe" font-weight="700">LC</text>
+        <line x1="200" y1="172" x2="218" y2="158" stroke="#bfdbfe" stroke-width="1.2"/>
+        <text x="200" y="216" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">conductor</text>
+        <text x="200" y="232" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">All four sections, in sync.</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: This is the defining visual for M04. The orchestra metaphor should feel cinematic -- think Hans Zimmer concert footage aesthetic. The key moment is when all sections illuminate together and the combined output emerges. That is the power of orchestration vs. individual instruments. Build the section labels as toggleable layers for reuse in V2.
       </div>
@@ -369,14 +394,46 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>LangChain gives you pre-built components for every part of an AI pipeline -- and a standard way to connect them together.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Single Call vs Pipeline</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Contrast Animation</span>
-        <span class="placeholder-desc">Left side: "Before" -- a single prompt-to-response arrow. Simple, limited, one-dimensional. Right side: "After" -- a multi-step pipeline diagram with branching paths: prompt feeds into memory lookup, memory feeds into model, model calls tool, tool result feeds back, final output emerges. The pipeline pulses with flowing data particles. A complexity meter shows: "1 step" vs "5 steps, same code simplicity."</span>
-        <span class="placeholder-duration">~12 sec</span>
-        <span class="placeholder-style">Left: gray, static, minimal. Right: blue accent, animated, vibrant. Pipeline nodes: frosted glass circles with icons. Data particles: small blue dots traveling along connection lines. Complexity meter: horizontal bar with step counter.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Single Call vs Pipeline</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">From Single Calls to Real Pipelines</text>
+        <!-- BEFORE (top) -->
+        <text x="14" y="50" font-family="Outfit" font-size="9" fill="#94a3b8" font-weight="600" letter-spacing="0.08em">BEFORE · 1 STEP</text>
+        <rect x="50" y="62" width="62" height="28" rx="6" fill="rgba(148,163,184,0.1)" stroke="#94a3b8"/>
+        <text x="81" y="80" text-anchor="middle" font-family="Outfit" font-size="9" fill="#cbd5e1">prompt</text>
+        <line x1="116" y1="76" x2="160" y2="76" stroke="#94a3b8" stroke-width="1.2" marker-end="url(#m04ArrowGray)"/>
+        <rect x="166" y="62" width="74" height="28" rx="6" fill="rgba(148,163,184,0.1)" stroke="#94a3b8"/>
+        <text x="203" y="80" text-anchor="middle" font-family="Outfit" font-size="9" fill="#cbd5e1">response</text>
+        <text x="260" y="80" font-family="Outfit" font-size="8" fill="#64748b" font-style="italic">flat · stateless · brittle</text>
+        <line x1="14" y1="106" x2="386" y2="106" stroke="#1e293b" stroke-width="0.5"/>
+        <!-- AFTER (bottom) -->
+        <text x="14" y="124" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">AFTER · LANGCHAIN PIPELINE</text>
+        <rect x="14" y="138" width="62" height="24" rx="5" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="45" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">prompt</text>
+        <line x1="80" y1="150" x2="96" y2="150" stroke="#2563EB" stroke-width="1.2" marker-end="url(#m04ArrowBlue)"/>
+        <rect x="100" y="138" width="62" height="24" rx="5" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="131" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">memory</text>
+        <line x1="166" y1="150" x2="182" y2="150" stroke="#2563EB" stroke-width="1.2" marker-end="url(#m04ArrowBlue)"/>
+        <rect x="186" y="138" width="62" height="24" rx="5" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="217" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">LLM</text>
+        <line x1="252" y1="150" x2="268" y2="150" stroke="#2563EB" stroke-width="1.2" marker-end="url(#m04ArrowBlue)"/>
+        <rect x="272" y="138" width="62" height="24" rx="5" fill="rgba(168,85,247,0.12)" stroke="#a855f7"/>
+        <text x="303" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">tool</text>
+        <line x1="338" y1="150" x2="354" y2="150" stroke="#2563EB" stroke-width="1.2" marker-end="url(#m04ArrowBlue)"/>
+        <rect x="358" y="138" width="28" height="24" rx="5" fill="rgba(20,184,166,0.12)" stroke="#14b8a6"/>
+        <text x="372" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#5eead4">out</text>
+        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">5 components · same simple LCEL syntax</text>
+        <text x="200" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#60a5fa">prompt | memory | llm | tool | out</text>
+        <text x="200" y="218" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">stateful · composable · swappable</text>
+        <defs>
+          <marker id="m04ArrowGray" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/>
+          </marker>
+          <marker id="m04ArrowBlue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563EB"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -417,14 +474,46 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>Fourth, Chains. This is the core idea. A chain connects steps together. The output of step one becomes the input of step two. Summarize, then translate, then format -- three steps, one chain.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Four Building Blocks Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Lego-Block Assembly Animation</span>
-        <span class="placeholder-desc">Four 3D isometric blocks float in space, each with an icon and label. Block 1: "LLMs" (brain icon, blue) -- shows GPT/Gemini/Claude logos swapping inside. Block 2: "Prompt Templates" (brackets icon, green) -- shows a template with {variable} slots filling with different values. Block 3: "Memory" (clock/loop icon, amber) -- shows conversation bubbles stacking and persisting. Block 4: "Chains" (link icon, teal) -- shows blocks snapping together in sequence. Each block appears as narrator introduces it, rotating slightly to show dimensionality. After all four appear, they snap together into a unified structure with a satisfying click.</span>
-        <span class="placeholder-duration">~30 sec total (each block ~6 sec)</span>
-        <span class="placeholder-style">3D isometric perspective. Blocks: rounded cubes with frosted glass faces. Icons: white line art on colored face. Background: #0f172a with subtle perspective grid. Assembly sound: mechanical snap + subtle chime. Final structure: glows with combined colors.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Four Building Blocks</span>
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">LangChain · Four Modular Building Blocks</text>
+        <!-- Block 1: LLMs -->
+        <rect x="20" y="42" width="170" height="92" rx="10" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
+        <rect x="32" y="54" width="22" height="22" rx="5" fill="rgba(37,99,235,0.25)"/>
+        <text x="43" y="70" text-anchor="middle" font-family="Outfit" font-size="11" fill="#bfdbfe">⚡</text>
+        <text x="62" y="62" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="700">LLMs</text>
+        <text x="62" y="74" font-family="Outfit" font-size="7" fill="#94a3b8">unified interface</text>
+        <text x="32" y="96" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">▪ ChatOpenAI</text>
+        <text x="32" y="108" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">▪ ChatGoogleGenerativeAI</text>
+        <text x="32" y="120" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">▪ ChatAnthropic</text>
+        <!-- Block 2: Prompt Templates -->
+        <rect x="210" y="42" width="170" height="92" rx="10" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
+        <rect x="222" y="54" width="22" height="22" rx="5" fill="rgba(16,185,129,0.25)"/>
+        <text x="233" y="70" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#a7f3d0">{}</text>
+        <text x="252" y="62" font-family="Outfit" font-size="10" fill="#34d399" font-weight="700">Prompt Templates</text>
+        <text x="252" y="74" font-family="Outfit" font-size="7" fill="#94a3b8">reusable at scale</text>
+        <text x="222" y="96" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0">"Summarize {topic}</text>
+        <text x="222" y="108" font-family="JetBrains Mono" font-size="7" fill="#a7f3d0">in {tone} tone."</text>
+        <text x="222" y="124" font-family="Outfit" font-size="7" fill="#94a3b8">→ 1 template, 1000s of inputs</text>
+        <!-- Block 3: Memory -->
+        <rect x="20" y="146" width="170" height="92" rx="10" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+        <rect x="32" y="158" width="22" height="22" rx="5" fill="rgba(245,158,11,0.25)"/>
+        <text x="43" y="174" text-anchor="middle" font-family="Outfit" font-size="11" fill="#fde68a">↻</text>
+        <text x="62" y="166" font-family="Outfit" font-size="10" fill="#fbbf24" font-weight="700">Memory</text>
+        <text x="62" y="178" font-family="Outfit" font-size="7" fill="#94a3b8">stateful conversations</text>
+        <rect x="32" y="190" width="148" height="9" rx="2" fill="rgba(245,158,11,0.2)"/>
+        <rect x="32" y="201" width="120" height="9" rx="2" fill="rgba(245,158,11,0.18)"/>
+        <rect x="32" y="212" width="140" height="9" rx="2" fill="rgba(245,158,11,0.16)"/>
+        <text x="32" y="232" font-family="Outfit" font-size="7" fill="#94a3b8">past turns persist</text>
+        <!-- Block 4: Chains -->
+        <rect x="210" y="146" width="170" height="92" rx="10" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="1.5"/>
+        <rect x="222" y="158" width="22" height="22" rx="5" fill="rgba(20,184,166,0.25)"/>
+        <text x="233" y="174" text-anchor="middle" font-family="Outfit" font-size="11" fill="#5eead4">⛓</text>
+        <text x="252" y="166" font-family="Outfit" font-size="10" fill="#5eead4" font-weight="700">Chains</text>
+        <text x="252" y="178" font-family="Outfit" font-size="7" fill="#94a3b8">step → step → step</text>
+        <text x="222" y="200" font-family="JetBrains Mono" font-size="7" fill="#5eead4">summarize | translate | format</text>
+        <text x="222" y="220" font-family="Outfit" font-size="7" fill="#94a3b8">output of one = input of next</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: Each block should feel substantial and modular -- like real building components. The swap animation inside the LLM block (GPT to Gemini to Claude) demonstrates provider-agnostic design. The memory block should show messages persisting (not disappearing like in earlier modules). The final assembly is the payoff -- four independent pieces becoming one system.
       </div>
@@ -449,14 +538,36 @@ body.teleprompter .scroll-controls { display: flex; }
 result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>: <span class="str">"supply chain optimization"</span>})</pre></div>
     </div>
     <div class="media-col">
-      <span class="media-label">LCEL Pipe Flow Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Code + Data Flow</span>
-        <span class="placeholder-desc">The code line "prompt | llm | output_parser" appears center-screen. Each component name is a colored block: prompt (blue), llm (green), output_parser (amber). The pipe characters | glow and pulse. Below the code, a data flow visualization: user input enters the prompt block, transforms inside (template variables fill in), flows through the | pipe into the llm block (processing spinner), flows through next pipe into output_parser (raw text strips down to clean string). The final clean output slides out the right end. The whole flow plays in 5 seconds, then loops.</span>
-        <span class="placeholder-duration">~12 sec (5 sec flow + 2 sec hold + 5 sec replay)</span>
-        <span class="placeholder-style">Code: JetBrains Mono on dark bg (#1e293b). Pipe symbols: white, glowing with accent blue pulse. Data flow: horizontal pipeline below code, glass tubes with visible data particles. Each block: rounded, color-matched to code. Easing: smooth, continuous flow.</span>
-        <span class="placeholder-deliverable">HTML Canvas animation + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- LCEL Pipe Flow</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">LCEL — One Pipe Connects Everything</text>
+        <!-- Code line -->
+        <rect x="14" y="46" width="372" height="32" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <text x="32" y="66" font-family="JetBrains Mono" font-size="11" fill="#bfdbfe">chain = </text>
+        <text x="92" y="66" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="600">prompt</text>
+        <text x="142" y="66" font-family="JetBrains Mono" font-size="14" fill="#fbbf24" font-weight="700">|</text>
+        <text x="156" y="66" font-family="JetBrains Mono" font-size="11" fill="#34d399" font-weight="600">llm</text>
+        <text x="186" y="66" font-family="JetBrains Mono" font-size="14" fill="#fbbf24" font-weight="700">|</text>
+        <text x="200" y="66" font-family="JetBrains Mono" font-size="11" fill="#f59e0b" font-weight="600">output_parser</text>
+        <text x="14" y="106" font-family="Outfit" font-size="9" fill="#94a3b8" letter-spacing="0.06em">DATA FLOW</text>
+        <!-- Pipeline visualization -->
+        <rect x="14" y="118" width="100" height="50" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="64" y="138" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">prompt</text>
+        <text x="64" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">{topic} →</text>
+        <text x="64" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">"supply chain"</text>
+        <text x="125" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="138" y="118" width="100" height="50" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="188" y="138" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0" font-weight="600">LLM</text>
+        <text x="188" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model thinks</text>
+        <text x="188" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">→ raw text</text>
+        <text x="249" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="262" y="118" width="124" height="50" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="324" y="138" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fde68a" font-weight="600">output_parser</text>
+        <text x="324" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">strip to clean</text>
+        <text x="324" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">str / dict</text>
+        <text x="200" y="196" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Each | hands data forward. Like Unix pipes — for AI.</text>
+        <text x="200" y="216" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#34d399">chain.invoke({"topic": "supply chain"})</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The pipe operator is the visual signature of LCEL. Make the | symbols feel special -- they are not just syntax, they are the connectors that make the whole thing work. The data flow below should mirror the code above perfectly, showing what each | actually does. Students should be able to trace data from input to output.
       </div>
@@ -497,14 +608,41 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>Here is what happens. The user asks a question. The prompt template wraps it with structure and context. The model generates a response. The output parser extracts the clean text.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Chain Assembly Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Snap-Together Animation</span>
-        <span class="placeholder-desc">Three Lego-like blocks sit separately on a dark workspace: PROMPT (blue, with template icon), LLM (green, with brain icon), PARSER (amber, with filter icon). Each has a connector socket on its edges. They slide together from left to right, snapping into place with magnetic attraction -- each connection makes a satisfying click and a brief spark of light at the join point. Once connected, the assembled chain glows and a "Ready" indicator appears. Then data flows through the assembled chain: a user question enters left, gets wrapped by prompt, processed by LLM, cleaned by parser, and clean text exits right.</span>
-        <span class="placeholder-duration">~15 sec (7 sec assembly + 8 sec data flow)</span>
-        <span class="placeholder-style">Workspace: dark (#0f172a) with subtle workbench texture. Blocks: 3D rounded, matching V2 blocks. Connector sockets: circular indents with glow. Snap sparks: white with color tint. Data flow: visible text packet traveling through glass tube. "Ready" indicator: green pill badge.</span>
-        <span class="placeholder-deliverable">Lottie JSON + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- Three Blocks, One Chain</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Build Your First Chain</text>
+        <text x="14" y="50" font-family="Outfit" font-size="9" fill="#94a3b8" letter-spacing="0.06em">USER QUESTION</text>
+        <rect x="14" y="58" width="372" height="22" rx="6" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
+        <text x="22" y="74" font-family="Outfit" font-size="9" fill="#cbd5e1" font-style="italic">"Explain the bullwhip effect in two sentences."</text>
+        <line x1="200" y1="84" x2="200" y2="100" stroke="#475569" stroke-width="1"/>
+        <!-- 3 blocks chained -->
+        <rect x="14" y="104" width="116" height="60" rx="8" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="72" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="700">PROMPT</text>
+        <text x="72" y="138" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">wraps with</text>
+        <text x="72" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">structure + tone</text>
+        <line x1="130" y1="134" x2="146" y2="134" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#m04caArrow)"/>
+        <text x="138" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="148" y="104" width="116" height="60" rx="8" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="206" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="700">LLM</text>
+        <text x="206" y="138" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">generates raw</text>
+        <text x="206" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">response text</text>
+        <line x1="264" y1="134" x2="280" y2="134" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#m04caArrow)"/>
+        <text x="272" y="126" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="282" y="104" width="104" height="60" rx="8" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="334" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="700">PARSER</text>
+        <text x="334" y="138" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">extracts clean</text>
+        <text x="334" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">string output</text>
+        <line x1="200" y1="168" x2="200" y2="184" stroke="#475569" stroke-width="1"/>
+        <text x="14" y="190" font-family="Outfit" font-size="9" fill="#34d399" letter-spacing="0.06em">CLEAN ANSWER</text>
+        <rect x="14" y="198" width="372" height="32" rx="6" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="22" y="214" font-family="Outfit" font-size="9" fill="#a7f3d0">"The bullwhip effect is when small demand changes amplify into</text>
+        <text x="22" y="224" font-family="Outfit" font-size="9" fill="#a7f3d0">huge swings up the supply chain..."</text>
+        <defs>
+          <marker id="m04caArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </div>
 
@@ -524,14 +662,40 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>That is the power of composability. And that is what you will build in Lab 1.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Hot-Swap Component Demo</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Interactive Swap Animation</span>
-        <span class="placeholder-desc">The assembled chain from Segment A is on screen. A memory module (amber, clock icon) slides in from above and clicks into place between prompt and LLM -- the chain extends. Then a second LLM block (different color, "Gemini" label) approaches the existing GPT block. The GPT block ejects smoothly (slides down), and the Gemini block snaps into its place. The chain keeps running -- data still flows. A badge appears: "Same pipeline, different model. Zero code changes." A line counter shows: "3 lines LCEL = 47 lines manual."</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Hot-swap eject: smooth downward slide with slight rotation. New block insert: upward slide with magnetic snap. Chain glow: maintained throughout swap (pipeline never breaks). Line counter: JetBrains Mono, split display "3 | 47" with accent colors.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Hot-Swap Components</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Pipeline. Swap Any Component.</text>
+        <!-- Chain with old model -->
+        <text x="14" y="48" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">YESTERDAY</text>
+        <rect x="14" y="56" width="60" height="22" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="44" y="71" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">prompt</text>
+        <text x="80" y="71" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="92" y="56" width="60" height="22" rx="4" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="122" y="71" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">GPT-4</text>
+        <text x="158" y="71" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="170" y="56" width="60" height="22" rx="4" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="200" y="71" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">parser</text>
+        <text x="244" y="72" font-family="Outfit" font-size="9" fill="#34d399">✓ runs fine</text>
+        <!-- Same pipeline today -->
+        <text x="14" y="108" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">TODAY · ONE-LINE CHANGE</text>
+        <rect x="14" y="116" width="60" height="22" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="44" y="131" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">prompt</text>
+        <text x="80" y="131" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="92" y="116" width="60" height="22" rx="4" fill="rgba(168,85,247,0.18)" stroke="#a855f7"/>
+        <text x="122" y="131" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#c4b5fd">Claude</text>
+        <text x="158" y="131" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="170" y="116" width="60" height="22" rx="4" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="200" y="131" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">parser</text>
+        <text x="244" y="132" font-family="Outfit" font-size="9" fill="#34d399">✓ still runs</text>
+        <!-- Code line counter -->
+        <rect x="14" y="160" width="180" height="60" rx="6" fill="#0a1428" stroke="#1e293b"/>
+        <text x="22" y="178" font-family="Outfit" font-size="8" fill="#94a3b8">Manual code (no LangChain)</text>
+        <text x="104" y="206" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="#94a3b8" font-weight="700">~47 lines</text>
+        <rect x="206" y="160" width="180" height="60" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="214" y="178" font-family="Outfit" font-size="8" fill="#60a5fa">LCEL chain</text>
+        <text x="296" y="206" text-anchor="middle" font-family="JetBrains Mono" font-size="22" fill="#bfdbfe" font-weight="700">3 lines</text>
+        <text x="200" y="234" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">composability · the whole point</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The hot-swap moment is the "wow" of this segment. The pipeline should visually never stop running -- data continues to flow even as a component is being swapped. This demonstrates the modularity promise. The line counter comparison (3 vs 47) drives home the efficiency argument.
       </div>
@@ -572,14 +736,42 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>Here is the idea. You have four roles in a supply chain: Retailer, Wholesaler, Distributor, and Factory. Each one orders inventory from the next. The problem? There are delays. And when demand changes at the retail level, each player overreacts. Small changes in demand amplify into massive swings at the factory level.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Supply Chain Flow Animation</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">4-Node Supply Chain Animation</span>
-        <span class="placeholder-desc">Four nodes arranged horizontally: RETAILER (storefront icon, blue), WHOLESALER (warehouse icon, green), DISTRIBUTOR (truck icon, amber), FACTORY (gear icon, teal). Arrows flow right-to-left showing product delivery. Arrows flow left-to-right showing orders. Initially, orders are small and steady (thin arrows, even spacing). Then customer demand spikes at the Retailer. The order arrow from Retailer to Wholesaler grows slightly. From Wholesaler to Distributor -- grows more. From Distributor to Factory -- massive arrow, pulsing red. A wave visualization appears below: a small wave at Retailer amplifies into a huge wave at Factory. Label: "The Bullwhip Effect."</span>
-        <span class="placeholder-duration">~20 sec</span>
-        <span class="placeholder-style">Nodes: rounded squares with frosted glass, icon + label. Arrows: animated flow lines with traveling product dots (right-to-left) and order dots (left-to-right). Steady state: all blue, calm. Spike: arrows grow, colors shift to amber then red at Factory. Wave visualization: sine wave that grows in amplitude left to right, drawn with animated stroke. Background: #0f172a.</span>
-        <span class="placeholder-deliverable">HTML Canvas animation + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- The Beer Game &amp; the Bullwhip</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Four Roles · Demand Amplifies Up the Chain</text>
+        <!-- 4 nodes -->
+        <rect x="14" y="50" width="80" height="44" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="54" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">RETAILER</text>
+        <text x="54" y="84" text-anchor="middle" font-family="Outfit" font-size="14" fill="#bfdbfe">🏬</text>
+        <rect x="110" y="50" width="80" height="44" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="150" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0" font-weight="600">WHOLESALER</text>
+        <text x="150" y="84" text-anchor="middle" font-family="Outfit" font-size="14" fill="#a7f3d0">🏢</text>
+        <rect x="206" y="50" width="80" height="44" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="246" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fde68a" font-weight="600">DISTRIBUTOR</text>
+        <text x="246" y="84" text-anchor="middle" font-family="Outfit" font-size="14" fill="#fde68a">🚚</text>
+        <rect x="302" y="50" width="80" height="44" rx="6" fill="rgba(239,68,68,0.12)" stroke="#ef4444"/>
+        <text x="342" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600">FACTORY</text>
+        <text x="342" y="84" text-anchor="middle" font-family="Outfit" font-size="14" fill="#fca5a5">⚙</text>
+        <!-- Order arrows L→R (sizes amplify) -->
+        <text x="14" y="118" font-family="Outfit" font-size="8" fill="#94a3b8">orders flow → → →</text>
+        <line x1="94" y1="128" x2="110" y2="128" stroke="#60a5fa" stroke-width="1.5" marker-end="url(#m04bgArrow1)"/>
+        <line x1="190" y1="128" x2="206" y2="128" stroke="#34d399" stroke-width="3" marker-end="url(#m04bgArrow2)"/>
+        <line x1="286" y1="128" x2="302" y2="128" stroke="#fbbf24" stroke-width="5" marker-end="url(#m04bgArrow3)"/>
+        <!-- Wave visualization -->
+        <text x="14" y="158" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">DEMAND VARIANCE (AMPLIFIES)</text>
+        <path d="M 14 200 Q 30 196 46 200 T 78 200 T 110 200" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+        <path d="M 110 200 Q 126 188 142 200 T 174 200 T 206 200" stroke="#34d399" stroke-width="1.5" fill="none"/>
+        <path d="M 206 200 Q 222 174 238 200 T 270 200 T 302 200" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <path d="M 302 200 Q 318 156 334 200 T 366 200 T 386 200" stroke="#ef4444" stroke-width="1.8" fill="none"/>
+        <line x1="14" y1="200" x2="386" y2="200" stroke="#475569" stroke-width="0.5" stroke-dasharray="2,3"/>
+        <text x="200" y="240" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Small ripple at Retailer · massive swing at Factory</text>
+        <text x="200" y="258" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600">↑ The Bullwhip Effect</text>
+        <defs>
+          <marker id="m04bgArrow1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#60a5fa"/></marker>
+          <marker id="m04bgArrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
+          <marker id="m04bgArrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker>
+        </defs>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: This is a signature animation. The amplification from Retailer to Factory must be dramatic and intuitive. Start calm, then the demand spike ripples through the chain with increasing intensity. The wave visualization below the nodes makes the bullwhip effect unmistakable. Use this asset as the background for the simulation results in Segment C.
       </div>
@@ -601,14 +793,53 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>The Retailer agent sees customer demand and places an order. That order flows to the Wholesaler agent. The Wholesaler sees the order and makes its own decision. And so on, up the chain.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Agent Chain Architecture</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Architecture Diagram Animation</span>
-        <span class="placeholder-desc">The four supply chain nodes from Segment A return, but now each node opens up to reveal its internals: a prompt template (showing the agent's role and instructions), an LLM brain (processing), and an inventory data panel (current stock, incoming orders). Each node is a mini-LangChain pipeline. Between nodes, the connection arrows now show structured data (JSON order objects) flowing. A master chain wraps all four nodes: "chain = retailer | wholesaler | distributor | factory" appears as code below. The pipe operators between nodes glow, connecting the LCEL syntax to the visual architecture.</span>
-        <span class="placeholder-duration">~15 sec</span>
-        <span class="placeholder-style">Node internals: darker inner panels with mini-icons. Prompt: blue tint. LLM: green tint. Data: amber tint. JSON flowing between nodes: monospace text packets. Master chain code: JetBrains Mono, each agent name color-matched to its node.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Each Role Becomes an AI Agent</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Four AI Agents · Chained with LangChain</text>
+        <!-- 4 agent boxes -->
+        <rect x="14" y="44" width="86" height="120" rx="8" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="57" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">RETAILER</text>
+        <rect x="22" y="68" width="70" height="14" rx="3" fill="rgba(37,99,235,0.18)"/>
+        <text x="57" y="78" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">prompt</text>
+        <rect x="22" y="86" width="70" height="14" rx="3" fill="rgba(16,185,129,0.18)"/>
+        <text x="57" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">LLM</text>
+        <rect x="22" y="104" width="70" height="14" rx="3" fill="rgba(245,158,11,0.18)"/>
+        <text x="57" y="114" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fde68a">inventory</text>
+        <text x="57" y="138" text-anchor="middle" font-family="Outfit" font-size="6" fill="#94a3b8">stock: 50</text>
+        <text x="57" y="150" text-anchor="middle" font-family="Outfit" font-size="6" fill="#94a3b8">demand: 8/wk</text>
+        <text x="106" y="106" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="118" y="44" width="86" height="120" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="161" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0" font-weight="600">WHOLESALER</text>
+        <rect x="126" y="68" width="70" height="14" rx="3" fill="rgba(37,99,235,0.18)"/>
+        <text x="161" y="78" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">prompt</text>
+        <rect x="126" y="86" width="70" height="14" rx="3" fill="rgba(16,185,129,0.18)"/>
+        <text x="161" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">LLM</text>
+        <rect x="126" y="104" width="70" height="14" rx="3" fill="rgba(245,158,11,0.18)"/>
+        <text x="161" y="114" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fde68a">inventory</text>
+        <text x="161" y="138" text-anchor="middle" font-family="Outfit" font-size="6" fill="#94a3b8">stock: 200</text>
+        <text x="210" y="106" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="222" y="44" width="86" height="120" rx="8" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="265" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fde68a" font-weight="600">DISTRIBUTOR</text>
+        <rect x="230" y="68" width="70" height="14" rx="3" fill="rgba(37,99,235,0.18)"/>
+        <text x="265" y="78" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">prompt</text>
+        <rect x="230" y="86" width="70" height="14" rx="3" fill="rgba(16,185,129,0.18)"/>
+        <text x="265" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">LLM</text>
+        <rect x="230" y="104" width="70" height="14" rx="3" fill="rgba(245,158,11,0.18)"/>
+        <text x="265" y="114" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fde68a">inventory</text>
+        <text x="265" y="138" text-anchor="middle" font-family="Outfit" font-size="6" fill="#94a3b8">stock: 800</text>
+        <text x="314" y="106" font-family="JetBrains Mono" font-size="11" fill="#fbbf24" font-weight="700">|</text>
+        <rect x="326" y="44" width="60" height="120" rx="8" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="356" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600">FACTORY</text>
+        <rect x="332" y="68" width="48" height="14" rx="3" fill="rgba(37,99,235,0.18)"/>
+        <text x="356" y="78" text-anchor="middle" font-family="Outfit" font-size="6" fill="#bfdbfe">prompt</text>
+        <rect x="332" y="86" width="48" height="14" rx="3" fill="rgba(16,185,129,0.18)"/>
+        <text x="356" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#a7f3d0">LLM</text>
+        <rect x="332" y="104" width="48" height="14" rx="3" fill="rgba(245,158,11,0.18)"/>
+        <text x="356" y="114" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fde68a">production</text>
+        <text x="200" y="190" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Master chain · LCEL ties them together</text>
+        <text x="200" y="210" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#bfdbfe">retailer | wholesaler | distributor | factory</text>
+        <text x="200" y="228" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">Each agent has its own prompt + inventory state</text>
+      </svg>
     </div>
   </div>
 
@@ -626,14 +857,40 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>When you run this simulation over 20 rounds, you will see the bullwhip effect emerge naturally -- from the AI agents' decisions. This is not a toy example. This is how companies model supply chain decisions.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Simulation Results Visualization</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Animated Line Chart</span>
-        <span class="placeholder-desc">A line chart builds over 20 rounds. X-axis: Round (1-20). Y-axis: Order Quantity. Four lines, one per agent, color-matched. The customer demand line is nearly flat (small step increase at round 5). The Retailer line shows moderate variance. The Wholesaler line: more variance. The Distributor: wild swings. The Factory: extreme oscillation. Each line draws itself round by round, like a real-time simulation playback. When the chart is complete, vertical dashed lines highlight the peak variance at Factory vs the stable demand at Retailer. A stat card slides in: "Demand variance: +4 units. Factory order variance: +38 units. Amplification: 9.5x."</span>
-        <span class="placeholder-duration">~20 sec (15 sec draw + 5 sec analysis)</span>
-        <span class="placeholder-style">Chart: dark bg (#0f172a), white gridlines at 10% opacity. Lines: Retailer (blue), Wholesaler (green), Distributor (amber), Factory (red/teal). Line draw: animated stroke, 0.75 sec per round. Stat card: glass card, bottom-right, monospace numbers. Chart axes: Outfit font, 0.7rem.</span>
-        <span class="placeholder-deliverable">HTML Canvas chart + MP4 fallback</span>
-      </div>
+      <span class="media-label">Storyboard -- 20-Round Simulation Result</span>
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Bullwhip Emerges from AI Agent Decisions</text>
+        <!-- Chart frame -->
+        <rect x="40" y="44" width="346" height="160" fill="#0a1428" stroke="#1e293b"/>
+        <!-- Y axis labels -->
+        <text x="34" y="54" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#475569">80</text>
+        <text x="34" y="94" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#475569">60</text>
+        <text x="34" y="134" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#475569">40</text>
+        <text x="34" y="174" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#475569">20</text>
+        <text x="34" y="206" text-anchor="end" font-family="JetBrains Mono" font-size="7" fill="#475569">0</text>
+        <line x1="40" y1="84" x2="386" y2="84" stroke="#1e293b" stroke-width="0.5"/>
+        <line x1="40" y1="124" x2="386" y2="124" stroke="#1e293b" stroke-width="0.5"/>
+        <line x1="40" y1="164" x2="386" y2="164" stroke="#1e293b" stroke-width="0.5"/>
+        <!-- Demand line (flat with small bump) -->
+        <polyline points="44,178 60,178 76,178 92,178 108,170 124,170 140,170 156,170 172,170 188,170 204,170 220,170 236,170 252,170 268,170 284,170 300,170 316,170 332,170 348,170 364,170 380,170" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-dasharray="2,2"/>
+        <text x="386" y="170" text-anchor="end" font-family="Outfit" font-size="6" fill="#94a3b8">demand</text>
+        <!-- Retailer (blue, modest variance) -->
+        <polyline points="44,176 60,174 76,170 92,166 108,156 124,154 140,160 156,156 172,162 188,158 204,164 220,160 236,166 252,160 268,164 284,158 300,162 316,158 332,162 348,158 364,162 380,160" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+        <!-- Wholesaler (green, more) -->
+        <polyline points="44,176 60,170 76,162 92,148 108,134 124,142 140,152 156,140 172,146 188,138 204,150 220,140 236,148 252,138 268,148 284,140 300,150 316,142 332,150 348,140 364,148 380,142" stroke="#34d399" stroke-width="1.5" fill="none"/>
+        <!-- Distributor (amber, wild) -->
+        <polyline points="44,176 60,166 76,150 92,128 108,108 124,118 140,134 156,114 172,128 188,110 204,128 220,108 236,124 252,106 268,122 284,104 300,120 316,104 332,118 348,104 364,118 380,108" stroke="#fbbf24" stroke-width="1.8" fill="none"/>
+        <!-- Factory (red, extreme oscillation) -->
+        <polyline points="44,176 60,162 76,138 92,108 108,72 124,86 140,116 156,80 172,108 188,68 204,108 220,62 236,98 252,56 268,90 284,52 300,86 316,52 332,82 348,52 364,80 380,58" stroke="#ef4444" stroke-width="2" fill="none"/>
+        <text x="386" y="60" text-anchor="end" font-family="Outfit" font-size="6" fill="#fca5a5">factory</text>
+        <!-- X axis label -->
+        <text x="200" y="220" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Round (1 → 20)</text>
+        <!-- Stat card -->
+        <rect x="14" y="232" width="372" height="40" rx="6" fill="rgba(239,68,68,0.08)" stroke="rgba(248,113,113,0.5)"/>
+        <text x="22" y="248" font-family="Outfit" font-size="8" fill="#fca5a5" font-weight="600" letter-spacing="0.06em">AMPLIFICATION</text>
+        <text x="22" y="264" font-family="Outfit" font-size="9" fill="#e2e8f0">Demand variance: <tspan font-family="JetBrains Mono" font-weight="600" fill="#94a3b8">±4 units</tspan>   ·   Factory variance: <tspan font-family="JetBrains Mono" font-weight="600" fill="#fca5a5">±38 units</tspan></text>
+        <text x="380" y="264" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#ef4444" font-weight="700">9.5×</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The gradual divergence of the four lines is the entire lesson. Start them close together, then watch them spread apart. The Factory line should look almost chaotic by round 15-20 while the demand line stays flat. The stat card with "9.5x amplification" is the quantitative punchline. Consider adding faint sound effects -- a calm hum for the demand line, increasingly urgent pings for the Factory line.
       </div>
@@ -670,14 +927,27 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       <p>That is what LangChain gives you.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Recap Montage</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Quick-Cut Montage</span>
-        <span class="placeholder-desc">3-second clips from earlier videos: building blocks snapping together, LCEL pipe syntax with flowing data, Beer Game nodes with amplifying waves, the simulation chart drawing. Each clip separated by a clean wipe. Final frame: the orchestra from V1, all sections illuminated and playing together.</span>
-        <span class="placeholder-duration">~10 sec</span>
-        <span class="placeholder-style">Clips slightly desaturated with accent blue wipes. Final orchestra frame: full color, warm glow. Subtle ascending music bed.</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">Storyboard -- Module 4 Recap</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Week 4 Recap · Pipelines + Beer Game</text>
+        <!-- 4 tiles -->
+        <rect x="14" y="38" width="180" height="74" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1"/>
+        <text x="26" y="56" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">FOUR BUILDING BLOCKS</text>
+        <text x="26" y="74" font-family="Outfit" font-size="8" fill="#475569">LLMs · Templates · Memory · Chains</text>
+        <text x="26" y="90" font-family="Outfit" font-size="8" fill="#64748b">unified interface, swappable</text>
+        <rect x="206" y="38" width="180" height="74" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
+        <text x="218" y="56" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">LCEL · THE PIPE OPERATOR</text>
+        <text x="218" y="74" font-family="JetBrains Mono" font-size="9" fill="#1e293b">prompt | llm | parser</text>
+        <text x="218" y="90" font-family="Outfit" font-size="8" fill="#64748b">3 lines = ~47 lines manual</text>
+        <rect x="14" y="120" width="180" height="74" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1"/>
+        <text x="26" y="138" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">BEER GAME · 4 AGENTS</text>
+        <text x="26" y="156" font-family="Outfit" font-size="8" fill="#475569">Retailer → Wholesaler → Dist → Factory</text>
+        <text x="26" y="172" font-family="Outfit" font-size="8" fill="#64748b">each one a mini LangChain pipeline</text>
+        <rect x="206" y="120" width="180" height="74" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
+        <text x="218" y="138" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600">BULLWHIP EFFECT</text>
+        <text x="218" y="156" font-family="Outfit" font-size="8" fill="#475569">small demand changes → huge swings</text>
+        <text x="218" y="172" font-family="JetBrains Mono" font-size="9" fill="#dc2626" font-weight="600">9.5× amplification</text>
+      </svg>
     </div>
   </div>
 
@@ -697,13 +967,19 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       
     </div>
     <div class="media-col">
-      <span class="media-label">Teaser + End Card</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Teaser + End Card</span>
-        <span class="placeholder-desc">Brief flash: a document icon splits into vector chunks that fly into a search index (2 sec teaser for RAG). A question mark approaches the index, pulls out relevant chunks, and feeds them to an LLM. Cut to end card: "Next: M05 -- RAG (Retrieval-Augmented Generation)." Dark background (#0f172a), white text, Outfit font.</span>
-        <span class="placeholder-duration">End card hold 4 sec, fade to black</span>
-        <span class="placeholder-deliverable">MP4 1920x1080</span>
-      </div>
+      <span class="media-label">End Card</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
+        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
+        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 04 / 14</text>
+        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 4 Complete</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">LangChain · LCEL · The Beer Game</text>
+        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Module 5 — RAG</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Retrieval-Augmented Generation · Closed book → open book</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani — Northeastern University</text>
+      </svg>
       <div class="media-note">
         MEDIA TEAM: The RAG teaser should hint at the document-to-vector process without explaining it. Keep it abstract and intriguing. The "hallucination" mention should feel like a problem worth solving. End card matches M01/M02/M03 style. Hold 4 seconds. Fade to black.
       </div>
