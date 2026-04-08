@@ -323,7 +323,7 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: Prompting Foundations</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)" title="Voiceover-only (no on-camera) -- scripted VO + animation">V2: Prompting Foundations (VO only)</button>
     <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: Prompting Strategies</button>
     <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Text to Structure</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Structured Output Lab</button>
@@ -443,8 +443,14 @@ body.teleprompter .scroll-controls { display: flex; }
 <div class="video-section" id="video-2">
 
   <div class="video-header">
-    <h2>Video 2: "Prompting Foundations"</h2>
+    <h2>Video 2: "Prompting Foundations" — VOICEOVER ONLY (no instructor on camera)</h2>
     <div class="video-meta">Voiceover + animation -- 6-8 minutes -- 3 segments</div>
+    <div style="margin-top: 10px; padding: 12px 16px; background: rgba(37,99,235,0.06); border-left: 3px solid #2563EB; border-radius: 0 6px 6px 0;">
+      <strong style="color:#1e40af;">🎙 Voiceover-only video — no on-camera shots of the instructor.</strong>
+      <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #475569;">This video is 100% animation + voice narration. The media team creates the animation for each segment, and a recorded voiceover reads the script below. The student watches the animation while listening.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Voiceover options (to decide later):</strong> Prof. Dehghani can record the VO himself, OR we can use a high-quality AI voice (ElevenLabs, OpenAI TTS, or similar). Final call on voice pending.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Media team:</strong> build a single cohesive animation sequence that runs through all 3 segments. Visuals for each segment are specified in the media-col below. Bad vs Good Prompt segment (SEG C) already has a detailed SVG spec — replicate that contrast as an actual animated comparison.</p>
+    </div>
   </div>
 
   <div class="key-message-bar">
