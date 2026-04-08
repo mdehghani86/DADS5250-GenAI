@@ -64,8 +64,7 @@ body::before {
   align-items: center;
   justify-content: space-between;
   gap: 14px;
-  flex-wrap: nowrap;
-  min-height: 48px;
+  flex-wrap: wrap;
 }
 
 .topbar-left {
@@ -92,8 +91,13 @@ body::before {
 .video-tabs {
   display: flex;
   gap: 4px;
-  flex: 1 1 auto;
-  min-width: 0;
+  flex-basis: 100%;
+  width: 100%;
+  order: 10;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(37,99,235,0.08);
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(37,99,235,0.3) transparent;

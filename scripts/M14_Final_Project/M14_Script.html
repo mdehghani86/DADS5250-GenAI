@@ -29,16 +29,20 @@
 body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
 body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
 
-.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: nowrap;
-  min-height: 48px; }
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
 .topbar-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
 .topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
 .topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
 .video-tabs {
   display: flex;
   gap: 4px;
-  flex: 1 1 auto;
-  min-width: 0;
+  flex-basis: 100%;
+  width: 100%;
+  order: 10;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(37,99,235,0.08);
   overflow-x: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(37,99,235,0.3) transparent;
