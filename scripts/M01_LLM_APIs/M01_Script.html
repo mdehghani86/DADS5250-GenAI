@@ -1541,21 +1541,63 @@ information...</pre></div>
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: Lab Walkthroughs (compact placeholders)        -->
+<!-- VIDEO 6: Gamification Tools — NO SCRIPT                 -->
 <!-- ════════════════════════════════════════════════════════ -->
 <div class="video-section" id="video-6">
 
   <div class="video-header">
-    <h2>Video 6: Lab Walkthroughs — NO SCRIPT NEEDED</h2>
-    <div class="video-meta">Screen-recorded walkthroughs -- variable length -- 3 items</div>
+    <h2>Video 6: Gamification Tools — NO SCRIPT NEEDED</h2>
+    <div class="video-meta">Walkthrough of the interactive tools -- ~5 min -- no script</div>
     <div style="margin-top: 10px; padding: 12px 16px; background: rgba(16,185,129,0.06); border-left: 3px solid #10b981; border-radius: 0 6px 6px 0;">
-      <strong style="color:#047857;">⚑ No written script for this video.</strong> This is a walkthrough-only video — the narrator talks naturally while recording the screen. Three parts:
+      <strong style="color:#047857;">⚑ No written script for this video.</strong> Walkthrough-only — narrator talks naturally while demoing the interactive gamification tools that illustrate <strong>temperature</strong> and <strong>tokenization</strong> visually.
       <ol style="margin: 8px 0 0 20px; font-size: 0.88rem; color: #475569;">
-        <li><strong>Lab 1 — API Basics:</strong> Walk through the Colab notebook cell-by-cell. Run each cell live. Explain what each line does. Connect to OpenAI + Gemini APIs for the first time.</li>
-        <li><strong>Gamification Tools:</strong> Open the Temperature Playground HTML and the Token Explorer. Demo them live — change values, show how temperature affects output, count tokens on a sample prompt, show the cost calculation.</li>
-        <li><strong>Lab 2 — Parameters &amp; Tokens:</strong> Walk through the Colab notebook cell-by-cell. Run the temperature experiments and the cost calculation exercises live.</li>
+        <li><strong>Temperature Playground:</strong> Open the HTML tool. Show the slider. Type a sample prompt. Slide temperature from 0 → 1 → 2. Show how the output changes from predictable to creative. Let students see the effect live.</li>
+        <li><strong>Token Explorer:</strong> Type a sample sentence. Show how it gets split into tokens. Show the token count. Show the cost calculation based on model pricing.</li>
       </ol>
-      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b; font-style: italic;">Media team: no scripted narration to read from — the narrator talks naturally as they click through. Just record the screen, capture the audio, and edit for length.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b; font-style: italic;">Media team: no scripted narration. Just record the screen, capture the audio, edit for length.</p>
+    </div>
+  </div>
+
+  <!-- Gamification -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">GAME</span>
+      <span class="segment-title">Temperature Playground &amp; Token Explorer</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Interactive HTML</span>
+        <span class="badge badge-duration">Self-paced</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Two interactive HTML tools: Temperature Playground and Token Explorer. Students play with them to build intuition about how temperature and tokenization work -- before they dive into the Python labs.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Supplemental</span>
+      <div class="media-placeholder">
+        <span class="placeholder-type">Gamification</span>
+        <span class="placeholder-desc">Existing Temperature Playground + Token Explorer HTML. Standalone, browser-based, no install.</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-6 -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 7: Python Labs — NO SCRIPT                        -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-7">
+
+  <div class="video-header">
+    <h2>Video 7: Python Labs — NO SCRIPT NEEDED</h2>
+    <div class="video-meta">Screen-recorded Colab walkthroughs -- ~20-30 min total -- no script</div>
+    <div style="margin-top: 10px; padding: 12px 16px; background: rgba(16,185,129,0.06); border-left: 3px solid #10b981; border-radius: 0 6px 6px 0;">
+      <strong style="color:#047857;">⚑ No written script for this video.</strong> Walkthrough-only — narrator opens the Colab notebooks and walks through the code cell-by-cell, running each cell live and explaining what is happening.
+      <ol style="margin: 8px 0 0 20px; font-size: 0.88rem; color: #475569;">
+        <li><strong>Lab 1 — API Basics:</strong> Connect to OpenAI + Gemini APIs for the first time. Send first programmatic requests. Compare responses between models.</li>
+        <li><strong>Lab 2 — Parameters &amp; Tokens:</strong> Experiment with temperature, max_tokens, and system messages. Count tokens. Estimate costs. Compare model behavior at different settings.</li>
+      </ol>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b; font-style: italic;">Media team: no scripted narration. Narrator runs each cell live, talks through what each line does. Record the screen, capture the audio, edit for length.</p>
     </div>
   </div>
 
@@ -1578,28 +1620,6 @@ information...</pre></div>
       <div class="media-placeholder">
         <span class="placeholder-type">Colab Notebook</span>
         <span class="placeholder-desc">Screen recording walkthrough of the Colab notebook. Run each cell, explain outputs, highlight key concepts.</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- Gamification -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">GAME</span>
-      <span class="segment-title">Temperature Playground</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Interactive HTML</span>
-        <span class="badge badge-duration">Self-paced</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Interactive Temperature Playground -- students experiment with temperature settings and see how they affect model output in real time. Standalone HTML gamification resource.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Supplemental</span>
-      <div class="media-placeholder">
-        <span class="placeholder-type">Gamification</span>
-        <span class="placeholder-desc">Existing Temperature Playground HTML. Students use this alongside Lab 2 to build intuition about the temperature parameter.</span>
       </div>
     </div>
   </div>
@@ -1627,16 +1647,16 @@ information...</pre></div>
     </div>
   </div>
 
-</div><!-- end video-6 -->
+</div><!-- end video-7 -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 7: "Module 1 Wrap-Up"                             -->
+<!-- VIDEO 8: "Module 1 Wrap-Up"                             -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-8">
 
   <div class="video-header">
-    <h2>Video 7: "Module 1 Wrap-Up"</h2>
+    <h2>Video 8: "Module 1 Wrap-Up"</h2>
     <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 1 segment</div>
   </div>
 
