@@ -59,18 +59,20 @@ body::before {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(37,99,235,0.08);
-  padding: 10px 24px;
+  padding: 8px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  gap: 14px;
+  flex-wrap: nowrap;
+  min-height: 48px;
 }
 
 .topbar-left {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .topbar-title {
@@ -90,10 +92,19 @@ body::before {
 .video-tabs {
   display: flex;
   gap: 4px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(37,99,235,0.3) transparent;
+  padding-bottom: 2px;
 }
+.video-tabs::-webkit-scrollbar { height: 4px; }
+.video-tabs::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.25); border-radius: 2px; }
+.video-tabs::-webkit-scrollbar-track { background: transparent; }
 
 .video-tab {
-  padding: 6px 18px;
+  padding: 5px 14px;
   border-radius: 999px;
   border: 1px solid rgba(37,99,235,0.15);
   background: transparent;

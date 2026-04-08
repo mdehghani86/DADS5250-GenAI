@@ -963,12 +963,96 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 5: Function Calling                               -->
+<!-- VIDEO 5: TA — Structured Output Lab Walkthrough         -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 5: "Function Calling -- From Text to Action"</h2>
+    <h2>Video 5: "Structured Output Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the <code>M03_Lab1_JSON_Mode_Pydantic.ipynb</code> Colab notebook, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Structured Output Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open <code>M03_Lab1_JSON_Mode_Pydantic.ipynb</code> in Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally -- no script. The goal is to show how structured output turns messy text into clean, typed data.</p>
+
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open the Lab 1 notebook in Google Colab</li>
+            <li>Show the table of contents: free-text output &rarr; JSON mode &rarr; Pydantic schema</li>
+            <li>Confirm the API key is loaded from Colab Secrets</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Free-Text Baseline</h5>
+          <ul>
+            <li>Run the first cell that asks the model to "extract product details from this review" in plain text</li>
+            <li>Show the messy, unpredictable output -- this is the problem we are about to solve</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. JSON Mode</h5>
+          <ul>
+            <li>Walk through the <code>response_format={"type": "json_object"}</code> parameter</li>
+            <li>Run the cell and show the clean JSON output</li>
+            <li>Highlight how you can now <code>json.loads()</code> it directly -- no regex hacks</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Pydantic Schema</h5>
+          <ul>
+            <li>Define the Pydantic model with typed fields</li>
+            <li>Run the schema-enforced call and show the validated Pydantic object</li>
+            <li>Demonstrate what happens when the model returns an invalid type -- Pydantic catches it</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic -- clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 (TA Structured Output Lab) -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 6: Function Calling                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Function Calling -- From Text to Action"</h2>
     <div class="video-meta">Voiceover + animation + code -- 6-8 minutes -- 2 segments</div>
   </div>
 
@@ -1095,16 +1179,107 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-6 (Function Calling) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: Module 3 Wrap-Up                               -->
+<!-- VIDEO 7: TA — Function Calling Lab Walkthrough          -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-7" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 6: "Module 3 Wrap-Up"</h2>
+    <h2>Video 7: "Function Calling Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the <code>M03_Lab2_Function_Calling.ipynb</code> Colab notebook, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Function Calling Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open <code>M03_Lab2_Function_Calling.ipynb</code> in Colab and record a live screen walkthrough. The goal is to show how function calling lets the model <em>act</em> -- not just talk -- by invoking real Python tools.</p>
+
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open the Lab 2 notebook in Google Colab</li>
+            <li>Show the flow: define tools &rarr; pass to model &rarr; model picks a tool &rarr; you run it &rarr; model sees the result</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Defining Tools</h5>
+          <ul>
+            <li>Walk through the <code>tools</code> array with JSON Schema definitions</li>
+            <li>Explain each field: name, description, parameters</li>
+            <li>Emphasize: the description is how the model decides when to call it -- write it carefully</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. First Call -- Model Picks a Tool</h5>
+          <ul>
+            <li>Run the first chat completion with <code>tools=tools</code></li>
+            <li>Show the <code>tool_calls</code> in the response -- explain the model is <em>requesting</em>, not executing</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Executing the Tool + Round-Trip</h5>
+          <ul>
+            <li>Parse the tool call, run the Python function, capture the result</li>
+            <li>Send the result back to the model with a <code>tool</code>-role message</li>
+            <li>Show the final natural-language response that incorporates the tool result</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Multi-Step Example</h5>
+          <ul>
+            <li>Run the example where the model chains two tools together</li>
+            <li>Show how the loop keeps going until the model has enough to answer</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>6. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom. Make sure <code>tool_calls</code> and the round-trip messages are clearly visible -- that is the "aha" moment.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-7 (TA Function Calling Lab) -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 8: Module 3 Wrap-Up                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-8">
+
+  <div class="video-header">
+    <h2>Video 8: "Module 3 Wrap-Up"</h2>
     <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
@@ -1211,7 +1386,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-</div><!-- end video-6 -->
+</div><!-- end video-8 (Wrap-Up) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
@@ -1314,7 +1489,7 @@ function stopAutoScroll() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') toggleTeleprompter();
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
+  if (['1','2','3','4','5','6','7','8'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
 });
 
 // ── Inline Segment Editing ──
