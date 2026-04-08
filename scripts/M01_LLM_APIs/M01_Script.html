@@ -117,16 +117,30 @@ body::before {
   border-color: var(--accent);
 }
 
-/* Video type distinction: scripted vs TA/lab walkthrough (recorded later by TA) */
+/* Video type distinction: scripted (professor, narrated) vs TA walkthrough (recorded later) */
 .video-tab.scripted {
   border-color: rgba(37,99,235,0.25);
 }
-.video-tab.scripted::before {
-  content: "\1F3AC";  /* clapper board = scripted/prof-recorded */
-  margin-right: 6px;
-  font-size: 0.85em;
-  opacity: 0.85;
+.video-tab.scripted::before,
+.video-tab.ta-recorded::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  vertical-align: -2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
+/* Scripted = document-text icon (Lucide "file-text"), blue */
+.video-tab.scripted::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>");
+}
+.video-tab.scripted.active::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>");
+}
+/* TA walkthrough = monitor/screen-record icon (Lucide "monitor-play"), amber */
 .video-tab.ta-recorded {
   background: rgba(245,158,11,0.08);
   border-color: rgba(245,158,11,0.45);
@@ -137,14 +151,15 @@ body::before {
   color: #78350f;
 }
 .video-tab.ta-recorded::before {
-  content: "\1F9D1\200D\1F3EB";  /* teacher emoji = TA walkthrough */
-  margin-right: 6px;
-  font-size: 0.85em;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>");
 }
 .video-tab.ta-recorded.active {
   background: #f59e0b;
   color: #fff;
   border-color: #f59e0b;
+}
+.video-tab.ta-recorded.active::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>");
 }
 
 /* Action buttons */
