@@ -117,6 +117,36 @@ body::before {
   border-color: var(--accent);
 }
 
+/* Video type distinction: scripted vs TA/lab walkthrough (recorded later by TA) */
+.video-tab.scripted {
+  border-color: rgba(37,99,235,0.25);
+}
+.video-tab.scripted::before {
+  content: "\1F3AC";  /* clapper board = scripted/prof-recorded */
+  margin-right: 6px;
+  font-size: 0.85em;
+  opacity: 0.85;
+}
+.video-tab.ta-recorded {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.45);
+  color: #92400e;
+}
+.video-tab.ta-recorded:hover {
+  background: rgba(245,158,11,0.18);
+  color: #78350f;
+}
+.video-tab.ta-recorded::before {
+  content: "\1F9D1\200D\1F3EB";  /* teacher emoji = TA walkthrough */
+  margin-right: 6px;
+  font-size: 0.85em;
+}
+.video-tab.ta-recorded.active {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #f59e0b;
+}
+
 /* Action buttons */
 .topbar-actions {
   display: flex;
@@ -817,13 +847,14 @@ body.teleprompter .scroll-controls {
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab" onclick="switchVideo(2)">V2: What Are LLMs?</button>
-    <button class="video-tab" onclick="switchVideo(3)">V3: What Is an API?</button>
-    <button class="video-tab" onclick="switchVideo(4)">V4: TA -- API Setup</button>
-    <button class="video-tab" onclick="switchVideo(5)">V5: Parameters &amp; Tokens</button>
-    <button class="video-tab" onclick="switchVideo(6)">V6: Lab Walkthroughs</button>
-    <button class="video-tab" onclick="switchVideo(7)">V7: Wrap-Up</button>
+    <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: What Are LLMs?</button>
+    <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: What Is an API?</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script, guidelines only">V4: TA -- API Setup</button>
+    <button class="video-tab scripted" onclick="switchVideo(5)" title="Scripted video">V5: Parameters &amp; Tokens</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="Walkthrough -- no script">V6: Gamification Tools</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="Walkthrough -- no script">V7: Python Labs</button>
+    <button class="video-tab scripted" onclick="switchVideo(8)" title="Scripted video">V8: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
