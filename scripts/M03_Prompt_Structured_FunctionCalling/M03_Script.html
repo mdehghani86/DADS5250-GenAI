@@ -1003,7 +1003,7 @@ body.teleprompter .scroll-controls { display: flex; }
 
   <div class="video-header">
     <h2>Video 4: "From Text to Structure"</h2>
-    <div class="video-meta">Voiceover + animation + code -- 6-8 minutes -- 3 segments</div>
+    <div class="video-meta">Voiceover + animation + code -- 7-9 minutes -- 4 segments (A intro · B Problem with Text · C JSON Mode · D Pydantic)</div>
   </div>
 
   <div class="key-message-bar">
@@ -1011,20 +1011,67 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="km-text">JSON mode guarantees parseable output. Pydantic guarantees correct structure.</span>
   </div>
 
-  <!-- ── SEGMENT A ── -->
+  <!-- ── SEGMENT A — Intro: Second Level of Control ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
-      <span class="segment-title">The Problem with Text</span>
+      <span class="segment-title">Intro — The Second Level of Control</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-duration">~45 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>You now control what the model says and how it behaves. But there is still a problem.</p>
-      <p>The output is text. Free-form, unstructured text. And text is great for humans -- but terrible for code.</p>
-      <p>You cannot put a paragraph into a database. You cannot feed prose into an analytics pipeline. You need structure. You need JSON.</p>
+      <p>So far in this module, you have learned how to talk to the model. You know how to set the role, the task, the context, the format. You know when to use examples and when to ask for step-by-step reasoning. That is the first level of control -- input control.</p>
+      <p>But here is the thing. Even when you ask the model beautifully, you still get back text. Free-form paragraphs. A block of writing. And that is fine when the answer is for a human to read. But the moment you want to do something with the output -- store it, filter it, feed it into another system -- text becomes a problem.</p>
+      <p>This video is about the second level of control. Not just what the model says, but the exact shape of what it hands you back. We will cover two tools: JSON mode, which forces the model to return valid JSON, and Pydantic, which makes sure that JSON has exactly the fields and types your code needs.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Three Levels of Control (You Are Here: Level 2)</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Three Levels of Control · You Are Here: Level 2</text>
+        <rect x="14" y="44" width="120" height="160" rx="10" fill="rgba(37,99,235,0.06)" stroke="#60a5fa" stroke-width="1"/>
+        <text x="74" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">LEVEL 1</text>
+        <text x="74" y="82" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">Input Control</text>
+        <text x="74" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">what you say</text>
+        <text x="74" y="120" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">RTCF · few-shot · CoT</text>
+        <text x="74" y="160" text-anchor="middle" font-family="Outfit" font-size="18">✓</text>
+        <text x="74" y="188" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399" font-style="italic">done</text>
+        <rect x="140" y="44" width="120" height="160" rx="10" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="2"/>
+        <text x="200" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600" letter-spacing="0.08em">LEVEL 2</text>
+        <text x="200" y="82" text-anchor="middle" font-family="Outfit" font-size="10" fill="#fde68a" font-weight="600">Output Control</text>
+        <text x="200" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">shape of the answer</text>
+        <text x="200" y="120" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">JSON mode · Pydantic</text>
+        <text x="200" y="160" text-anchor="middle" font-family="Outfit" font-size="16">📍</text>
+        <text x="200" y="188" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fbbf24" font-weight="600" font-style="italic">you are here</text>
+        <rect x="266" y="44" width="120" height="160" rx="10" fill="rgba(148,163,184,0.06)" stroke="#475569" stroke-width="1"/>
+        <text x="326" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-weight="600" letter-spacing="0.08em">LEVEL 3</text>
+        <text x="326" y="82" text-anchor="middle" font-family="Outfit" font-size="10" fill="#cbd5e1" font-weight="600">Action Control</text>
+        <text x="326" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">let it call functions</text>
+        <text x="326" y="120" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">function calling</text>
+        <text x="326" y="160" text-anchor="middle" font-family="Outfit" font-size="16">⏭</text>
+        <text x="326" y="188" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b" font-style="italic">next video</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: All three cards visible but Level 2 highlighted (amber). Level 1 shows a green ✓ check. Level 3 is faded out with a ⏭ "next video" marker. This card is a progress bar the student can see themselves moving through.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT B — The Problem with Text ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">The Problem with Text</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let me make the problem concrete. The output of a model, by default, is text. Free-form, unstructured text. And text is great for humans -- but terrible for code.</p>
+      <p>You cannot put a paragraph into a database column. You cannot feed prose into an analytics pipeline. You cannot reliably pull three numbers out of a sentence using string matching without it breaking the moment the wording changes. If your goal is to use the model's output in code, text is the enemy.</p>
+      <p>What you need instead is structure. You need to know, in advance, that the field called "sentiment" will always be there, and it will always be one of three values, and "confidence" will always be a number between zero and one. That is what JSON gives you -- a contract.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Text Is Great for Humans, Bad for Code</span>
@@ -1079,7 +1126,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <!-- ── SEGMENT B ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG B</span>
+      <span class="segment-number">SEG C</span>
       <span class="segment-title">JSON Mode</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Code Display</span>
@@ -1124,7 +1171,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <!-- ── SEGMENT C ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG C</span>
+      <span class="segment-number">SEG D</span>
       <span class="segment-title">Pydantic Validation</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
