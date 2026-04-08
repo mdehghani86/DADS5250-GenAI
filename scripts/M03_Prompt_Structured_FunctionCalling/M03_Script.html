@@ -91,7 +91,8 @@ body::before {
 /* Video type distinction: scripted (professor, narrated) vs TA walkthrough (recorded later) */
 .video-tab.scripted { border-color: rgba(37,99,235,0.25); }
 .video-tab.scripted::before,
-.video-tab.ta-recorded::before {
+.video-tab.ta-recorded::before,
+.video-tab.voiceover-only::before {
   content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px;
   background-repeat: no-repeat; background-position: center; background-size: contain;
 }
@@ -102,6 +103,15 @@ body::before {
 .video-tab.ta-recorded::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>"); }
 .video-tab.ta-recorded.active { background: #f59e0b; color: #fff; border-color: #f59e0b; }
 .video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
+
+/* Voiceover-only videos (no on-camera) -- microphone icon, teal accent */
+.video-tab.voiceover-only { background: rgba(20,184,166,0.08); border-color: rgba(20,184,166,0.45); color: #0f766e; }
+.video-tab.voiceover-only:hover { background: rgba(20,184,166,0.18); color: #134e4a; }
+.video-tab.voiceover-only::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"); }
+.video-tab.voiceover-only.active { background: #14b8a6; color: #fff; border-color: #14b8a6; }
+.video-tab.voiceover-only.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"); }
+.video-tab.voiceover-only::before,
+.video-tab.voiceover-only.active::before { /* inherit the ::before positioning already defined for scripted/ta-recorded */ }
 
 .topbar-actions { display: flex; gap: 8px; }
 .btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
@@ -323,7 +333,7 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)" title="Voiceover-only (no on-camera) -- scripted VO + animation">V2: Prompting Foundations (VO only)</button>
+    <button class="video-tab voiceover-only" onclick="switchVideo(2)" title="Voiceover-only (no on-camera) -- scripted VO + animation">V2: Prompting Foundations</button>
     <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: Prompting Strategies</button>
     <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Text to Structure</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Structured Output Lab</button>
