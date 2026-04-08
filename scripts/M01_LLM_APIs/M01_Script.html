@@ -1160,7 +1160,8 @@ body.teleprompter .scroll-controls {
       <p>API stands for Application Programming Interface. Let me make that simple.</p>
       <p>Think of a vending machine. You put something in -- a coin and a button press. Something happens inside that you cannot see. And something comes out -- your drink.</p>
       <p>You do not need to know how the machine works inside. You just need to know two things: what to put in, and what comes out.</p>
-      <p>An LLM API works the same way. You put in a prompt -- your question. Something happens on OpenAI's servers -- the model thinks. And out comes a response -- the answer.</p>
+      <p>An LLM API works the exact same way. You put in a prompt -- your question. Something happens on the model provider's servers -- the model thinks. And out comes a response -- the answer.</p>
+      <p>And here is the important part: every major LLM has an API. OpenAI has one. Google has one for Gemini. Anthropic has one for Claude. Meta's Llama, Mistral, xAI's Grok -- all of them. Different companies, different models, but the same idea. Once you know how to use one API, you can use them all. The pattern is the same: send a prompt, get a response.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Vending Machine → API</span>
@@ -1233,7 +1234,15 @@ response = client.chat.completions.<span class="fn">create</span>(
 
 <span class="fn">print</span>(response.choices[0].message.content)</pre></div>
       <p>Seven lines. That is all it takes. Seven lines and you have programmatic access to one of the most powerful AI models on earth.</p>
-      <p>Now imagine running those seven lines ten thousand times in a loop. Or connecting them to a database. Or triggering them from a web application. That is the power of an API.</p>
+      <p>Let me show you what happens when you run it. You hit enter. About one second later, the output appears in your terminal:</p>
+      <div class="code-block"><pre><span class="cm">>>> Output:</span>
+An API, or Application Programming Interface, is a set of rules
+and protocols that allows different software applications to
+communicate with each other. It defines the methods and data
+formats that applications can use to request and exchange
+information...</pre></div>
+      <p>That is it. A real response, from a real model, running on real servers -- triggered by your seven lines of code.</p>
+      <p>Now imagine running those seven lines ten thousand times in a loop. Or connecting them to a database. Or triggering them from a web application. Or swapping the model name from <code>gpt-4.1-mini</code> to <code>gemini-2.5-flash</code> or <code>claude-sonnet</code> -- same pattern, different provider. That is the power of an API.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Seven Lines of Code</span>
