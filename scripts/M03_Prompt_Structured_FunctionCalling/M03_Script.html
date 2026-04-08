@@ -337,7 +337,7 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
-    <button class="video-tab voiceover-only" onclick="switchVideo(2)" title="Voiceover-only (no on-camera) -- scripted VO + animation">V2: Prompting Foundations</button>
+    <button class="video-tab voiceover-only" onclick="switchVideo(2)" title="TA voiceover + animation -- not included in teleprompter script export">V2: Prompting Foundations (TA)</button>
     <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: Prompting Strategies</button>
     <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Text to Structure</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Structured Output Lab</button>
@@ -454,16 +454,18 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 2: Prompting Foundations                           -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-2">
+<div class="video-section" id="video-2" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 2: "Prompting Foundations" — VOICEOVER ONLY (no instructor on camera)</h2>
-    <div class="video-meta">Voiceover + animation -- 7-9 minutes -- 7 segments (A intro · B RTCF overview · C Role · D Task · E Context · F Format · G Bad vs Good)</div>
-    <div style="margin-top: 10px; padding: 12px 16px; background: rgba(37,99,235,0.06); border-left: 3px solid #2563EB; border-radius: 0 6px 6px 0;">
-      <strong style="color:#1e40af;">🎙 Voiceover-only video — no on-camera shots of the instructor.</strong>
-      <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #475569;">This video is 100% animation + voice narration. The media team creates the animation for each segment, and a recorded voiceover reads the script below. The student watches the animation while listening.</p>
-      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Voiceover options (to decide later):</strong> Prof. Dehghani can record the VO himself, OR we can use a high-quality AI voice (ElevenLabs, OpenAI TTS, or similar). Final call on voice pending.</p>
-      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Media team:</strong> build a cohesive animation sequence that runs through all 7 segments. Visuals for each segment are specified in the media-col below. Each of the 4 RTCF elements (Role, Task, Context, Format) is its own clickable segment with its own card, so the student can jump directly to the one they want. The Bad vs Good Prompt segment (SEG G) already has a detailed SVG spec — replicate that contrast as an actual animated comparison at the end.</p>
+    <h2>Video 2: "Prompting Foundations" (TA) &mdash; <span style="color:#0f766e;">Voiceover Only · Not Part of Teleprompter Script Export</span></h2>
+    <div class="video-meta">TA-produced voiceover + animation -- 7-9 minutes -- 7 segments (A intro · B RTCF overview · C Role · D Task · E Context · F Format · G Bad vs Good)</div>
+    <div style="margin-top: 10px; padding: 12px 16px; background: rgba(20,184,166,0.08); border-left: 3px solid #14b8a6; border-radius: 0 6px 6px 0;">
+      <strong style="color:#0f766e;">🎙 TA-produced voiceover video &mdash; no on-camera shots of the instructor.</strong>
+      <p style="margin: 6px 0 0 0; font-size: 0.88rem; color: #475569;"><strong>Ownership:</strong> The TA produces this video end-to-end &mdash; records the voiceover, builds the animation with the media team, and delivers the finished file. Prof. Dehghani does not appear on camera and does not read this script on the teleprompter.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.88rem; color: #475569;"><strong>Not part of the teleprompter script export:</strong> This video is marked <code>data-script-export="false"</code>. When the teleprompter script tool pulls scripted content for Prof. Dehghani to read, this video is skipped. The narration below exists only as a reference for the TA to adapt or read themselves.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.88rem; color: #475569;">This video is 100% animation + voice narration. The student watches the animation while listening.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Voiceover options:</strong> TA records the VO directly, OR we can use a high-quality AI voice (ElevenLabs, OpenAI TTS, or similar) reading the TA-approved script. Final call on voice pending.</p>
+      <p style="margin: 8px 0 0 0; font-size: 0.84rem; color: #64748b;"><strong>Media team:</strong> build a cohesive animation sequence that runs through all 7 segments. Visuals for each segment are specified in the media-col below. Each of the 4 RTCF elements (Role, Task, Context, Format) is its own clickable segment with its own card, so the student can jump directly to the one they want. The Bad vs Good Prompt segment (SEG G) already has a detailed SVG spec &mdash; replicate that contrast as an actual animated comparison at the end.</p>
     </div>
   </div>
 
@@ -779,7 +781,7 @@ body.teleprompter .scroll-controls { display: flex; }
 
   <div class="video-header">
     <h2>Video 3: "Prompting Strategies"</h2>
-    <div class="video-meta">Voiceover + animation -- 5-7 minutes -- 3 segments</div>
+    <div class="video-meta">Voiceover + animation -- 6-8 minutes -- 4 segments (A intro · B Zero-Shot · C Few-Shot · D Chain-of-Thought)</div>
   </div>
 
   <div class="key-message-bar">
@@ -787,19 +789,71 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="km-text">Zero-shot for simple, few-shot for consistency, chain-of-thought for reasoning.</span>
   </div>
 
-  <!-- ── SEGMENT A ── -->
+  <!-- ── SEGMENT A — Intro: LLMs Love Examples ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
-      <span class="segment-title">Zero-Shot Prompting</span>
+      <span class="segment-title">Intro — Why Strategies Matter</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-duration">~45 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Now that you know the anatomy of a prompt, let us talk about strategies -- the techniques that make prompts consistently reliable.</p>
-      <p>Strategy one: zero-shot. You give the model a task with no examples. "Classify this review as positive, negative, or neutral." It works most of the time. But what about edge cases? "The food was amazing but the service ruined everything." Is that positive or negative? The model might say either one.</p>
+      <p>Now that you know the anatomy of a prompt, let me tell you something that might surprise you. Large language models actually enjoy getting examples. Just like us.</p>
+      <p>Think about it. If I asked you to "classify these customer reviews" with no context, you would probably ask me to show you a few first. "What does a positive one look like? What does a tricky one look like?" You would want to see the pattern before you start.</p>
+      <p>LLMs work the same way. Sometimes they can figure it out on their own. Sometimes they need a few examples. And sometimes, for harder problems, they need to slow down and think out loud. These three modes have names: zero-shot, few-shot, and chain-of-thought. In this video, we will walk through all three -- when to use each one, and why.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Three Strategies Overview</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Three Ways to Prompt · Pick the Right One</text>
+        <rect x="14" y="42" width="120" height="148" rx="10" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="74" y="64" text-anchor="middle" font-family="Outfit" font-size="11" fill="#60a5fa" font-weight="700">Zero-Shot</text>
+        <text x="74" y="80" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">no examples</text>
+        <line x1="26" y1="92" x2="122" y2="92" stroke="#2563EB" stroke-width="0.5"/>
+        <text x="74" y="116" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">"just do this"</text>
+        <text x="74" y="142" text-anchor="middle" font-family="Outfit" font-size="14">⚡</text>
+        <text x="74" y="170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">simple tasks</text>
+        <text x="74" y="182" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">fastest</text>
+        <rect x="140" y="42" width="120" height="148" rx="10" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="64" text-anchor="middle" font-family="Outfit" font-size="11" fill="#34d399" font-weight="700">Few-Shot</text>
+        <text x="200" y="80" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">a few examples</text>
+        <line x1="152" y1="92" x2="248" y2="92" stroke="#10b981" stroke-width="0.5"/>
+        <text x="200" y="116" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">"here is how"</text>
+        <text x="200" y="142" text-anchor="middle" font-family="Outfit" font-size="14">📚</text>
+        <text x="200" y="170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">consistency</text>
+        <text x="200" y="182" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">repeatable format</text>
+        <rect x="266" y="42" width="120" height="148" rx="10" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-width="1.5"/>
+        <text x="326" y="64" text-anchor="middle" font-family="Outfit" font-size="11" fill="#c4b5fd" font-weight="700">Chain-of-Thought</text>
+        <text x="326" y="80" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">think step by step</text>
+        <line x1="278" y1="92" x2="374" y2="92" stroke="#a855f7" stroke-width="0.5"/>
+        <text x="326" y="116" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">"show your work"</text>
+        <text x="326" y="142" text-anchor="middle" font-family="Outfit" font-size="14">🧠</text>
+        <text x="326" y="170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">reasoning</text>
+        <text x="326" y="182" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">math, logic</text>
+        <text x="200" y="208" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Each one has a sweet spot. Pick the right tool for the job.</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Three cards fade in one at a time as Prof names each strategy. Zero-Shot (blue), Few-Shot (green), Chain-of-Thought (purple). Final state holds for 2 seconds before transitioning to the next segment.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT B — Zero-Shot Prompting ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Zero-Shot Prompting</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Let us start with zero-shot. Zero-shot means exactly what it sounds like -- you give the model a task with zero examples. You just tell it what to do and trust it to figure out the pattern.</p>
+      <p>Here is a classic zero-shot prompt: "Classify this review as positive, negative, or neutral." No examples. No training. Just the task. And most of the time, this works beautifully -- the model has seen millions of reviews during training, so it knows what positive and negative look like.</p>
+      <p>But what about edge cases? "The food was amazing but the service ruined everything." Is that positive or negative? A human would probably say "mixed." The model might say "positive" one time and "negative" the next, depending on which part it focused on. Same prompt, different answer. That is the risk with zero-shot.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Zero-Shot · Works, but Edge Cases Wobble</span>
@@ -840,7 +894,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <!-- ── SEGMENT B ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG B</span>
+      <span class="segment-number">SEG C</span>
       <span class="segment-title">Few-Shot Prompting</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
@@ -893,7 +947,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <!-- ── SEGMENT C ── -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG C</span>
+      <span class="segment-number">SEG D</span>
       <span class="segment-title">Chain-of-Thought -- The Bat and Ball</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
