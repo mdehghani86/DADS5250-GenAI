@@ -115,6 +115,51 @@ body::before {
   border-color: var(--accent);
 }
 
+/* Video type distinction: scripted (professor, narrated) vs TA walkthrough (recorded later) */
+.video-tab.scripted {
+  border-color: rgba(37,99,235,0.25);
+}
+.video-tab.scripted::before,
+.video-tab.ta-recorded::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-right: 7px;
+  vertical-align: -2px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+/* Scripted = document-text icon (Lucide "file-text"), blue */
+.video-tab.scripted::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>");
+}
+.video-tab.scripted.active::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>");
+}
+/* TA walkthrough = monitor/screen-record icon (Lucide "monitor-play"), amber */
+.video-tab.ta-recorded {
+  background: rgba(245,158,11,0.08);
+  border-color: rgba(245,158,11,0.45);
+  color: #92400e;
+}
+.video-tab.ta-recorded:hover {
+  background: rgba(245,158,11,0.18);
+  color: #78350f;
+}
+.video-tab.ta-recorded::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>");
+}
+.video-tab.ta-recorded.active {
+  background: #f59e0b;
+  color: #fff;
+  border-color: #f59e0b;
+}
+.video-tab.ta-recorded.active::before {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>");
+}
+
 .topbar-actions {
   display: flex;
   gap: 8px;
@@ -770,10 +815,12 @@ body.teleprompter .scroll-controls {
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab" onclick="switchVideo(2)">V2: Excel GPT</button>
-    <button class="video-tab" onclick="switchVideo(3)">V3: Bitcoin Analyzer</button>
-    <button class="video-tab" onclick="switchVideo(4)">V4: Wrap-Up</button>
+    <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: Excel GPT</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Excel GPT Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Bitcoin Analyzer</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Bitcoin Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)" title="Scripted video">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -790,44 +837,95 @@ body.teleprompter .scroll-controls {
 <div class="video-section active" id="video-1">
 
   <div class="video-header">
-    <h2>Video 1: "The Spark" -- Build Something Real</h2>
-    <div class="video-meta">Opening -- Prof on camera -- 3-4 minutes -- 2 segments</div>
+    <h2>Video 1: "The Spark" -- AI Is Already in Everything You Use</h2>
+    <div class="video-meta">Opening -- Prof on camera -- 4-5 minutes -- 4 segments</div>
   </div>
 
   <div class="key-message-bar">
     <span class="km-label">KEY MESSAGE</span>
-    <span class="km-text">Same API, different prompts, different data -- infinite applications.</span>
+    <span class="km-text">AI is becoming a layer inside every tool you use -- so why not embed it in yours?</span>
   </div>
 
-  <!-- ── SEGMENT 1 ── -->
+  <!-- ── SEGMENT 1 -- Opening Hook Part 1 ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 01</span>
-      <span class="segment-title">Opening Hook</span>
+      <span class="segment-title">Look Around -- It's Already Here</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~45 sec</span>
+        <span class="badge badge-duration">~40 sec</span>
         <span class="badge badge-shot">Medium close-up</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Last week you wrote seven lines of code and connected to an AI model. That was the foundation.</p>
-      <p>This week, you build.</p>
-      <p>Not a toy. Not a demo. Two real tools that do real things.</p>
+      <p>Open up Google Chrome today, and there is a little button that summarizes any news article for you in about two seconds.</p>
+      <p>Open Google Maps, and it no longer just gives you directions -- it answers questions like "find me a quiet coffee shop near my hotel that opens before seven."</p>
+      <p>And if you booked a flight recently, you may have noticed something new in your confirmation email: an AI-generated itinerary, ready to use the moment you land.</p>
+      <p>None of these features existed two years ago. Today, they are just... <em>there</em>. Showing up quietly inside the tools you already use.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Energy is higher than M01 -- this is the "now we build" moment. Slight forward lean on "Two real tools."</p>
+      <span class="media-label">Shot Setup + B-roll</span>
+      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Calm, observational tone -- Prof is pointing something out, not selling anything. Slight curiosity in the voice.</p>
       <div class="media-note">
-        MEDIA TEAM: No overlays for this segment. Let the anticipation build. Clean shot, shallow depth-of-field. Consider a subtle rack focus on "This week, you build."
+        MEDIA TEAM: As Prof names each example, cut to a short clip of that feature in action -- (1) Chrome's "Summarize" button highlighting an article; (2) Google Maps with a natural-language query box showing a result; (3) an airline confirmation email with an AI-generated itinerary card. Each clip ~2 seconds. Keep the cuts soft, not flashy -- the point is "you've seen this already."
       </div>
     </div>
   </div>
 
-  <!-- ── SEGMENT 2 ── -->
+  <!-- ── SEGMENT 2 -- Opening Hook Part 2 ── -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 02</span>
+      <span class="segment-title">The Pattern Nobody Is Talking About</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera + B-Roll</span>
+        <span class="badge badge-duration">~50 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Here is what is happening, and it is happening fast. Every serious software company on the planet is asking the same question right now -- and it is not "should we add AI?" That question is over.</p>
+      <p>The question now is "<em>where</em> do we add it, and how soon?" Chrome added it to reading. Maps added it to search. Airlines added it to travel planning. Photoshop added it to editing. Notion added it to writing. Slack added it to summarizing conversations.</p>
+      <p>The common thread is this: AI is not becoming a product on its own. It is becoming a <em>layer</em>. A layer that sits inside every tool you already use and quietly makes it smarter.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">B-Roll Montage -- The AI Layer</span>
+      <p class="shot-note">Prof stays on camera for the first sentence, then voice-over continues as the montage plays. Return to camera for the final "layer" line.</p>
+      <div class="media-note">
+        MEDIA TEAM: Build a quick 15-second montage of real product UIs with their AI features highlighted -- Chrome Summarize, Google Maps natural-language search, Photoshop Generative Fill, Notion AI, Slack AI recap, GitHub Copilot inline. Each logo/UI gets ~1.5 seconds with a subtle glow on the AI feature. End with all six app icons arranged in a grid, with a semi-transparent "AI LAYER" band drawn across them to visualize the idea of AI as a horizontal layer sitting inside every product.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT 3 -- Opening Hook Part 3 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 03</span>
+      <span class="segment-title">So Why Not Us?</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~35 sec</span>
+        <span class="badge badge-shot">Forward lean</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>And that is where this module begins. If the biggest companies in the world are racing to embed AI into their tools, there is no reason you cannot start embedding it into yours.</p>
+      <p>The spreadsheet you already open every morning. The financial analysis you already do by hand. The workflow you already have. These are not toy problems -- these are the things <em>you</em> work on. And they are exactly where AI belongs next.</p>
+      <p>This module is not about building a demo. It is about sparking an idea -- the idea that the moment you see how simple it is to drop AI into something that already exists, you stop asking <em>if</em> you can build it. You start asking <em>what</em> you will build next.</p>
+      <p>This might be the beginning. So... let's.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Back to tight medium close-up, warm lighting. Energy builds across the segment. Slight forward lean on "there is no reason you cannot start embedding it into yours." Pause after "This might be the beginning." Quiet, confident smile on "So... let's."</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays on this segment -- let Prof carry it. Subtle rack focus on "This might be the beginning." Hold on the smile for a beat before cutting to SEG 04.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SEGMENT 4 ── -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG 04</span>
       <span class="segment-title">The Two Tools</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera + B-Roll</span>
@@ -1130,12 +1228,99 @@ body.teleprompter .scroll-controls {
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 3: Bitcoin Analyzer — AI Meets Real Data          -->
+<!-- VIDEO 3: TA — Excel GPT Lab Walkthrough                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 3: "Bitcoin Analyzer -- AI Meets Real Data"</h2>
+    <h2>Video 3: "Excel GPT Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Excel GPT Colab notebook, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Excel GPT Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the Excel GPT Colab notebook and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally -- no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open <code>M02_Lab1_ExcelGPT.ipynb</code> in Google Colab</li>
+            <li>Show the table of contents and explain the flow: setup &rarr; prompt &rarr; generate &rarr; paste into Excel</li>
+            <li>Confirm the API key is already loaded from Colab Secrets</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Walk Through the Code Cells</h5>
+          <ul>
+            <li>Cell by cell, explain what each line does in plain English</li>
+            <li>Pause on the prompt template -- highlight how the "role" and "user" messages are structured</li>
+            <li>Run each cell live and show the output</li>
+            <li>If a cell fails, fix it on camera -- students learn from seeing errors resolved</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Demo the Tool End-to-End</h5>
+          <ul>
+            <li>Take a sample request: "Write a VLOOKUP that pulls the price from Sheet2 where the SKU matches column A"</li>
+            <li>Run it and show the generated formula</li>
+            <li>Paste it into a real Excel file and show it working</li>
+            <li>Do at least 2 more examples of increasing complexity (pivot formula, VBA macro)</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Common Gotchas</h5>
+          <ul>
+            <li>Show what happens when the prompt is too vague -- and how to fix it</li>
+            <li>Show a response with an incorrect formula and how to spot it</li>
+            <li>Remind students: always test AI-generated code before trusting it</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck -- and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic -- clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: This is a walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length (cut long pauses and mistakes). No B-roll, no overlays. Keep it raw and authentic -- students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 (TA Excel GPT Lab) -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 4: Bitcoin Analyzer — AI Meets Real Data          -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: "Bitcoin Analyzer -- AI Meets Real Data"</h2>
     <div class="video-meta">Voiceover + animation + code -- 5-7 minutes -- 3 segments</div>
   </div>
 
@@ -1343,16 +1528,110 @@ body.teleprompter .scroll-controls {
     </div>
   </div>
 
-</div><!-- end video-3 -->
+</div><!-- end video-4 (Bitcoin Analyzer) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 4: Module 2 Wrap-Up                               -->
+<!-- VIDEO 5: TA — Bitcoin Analyzer Lab Walkthrough          -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 4: "Module 2 Wrap-Up"</h2>
+    <h2>Video 5: "Bitcoin Analyzer Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Bitcoin Analyzer Colab notebook, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Bitcoin Analyzer Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the Bitcoin Analyzer Colab notebook and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally -- no script. Emphasize that this is live market data, not a toy dataset.</p>
+
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open <code>M02_Lab2_BitcoinAnalyzer.ipynb</code> in Google Colab</li>
+            <li>Explain the flow: fetch live data &rarr; pass to AI &rarr; get analysis + report</li>
+            <li>Mention: same API key from Lab 1, no new setup needed</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Fetching Live Market Data</h5>
+          <ul>
+            <li>Walk through the data-fetch cell (CoinGecko or Yahoo Finance)</li>
+            <li>Run it live -- show the real Bitcoin price at this exact moment</li>
+            <li>Explain the DataFrame: what each column means, why we need timestamps</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Passing Data to the AI</h5>
+          <ul>
+            <li>Show how the DataFrame gets converted to a prompt-friendly format</li>
+            <li>Highlight the system prompt: "You are a financial analyst..."</li>
+            <li>Run the analysis cell and read the response out loud</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Generating the Investment Report</h5>
+          <ul>
+            <li>Show the second prompt that turns raw analysis into a client-ready report</li>
+            <li>Run it and display the formatted output</li>
+            <li>Copy the report to a Google Doc to show how portable it is</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Responsibility Reminder</h5>
+          <ul>
+            <li>Emphasize: AI output is <strong>not</strong> financial advice</li>
+            <li>Point out any hallucinated number or overconfident claim in the response</li>
+            <li>Teach students to always verify numbers against the source data</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>6. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise: "Adapt this for a different asset -- a stock, gold, or oil"</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom. Make sure the live data timestamp is visible so students can see this is real, current market data.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. If the TA encounters a data-fetch error live, keep it in and show the fix -- that's the most valuable moment for students.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 (TA Bitcoin Analyzer Lab) -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 6: Module 2 Wrap-Up                               -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Module 2 Wrap-Up"</h2>
     <div class="video-meta">Closing -- Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
@@ -1453,7 +1732,7 @@ body.teleprompter .scroll-controls {
     </div>
   </div>
 
-</div><!-- end video-4 -->
+</div><!-- end video-6 (Wrap-Up) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
