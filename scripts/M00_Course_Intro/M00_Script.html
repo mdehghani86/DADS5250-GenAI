@@ -415,6 +415,35 @@ body::before {
   font-style: italic;
 }
 
+/* Media chips — reusable badges for required / recommended assets in media notes */
+.media-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.media-chip--required {
+  background: rgba(239,68,68,0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239,68,68,0.35);
+}
+.media-chip--recommended {
+  background: rgba(245,158,11,0.12);
+  color: #b45309;
+  border: 1px solid rgba(245,158,11,0.4);
+}
+.media-chip--optional {
+  background: rgba(148,163,184,0.12);
+  color: #475569;
+  border: 1px solid rgba(148,163,184,0.4);
+}
+
 .media-col svg {
   width: 100%;
   height: auto;
@@ -867,7 +896,7 @@ body.teleprompter .scroll-controls {
       </svg>
       <div class="media-note">
         MEDIA TEAM: Animate left-to-right reveal, 10 seconds. Each node fades in sequentially. The 2017 Transformer node pulses briefly to emphasize the breakthrough moment.<br><br>
-        <strong style="color:#ef4444;">★ REQUIRED ASSET — "Attention Is All You Need" paper screenshot ★</strong><br>
+        <span class="media-chip media-chip--required">Required</span> <strong>"Attention Is All You Need" paper screenshot</strong><br>
         When Prof says <em>"The breakthrough came from a 2017 Google paper called Attention Is All You Need by Vaswani and colleagues,"</em> cut to (or picture-in-picture corner) a clean screenshot of the paper's first page: title, author list, Google Brain affiliation, abstract visible. Hold ~4 seconds. Then dissolve back to the timeline with the 2017 node pulsing.<br>
         <strong>Paper source:</strong> <a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener">arXiv:1706.03762 — Vaswani et al., 2017</a> (official arXiv abstract page)<br>
         <strong>Direct PDF:</strong> <a href="https://arxiv.org/pdf/1706.03762" target="_blank" rel="noopener">https://arxiv.org/pdf/1706.03762</a> (use page 1 for the screenshot — the title + author list is the iconic image of this paper)<br>
@@ -1028,10 +1057,13 @@ body.teleprompter .scroll-controls {
       </svg>
       <div class="media-note">
         MEDIA TEAM:<br>
-        1. Consumer path fades in first (gray), then Builder path highlights in blue.<br>
-        2. <strong>Jensen Huang quote:</strong> When narrator says the quote, show a still image or short clip of Jensen Huang (NVIDIA CEO) with the quote text overlaid: "You are not going to lose your job to AI. You are going to lose your job to someone who uses AI." — Source: Milken Institute Conference, May 2025. Find image from CNBC coverage or NVIDIA press kit.<br>
-        3. Quote overlay: dark semi-transparent bar at bottom, white text, "— Jensen Huang, CEO of NVIDIA" attribution below. Hold for 4 seconds.<br>
-        4. Then dissolve back to Prof. on camera for the PwC stat.
+        1. Consumer path fades in first (gray), then Builder path highlights in blue.<br><br>
+        <span class="media-chip media-chip--recommended">Highly Recommended</span> <strong>Jensen Huang image for the quote</strong><br>
+        When Prof reads Jensen Huang's quote, cut to (or picture-in-picture) a still image of Jensen Huang, CEO of NVIDIA, with the quote text overlaid. This is a recognizable face — having his image on screen makes the quote land much harder than a text-only overlay.<br>
+        <strong>Where to find an image:</strong> NVIDIA official press kit (<a href="https://www.nvidia.com/en-us/about-nvidia/press-room/" target="_blank" rel="noopener">nvidia.com/press-room</a>), NVIDIA newsroom headshots, or licensed editorial photos from Getty / Reuters / CNBC coverage of Milken Institute events. Prefer the black-leather-jacket signature look — it's his most recognizable.<br>
+        <strong>Quote:</strong> "You are not going to lose your job to AI. You are going to lose your job to someone who uses AI."<br>
+        <strong>Attribution source:</strong> Milken Institute Conference, May 2024. Use "— Jensen Huang, CEO of NVIDIA" as the on-screen attribution.<br>
+        <strong>Style:</strong> Lower-third dark semi-transparent bar, white text for the quote, attribution in smaller grey below. Hold for ~4 seconds. Then dissolve back to Prof. on camera for the PwC stat.
       </div>
     </div>
   </div>
