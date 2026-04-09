@@ -70,6 +70,14 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .video-tab.ta-recorded.active { background: #f59e0b; color: #fff; border-color: #f59e0b; }
 .video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
 
+
+/* Voiceover-only tab chip (teal mic icon) — matches M03 V2 */
+.video-tab.voiceover-only { background: rgba(20,184,166,0.08); border-color: rgba(20,184,166,0.45); color: #0f766e; }
+.video-tab.voiceover-only:hover { background: rgba(20,184,166,0.18); color: #134e4a; }
+.video-tab.voiceover-only::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"); }
+.video-tab.voiceover-only.active { background: #14b8a6; color: #fff; border-color: #14b8a6; }
+.video-tab.voiceover-only.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"); }
+
 /* ── Audio Segment · iOS Liquid Glass ── */
 .audio-segment {
   display: flex; flex-direction: column;
@@ -357,7 +365,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: What Is an Agent</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: Tools</button>
+    <button class="video-tab voiceover-only" onclick="switchVideo(3)" title="Voiceover + animation — click mic to listen">V3: Tools</button>
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: LangGraph Intro</button>
     <button class="video-tab scripted" onclick="switchVideo(5)">V5: Building with LangGraph</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Agent Concepts (ReAct) Lab</button>
@@ -660,7 +668,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 3: Tools                                                  -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
     <h2>Video 3: "Tools: Teaching AI to Use Functions" &mdash; <span style="color:#0f766e;">Voiceover + Animation</span></h2>
