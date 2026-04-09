@@ -142,6 +142,26 @@ body::before {
 .video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
 
 
+/* ── Audio Segment layout (for voiceover-only videos) ── */
+.audio-segment { display: flex; flex-direction: column; border: 1px solid rgba(20,184,166,0.15); border-radius: var(--radius); overflow: hidden; margin-bottom: 14px; }
+.audio-segment .audio-header { display: flex; align-items: center; gap: 12px; padding: 10px 18px; background: rgba(20,184,166,0.05); border-bottom: 1px solid rgba(20,184,166,0.08); }
+.audio-segment .audio-part-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: #0f766e; letter-spacing: 0.06em; white-space: nowrap; }
+.audio-segment .audio-part-title { font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); flex: 1; }
+.audio-play-btn { width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid #14b8a6; background: rgba(20,184,166,0.06); cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all 0.25s; }
+.audio-play-btn:hover { background: rgba(20,184,166,0.16); transform: scale(1.06); }
+.audio-play-btn.playing { background: #14b8a6; border-color: #14b8a6; animation: pulse-mic 1.6s ease-in-out infinite; }
+.audio-play-btn svg { width: 15px; height: 15px; }
+.audio-play-btn.playing svg path, .audio-play-btn.playing svg line { stroke: #fff; }
+@keyframes pulse-mic { 0%,100% { box-shadow: 0 0 0 0 rgba(20,184,166,0.4); } 50% { box-shadow: 0 0 0 6px rgba(20,184,166,0); } }
+.audio-progress { height: 2px; background: rgba(20,184,166,0.1); overflow: hidden; }
+.audio-progress-bar { height: 100%; width: 0%; background: #14b8a6; transition: width 0.3s linear; }
+.audio-segment .audio-script { padding: 14px 20px; background: var(--card-bg); }
+.audio-segment .audio-script p { font-size: 0.92rem; line-height: 1.75; color: var(--text); margin-bottom: 10px; }
+.audio-segment .audio-script p:last-child { margin-bottom: 0; }
+.audio-segment .audio-visual { padding: 14px; background: rgba(255,255,255,0.35); border-top: 1px solid rgba(20,184,166,0.06); display: flex; justify-content: center; }
+.audio-segment .audio-visual svg { max-width: 480px; width: 100%; height: auto; border-radius: 6px; }
+.audio-not-recorded { font-size: 0.78rem; color: #94a3b8; font-style: italic; text-align: center; padding: 6px 0; }
+
 .topbar-actions {
   display: flex;
   gap: 8px;
@@ -518,11 +538,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: How RAG Works</button>
     <button class="video-tab scripted" onclick="switchVideo(3)">V3: Building RAG Pipeline</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: RAG in Production</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA screen recording -- no script">V5: TA -- Vector DB Setup</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Embeddings & Vector Stores Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="TA lab walkthrough -- no script">V7: RAG Pipeline Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(8)">V8: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script">V4: TA -- Vector DB Setup</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Embeddings & Vector Stores Lab</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: RAG Pipeline Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1106,160 +1125,16 @@ results = vectorstore.<span class="fn">similarity_search</span>(<span class="str
 </div><!-- end video-3 -->
 
 
+<!-- NOTE: Old V4 RAG in Production removed from script -- now a Canvas page in M05_Module.html (Text Splitter Gamification + Discussion Task) -->
+
+
 <!-- ================================================================ -->
-<!-- VIDEO 4: RAG in Production                                      -->
+<!-- VIDEO 4: TA -- Vector DB Setup                                  -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-4">
 
   <div class="video-header">
-    <h2>Video 4: "RAG in Production"</h2>
-    <div class="video-meta">Voiceover + animation -- 5-6 minutes -- 3 segments</div>
-  </div>
-
-  <!-- SEG A -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A</span>
-      <span class="segment-title">Evaluating RAG</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>You built a RAG pipeline. It runs. It returns answers. But how do you know if it is any good?</p>
-      <p>There are two things to evaluate. First, retrieval quality -- did the system find the right chunks? If you ask about Q4 revenue and it retrieves the HR policy, no amount of generation will fix that. Second, generation quality -- given the right chunks, did the model use them correctly? Or did it ignore the context and hallucinate anyway?</p>
-      <p>In production, you test both. You build a set of test questions with known answers, run them through your pipeline, and measure. Is the answer in the retrieved chunks? Does the generated response match the ground truth?</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Two Things to Evaluate</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">RAG Quality = Retrieval × Generation</text>
-        <rect x="14" y="40" width="180" height="140" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
-        <text x="104" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600" letter-spacing="0.08em">RETRIEVAL QUALITY</text>
-        <text x="104" y="80" text-anchor="middle" font-family="Outfit" font-size="10" fill="#1e293b">Did we find</text>
-        <text x="104" y="94" text-anchor="middle" font-family="Outfit" font-size="10" fill="#1e293b">the right chunks?</text>
-        <line x1="34" y1="108" x2="174" y2="108" stroke="#cbd5e1"/>
-        <text x="104" y="124" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ recall@k</text>
-        <text x="104" y="136" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ MRR (mean reciprocal rank)</text>
-        <text x="104" y="148" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ chunk relevance scoring</text>
-        <text x="104" y="170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">if this fails, nothing else matters</text>
-        <rect x="206" y="40" width="180" height="140" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
-        <text x="296" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">GENERATION QUALITY</text>
-        <text x="296" y="80" text-anchor="middle" font-family="Outfit" font-size="10" fill="#1e293b">Did the model</text>
-        <text x="296" y="94" text-anchor="middle" font-family="Outfit" font-size="10" fill="#1e293b">use the chunks?</text>
-        <line x1="226" y1="108" x2="366" y2="108" stroke="#cbd5e1"/>
-        <text x="296" y="124" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ groundedness check</text>
-        <text x="296" y="136" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ answer-vs-truth match</text>
-        <text x="296" y="148" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">▪ hallucination rate</text>
-        <text x="296" y="170" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">build a test set, measure both</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- SEG B -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG B</span>
-      <span class="segment-title">Common Failures</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Let me walk you through the three most common RAG failures.</p>
-      <p>Number one: bad chunking. Your chunks are too large, and the relevant sentence is buried. Or too small, and the chunk is meaningless on its own. Fix: experiment with chunk size and overlap.</p>
-      <p>Number two: irrelevant retrieval. The query is about pricing but the system returns product descriptions because the embeddings are too generic. Fix: better embedding models, metadata filtering, or hybrid search combining semantic and keyword search.</p>
-      <p>Number three: context ignored. The model has the right chunks but generates an answer from its training data anyway. Fix: stronger system prompts -- explicitly tell the model "only answer from the provided context."</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Three Common RAG Failures</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Three Failures · Three Fixes</text>
-        <rect x="14" y="38" width="120" height="148" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
-        <text x="74" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600" letter-spacing="0.06em">FAILURE 1</text>
-        <text x="74" y="78" text-anchor="middle" font-family="Outfit" font-size="20">📄</text>
-        <text x="74" y="100" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Bad chunking</text>
-        <text x="74" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">too big or too small</text>
-        <line x1="22" y1="130" x2="126" y2="130" stroke="#fecaca"/>
-        <text x="74" y="148" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">FIX</text>
-        <text x="74" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">tune chunk_size</text>
-        <text x="74" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">+ overlap</text>
-        <rect x="140" y="38" width="120" height="148" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
-        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600" letter-spacing="0.06em">FAILURE 2</text>
-        <text x="200" y="78" text-anchor="middle" font-family="Outfit" font-size="20">🎯</text>
-        <text x="200" y="100" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Wrong chunks</text>
-        <text x="200" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">retrieves irrelevant docs</text>
-        <line x1="148" y1="130" x2="252" y2="130" stroke="#fecaca"/>
-        <text x="200" y="148" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">FIX</text>
-        <text x="200" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">better embeddings,</text>
-        <text x="200" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">hybrid + filters</text>
-        <rect x="266" y="38" width="120" height="148" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
-        <text x="326" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600" letter-spacing="0.06em">FAILURE 3</text>
-        <text x="326" y="78" text-anchor="middle" font-family="Outfit" font-size="20">🚫</text>
-        <text x="326" y="100" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Context ignored</text>
-        <text x="326" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model makes it up anyway</text>
-        <line x1="274" y1="130" x2="378" y2="130" stroke="#fecaca"/>
-        <text x="326" y="148" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">FIX</text>
-        <text x="326" y="162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">stronger system prompt:</text>
-        <text x="326" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">"only use context"</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- SEG C -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C</span>
-      <span class="segment-title">Real-World Use Cases</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~1 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Where is RAG actually used? Everywhere knowledge matters. Legal teams searching case law. Customer support answering from product documentation. Engineering teams querying maintenance logs. Education platforms building Q&amp;A over course materials.</p>
-      <p>Perplexity -- valued at multiple billions of dollars -- is essentially a RAG pipeline applied to the entire internet. The architecture you just learned is the same architecture powering a multi-billion-dollar company.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Where RAG Is Used Today</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">RAG · Anywhere Knowledge Matters</text>
-        <rect x="14" y="38" width="180" height="68" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1"/>
-        <text x="34" y="62" font-family="Outfit" font-size="20">⚖</text>
-        <text x="64" y="58" font-family="Outfit" font-size="11" fill="#2563EB" font-weight="600">Legal</text>
-        <text x="64" y="74" font-family="Outfit" font-size="8" fill="#475569">Search case law &amp; contracts</text>
-        <text x="64" y="86" font-family="Outfit" font-size="8" fill="#94a3b8">Harvey, CaseMark</text>
-        <rect x="206" y="38" width="180" height="68" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
-        <text x="226" y="62" font-family="Outfit" font-size="20">💬</text>
-        <text x="256" y="58" font-family="Outfit" font-size="11" fill="#10b981" font-weight="600">Support</text>
-        <text x="256" y="74" font-family="Outfit" font-size="8" fill="#475569">Answer from product docs</text>
-        <text x="256" y="86" font-family="Outfit" font-size="8" fill="#94a3b8">Intercom Fin, Zendesk</text>
-        <rect x="14" y="114" width="180" height="68" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1"/>
-        <text x="34" y="138" font-family="Outfit" font-size="20">🔧</text>
-        <text x="64" y="134" font-family="Outfit" font-size="11" fill="#f59e0b" font-weight="600">Engineering</text>
-        <text x="64" y="150" font-family="Outfit" font-size="8" fill="#475569">Query maintenance logs</text>
-        <text x="64" y="162" font-family="Outfit" font-size="8" fill="#94a3b8">Glean, Cody</text>
-        <rect x="206" y="114" width="180" height="68" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7" stroke-width="1"/>
-        <text x="226" y="138" font-family="Outfit" font-size="20">🎓</text>
-        <text x="256" y="134" font-family="Outfit" font-size="11" fill="#a855f7" font-weight="600">Education</text>
-        <text x="256" y="150" font-family="Outfit" font-size="8" fill="#475569">Q&amp;A over course materials</text>
-        <text x="256" y="162" font-family="Outfit" font-size="8" fill="#94a3b8">DADS 5250 (you)</text>
-      </svg>
-    </div>
-  </div>
-
-</div><!-- end video-4 -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 5: TA -- Vector DB Setup                                  -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-5">
-
-  <div class="video-header">
-    <h2>Video 5: "TA -- Vector DB Setup" (TA)</h2>
+    <h2>Video 4: "TA -- Vector DB Setup" (TA)</h2>
     <div class="video-meta">TA screen recording -- 5-7 minutes</div>
   </div>
 
@@ -1326,21 +1201,21 @@ results = vectorstore.<span class="fn">similarity_search</span>(<span class="str
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-4 -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 6: Wrap-Up                                                -->
+<!-- VIDEO 4: Wrap-Up                                                -->
 <!-- ================================================================ -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: TA — Embeddings & Vector Stores Lab                                 -->
+<!-- VIDEO 5: TA — Embeddings & Vector Stores Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 6: "Embeddings & Vector Stores Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 5: "Embeddings & Vector Stores Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
       <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M05_Lab1_Embeddings_VectorStores.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
@@ -1416,16 +1291,16 @@ results = vectorstore.<span class="fn">similarity_search</span>(<span class="str
     </div>
   </div>
 
-</div><!-- end video-6 (TA Embeddings & Vector Stores Lab) -->
+</div><!-- end video-5 (TA Embeddings & Vector Stores Lab) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 7: TA — RAG Pipeline Lab                                 -->
+<!-- VIDEO 6: TA — RAG Pipeline Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-7" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 7: "RAG Pipeline Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 6: "RAG Pipeline Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
       <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M05_Lab2_RAG_Pipeline.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
@@ -1501,13 +1376,13 @@ results = vectorstore.<span class="fn">similarity_search</span>(<span class="str
     </div>
   </div>
 
-</div><!-- end video-7 (TA RAG Pipeline Lab) -->
+</div><!-- end video-6 (TA RAG Pipeline Lab) -->
 
 
-<div class="video-section" id="video-8">
+<div class="video-section" id="video-7">
 
   <div class="video-header">
-    <h2>Video 8: "Module 5 Wrap-Up"</h2>
+    <h2>Video 7: "Module 5 Wrap-Up"</h2>
     <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
@@ -1563,7 +1438,7 @@ results = vectorstore.<span class="fn">similarity_search</span>(<span class="str
     </div>
   </div>
 
-</div><!-- end video-8 -->
+</div><!-- end video-7 -->
 
 
 <!-- References -->

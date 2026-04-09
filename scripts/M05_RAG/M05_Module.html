@@ -863,7 +863,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
   <div class="sb-section">Section 3: Production & Practice</div>
   <div class="sb-item" onclick="goToPage(9)">
     <div class="sb-dot"></div>
-    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">RAG in Production</div><div class="sb-dur">5-6 min</div></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Interactive</span><div class="sb-label">Text Splitter + Discussion</div><div class="sb-dur">~15 min</div></div>
   </div>
   <div class="sb-item" onclick="goToPage(10)">
     <div class="sb-dot"></div>
@@ -1552,79 +1552,37 @@ body.sidebar-hidden #nav-bar { left: 0; }
 </div>
 </div>
 
-<!-- ════════════════════════════════════════ PAGE 9: Video -- RAG in Production ════════════════════════════════════════ -->
+<!-- ════════════════════════════════════════ PAGE 9: Interactive -- Text Splitter + Discussion ════════════════════════════════════════ -->
 <div class="page" data-page="9" data-state="right">
 <div class="page-inner">
   <div class="glass">
-    <span class="page-label">Video 4</span>
-    <h2>RAG in Production</h2>
-    <p class="subtitle">How do you know your RAG pipeline is good? Prof. Dehghani covers evaluation, common failures, and real-world use cases where RAG excels.</p>
+    <span class="page-label">Interactive</span>
+    <h2>Text Splitter Explorer</h2>
+    <p class="subtitle">Chunking is the most important decision in any RAG pipeline. Use the interactive tool below to see how different chunk sizes and overlap settings change what your LLM actually sees.</p>
 
-    <div class="video-wrapper">
-      <div class="video-placeholder">
-        <div class="vp-badges">
-          <span class="vp-badge vp-badge-type">VIDEO</span>
-          <span class="vp-badge vp-badge-dur">5-6 min</span>
-        </div>
-        <button class="script-btn" onclick="openScript('script-v4')" title="View Script">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-            <polyline points="14 2 14 8 20 8"/>
-            <line x1="16" y1="13" x2="8" y2="13"/>
-            <line x1="16" y1="17" x2="8" y2="17"/>
-            <line x1="10" y1="9" x2="8" y2="9"/>
-          </svg>
-        </button>
-        <div class="vp-center">
-          <svg class="vp-play" width="48" height="48" viewBox="0 0 48 48" fill="none">
-            <polygon points="18,12 38,24 18,36" fill="rgba(255,255,255,0.85)"/>
-          </svg>
-          <div class="vp-title">V4: RAG in Production</div>
-        </div>
+    <!-- Text Splitter Gamification Tool Placeholder -->
+    <div style="margin-top:24px; padding:32px; border:2px dashed #2563EB; border-radius:14px; background:rgba(37,99,235,0.04); text-align:center;">
+      <div style="font-size:2.5rem; margin-bottom:12px;">&#9986;</div>
+      <h3 style="color:#2563EB; margin-bottom:8px;">Text Splitter Gamification Tool</h3>
+      <p style="color:#64748b; max-width:500px; margin:0 auto 16px;">Paste any text, adjust <strong>chunk_size</strong> and <strong>overlap</strong> sliders, and watch the chunks update in real time. Color-coded overlaps show shared context between neighbors.</p>
+      <div style="display:inline-flex; gap:8px;">
+        <span style="background:rgba(37,99,235,0.1); color:#2563EB; padding:4px 12px; border-radius:999px; font-size:0.75rem; font-weight:600;">COMING SOON</span>
+        <span style="background:rgba(16,185,129,0.1); color:#059669; padding:4px 12px; border-radius:999px; font-size:0.75rem; font-weight:600;">INTERACTIVE CANVAS</span>
       </div>
     </div>
 
-    <!-- Evaluation Framework -->
-    <div style="margin-top:24px;">
-      <h3 style="text-align:center; margin-bottom:16px;">RAG Evaluation Framework</h3>
-      <div class="info-grid cols-2" style="max-width:600px;margin:0 auto;">
-        <div class="info-card" style="text-align:left;">
-          <span class="icon">&#128269;</span>
-          <h3>Retrieval Quality</h3>
-          <p>Did the system find the right chunks? Are the top results actually relevant to the question?</p>
-        </div>
-        <div class="info-card" style="text-align:left;">
-          <span class="icon">&#9997;</span>
-          <h3>Generation Quality</h3>
-          <p>Did the model use the retrieved context correctly? Or did it ignore the context and hallucinate?</p>
-        </div>
-      </div>
+    <div class="sep"></div>
 
-      <div class="sep"></div>
-
-      <h3 style="text-align:center; margin-bottom:12px;">Real-World RAG Use Cases</h3>
-      <div class="info-grid cols-2" style="max-width:600px;margin:0 auto;">
-        <div class="info-card">
-          <span class="icon">&#9878;</span>
-          <h3>Legal</h3>
-          <p>Search case law, contracts, and regulatory documents by meaning.</p>
-        </div>
-        <div class="info-card">
-          <span class="icon">&#128172;</span>
-          <h3>Customer Support</h3>
-          <p>Answer questions from product docs, FAQs, and knowledge bases.</p>
-        </div>
-        <div class="info-card">
-          <span class="icon">&#128295;</span>
-          <h3>Engineering</h3>
-          <p>Search design specs, technical manuals, and maintenance logs.</p>
-        </div>
-        <div class="info-card">
-          <span class="icon">&#127979;</span>
-          <h3>Education</h3>
-          <p>Build Q&A systems over course materials, textbooks, and research papers.</p>
-        </div>
-      </div>
+    <!-- Discussion Task -->
+    <h3 style="text-align:center; margin-bottom:16px;">Discussion Task</h3>
+    <div style="max-width:640px; margin:0 auto; background:rgba(37,99,235,0.04); border-left:3px solid #2563EB; padding:20px 24px; border-radius:0 10px 10px 0;">
+      <p style="font-weight:600; color:#1e293b; margin-bottom:12px;">After experimenting with the Text Splitter tool, answer these questions in your group:</p>
+      <ol style="color:#475569; line-height:1.8; padding-left:20px;">
+        <li>What happens to retrieval quality when chunks are <strong>too small</strong> (under 100 characters)?</li>
+        <li>What happens when chunks are <strong>too large</strong> (over 2000 characters)?</li>
+        <li>How does <strong>overlap</strong> help — and when does too much overlap become wasteful?</li>
+        <li>If you were building a RAG system over a <strong>legal contract</strong>, what chunk size would you choose and why?</li>
+      </ol>
     </div>
   </div>
 </div>
