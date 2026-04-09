@@ -346,9 +346,9 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Last module, you built single agents. Powerful. Flexible. But they hit a ceiling.</p>
-      <p>A single agent has one context window, one set of instructions, and one persona. Ask it to be a researcher and a writer and an editor, and it gets confused. It loses track of which role it is playing. The context fills up. Quality drops.</p>
-      <p>The solution is not a better model. The solution is specialization. Give each job to a different agent. Let them collaborate. Let them check each other's work.</p>
+      <p>Now, you could build multi-agent systems with LangGraph -- and some teams do. But there is a framework designed specifically for this. It thinks in roles, tasks, and teams instead of nodes and edges. It is called CrewAI.</p>
+      <p>CrewAI lets you define specialist agents -- a researcher, a writer, an editor -- give each one a clear job, and let them collaborate. Instead of wiring a graph yourself, you describe the team and CrewAI orchestrates the workflow.</p>
+      <p>That is what this module is about. Not just multi-agent -- multi-agent made simple.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Solo vs Team</span>
@@ -428,13 +428,58 @@ body.teleprompter .scroll-controls { display: flex; }
 
   <div class="video-header">
     <h2>Video 2: "CrewAI: Building Agent Teams"</h2>
-    <div class="video-meta">Voiceover + animation -- 8-10 minutes -- 4 segments</div>
+    <div class="video-meta">Voiceover + animation -- 10-12 minutes -- 5 segments</div>
   </div>
 
-  <!-- SEG A -->
+  <!-- SEG A — CrewAI History -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
+      <span class="segment-title">The Story Behind CrewAI</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>CrewAI was created in late 2023 by Joao Moura, a Brazilian-born engineer who had spent years building AI systems at large companies. He noticed the same problem over and over -- developers were writing hundreds of lines of boilerplate just to get two agents to talk to each other.</p>
+      <p>His idea was simple. What if multi-agent systems worked the way real teams work? You define who is on the team, what each person is responsible for, and how they collaborate. The framework handles the rest.</p>
+      <p>He open-sourced it in early 2024, and it took off. Within months, CrewAI had tens of thousands of stars on GitHub and a growing community of developers building everything from research assistants to automated content pipelines. By 2025, CrewAI had raised funding and become one of the most popular multi-agent frameworks in the Python ecosystem.</p>
+      <p>What makes CrewAI different from building agents in LangGraph is the level of abstraction. LangGraph gives you nodes, edges, and state -- you build the graph yourself. CrewAI gives you agents, tasks, and crews -- you describe the team, and it builds the graph for you.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- CrewAI Timeline</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">CrewAI · From Side Project to Ecosystem</text>
+        <!-- Timeline line -->
+        <line x1="40" y1="80" x2="360" y2="80" stroke="#cbd5e1" stroke-width="2"/>
+        <!-- 2023 -->
+        <circle cx="80" cy="80" r="6" fill="#2563EB"/>
+        <text x="80" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">Late 2023</text>
+        <text x="80" y="104" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Joao Moura</text>
+        <text x="80" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">creates CrewAI</text>
+        <!-- 2024 -->
+        <circle cx="180" cy="80" r="6" fill="#10b981"/>
+        <text x="180" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">Early 2024</text>
+        <text x="180" y="104" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Open-sourced</text>
+        <text x="180" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">rapid adoption</text>
+        <!-- 2025 -->
+        <circle cx="280" cy="80" r="6" fill="#f59e0b"/>
+        <text x="280" y="68" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">2025</text>
+        <text x="280" y="104" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Funded, major</text>
+        <text x="280" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Python ecosystem</text>
+        <!-- Footer -->
+        <rect x="40" y="140" width="320" height="40" rx="8" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)"/>
+        <text x="200" y="158" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">LangGraph = build the graph yourself · CrewAI = describe the team</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">Same idea, different level of abstraction</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- SEG B — The Three Building Blocks -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
       <span class="segment-title">The Three Building Blocks</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
@@ -489,10 +534,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG B -->
+  <!-- SEG C -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG B</span>
+      <span class="segment-number">SEG C</span>
       <span class="segment-title">The Code</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Code</span>
@@ -585,10 +630,10 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
     </div>
   </div>
 
-  <!-- SEG C -->
+  <!-- SEG D -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG C</span>
+      <span class="segment-number">SEG D</span>
       <span class="segment-title">Sequential vs Hierarchical</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
@@ -639,10 +684,10 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
     </div>
   </div>
 
-  <!-- SEG D -->
+  <!-- SEG E -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG D</span>
+      <span class="segment-number">SEG E</span>
       <span class="segment-title">Delegation</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
