@@ -788,9 +788,9 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
       </div>
     </div>
     <div class="script-col">
-      <p>How do agents share information? Through context. When you set up a sequential crew, each task's output is automatically passed to the next task as context. The writer does not just know its own instructions -- it knows what the researcher found.</p>
-      <p>CrewAI also supports short-term memory within a crew run and long-term memory across runs. Short-term memory lets agents reference earlier results. Long-term memory lets a crew learn from past executions.</p>
-      <p>For this module, focus on the basics -- task output flowing as context. That alone is enough to build powerful multi-agent systems.</p>
+      <p>When the researcher finishes, what happens to its output? CrewAI automatically passes it to the next agent as context. The analyst does not just see its own task description -- it sees everything the researcher found. And when the analyst finishes, the writer sees both the research and the analysis.</p>
+      <p>Each agent in the sequence inherits the full history of what came before it. You do not wire this up manually. You define the task order, and CrewAI handles the handoff.</p>
+      <p>Think of it like a relay race. Each runner passes the baton to the next. The baton is the accumulated context -- and it gets richer at every handoff.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Context Accumulates Down the Chain</span>
