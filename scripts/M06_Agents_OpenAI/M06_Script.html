@@ -381,12 +381,12 @@ body.teleprompter .scroll-controls { display: flex; }
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- The Support Call</h2>
-    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+    <div class="video-meta">Prof on camera -- ~90 sec -- 2 segments</div>
   </div>
 
   <div class="key-message-bar">
     <span class="km-label">KEY MESSAGE</span>
-    <span class="km-text">The leap from chains to agents is the leap from scripts to intelligence.</span>
+    <span class="km-text">Real tasks are not pipelines. They are graphs. LangGraph lets you build them.</span>
   </div>
 
   <!-- SEG 01 -->
@@ -402,11 +402,11 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="script-col">
       <p>Think about what happens when you call customer support. The first thing they ask is -- what is your issue? And depending on your answer, everything changes. Billing goes one direction. Technical goes another. Returns goes somewhere else. And if the first fix does not work, they loop back and try something different.</p>
-      <p>That is not a pipeline. That is a graph -- with branches, conditions, and loops. And that is exactly what you are about to build.</p>
+      <p>That is not a pipeline. That is a graph -- with branches, conditions, and loops.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Conversational delivery. Pause after "everything changes" -- let the branching idea land. Slight lean forward on "that is exactly what you are about to build."</p>
+      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Conversational delivery. Pause after "everything changes" -- let the branching idea land.</p>
       <div class="media-note">
         MEDIA TEAM: No overlays. Clean shot, shallow depth-of-field. The support call analogy is verbal only -- let the words do the work.
       </div>
@@ -417,15 +417,55 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG 02</span>
-      <span class="segment-title">Chains vs Agents</span>
+      <span class="segment-title">Key Message -- LangGraph</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~40 sec</span>
+        <span class="badge badge-duration">~30 sec</span>
       </div>
     </div>
     <div class="script-col">
+      <p>Most AI systems you have built so far run in a straight line. Input goes in, output comes out. But real tasks do not work that way. They branch. They loop. They depend on what just happened. And the tool that lets you design these kinds of workflows in Python is called LangGraph.</p>
+      <p>Before we get to LangGraph, though, we need to understand what powers it -- agents and tools. That is where we start.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Lower-Third Quote Card</span>
+      <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="6" height="160" fill="#2563EB"/>
+        <text x="32" y="48" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="500" letter-spacing="0.1em">M06 · KEY MESSAGE</text>
+        <text x="32" y="84" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">Real tasks are not pipelines.</text>
+        <text x="32" y="106" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">They are graphs.</text>
+        <text x="32" y="132" font-family="Outfit" font-size="20" fill="#60a5fa" font-weight="700" font-style="italic">LangGraph lets you build them.</text>
+      </svg>
+    </div>
+  </div>
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: What Is an Agent?                                      -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "What Is an Agent?"</h2>
+    <div class="video-meta">Voiceover + animation -- 8-9 minutes -- 4 segments</div>
+  </div>
+
+  <!-- SEG A — Chains vs Agents intro -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">Chains vs Agents</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Before we build with LangGraph, it is worth understanding what makes it different from everything you have built so far.</p>
       <p>Until now, you have built chains. Step one feeds into step two feeds into step three. Same path every time. That is powerful -- and for many tasks, it is all you need.</p>
-      <p>But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can decide what to do next. That is an agent. And the tool that lets you design these branching, looping workflows in Python is called LangGraph.</p>
+      <p>But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can look at the situation, decide what to do next, and change direction if the first attempt does not work. That is an agent.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Train vs Self-Driving Car</span>
@@ -459,49 +499,11 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 03 -->
+  <!-- SEG B — 3 Ingredients -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 03</span>
-      <span class="segment-title">Key Message</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~15 sec</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>The leap from chains to agents is the leap from scripts to intelligence. And this module teaches you to build intelligence.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Lower-Third Quote Card</span>
-      <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <rect x="0" y="0" width="6" height="160" fill="#2563EB"/>
-        <text x="32" y="48" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="500" letter-spacing="0.1em">M06 · KEY MESSAGE</text>
-        <text x="32" y="86" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">The leap from chains to agents</text>
-        <text x="32" y="106" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">is the leap from</text>
-        <text x="32" y="132" font-family="Outfit" font-size="20" fill="#60a5fa" font-weight="700" font-style="italic">scripts → intelligence.</text>
-      </svg>
-    </div>
-  </div>
-
-</div><!-- end video-1 -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 2: What Is an Agent?                                      -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-2">
-
-  <div class="video-header">
-    <h2>Video 2: "What Is an Agent?"</h2>
-    <div class="video-meta">Voiceover + animation -- 7-8 minutes -- 3 segments</div>
-  </div>
-
-  <!-- SEG A -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A</span>
-      <span class="segment-title">Defining an Agent</span>
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Three Ingredients of an Agent</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~3 min</span>
@@ -559,10 +561,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG B -->
+  <!-- SEG C -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG B</span>
+      <span class="segment-number">SEG C</span>
       <span class="segment-title">The ReAct Loop</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
@@ -610,10 +612,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG C -->
+  <!-- SEG D -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG C</span>
+      <span class="segment-number">SEG D</span>
       <span class="segment-title">When to Use Agents</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
