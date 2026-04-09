@@ -618,8 +618,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Before we fix the problem, let us see it clearly.</p>
-      <p>Ask GPT about your company's Q4 revenue. It does not know your company. But it will not say "I do not know." It will fabricate numbers. Real-looking numbers -- with dollar signs, growth percentages, quarter-over-quarter comparisons. All fake.</p>
+      <p>There is a word you are going to hear a lot in AI -- hallucination. Let me show you what it looks like.</p>
+      <p>Ask an LLM to summarize your company's employee handbook. It has never seen your handbook. But it will not say "I do not know." It will write you a summary anyway -- with policy names, section numbers, even direct quotes. All fabricated. Every word of it.</p>
       <p>This is hallucination. The model generates text that sounds right but is factually wrong. It is not lying -- it is predicting the most likely next words. And sometimes those words form statements that are completely false.</p>
       <p>In a classroom, that is embarrassing. In production -- legal contracts, medical advice, financial reports -- it is dangerous.</p>
     </div>
@@ -628,15 +628,15 @@ body.teleprompter .scroll-controls { display: flex; }
       <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Question · Two Very Different Answers</text>
         <rect x="14" y="38" width="372" height="20" rx="4" fill="#1e293b"/>
-        <text x="200" y="52" text-anchor="middle" font-family="Outfit" font-size="9" fill="#cbd5e1" font-style="italic">"What was our company's Q4 revenue?"</text>
+        <text x="200" y="52" text-anchor="middle" font-family="Outfit" font-size="9" fill="#cbd5e1" font-style="italic">"Summarize our employee handbook's PTO policy"</text>
         <!-- Without RAG -->
         <rect x="14" y="68" width="180" height="160" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2"/>
         <text x="104" y="86" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600" letter-spacing="0.08em">WITHOUT RAG</text>
         <rect x="22" y="96" width="164" height="106" rx="4" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
-        <text x="30" y="114" font-family="Outfit" font-size="8" fill="#cbd5e1">Q4 revenue was approximately</text>
-        <text x="30" y="126" font-family="Outfit" font-size="8" fill="#cbd5e1">$47.2M, up 12% year-over-year,</text>
-        <text x="30" y="138" font-family="Outfit" font-size="8" fill="#cbd5e1">driven by strong performance in</text>
-        <text x="30" y="150" font-family="Outfit" font-size="8" fill="#cbd5e1">our enterprise segment...</text>
+        <text x="30" y="114" font-family="Outfit" font-size="8" fill="#cbd5e1">Per Section 4.2, employees</text>
+        <text x="30" y="126" font-family="Outfit" font-size="8" fill="#cbd5e1">receive 15 days PTO annually,</text>
+        <text x="30" y="138" font-family="Outfit" font-size="8" fill="#cbd5e1">with rollover up to 5 days per</text>
+        <text x="30" y="150" font-family="Outfit" font-size="8" fill="#cbd5e1">fiscal year (see Appendix B)...</text>
         <rect x="30" y="160" width="148" height="22" rx="3" fill="rgba(239,68,68,0.15)" stroke="#ef4444" stroke-width="0.8"/>
         <text x="104" y="174" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5" font-weight="600">⚠ ALL FABRICATED</text>
         <text x="104" y="216" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5" font-style="italic">confident · wrong · dangerous</text>
@@ -644,11 +644,11 @@ body.teleprompter .scroll-controls { display: flex; }
         <rect x="206" y="68" width="180" height="160" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
         <text x="296" y="86" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600" letter-spacing="0.08em">WITH RAG</text>
         <rect x="214" y="96" width="164" height="106" rx="4" fill="rgba(255,255,255,0.04)" stroke="#475569"/>
-        <text x="222" y="114" font-family="Outfit" font-size="8" fill="#a7f3d0">Q4 revenue was $42.1M, up 8%</text>
-        <text x="222" y="126" font-family="Outfit" font-size="8" fill="#a7f3d0">YoY (Annual Report p. 14).</text>
+        <text x="222" y="114" font-family="Outfit" font-size="8" fill="#a7f3d0">Full-time employees receive 20</text>
+        <text x="222" y="126" font-family="Outfit" font-size="8" fill="#a7f3d0">days PTO (Handbook §3.1, p.12).</text>
         <text x="222" y="146" font-family="Outfit" font-size="7" fill="#94a3b8">Source chunks retrieved:</text>
-        <text x="222" y="158" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">▪ annual_report.pdf · p.14</text>
-        <text x="222" y="168" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">▪ q4_summary.pdf · p.2</text>
+        <text x="222" y="158" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">▪ employee_handbook.pdf · p.12</text>
+        <text x="222" y="168" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">▪ employee_handbook.pdf · p.14</text>
         <rect x="222" y="178" width="148" height="22" rx="3" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="0.8"/>
         <text x="296" y="192" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600">✓ GROUNDED IN DOCS</text>
         <text x="296" y="216" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399" font-style="italic">cited · accurate · trustworthy</text>
