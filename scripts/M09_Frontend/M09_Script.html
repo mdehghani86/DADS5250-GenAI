@@ -421,6 +421,7 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
     <button class="btn-action" onclick="window.print()">Print</button>
+    <button class="btn-action" onclick="exportScript()">Export Script</button>
   </div>
 </div>
 
@@ -562,14 +563,14 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">SEG A</span>
-      <span class="segment-title">The Gradio Idea</span>
+      <span class="segment-title">Gradio Origins</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
         <span class="badge badge-duration">~90 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>The idea behind Gradio is simple: take any Python function and turn it into a web interface automatically.</p>
+      <p>Gradio was created by Abubakar Abid in 2019 and acquired by Hugging Face in 2021. The idea is simple: take any Python function and turn it into a web interface automatically.</p>
       <p>Here is how it works. You write a function. You wrap it in gr.Interface. You call launch. That is it. Gradio looks at your function signature, creates input components for the parameters, creates an output component for the return value, and gives you a local URL.</p>
     </div>
     <div class="media-col">
@@ -707,31 +708,6 @@ body.teleprompter .scroll-controls { display: flex; }
     <div class="media-col">
       <span class="media-label">Transition</span>
       <p class="shot-note">Quick montage of the three finished apps -- text box, chat window, image upload. Two seconds each.</p>
-    </div>
-  </div>
-
-  <!-- ── FOOD FOR THOUGHT ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">FFT</span>
-      <span class="segment-title">Food for Thought &mdash; Where Did Gradio Come From?</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~25 sec</span>
-        <span class="badge badge-shot">Medium close-up</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>One small thing before we go.</p>
-      <p>Gradio is everywhere now. Almost every public AI demo you see on the internet is running on it. But here is what might inspire you to go look it up &mdash; it started with a <strong>grad student</strong>. One person. Exactly like many of you sitting here right now.</p>
-      <p>I am not going to tell you the name or the story. Go search how Gradio came to be. Read about how one person with a good idea ended up shaping a tool that millions of developers use every day. Because the next tool like that might be built by you.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Medium close-up, warm lighting, direct to camera. Quiet, encouraging tone. Slight emphasis on "grad student" and "might be built by you." Small smile at the end.</p>
-      <div class="media-note">
-        MEDIA TEAM: Stay on Prof's face. Optional subtle lower-third at the end: "Your homework: how did Gradio start?"
-      </div>
     </div>
   </div>
 
@@ -1404,6 +1380,90 @@ document.addEventListener('keydown', function(e) {
     }
   });
 })();
+
+
+function exportScript() {
+  let output = [];
+
+  document.querySelectorAll('.video-section').forEach(section => {
+    // Skip videos marked as not part of script export (TA-only, voiceover-only)
+    if (section.dataset.scriptExport === 'false') return;
+
+    // Get video number from id="video-N"
+    const videoNum = section.id.replace('video-', '');
+    // Get clean title from h2 (strip any inner HTML like spans)
+    const h2El = section.querySelector('.video-header h2');
+    const h2Raw = h2El ? h2El.textContent.trim() : '';
+    // Extract just the title part after "Video N: " — remove quotes
+    const titleMatch = h2Raw.match(/Video\s+\d+:\s*"?([^"]*)"?\s*$/);
+    const videoTitle = titleMatch ? titleMatch[1].replace(/\s*$/, '') : h2Raw;
+
+    // Determine who delivers this video
+    const tab = document.querySelector(`.video-tab[onclick*="switchVideo(${videoNum})"]`);
+    let person = 'Prof. Dehghani';
+    if (tab) {
+      if (tab.classList.contains('ta-recorded')) person = 'TA';
+      else if (tab.classList.contains('voiceover-only')) person = 'TA Voiceover';
+    }
+    if (section.dataset.taOnly === 'true') person = 'TA';
+
+    output.push(`VIDEO ${videoNum} \u2014 ${videoTitle} (${person})`);
+
+    // Segments become PART 1, PART 2, etc.
+    let partNum = 1;
+    section.querySelectorAll('.segment').forEach(seg => {
+      const segTitle = seg.querySelector('.segment-title')?.textContent?.trim() || '';
+      output.push(`PART ${partNum}: ${segTitle}`);
+
+      // Collect script text from .script-col p (the main narration)
+      const scriptCol = seg.querySelector('.script-col');
+      if (scriptCol) {
+        // Skip TA guidelines blocks — those are not narration
+        const ta = scriptCol.querySelector('.ta-guidelines');
+        scriptCol.querySelectorAll(':scope > p').forEach(p => {
+          if (ta && ta.contains(p)) return;
+          const text = p.textContent.trim();
+          if (text) output.push(text);
+        });
+
+        // Also handle selected option cards
+        const selected = scriptCol.querySelector('.option-card.selected');
+        if (selected) {
+          selected.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) output.push(text);
+          });
+        }
+
+        // Also handle .script-card blocks
+        const scriptCard = scriptCol.querySelector('.script-card');
+        if (scriptCard) {
+          scriptCard.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) output.push(text);
+          });
+        }
+      }
+
+      output.push('');  // blank line between parts
+      partNum++;
+    });
+  });
+
+  const text = output.join('\\n').replace(/\\n{3,}/g, '\\n\\n').trim();
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
+    const original = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.background = 'var(--accent)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = '';
+      btn.style.color = '';
+    }, 1500);
+  });
+}
 
 </script>
 </body>

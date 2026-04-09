@@ -1374,56 +1374,73 @@ document.addEventListener('keydown', (e) => {
 // ── Export ──
 function exportScript() {
   let output = [];
-  const title = document.querySelector('.topbar-title')?.textContent || '';
-  output.push('=' .repeat(60));
-  output.push(title);
-  output.push('=' .repeat(60));
-  output.push('');
 
   document.querySelectorAll('.video-section').forEach(section => {
-    const h2 = section.querySelector('.video-header h2')?.textContent || '';
-    const meta = section.querySelector('.video-meta')?.textContent || '';
-    output.push('');
-    output.push('-'.repeat(50));
-    output.push(h2);
-    output.push(meta);
-    output.push('-'.repeat(50));
-    output.push('');
+    // Skip videos marked as not part of script export (TA-only, voiceover-only)
+    if (section.dataset.scriptExport === 'false') return;
 
+    // Get video number from id="video-N"
+    const videoNum = section.id.replace('video-', '');
+    // Get clean title from h2 (strip any inner HTML like spans)
+    const h2El = section.querySelector('.video-header h2');
+    const h2Raw = h2El ? h2El.textContent.trim() : '';
+    // Extract just the title part after "Video N: " — remove quotes
+    const titleMatch = h2Raw.match(/Video\s+\d+:\s*"?([^"]*)"?\s*$/);
+    const videoTitle = titleMatch ? titleMatch[1].replace(/\s*$/, '') : h2Raw;
+
+    // Determine who delivers this video
+    const tab = document.querySelector(`.video-tab[onclick*="switchVideo(${videoNum})"]`);
+    let person = 'Prof. Dehghani';
+    if (tab) {
+      if (tab.classList.contains('ta-recorded')) person = 'TA';
+      else if (tab.classList.contains('voiceover-only')) person = 'TA Voiceover';
+    }
+    if (section.dataset.taOnly === 'true') person = 'TA';
+
+    output.push(`VIDEO ${videoNum} \u2014 ${videoTitle} (${person})`);
+
+    // Segments become PART 1, PART 2, etc.
+    let partNum = 1;
     section.querySelectorAll('.segment').forEach(seg => {
-      const segTitle = seg.querySelector('.segment-title')?.textContent || '';
-      output.push(`\n### ${segTitle}\n`);
+      const segTitle = seg.querySelector('.segment-title')?.textContent?.trim() || '';
+      output.push(`PART ${partNum}: ${segTitle}`);
 
-      // Check for selected option
-      const selectedCard = seg.querySelector('.option-card.selected');
-      if (selectedCard) {
-        const optTitle = selectedCard.querySelector('.option-title')?.textContent || '';
-        output.push(`[Selected: ${optTitle}]`);
-        selectedCard.querySelectorAll('p').forEach(p => {
-          output.push(p.textContent);
+      // Collect script text from .script-col p (the main narration)
+      const scriptCol = seg.querySelector('.script-col');
+      if (scriptCol) {
+        // Skip TA guidelines blocks — those are not narration
+        const ta = scriptCol.querySelector('.ta-guidelines');
+        scriptCol.querySelectorAll(':scope > p').forEach(p => {
+          if (ta && ta.contains(p)) return;
+          const text = p.textContent.trim();
+          if (text) output.push(text);
         });
+
+        // Also handle selected option cards
+        const selected = scriptCol.querySelector('.option-card.selected');
+        if (selected) {
+          selected.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) output.push(text);
+          });
+        }
+
+        // Also handle .script-card blocks
+        const scriptCard = scriptCol.querySelector('.script-card');
+        if (scriptCard) {
+          scriptCard.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) output.push(text);
+          });
+        }
       }
 
-      // Check for script card (no options)
-      const scriptCard = seg.querySelector('.script-card');
-      if (scriptCard) {
-        scriptCard.querySelectorAll('p').forEach(p => {
-          output.push(p.textContent);
-        });
-      }
-
-      // Check for TA guidelines
-      const ta = seg.querySelector('.ta-guidelines');
-      if (ta) {
-        output.push('[TA GUIDELINES]');
-        ta.querySelectorAll('li').forEach(li => {
-          output.push('  - ' + li.textContent.trim());
-        });
-      }
+      output.push('');  // blank line between parts
+      partNum++;
     });
   });
 
-  const text = output.join('\n');
+  const text = output.join('\n').replace(/\n{3,}/g, '\n\n').trim();
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
     const original = btn.textContent;
