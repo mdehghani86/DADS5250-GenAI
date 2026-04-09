@@ -789,7 +789,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
     </div>
     <div class="script-col">
       <p>CrewAI also handles memory. When the researcher finishes, its output is automatically passed to the next agent as context. The analyst does not just see its own task description -- it sees everything the researcher found. And when the analyst finishes, the writer sees both the research and the analysis.</p>
-      <p>Each agent in the sequence inherits the full history of what came before it. You do not wire this up manually. You define the task order, and CrewAI handles the handoff -- like a relay race where the baton gets richer at every pass.</p>
+      <p>Think of it like a relay race. Each runner passes the baton to the next. The baton is the accumulated context -- and it gets richer at every handoff. You do not wire this up manually. You define the task order, and CrewAI handles the rest.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Context Accumulates Down the Chain</span>
