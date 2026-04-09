@@ -282,8 +282,9 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: CrewAI Intro</button>
     <button class="video-tab scripted" onclick="switchVideo(3)">V3: Orchestrating Workflows</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: CrewAI Basics Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Multi-Agent Project Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab scripted" onclick="switchVideo(5)">V5: CrewAI Tools &amp; Processes</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Multi-Agent Project Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -961,13 +962,108 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
 </div><!-- end video-4 (TA CrewAI Basics Lab) -->
 
 
+
+
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 5: TA — Multi-Agent Project Lab                                 -->
+<!-- VIDEO 5: CrewAI Tools & Processes (Scripted)            -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5">
 
   <div class="video-header">
-    <h2>Video 5: "Multi-Agent Project Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 5: "CrewAI Tools &amp; Processes"</h2>
+    <div class="video-meta">On camera + animation + code -- 5-7 minutes -- 3 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">Tools give agents superpowers. Processes decide who goes when. Together they turn a crew into a system.</span>
+  </div>
+
+  <!-- SEG A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG A</span>
+      <span class="segment-title">CrewAI Tools &mdash; Giving Agents Superpowers</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera + Animation</span>
+        <span class="badge badge-duration">~2.5 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>In the last video you saw how to define agents, assign them roles, and wire them into a crew. But there is a piece we have not talked about yet -- and it changes everything.</p>
+      <p>Tools. A CrewAI tool is a Python function that an agent can call during its work. Search the web. Read a file. Query a database. Scrape a website. Send an email. Calculate a number. Without tools, an agent can only think. With tools, it can act.</p>
+      <p>CrewAI ships with a library of built-in tools -- SerperDevTool for web search, ScrapeWebsiteTool for pulling web content, FileReadTool for reading local files, and more. But the real power is custom tools. You write a Python function, decorate it with @tool, give it a good docstring, and the agent knows how to use it.</p>
+      <p>Here is the key insight: the quality of your tools determines the quality of your crew. An agent with bad tools is like a surgeon with dull instruments -- smart, but limited.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup + Storyboard</span>
+      <p class="shot-note">Prof on camera for the opening sentence, then cut to animation showing tool icons lighting up around an agent. Return to camera for "the quality of your tools" line.</p>
+      <div class="media-note">
+        MEDIA TEAM: Show 4-6 tool icons (search, file, database, web, calculator, email) arranged around a central agent circle. Each tool lights up as Prof names it. When he says "custom tools" show a code snippet with the @tool decorator appearing.
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG B</span>
+      <span class="segment-title">Processes &mdash; Sequential vs Hierarchical</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Now that your agents have tools, the next question is: who goes when?</p>
+      <p>CrewAI calls this the <em>process</em>. There are two built-in processes. Sequential means Agent 1 finishes, then Agent 2 starts, then Agent 3. Like an assembly line. Each agent gets the output of the previous one as context. Simple. Predictable. Great for pipelines where each step depends on the last.</p>
+      <p>Hierarchical is different. One agent acts as the manager. It reads the overall goal, decides which agent should work next, delegates tasks, reviews the output, and decides whether to send it back for revision or move on. It is closer to how a real team works -- a project lead coordinating specialists.</p>
+      <p>Which one should you use? Start with sequential. It is easier to debug. Move to hierarchical when you have agents that need to collaborate, not just pass work down a line.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Sequential vs Hierarchical</span>
+      <p class="shot-note">Split-screen comparison. Left: sequential (A to B to C). Right: hierarchical (Manager at top, delegates to A/B/C, reviews).</p>
+      <div class="media-note">
+        MEDIA TEAM: Animated comparison. Left: simple left-to-right flow. Right: manager dispatches, reviews. Hold 3 seconds. Label: "Sequential = assembly line" / "Hierarchical = managed team."
+      </div>
+    </div>
+  </div>
+
+  <!-- SEG C -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">SEG C</span>
+      <span class="segment-title">Memory, Delegation &amp; Guardrails</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~1.5 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Three more features you should know about before the lab.</p>
+      <p><strong>Memory.</strong> CrewAI can give agents short-term memory (within a task), long-term memory (across crew runs), and entity memory (facts about specific things). Turn it on with <code>memory=True</code> on the Crew. It makes a real difference when agents need to build on each other's work.</p>
+      <p><strong>Delegation.</strong> In hierarchical mode, agents can delegate sub-tasks to other agents. The manager says "Agent B, handle this piece" and Agent B runs its own mini-workflow. You control this with <code>allow_delegation=True</code> on the agent.</p>
+      <p><strong>Guardrails.</strong> You can set <code>max_iter</code> to limit how many reasoning steps an agent takes, and <code>max_rpm</code> to throttle API calls. Without these, a confused agent can loop forever and burn through your API budget. Always set limits.</p>
+      <p>Tools, processes, memory, delegation, guardrails. That is the full CrewAI toolkit. You have everything you need for the next lab.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Prof on camera for the full segment. Tick off each feature with a subtle finger count. Confident, quick pace -- checklist, not deep dive.</p>
+      <div class="media-note">
+        MEDIA TEAM: Lower-third cards appear as Prof names each: "Memory: memory=True" / "Delegation: allow_delegation=True" / "Guardrails: max_iter, max_rpm". Each card 3 seconds then fades.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 (CrewAI Tools & Processes) -->
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 6: TA — Multi-Agent Project Lab                                 -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+
+  <div class="video-header">
+    <h2>Video 6: "Multi-Agent Project Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
       <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M08_Lab2_MultiAgent_Project.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
@@ -1043,13 +1139,13 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-5 (TA Multi-Agent Project Lab) -->
+</div><!-- end video-6 (TA Multi-Agent Project Lab) -->
 
 
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-7">
 
   <div class="video-header">
-    <h2>Video 6: "Module 8 Wrap-Up"</h2>
+    <h2>Video 7: "Module 8 Wrap-Up"</h2>
     <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
@@ -1105,7 +1201,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-6 -->
+</div><!-- end video-7 -->
 
 
 <!-- Student Discussion Guide (separate from video tabs) -->
@@ -1191,7 +1287,7 @@ function stopAutoScroll() { isScrolling = false; const btn = document.getElement
 document.addEventListener('keydown', function(e) {
   if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+  if (['1','2','3','4','5','6','7'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
 });
 
 // ── Inline Segment Editing ──
