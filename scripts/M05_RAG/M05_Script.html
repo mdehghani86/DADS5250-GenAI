@@ -364,6 +364,34 @@ body::before {
 .media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
 .media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
 
+.media-chip {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-right: 6px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.media-chip--required {
+  background: rgba(239,68,68,0.12);
+  color: #dc2626;
+  border: 1px solid rgba(239,68,68,0.35);
+}
+.media-chip--recommended {
+  background: rgba(245,158,11,0.12);
+  color: #b45309;
+  border: 1px solid rgba(245,158,11,0.4);
+}
+.media-chip--optional {
+  background: rgba(148,163,184,0.12);
+  color: #475569;
+  border: 1px solid rgba(148,163,184,0.4);
+}
+
 /* Media placeholder box */
 .media-placeholder {
   background: #f8fafc;
@@ -675,6 +703,7 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>The model still generates the response. But now it has real data to work with. It is the difference between a closed-book exam and an open-book exam.</p>
     </div>
     <div class="media-col">
+      <span class="media-chip media-chip--required">Animation Required</span>
       <span class="media-label">Storyboard -- The RAG Pipeline (3 Steps)</span>
       <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">RAG = Retrieve First, Then Generate</text>
@@ -753,6 +782,7 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>This is what makes RAG possible. When a user asks a question, you convert the question into a vector. Then you find the stored vectors that are closest to it. Those are your most relevant chunks. No keyword matching. No exact string search. You are searching by meaning.</p>
     </div>
     <div class="media-col">
+      <span class="media-chip media-chip--required">Animation Required</span>
       <span class="media-label">Storyboard -- Meaning Has Geometry</span>
       <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Embeddings — Similar Meaning, Similar Position</text>
@@ -815,6 +845,7 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>We will use ChromaDB in the labs. It is open source, runs locally, and does not need a server. In production, you would look at Pinecone or FAISS for scale. But the concept is the same everywhere.</p>
     </div>
     <div class="media-col">
+      <span class="media-chip media-chip--required">Animation Required</span>
       <span class="media-label">Storyboard -- Vector Store Options</span>
       <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Same Concept · Three Backends</text>
