@@ -932,28 +932,28 @@ body.teleprompter .scroll-controls { display: flex; }
 <div class="video-section" id="video-3">
 
   <div class="video-header">
-    <h2>Video 3: "Building a RAG Pipeline"</h2>
-    <div class="video-meta">Voiceover + code display -- 6-7 minutes -- 3 segments</div>
+    <h2>Video 3: "Building a RAG Pipeline" &mdash; <span style="color:#0f766e;">Voiceover + Animation</span></h2>
+    <div class="video-meta">TA voiceover + code display -- 6-7 minutes -- 3 parts (click mic to listen)</div>
   </div>
 
-  <!-- SEG A -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A</span>
-      <span class="segment-title">The 5-Step Build</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
+  <!-- ══════ PART 1: The 5-Step Build ══════ -->
+  <div class="audio-segment" id="audio-part-v3-1">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart('v3-1')" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 1</span>
+      <span class="audio-part-title">The 5-Step Build</span>
     </div>
-    <div class="script-col">
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-v3-1"></div></div>
+    <audio id="audio-v3-1" src="audio/M05_V3_Part1.mp3" preload="none"></audio>
+    <div class="audio-script">
       <p>Let us build this thing. Five steps. That is the entire pattern.</p>
       <p>Step one: load your documents. PDFs, text files, web pages -- LangChain has loaders for all of them. Step two: split them into chunks. We use the RecursiveCharacterTextSplitter -- it tries paragraph breaks first, then sentences, then characters. Smart splitting. Step three: create embeddings. One API call converts each chunk into a 1536-dimensional vector.</p>
       <p>Step four: store those embeddings in ChromaDB. Step five: query. User asks a question, we embed the question, find the closest chunks, and pass everything to the LLM.</p>
       <p>Five steps. Load, split, embed, store, query. That is every RAG system you will ever build.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Five Steps · Every RAG System Ever</span>
+    <div class="audio-visual">
       <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Load · Split · Embed · Store · Query</text>
         <!-- 5 numbered tiles -->
@@ -993,24 +993,24 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG B -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG B</span>
-      <span class="segment-title">Chunking Strategies</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
+  <!-- ══════ PART 2: Chunking Strategies ══════ -->
+  <div class="audio-segment" id="audio-part-v3-2">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart('v3-2')" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 2</span>
+      <span class="audio-part-title">Chunking Strategies</span>
     </div>
-    <div class="script-col">
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-v3-2"></div></div>
+    <audio id="audio-v3-2" src="audio/M05_V3_Part2.mp3" preload="none"></audio>
+    <div class="audio-script">
       <p>Chunking deserves its own discussion, because how you split your documents determines the quality of your retrieval.</p>
       <p>Too small, and each chunk is a fragment -- no context, no meaning. Too large, and the relevant sentence is buried in three paragraphs of noise. The sweet spot for most use cases is 500 to 1000 characters with 50 to 100 characters of overlap between chunks.</p>
       <p>The overlap is important. Without it, an idea that spans a chunk boundary gets lost. With overlap, both chunks capture the boundary text.</p>
       <p>There is no universal right answer. A legal contract needs different chunking than a product manual. Experiment.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Chunking Strategies</span>
+    <div class="audio-visual">
       <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Three Ways to Split the Same Document</text>
         <!-- Fixed -->
@@ -1042,44 +1042,38 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="14" y="190" font-family="Outfit" font-size="8" fill="#94a3b8">Sweet spot: 500-1000 chars · 50-100 char overlap · darker bands = overlap regions</text>
         <text x="14" y="208" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">No universal answer — legal contracts ≠ product manuals. Experiment.</text>
       </svg>
-      <div class="media-note">
-        MEDIA TEAM: Use the same document for all three strategies so the viewer can see the difference. Highlight the overlap regions with a translucent bridge between adjacent chunks.
-      </div>
     </div>
   </div>
 
-  <!-- SEG C -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C</span>
-      <span class="segment-title">The Code</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
+  <!-- ══════ PART 3: The Code Pipeline ══════ -->
+  <div class="audio-segment" id="audio-part-v3-3">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart('v3-3')" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 3</span>
+      <span class="audio-part-title">The Code Pipeline</span>
     </div>
-    <div class="script-col">
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-v3-3"></div></div>
+    <audio id="audio-v3-3" src="audio/M05_V3_Part3.mp3" preload="none"></audio>
+    <div class="audio-script">
       <p>Here is what the core pipeline looks like in code.</p>
       <div class="code-block"><pre><span class="cm"># 1. Load</span>
-<span class="kw">from</span> langchain_community.document_loaders <span class="kw">import</span> PyPDFLoader
-docs = PyPDFLoader(<span class="str">"report.pdf"</span>).<span class="fn">load</span>()
-
-<span class="cm"># 2. Split</span>
-<span class="kw">from</span> langchain.text_splitter <span class="kw">import</span> RecursiveCharacterTextSplitter
-splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="fn">500</span>, chunk_overlap=<span class="fn">50</span>)
-chunks = splitter.<span class="fn">split_documents</span>(docs)
-
-<span class="cm"># 3-4. Embed + Store</span>
-<span class="kw">from</span> langchain_openai <span class="kw">import</span> OpenAIEmbeddings
-<span class="kw">from</span> langchain_chroma <span class="kw">import</span> Chroma
-vectorstore = Chroma.<span class="fn">from_documents</span>(chunks, OpenAIEmbeddings())
-
-<span class="cm"># 5. Query</span>
-results = vectorstore.<span class="fn">similarity_search</span>(<span class="str">"What was Q4 revenue?"</span>)</pre></div>
+      <span class="kw">from</span> langchain_community.document_loaders <span class="kw">import</span> PyPDFLoader
+      docs = PyPDFLoader(<span class="str">"report.pdf"</span>).<span class="fn">load</span>()
+      <span class="cm"># 2. Split</span>
+      <span class="kw">from</span> langchain.text_splitter <span class="kw">import</span> RecursiveCharacterTextSplitter
+      splitter = RecursiveCharacterTextSplitter(chunk_size=<span class="fn">500</span>, chunk_overlap=<span class="fn">50</span>)
+      chunks = splitter.<span class="fn">split_documents</span>(docs)
+      <span class="cm"># 3-4. Embed + Store</span>
+      <span class="kw">from</span> langchain_openai <span class="kw">import</span> OpenAIEmbeddings
+      <span class="kw">from</span> langchain_chroma <span class="kw">import</span> Chroma
+      vectorstore = Chroma.<span class="fn">from_documents</span>(chunks, OpenAIEmbeddings())
+      <span class="cm"># 5. Query</span>
+      results = vectorstore.<span class="fn">similarity_search</span>(<span class="str">"What was Q4 revenue?"</span>)</pre></div>
       <p>That is the entire pipeline. Twelve lines. Load, split, embed, store, query. You will build this yourself in Lab 2.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- The Twelve Lines</span>
+    <div class="audio-visual">
       <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
         <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">A Complete RAG Pipeline · 12 Lines of Python</text>
         <rect x="14" y="32" width="372" height="232" rx="8" fill="#0f172a" stroke="#1e293b"/>
@@ -1771,6 +1765,53 @@ function exportScript() {
       btn.style.color = '';
     }, 1500);
   });
+}
+
+// ── Audio Playback for voiceover-only videos ──
+let currentlyPlaying = null;
+
+function playPart(id) {
+  const audio = document.getElementById('audio-' + id);
+  const btn = document.querySelector('#audio-v3-part-' + id.toString().replace('v3-','') + ' .audio-play-btn') ||
+              document.querySelector('#audio-part-' + id + ' .audio-play-btn');
+  const progress = document.getElementById('progress-' + id);
+  if (!audio || !btn) return;
+
+  if (currentlyPlaying && currentlyPlaying !== id) {
+    const prevAudio = document.getElementById('audio-' + currentlyPlaying);
+    const prevBtn = document.querySelector('[id^="audio-"] .audio-play-btn.playing');
+    const prevProgress = document.getElementById('progress-' + currentlyPlaying);
+    if (prevAudio) { prevAudio.pause(); prevAudio.currentTime = 0; }
+    if (prevBtn) prevBtn.classList.remove('playing');
+    if (prevProgress) prevProgress.style.width = '0%';
+    currentlyPlaying = null;
+  }
+
+  if (!audio.paused) {
+    audio.pause(); btn.classList.remove('playing'); currentlyPlaying = null; return;
+  }
+
+  audio.play().then(() => {
+    btn.classList.add('playing'); currentlyPlaying = id;
+  }).catch(() => {
+    let note = btn.closest('.audio-segment').querySelector('.audio-not-recorded');
+    if (!note) {
+      note = document.createElement('div');
+      note.className = 'audio-not-recorded';
+      note.textContent = 'Audio not yet recorded \u2014 voiceover will be added by the TA.';
+      btn.closest('.audio-segment').querySelector('.audio-progress').after(note);
+    }
+    setTimeout(() => { if (note && note.parentNode) note.remove(); }, 3000);
+  });
+
+  audio.ontimeupdate = () => {
+    if (audio.duration && progress) progress.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  };
+  audio.onended = () => {
+    btn.classList.remove('playing');
+    if (progress) progress.style.width = '0%';
+    currentlyPlaying = null;
+  };
 }
 
 </script>
