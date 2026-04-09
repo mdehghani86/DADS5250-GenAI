@@ -117,6 +117,33 @@ body::before {
 .video-tab.voiceover-only::before,
 .video-tab.voiceover-only.active::before { /* inherit the ::before positioning already defined for scripted/ta-recorded */ }
 
+/* ── Audio Segment layout (scoped to #video-2) ── */
+#video-2 .audio-segment { display: flex; flex-direction: column; gap: 0; border: 1px solid rgba(20,184,166,0.15); border-radius: var(--radius); overflow: hidden; margin-bottom: 24px; }
+#video-2 .audio-segment .audio-header {
+  display: flex; align-items: center; gap: 14px; padding: 14px 24px;
+  background: rgba(20,184,166,0.06); border-bottom: 1px solid rgba(20,184,166,0.1);
+}
+#video-2 .audio-segment .audio-part-label { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 600; color: #0f766e; letter-spacing: 0.06em; white-space: nowrap; }
+#video-2 .audio-segment .audio-part-title { font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600; color: var(--text); flex: 1; }
+#video-2 .audio-play-btn {
+  width: 38px; height: 38px; border-radius: 50%; border: 2px solid #14b8a6; background: rgba(20,184,166,0.08);
+  cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  transition: all 0.25s; position: relative;
+}
+#video-2 .audio-play-btn:hover { background: rgba(20,184,166,0.18); transform: scale(1.08); }
+#video-2 .audio-play-btn.playing { background: #14b8a6; border-color: #14b8a6; animation: pulse-mic 1.6s ease-in-out infinite; }
+#video-2 .audio-play-btn svg { width: 18px; height: 18px; }
+#video-2 .audio-play-btn.playing svg path,
+#video-2 .audio-play-btn.playing svg line { stroke: #fff; }
+@keyframes pulse-mic { 0%,100% { box-shadow: 0 0 0 0 rgba(20,184,166,0.4); } 50% { box-shadow: 0 0 0 8px rgba(20,184,166,0); } }
+#video-2 .audio-progress { height: 3px; background: rgba(20,184,166,0.12); overflow: hidden; }
+#video-2 .audio-progress-bar { height: 100%; width: 0%; background: #14b8a6; transition: width 0.3s linear; }
+#video-2 .audio-segment .audio-script { padding: 24px 28px; background: var(--card-bg); }
+#video-2 .audio-segment .audio-script p { font-size: 1.02rem; line-height: 1.85; color: var(--text); margin-bottom: 14px; }
+#video-2 .audio-segment .audio-script p:last-child { margin-bottom: 0; }
+#video-2 .audio-segment .audio-visual { padding: 20px; background: rgba(255,255,255,0.4); border-top: 1px solid rgba(20,184,166,0.08); }
+#video-2 .audio-not-recorded { font-size: 0.82rem; color: #94a3b8; font-style: italic; text-align: center; padding: 8px 0; }
+
 .topbar-actions { display: flex; gap: 8px; }
 .btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
 .btn-action:hover { background: var(--accent-light); color: var(--accent); }
@@ -475,75 +502,44 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="km-text">Every good prompt has four elements: Role, Task, Context, Format.</span>
   </div>
 
-  <!-- ── SEGMENT A ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG A</span>
-      <span class="segment-title">The Three-Layer API Call</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~2.5 min</span>
-      </div>
+  <!-- ══════ PART 1: Introduction to Prompting ══════ -->
+  <div class="audio-segment" id="audio-part-1">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(1)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 1</span>
+      <span class="audio-part-title">Introduction to Prompting</span>
     </div>
-    <div class="script-col">
-      <p>Let us start with the most fundamental concept: how you talk to an AI model through code.</p>
-      <p>Every API call has three layers. The system message sets the persona -- who the model is. The user message is your question or request. And the assistant message is what the model generates back.</p>
-      <p>Let me show you something. Same question, two different system messages. With a "You are a helpful assistant" system message, the model gives you a general answer. With "You are a senior Python developer who writes production-ready code" -- the exact same question produces code with error handling, type hints, and documentation.</p>
-      <p>That is the power of the system message. Same engine, different driver.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Three-Layer API Call</span>
-      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Engine, Different Driver</text>
-        <!-- Three layers stacked -->
-        <rect x="80" y="42" width="240" height="34" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1.2"/>
-        <text x="92" y="56" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">SYSTEM</text>
-        <text x="92" y="68" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">"You are a senior Python developer..."</text>
-        <rect x="80" y="80" width="240" height="34" rx="6" fill="rgba(148,163,184,0.1)" stroke="#94a3b8" stroke-width="1.2"/>
-        <text x="92" y="94" font-family="Outfit" font-size="8" fill="#94a3b8" font-weight="600" letter-spacing="0.08em">USER</text>
-        <text x="92" y="106" font-family="JetBrains Mono" font-size="8" fill="#cbd5e1">"Write a function to read a CSV"</text>
-        <rect x="80" y="118" width="240" height="34" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1.2"/>
-        <text x="92" y="132" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600" letter-spacing="0.08em">ASSISTANT</text>
-        <text x="92" y="144" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">→ generated code</text>
-        <!-- Comparison: same user, two systems -->
-        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Same user message · two system messages</text>
-        <!-- Generic side -->
-        <rect x="14" y="184" width="180" height="78" rx="6" fill="rgba(148,163,184,0.06)" stroke="#475569"/>
-        <text x="22" y="200" font-family="Outfit" font-size="7" fill="#94a3b8">SYSTEM: helpful assistant</text>
-        <text x="22" y="216" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">def read(f):</text>
-        <text x="22" y="226" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">  return open(f).read()</text>
-        <text x="104" y="252" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">bare minimum</text>
-        <!-- Specific side -->
-        <rect x="206" y="184" width="180" height="78" rx="6" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="214" y="200" font-family="Outfit" font-size="7" fill="#60a5fa">SYSTEM: senior dev, prod-ready</text>
-        <text x="214" y="216" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">def read_csv(path: Path) -&gt; pd.DataFrame:</text>
-        <text x="214" y="226" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">  """Load CSV with type-safe parsing."""</text>
-        <text x="214" y="236" font-family="JetBrains Mono" font-size="7" fill="#bfdbfe">  if not path.exists(): raise ...</text>
-        <text x="296" y="256" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa" font-style="italic">type hints · errors · docs</text>
-      </svg>
-      <div class="media-note">
-        MEDIA TEAM: The split comparison (generic vs specific system message) is the "aha" moment. Left output: short, vague paragraph. Right output: clean code with syntax highlighting. Hold the comparison for 4 seconds.
-      </div>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-1"></div></div>
+    <audio id="audio-1" src="audio/M03_V2_Part1.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>When you type a message to ChatGPT, you are writing a prompt. But there is a difference between a prompt that works and a prompt that works <em>well</em>.</p>
+      <p>A good prompt gets you a useful, accurate, well-structured response on the first try. A bad prompt gets you something vague, generic, or completely wrong -- and then you spend five minutes trying to fix it.</p>
+      <p>In this video, we are going to learn a simple framework that turns every prompt into a good one. It has four parts. We call it RTCF: Role, Task, Context, Format.</p>
     </div>
   </div>
 
-  <!-- ── SEGMENT B — Intro to RTCF ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG B</span>
-      <span class="segment-title">The Four Elements of a Prompt (RTCF)</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~30 sec</span>
-      </div>
+  <!-- ══════ PART 2: The RTCF Framework ══════ -->
+  <div class="audio-segment" id="audio-part-2">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(2)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 2</span>
+      <span class="audio-part-title">The RTCF Framework</span>
     </div>
-    <div class="script-col">
-      <p>Now let me give you a simple framework you can apply to any prompt you write, starting today. Every good prompt has four essential elements. I call them RTCF -- Role, Task, Context, and Format.</p>
-      <p>When your prompts feel weak or the output feels off, the reason is almost always that one of these four is missing. Let us walk through each one, so you know exactly what to check.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-2"></div></div>
+    <audio id="audio-2" src="audio/M03_V2_Part2.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Here is the framework. Four letters. Four questions you should ask yourself every time you write a prompt.</p>
+      <p><strong>R -- Role.</strong> Who should the model pretend to be? A data analyst? A teacher? A Python developer? The role sets the tone, the vocabulary, and the expertise level of the response.</p>
+      <p><strong>T -- Task.</strong> What exactly do you want the model to do? Summarize? Compare? Write code? Generate a table? Be specific. "Help me with this" is not a task. "Write a Python function that takes a list of numbers and returns the median" -- that is a task.</p>
+      <p><strong>C -- Context.</strong> What background information does the model need? What data are you working with? What have you already tried? What constraints exist? The more relevant context you give, the better the output.</p>
+      <p><strong>F -- Format.</strong> How should the response look? A bulleted list? A JSON object? A three-paragraph essay? A table with specific columns? If you do not specify the format, the model will guess -- and it will often guess wrong.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- RTCF Grid Overview</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Every Good Prompt Has Four Elements</text>
         <rect x="20" y="44" width="170" height="76" rx="8" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
         <text x="34" y="64" font-family="Outfit" font-size="11" fill="#60a5fa" font-weight="700">ROLE</text>
@@ -570,33 +566,35 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- ── SEGMENT C — R · Role ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG C</span>
-      <span class="segment-title">R — Role</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~40 sec</span>
-      </div>
+  <!-- ══════ PART 3: Role Deep Dive ══════ -->
+  <div class="audio-segment" id="audio-part-3">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(3)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 3</span>
+      <span class="audio-part-title">Role Deep Dive</span>
     </div>
-    <div class="script-col">
-      <p>The first element is Role. Role answers one question: who is the model supposed to be?</p>
-      <p>This is the single biggest lever you have over output quality, and most people ignore it. By default, the model acts like a generic, helpful assistant. That is fine for casual questions. But the moment you give it a role -- a specific professional identity -- the tone, depth, and vocabulary of its answers change dramatically.</p>
-      <p>For example: "You are a senior supply chain consultant with twenty years of experience." Now the model is no longer a generic helper. It is a consultant. It thinks like one. It uses the right terminology. It anticipates the follow-up questions a consultant would ask.</p>
-      <p>Rule of thumb: make the role as specific as the task requires. "You are a lawyer" is okay. "You are a commercial real estate attorney in Massachusetts" is much better.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-3"></div></div>
+    <audio id="audio-3" src="audio/M03_V2_Part3.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Let us take each element one at a time. Starting with Role.</p>
+      <p>When you assign a role, you are not just being cute. You are activating a different distribution of knowledge inside the model. Watch what happens when we ask the same question with different roles.</p>
+      <p>No role: "Explain what a p-value is." The model gives a generic textbook answer.</p>
+      <p>Role -- statistics professor: "You are a statistics professor. Explain what a p-value is." Now the response is more precise, uses proper terminology, and might include a formal definition.</p>
+      <p>Role -- data journalist: "You are a data journalist writing for a general audience. Explain what a p-value is." Now the response is simpler, uses analogies, avoids jargon.</p>
+      <p>Same question. Different roles. Completely different outputs. That is the power of Role.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Role Card</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">R · Role — Who Is the Model?</text>
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">R &middot; Role &mdash; Who Is the Model?</text>
         <rect x="14" y="40" width="372" height="60" rx="8" fill="rgba(37,99,235,0.1)" stroke="#2563EB" stroke-width="1.5"/>
         <text x="26" y="60" font-family="Outfit" font-size="12" fill="#60a5fa" font-weight="700">ROLE</text>
         <text x="26" y="78" font-family="Outfit" font-size="9" fill="#bfdbfe">Gives the model a professional identity to think from.</text>
         <text x="26" y="92" font-family="Outfit" font-size="8" fill="#94a3b8">Changes tone, depth, vocabulary, and the questions it anticipates.</text>
         <text x="14" y="124" font-family="Outfit" font-size="8" fill="#94a3b8">Generic (default):</text>
         <rect x="14" y="130" width="372" height="22" rx="4" fill="rgba(148,163,184,0.08)" stroke="#475569"/>
-        <text x="22" y="145" font-family="JetBrains Mono" font-size="8" fill="#cbd5e1">(no role set — acts like a helpful assistant)</text>
+        <text x="22" y="145" font-family="JetBrains Mono" font-size="8" fill="#cbd5e1">(no role set &mdash; acts like a helpful assistant)</text>
         <text x="14" y="172" font-family="Outfit" font-size="8" fill="#60a5fa">With a specific role:</text>
         <rect x="14" y="178" width="372" height="32" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
         <text x="22" y="193" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">"You are a senior supply chain consultant</text>
@@ -605,99 +603,99 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- ── SEGMENT D — T · Task ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG D</span>
-      <span class="segment-title">T — Task</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~40 sec</span>
-      </div>
+  <!-- ══════ PART 4: Task Deep Dive ══════ -->
+  <div class="audio-segment" id="audio-part-4">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(4)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 4</span>
+      <span class="audio-part-title">Task Deep Dive</span>
     </div>
-    <div class="script-col">
-      <p>The second element is Task. Task answers the question: what exactly do you want the model to do?</p>
-      <p>This sounds obvious, but vague tasks are the number one reason prompts fail. "Help me with supply chains" is not a task. It is a wish. The model does not know what help looks like.</p>
-      <p>A good task uses a clear action verb and names the deliverable. "Analyze the bullwhip effect." "Draft a one-page memo." "List the top five risks." "Compare these two vendors." Each one tells the model exactly what to produce.</p>
-      <p>If you cannot describe the task in one sentence with an action verb, you are not ready to prompt yet. Clarify it first, then send it.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-4"></div></div>
+    <audio id="audio-4" src="audio/M03_V2_Part4.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Now Task. This is where most people fail. They write prompts that are too vague.</p>
+      <p>Bad task: "Tell me about Python." That could mean anything. The model has to guess what you want, and it will give you a generic overview that helps no one.</p>
+      <p>Good task: "Write a Python function that reads a CSV file, calculates the average of a specified column, and returns the result as a formatted string." Now the model knows exactly what to build. No guessing. No ambiguity.</p>
+      <p>The rule is simple: if a human reading your prompt would need to ask a follow-up question, your task is not specific enough.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Task Card</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">T · Task — What Should It Do?</text>
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">T &middot; Task &mdash; What Should It Do?</text>
         <rect x="14" y="40" width="372" height="60" rx="8" fill="rgba(16,185,129,0.1)" stroke="#10b981" stroke-width="1.5"/>
         <text x="26" y="60" font-family="Outfit" font-size="12" fill="#34d399" font-weight="700">TASK</text>
         <text x="26" y="78" font-family="Outfit" font-size="9" fill="#a7f3d0">One clear action verb + the deliverable you want.</text>
         <text x="26" y="92" font-family="Outfit" font-size="8" fill="#94a3b8">If you cannot say it in one sentence, the model cannot either.</text>
-        <text x="14" y="124" font-family="Outfit" font-size="8" fill="#fca5a5">✗ Vague (a wish):</text>
+        <text x="14" y="124" font-family="Outfit" font-size="8" fill="#fca5a5">&#x2717; Vague (a wish):</text>
         <rect x="14" y="130" width="372" height="22" rx="4" fill="rgba(239,68,68,0.06)" stroke="#ef4444"/>
-        <text x="22" y="145" font-family="JetBrains Mono" font-size="8" fill="#fca5a5">"Help me with supply chains."</text>
-        <text x="14" y="172" font-family="Outfit" font-size="8" fill="#34d399">✓ Clear (a task):</text>
+        <text x="22" y="145" font-family="JetBrains Mono" font-size="8" fill="#fca5a5">"Tell me about Python."</text>
+        <text x="14" y="172" font-family="Outfit" font-size="8" fill="#34d399">&#x2713; Clear (a task):</text>
         <rect x="14" y="178" width="372" height="32" rx="4" fill="rgba(16,185,129,0.1)" stroke="#10b981"/>
-        <text x="22" y="193" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">"Analyze the bullwhip effect and list 3</text>
-        <text x="22" y="204" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">mitigation strategies for a mid-size firm."</text>
+        <text x="22" y="193" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">"Write a Python function that reads a CSV,</text>
+        <text x="22" y="204" font-family="JetBrains Mono" font-size="8" fill="#a7f3d0">calculates the average, returns formatted string."</text>
       </svg>
     </div>
   </div>
 
-  <!-- ── SEGMENT E — C · Context ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG E</span>
-      <span class="segment-title">C — Context</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~40 sec</span>
-      </div>
+  <!-- ══════ PART 5: Context Deep Dive ══════ -->
+  <div class="audio-segment" id="audio-part-5">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(5)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 5</span>
+      <span class="audio-part-title">Context Deep Dive</span>
     </div>
-    <div class="script-col">
-      <p>The third element is Context. Context is everything the model needs to know before it can do the task well.</p>
-      <p>Here is why context matters. The model has no idea who you are, what company you work for, what industry you are in, what your constraints are, or what data you have. Without context, it has to guess -- and a guessing model gives you generic answers.</p>
-      <p>Good context includes things like: your industry, your company size, the specific problem you are facing, the data you are working with, the timeframe, the audience for the output, any constraints. You do not need to share everything -- just enough to anchor the model in your situation.</p>
-      <p>A useful habit: before sending any prompt, ask yourself "would a smart intern be able to do this task from what I just wrote?" If not, you are missing context.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-5"></div></div>
+    <audio id="audio-5" src="audio/M03_V2_Part5.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Context is the secret weapon. Most people skip it entirely, and then wonder why the model gives generic answers.</p>
+      <p>Here is an example. Without context: "Write me a cover letter." The model has nothing to work with. It will produce something bland and forgettable.</p>
+      <p>With context: "Write me a cover letter. I am a second-year data science graduate student applying for a summer internship at a healthcare analytics startup. I have experience with Python, SQL, and Tableau. The job posting emphasizes collaboration and communication skills." Now the model can write something specific, relevant, and actually useful.</p>
+      <p>Context is not optional. It is the difference between a generic response and a personalized one.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Context Card</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">C · Context — What Does It Need to Know?</text>
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">C &middot; Context &mdash; What Does It Need to Know?</text>
         <rect x="14" y="40" width="372" height="60" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
         <text x="26" y="60" font-family="Outfit" font-size="12" fill="#fbbf24" font-weight="700">CONTEXT</text>
         <text x="26" y="78" font-family="Outfit" font-size="9" fill="#fde68a">Enough background to anchor the model in your situation.</text>
         <text x="26" y="92" font-family="Outfit" font-size="8" fill="#94a3b8">The "smart intern" test: could they do it from what you wrote?</text>
         <text x="14" y="124" font-family="Outfit" font-size="9" fill="#94a3b8" letter-spacing="0.06em">GOOD CONTEXT USUALLY INCLUDES</text>
-        <text x="22" y="144" font-family="Outfit" font-size="9" fill="#fbbf24">▪ Industry and company size</text>
-        <text x="22" y="160" font-family="Outfit" font-size="9" fill="#fbbf24">▪ Specific problem you are solving</text>
-        <text x="22" y="176" font-family="Outfit" font-size="9" fill="#fbbf24">▪ Data, timeframe, and constraints</text>
-        <text x="22" y="192" font-family="Outfit" font-size="9" fill="#fbbf24">▪ Audience for the output</text>
-        <text x="22" y="208" font-family="Outfit" font-size="9" fill="#fbbf24">▪ Any restrictions or hard requirements</text>
-        <text x="200" y="228" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">Just enough to anchor — not your whole life story.</text>
+        <text x="22" y="144" font-family="Outfit" font-size="9" fill="#fbbf24">&#x25aa; Industry and company size</text>
+        <text x="22" y="160" font-family="Outfit" font-size="9" fill="#fbbf24">&#x25aa; Specific problem you are solving</text>
+        <text x="22" y="176" font-family="Outfit" font-size="9" fill="#fbbf24">&#x25aa; Data, timeframe, and constraints</text>
+        <text x="22" y="192" font-family="Outfit" font-size="9" fill="#fbbf24">&#x25aa; Audience for the output</text>
+        <text x="22" y="208" font-family="Outfit" font-size="9" fill="#fbbf24">&#x25aa; Any restrictions or hard requirements</text>
+        <text x="200" y="228" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">Just enough to anchor &mdash; not your whole life story.</text>
       </svg>
     </div>
   </div>
 
-  <!-- ── SEGMENT F — F · Format ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG F</span>
-      <span class="segment-title">F — Format</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~40 sec</span>
-      </div>
+  <!-- ══════ PART 6: Format Deep Dive ══════ -->
+  <div class="audio-segment" id="audio-part-6">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(6)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 6</span>
+      <span class="audio-part-title">Format Deep Dive</span>
     </div>
-    <div class="script-col">
-      <p>The fourth and final element is Format. Format answers the question: how should the output look?</p>
-      <p>This is the element most people forget entirely -- and it is the one that separates useful output from output you have to reformat by hand. If you do not specify a format, the model picks one for you. Sometimes you get a paragraph. Sometimes a list. Sometimes a table. Sometimes all three, bundled together in a way that is hard to use.</p>
-      <p>Tell the model what you want. "Format as a numbered list with three items." "Return a markdown table with columns for name, cost, and risk." "Respond in exactly two paragraphs, no bullet points." The more specific you are, the less you will have to clean up afterwards.</p>
-      <p>And here is a pro tip: for anything you plan to feed into code later, ask for JSON. We will cover that in detail in the next video.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-6"></div></div>
+    <audio id="audio-6" src="audio/M03_V2_Part6.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Finally, Format. This is the easiest one to use and the one people forget most often.</p>
+      <p>Without format instructions, the model defaults to paragraphs of prose. That might be fine for an essay, but terrible for a comparison, a checklist, or structured data.</p>
+      <p>Examples of format instructions: "Respond in a bulleted list." "Return the result as a JSON object with keys: name, score, recommendation." "Create a markdown table with columns: Metric, Value, Interpretation." "Write exactly three sentences."</p>
+      <p>Format is not a nice-to-have. When you are building applications that parse LLM output, format is everything. If the model returns a paragraph when your code expects JSON, your pipeline breaks.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Format Card</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">F · Format — How Should the Output Look?</text>
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">F &middot; Format &mdash; How Should the Output Look?</text>
         <rect x="14" y="40" width="372" height="60" rx="8" fill="rgba(20,184,166,0.1)" stroke="#14b8a6" stroke-width="1.5"/>
         <text x="26" y="60" font-family="Outfit" font-size="12" fill="#5eead4" font-weight="700">FORMAT</text>
-        <text x="26" y="78" font-family="Outfit" font-size="9" fill="#99f6e4">The shape of the output — list, table, JSON, paragraph.</text>
+        <text x="26" y="78" font-family="Outfit" font-size="9" fill="#99f6e4">The shape of the output &mdash; list, table, JSON, paragraph.</text>
         <text x="26" y="92" font-family="Outfit" font-size="8" fill="#94a3b8">Specify it, or the model will pick one for you.</text>
         <rect x="14" y="120" width="120" height="60" rx="6" fill="rgba(20,184,166,0.08)" stroke="#14b8a6"/>
         <text x="74" y="138" text-anchor="middle" font-family="Outfit" font-size="9" fill="#5eead4" font-weight="600">numbered list</text>
@@ -710,68 +708,66 @@ body.teleprompter .scroll-controls { display: flex; }
         <rect x="266" y="120" width="120" height="60" rx="6" fill="rgba(96,165,250,0.1)" stroke="#60a5fa" stroke-width="1.5"/>
         <text x="326" y="138" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">JSON</text>
         <text x="326" y="156" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">{"key": ...}</text>
-        <text x="326" y="168" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa">for code use →</text>
+        <text x="326" y="168" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa">for code use &#x2192;</text>
         <text x="200" y="204" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-style="italic">Pro tip: for anything that will feed into code, ask for JSON.</text>
         <text x="200" y="220" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">(Covered in depth in the next video.)</text>
       </svg>
     </div>
   </div>
 
-  <!-- ── SEGMENT G — Bad vs Good Prompt ── -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">SEG G</span>
-      <span class="segment-title">Bad vs Good Prompt</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Split Screen</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
+  <!-- ══════ PART 7: Bad vs Good Prompt Comparison ══════ -->
+  <div class="audio-segment" id="audio-part-7">
+    <div class="audio-header">
+      <button class="audio-play-btn" onclick="playPart(7)" title="Play voiceover">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+      </button>
+      <span class="audio-part-label">PART 7</span>
+      <span class="audio-part-title">Bad vs Good Prompt Comparison</span>
     </div>
-    <div class="script-col">
-      <p>Let me show you a bad prompt versus a good prompt. Bad: "Tell me about supply chains." Good: "You are a supply chain consultant. Analyze the bullwhip effect for a mid-size electronics manufacturer. Provide 3 mitigation strategies, each with expected cost reduction percentage. Format as a numbered list."</p>
-      <p>Same model. Dramatically different output quality. The difference is entirely in the prompt.</p>
+    <div class="audio-progress"><div class="audio-progress-bar" id="progress-7"></div></div>
+    <audio id="audio-7" src="audio/M03_V2_Part7.mp3" preload="none"></audio>
+    <div class="audio-script">
+      <p>Let us put it all together with a real example.</p>
+      <p>Bad prompt: "Help me with Excel." No role. Vague task. No context. No format. The model will produce something generic and probably useless.</p>
+      <p>Good prompt: "You are an Excel expert who specializes in financial modeling. Write a VLOOKUP formula that matches product SKUs in column A of Sheet1 to prices in column B of Sheet2. The SKU format is three letters followed by four digits, like ABC1234. Return the formula, a brief explanation of each argument, and one common mistake to avoid. Format as a numbered list."</p>
+      <p>Role: Excel expert in financial modeling. Task: Write a specific VLOOKUP formula. Context: SKU format, sheet layout, column references. Format: Numbered list with formula, explanation, and common mistake.</p>
+      <p>That is RTCF. Four elements. One framework. Every prompt you write from now on should have all four.</p>
     </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Bad vs Good Prompt</span>
-      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+    <div class="audio-visual">
+      <svg viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b; border-radius: 8px;">
         <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Model, Dramatically Different Output</text>
-        <!-- BAD -->
         <rect x="14" y="42" width="180" height="220" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1.2"/>
         <text x="104" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fca5a5" font-weight="600" letter-spacing="0.1em">BAD PROMPT</text>
         <rect x="26" y="72" width="156" height="22" rx="3" fill="#0a1428" stroke="#1e293b"/>
-        <text x="34" y="86" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">"Tell me about supply chains."</text>
-        <text x="104" y="112" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">↓ output</text>
+        <text x="34" y="86" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">"Help me with Excel."</text>
+        <text x="104" y="112" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fca5a5">&#x2193; output</text>
         <rect x="26" y="120" width="156" height="120" rx="3" fill="rgba(148,163,184,0.05)" stroke="#475569"/>
-        <text x="34" y="138" font-family="Outfit" font-size="7" fill="#94a3b8">Supply chains are systems</text>
-        <text x="34" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">that move products from</text>
-        <text x="34" y="162" font-family="Outfit" font-size="7" fill="#94a3b8">producers to consumers.</text>
-        <text x="34" y="174" font-family="Outfit" font-size="7" fill="#94a3b8">They are very important</text>
-        <text x="34" y="186" font-family="Outfit" font-size="7" fill="#94a3b8">to global trade and...</text>
-        <text x="34" y="206" font-family="Outfit" font-size="7" fill="#475569" font-style="italic">vague · unstructured</text>
+        <text x="34" y="138" font-family="Outfit" font-size="7" fill="#94a3b8">Excel is a spreadsheet</text>
+        <text x="34" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">application developed by</text>
+        <text x="34" y="162" font-family="Outfit" font-size="7" fill="#94a3b8">Microsoft. Here are some</text>
+        <text x="34" y="174" font-family="Outfit" font-size="7" fill="#94a3b8">tips for using it...</text>
+        <text x="34" y="206" font-family="Outfit" font-size="7" fill="#475569" font-style="italic">vague &#xb7; unstructured</text>
         <text x="34" y="218" font-family="Outfit" font-size="7" fill="#475569" font-style="italic">no actionable detail</text>
-        <!-- GOOD -->
         <rect x="206" y="42" width="180" height="220" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.5"/>
         <text x="296" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600" letter-spacing="0.1em">GOOD PROMPT</text>
         <rect x="218" y="72" width="156" height="40" rx="3" fill="#0a1428" stroke="#1e293b"/>
-        <text x="226" y="84" font-family="JetBrains Mono" font-size="6.5" fill="#60a5fa">[ROLE] supply chain consultant</text>
-        <text x="226" y="93" font-family="JetBrains Mono" font-size="6.5" fill="#34d399">[TASK] analyze bullwhip effect</text>
-        <text x="226" y="102" font-family="JetBrains Mono" font-size="6.5" fill="#fbbf24">[CONTEXT] mid-size electronics</text>
+        <text x="226" y="84" font-family="JetBrains Mono" font-size="6.5" fill="#60a5fa">[ROLE] Excel expert, fin. modeling</text>
+        <text x="226" y="93" font-family="JetBrains Mono" font-size="6.5" fill="#34d399">[TASK] VLOOKUP for SKU matching</text>
+        <text x="226" y="102" font-family="JetBrains Mono" font-size="6.5" fill="#fbbf24">[CONTEXT] ABC1234 format, 2 sheets</text>
         <rect x="218" y="120" width="156" height="120" rx="3" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="226" y="138" font-family="Outfit" font-size="8" fill="#a7f3d0">1. Vendor-managed inventory</text>
-        <text x="232" y="150" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~12% reduction in stockouts</text>
-        <text x="226" y="166" font-family="Outfit" font-size="8" fill="#a7f3d0">2. Demand-signal sharing</text>
-        <text x="232" y="178" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~18% lower safety stock</text>
-        <text x="226" y="194" font-family="Outfit" font-size="8" fill="#a7f3d0">3. Smaller order batches</text>
-        <text x="232" y="206" font-family="Outfit" font-size="7" fill="#94a3b8">↳ ~9% reduction in WIP</text>
-        <text x="226" y="226" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">structured · numbered</text>
-        <text x="226" y="238" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">specific · usable</text>
+        <text x="226" y="138" font-family="Outfit" font-size="8" fill="#a7f3d0">1. Formula</text>
+        <text x="232" y="150" font-family="JetBrains Mono" font-size="6.5" fill="#94a3b8">=VLOOKUP(A2,Sheet2!A:B,2,0)</text>
+        <text x="226" y="168" font-family="Outfit" font-size="8" fill="#a7f3d0">2. Explanation</text>
+        <text x="232" y="180" font-family="Outfit" font-size="7" fill="#94a3b8">lookup_value, range, col, exact</text>
+        <text x="226" y="198" font-family="Outfit" font-size="8" fill="#a7f3d0">3. Common mistake</text>
+        <text x="232" y="210" font-family="Outfit" font-size="7" fill="#94a3b8">forgetting exact match (0)</text>
+        <text x="226" y="230" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">structured &#xb7; numbered</text>
+        <text x="226" y="242" font-family="Outfit" font-size="7" fill="#34d399" font-style="italic">specific &#xb7; usable</text>
       </svg>
-      <div class="media-note">
-        MEDIA TEAM: The contrast should be visceral. Left = chaos, right = clarity. The left output should be visibly messy. The right output beautifully formatted. Hold the final comparison for 3 seconds.
-      </div>
     </div>
   </div>
 
+  
 </div><!-- end video-2 -->
 
 
@@ -2029,6 +2025,64 @@ function exportScript() {
       btn.style.color = '';
     }, 1500);
   });
+}
+
+// ── Audio Playback for V2 Prompting Foundations ──
+let currentlyPlaying = null;
+
+function playPart(n) {
+  const audio = document.getElementById('audio-' + n);
+  const btn = document.querySelector('#audio-part-' + n + ' .audio-play-btn');
+  const progress = document.getElementById('progress-' + n);
+  if (!audio || !btn) return;
+
+  // Stop any other playing part
+  if (currentlyPlaying && currentlyPlaying !== n) {
+    const prevAudio = document.getElementById('audio-' + currentlyPlaying);
+    const prevBtn = document.querySelector('#audio-part-' + currentlyPlaying + ' .audio-play-btn');
+    const prevProgress = document.getElementById('progress-' + currentlyPlaying);
+    if (prevAudio) { prevAudio.pause(); prevAudio.currentTime = 0; }
+    if (prevBtn) prevBtn.classList.remove('playing');
+    if (prevProgress) prevProgress.style.width = '0%';
+    currentlyPlaying = null;
+  }
+
+  // Toggle play/pause for this part
+  if (!audio.paused) {
+    audio.pause();
+    btn.classList.remove('playing');
+    currentlyPlaying = null;
+    return;
+  }
+
+  // Try to play — handle missing audio files gracefully
+  audio.play().then(() => {
+    btn.classList.add('playing');
+    currentlyPlaying = n;
+  }).catch(() => {
+    // Audio file not yet recorded — show gentle note
+    let note = document.querySelector('#audio-part-' + n + ' .audio-not-recorded');
+    if (!note) {
+      note = document.createElement('div');
+      note.className = 'audio-not-recorded';
+      note.textContent = 'Audio not yet recorded — voiceover will be added by the TA.';
+      const header = document.querySelector('#audio-part-' + n + ' .audio-header');
+      if (header) header.parentNode.insertBefore(note, header.nextSibling.nextSibling);
+    }
+    setTimeout(() => { if (note) note.remove(); }, 3000);
+  });
+
+  // Update progress bar
+  audio.ontimeupdate = () => {
+    if (audio.duration) {
+      progress.style.width = (audio.currentTime / audio.duration * 100) + '%';
+    }
+  };
+  audio.onended = () => {
+    btn.classList.remove('playing');
+    progress.style.width = '0%';
+    currentlyPlaying = null;
+  };
 }
 
 </script>
