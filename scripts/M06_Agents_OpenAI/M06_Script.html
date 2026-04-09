@@ -425,7 +425,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="script-col">
       <p>Until now, you have built chains. Step one feeds into step two feeds into step three. Same path every time. That is powerful -- and for many tasks, it is all you need.</p>
-      <p>But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can decide what to do next. That is an agent.</p>
+      <p>But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can decide what to do next. That is an agent. And the tool that lets you design these branching, looping workflows in Python is called LangGraph.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Train vs Self-Driving Car</span>
@@ -508,9 +508,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>An agent is an AI system that reasons, plans, and takes actions autonomously. Let me break that down.</p>
-      <p>A chain runs the same steps every time. An agent decides what to do at each step. It looks at the current situation, reasons about what information it needs, picks a tool to get that information, observes the result, and then decides what to do next. It keeps going until the task is done.</p>
-      <p>The key distinction: a chain is a script. An agent is a decision-maker.</p>
+      <p>So what actually makes something an agent? Three ingredients. An LLM that can reason. Tools it can reach for. And a loop that lets it keep going until the job is done.</p>
+      <p>At each step, the agent looks at the current situation, decides what information it needs, picks a tool to get it, reads the result, and then decides what to do next. It is not following a script -- it is making decisions.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Chain (Linear) vs Agent (Decision Tree)</span>
@@ -788,9 +787,9 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>You understand agents. You understand tools. Now you need a framework to build them properly. That framework is LangGraph.</p>
+      <p>Remember the customer support call from the opening? Billing goes one way, technical goes another, and if the first fix fails, you loop back and try something different. That was a graph -- you just did not have a way to build it yet. Now you do.</p>
       <p>LangGraph models your agent workflow as a graph. Nodes are steps -- LLM calls, tool calls, decisions. Edges are transitions -- what happens next. And state is shared memory that flows through the entire graph.</p>
-      <p>Think of it as a flowchart that the AI navigates at runtime. You design the flowchart. The AI decides which path to take.</p>
+      <p>You design the flowchart. The AI decides which path to take at runtime.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- LangGraph as a Flowchart</span>
