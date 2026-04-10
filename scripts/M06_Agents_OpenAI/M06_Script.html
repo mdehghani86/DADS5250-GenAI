@@ -933,9 +933,9 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Remember the customer support call from the opening? Billing goes one way, technical goes another, and if the first fix fails, you loop back and try something different. That was a graph -- you just did not have a way to build it yet. Now you do.</p>
-      <p>LangGraph models your agent workflow as a graph. Nodes are steps -- LLM calls, tool calls, decisions. Edges are transitions -- what happens next. And state is shared memory that flows through the entire graph.</p>
-      <p>You design the flowchart. The AI decides which path to take at runtime.</p>
+      <p>Remember the customer support call from the opening? Billing goes one way, technical goes another, and if the first fix fails, you loop back and try something different. That was a graph. And now you have a way to build it.</p>
+      <p>LangGraph lets you lay out your entire agent workflow as a graph. You decide what the steps are, how they connect, and where the branches happen. The AI navigates that graph at runtime, choosing its own path based on what it finds along the way.</p>
+      <p>To build one, you need to understand three pieces. Nodes, edges, and state. That is what we cover next.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- LangGraph as a Flowchart</span>
@@ -993,6 +993,7 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>A node is just a Python function. It receives the current state of the conversation, does one thing with it, and passes the updated state forward. That one thing could be calling the LLM, running a tool, or making a routing decision.</p>
       <p>An edge connects one node to the next. Some edges are simple. "After the LLM responds, always go to the tool node." But the powerful ones are conditional. "Look at what the LLM just said. If it wants to call a tool, go to the tool node. If it is done, go to the end." That is where the branching happens.</p>
       <p>And state is the shared memory that ties it all together. Every node reads from it, every node writes to it. The LLM node adds its response. The tool node adds its result. By the time you reach the end, state contains the full story of everything that happened.</p>
+      <p>Nodes, edges, and state. That is the whole framework. But you might be wondering why we need it at all.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Nodes · Edges · State</span>
@@ -1054,9 +1055,9 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Why LangGraph when model providers now ship their own agent SDKs?</p>
-      <p>In 2024, you had to pick a framework -- LangChain agents, AutoGen, custom ReAct loops. Lots of boilerplate. In 2026, Claude Agent SDK, OpenAI Agents SDK, and Google ADK handle most simple agent tasks out of the box.</p>
-      <p>But LangGraph still matters for complex orchestration. When you need multi-step workflows with branching logic. When you need fine-grained control over every decision point. When you want to mix different LLMs in one workflow. LangGraph gives you that control. We will cover the newer SDKs in Module 12.</p>
+      <p>You may ask -- why learn LangGraph when model providers now ship their own agent SDKs? OpenAI has one. Anthropic has one. Google has one. And they are good. For simple agent tasks, they work out of the box.</p>
+      <p>But the moment your workflow gets complex -- multiple branches, conditional loops, different models at different stages, human approval steps -- those SDKs are not enough. LangGraph gives you full control over every decision point in your workflow. You see the graph. You own the graph. Nothing is hidden behind an abstraction you cannot inspect.</p>
+      <p>Think of it this way. The SDKs are like using a ride-sharing app. LangGraph is like having the keys to the car. Both get you there. But when the road gets complicated, you want the keys. We will cover the newer SDKs in Module 12.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- 2024 → 2026 Framework Landscape</span>
