@@ -482,11 +482,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: What Is an Agent</button>
     <button class="video-tab voiceover-only" onclick="switchVideo(3)" title="Interactive audio — click mic to listen">V3: Tools</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: LangGraph Intro</button>
-    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Building with LangGraph</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Agent Concepts (ReAct) Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="TA lab walkthrough -- no script">V7: LangGraph Agents Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(8)">V8: Wrap-Up</button>
+    <button class="video-tab scripted" onclick="switchVideo(4)">V4: LangGraph</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Agent Concepts (ReAct) Lab</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: LangGraph Agents Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -919,7 +918,7 @@ body.teleprompter .scroll-controls { display: flex; }
 
   <div class="video-header">
     <h2>Video 4: "Introduction to LangGraph"</h2>
-    <div class="video-meta">Voiceover + animation -- 6-7 minutes -- 3 segments</div>
+    <div class="video-meta">Voiceover + animation + code -- 10-12 minutes -- 5 segments</div>
   </div>
 
   <!-- SEG A -->
@@ -1084,23 +1083,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-</div><!-- end video-4 -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 5: Building with LangGraph                                -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-5">
-
-  <div class="video-header">
-    <h2>Video 5: "Building with LangGraph"</h2>
-    <div class="video-meta">Voiceover + code display -- 5-6 minutes -- 2 segments</div>
-  </div>
-
-  <!-- SEG A -->
+  <!-- SEG D — Building: The 5-Step Pattern (merged from old V5) -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG A</span>
+      <span class="segment-number">SEG D</span>
       <span class="segment-title">The 5-Step Pattern</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Code</span>
@@ -1143,10 +1129,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG B -->
+  <!-- SEG E — The Code (merged from old V5) -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG B</span>
+      <span class="segment-number">SEG E</span>
       <span class="segment-title">The Code</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Code</span>
@@ -1171,7 +1157,8 @@ graph.<span class="fn">add_conditional_edges</span>(<span class="str">"agent"</s
 graph.<span class="fn">add_edge</span>(<span class="str">"tools"</span>, <span class="str">"agent"</span>)
 
 app = graph.<span class="fn">compile</span>()</pre></div>
-      <p>The conditional edge is the heart of it. After the agent responds, we check: does it want a tool? If yes, route to tools. If no, finish. The tools node runs the function and routes back to the agent. That loop is the ReAct pattern -- expressed as a graph.</p>
+      <p>Look at the conditional edge. That is where the intelligence lives. After the agent responds, we ask one question: did the LLM request a tool call? If yes, we route to the tools node. The tools node runs the function, gets the result, and routes back to the agent. The agent sees the new information, thinks again, and decides whether to call another tool or finish.</p>
+      <p>That loop can run once, or it can run ten times. The agent keeps going until it decides it has enough to answer. And that is the ReAct pattern you learned earlier, except now it is not a concept. It is a graph you can see, debug, and control.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Code → Graph (Live)</span>
@@ -1240,21 +1227,21 @@ app = graph.<span class="fn">compile</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-4 -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 6: Wrap-Up                                                -->
+<!-- VIDEO 5: Wrap-Up                                                -->
 <!-- ================================================================ -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: TA — Agent Concepts (ReAct) Lab                                 -->
+<!-- VIDEO 5: TA — Agent Concepts (ReAct) Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 6: "Agent Concepts (ReAct) Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 5: "Agent Concepts (ReAct) Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
       <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M06_Lab1_Agent_Concepts_ReAct.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
@@ -1330,16 +1317,16 @@ app = graph.<span class="fn">compile</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-6 (TA Agent Concepts (ReAct) Lab) -->
+</div><!-- end video-5 (TA Agent Concepts (ReAct) Lab) -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 7: TA — LangGraph Agents Lab                                 -->
+<!-- VIDEO 6: TA — LangGraph Agents Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-7" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 7: "LangGraph Agents Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 6: "LangGraph Agents Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
       <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M06_Lab2_LangGraph_Agents.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
@@ -1415,13 +1402,13 @@ app = graph.<span class="fn">compile</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-7 (TA LangGraph Agents Lab) -->
+</div><!-- end video-6 (TA LangGraph Agents Lab) -->
 
 
-<div class="video-section" id="video-8">
+<div class="video-section" id="video-7">
 
   <div class="video-header">
-    <h2>Video 8: "Module 6 Wrap-Up"</h2>
+    <h2>Video 7: "Module 6 Wrap-Up"</h2>
     <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
   </div>
 
@@ -1477,7 +1464,7 @@ app = graph.<span class="fn">compile</span>()</pre></div>
     </div>
   </div>
 
-</div><!-- end video-8 -->
+</div><!-- end video-7 -->
 
 
 <!-- Expert Conversation Guide (separate from video tabs) -->
