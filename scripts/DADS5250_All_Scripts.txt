@@ -1,0 +1,1722 @@
+DADS 5250 — GENERATIVE AI IN PRACTICE
+Generated: April 10, 2026
+
+
+================================================================
+MODULE M00: COURSE INTRODUCTION
+================================================================
+
+Video 1: "It Changed Everything"
+
+PART 01: Opening Hook
+
+Every once in a while, a revolutionary product comes along that shapes everything -- technology, the way we work, and even our lifestyle. And we are witnessing one of these right now: Generative AI. When ChatGPT launched on November 30, 2022, it reached one million users in five days. Instagram took two and a half months. Netflix took three and a half years. No consumer product in history had grown that fast. Something fundamental had shifted.
+
+And I started seeing it in my own inbox. After generative AI took off, the emails I received began to look... the same. Same structure, same tone, same polished phrasing. People were clearly using AI to draft them -- and honestly, the writing was fine. Professional. Convincing.
+
+But then I started getting full-page emails from students -- for simple things. Missing a class? One full page. Asking about a deadline? One full page. Things that could be explained in two lines. AI made it easy to write more, but not necessarily better.
+
+And it struck me -- is this really the best use of this technology? Writing longer emails? What if instead of using AI to produce more text, we taught students to use AI to analyze supply chains, build intelligent systems, automate engineering workflows? That gap between what people are doing with AI and what they could be doing -- that is the reason this course exists.
+
+---
+
+PART 02: What Is Generative AI
+
+So what exactly is Generative AI? Think of it this way. Imagine you had a colleague who had read every textbook, every research paper, every technical manual in your field. And whenever you had a question, instead of searching through documents, you could simply ask them -- and they would generate a thoughtful, original answer based on everything they had learned.
+
+That is what a large language model does. It does not search a database. It does not copy and paste. It generates new text, code, or analysis based on patterns it learned from an enormous amount of human knowledge.
+
+The breakthrough came from a 2017 Google paper called Attention Is All You Need by Vaswani and colleagues. That paper introduced the Transformer architecture -- the engine behind GPT, Claude, Gemini, and every major AI system you use today.
+
+---
+
+PART 03: The Growth
+
+ChatGPT reached one million users in five days after its November 2022 launch. That single product forced every major technology company to respond. Google accelerated Gemini. Meta released LLaMA as open-source. Anthropic raised billions to build Claude. Amazon invested four billion dollars in Anthropic. In the span of eighteen months, the AI industry went from a research curiosity to a global arms race. The generative AI market has already grown into a multi-hundred-billion-dollar industry -- and it is still expanding fast.
+
+---
+
+PART 04: Real-World Impact
+
+This is not limited to tech companies. In finance, JPMorgan built an AI system called COiN that does in seconds what used to take their lawyers 360,000 hours per year to review -- commercial loan contracts. At Google, over 30 percent of new code is now AI-generated. LinkedIn and the World Economic Forum reported that AI has already created 1.3 million new jobs globally, with a 70 percent year-over-year increase in US roles requiring AI literacy. The acceleration is real, and it is happening everywhere.
+
+---
+
+PART 05: Why It Matters for Your Career
+
+In every industry, two types of professionals are emerging. Those who use AI as a consumer, typing into ChatGPT and accepting whatever comes out. And those who build with AI, connecting to APIs, designing prompts, building pipelines, deploying agents.
+
+The first group gets incremental productivity gains. The second group builds products, gets promoted, starts companies.
+
+Jensen Huang, the CEO of NVIDIA, said it best: "You are not going to lose your job to AI. You are going to lose your job to someone who uses AI."
+
+PwC found that AI is linked to a four-times increase in productivity growth -- but only for those who know how to use these tools effectively. This course puts you firmly in the second group.
+
+---
+
+PART 06: What You Will Build
+
+I want to make you a promise and a challenge. The promise: by the end of this course, you will be able to build AI-powered applications from scratch -- using the same tools and techniques that startups and Fortune 500 companies use today. The challenge: every module requires you to build something real. Not watch. Not read. Build. If you are ready for that, you are in the right place. Let us go.
+
+
+Video 2: "Meet Your Instructor"
+
+PART 01: Who I Am
+
+I am Mohammad Dehghani -- Associate Teaching Professor at Northeastern, Department of Mechanical and Industrial Engineering. My research is in applied generative AI, simulation, and decision science. But more importantly for this course, I am a practitioner. I build with these tools every day. This course comes from that experience.
+
+---
+
+PART 02: The Shift
+
+As an engineer, I firmly believe we have to keep up with new technology -- and more than that, we have to embrace it and apply it. That is how every generation of engineers has moved the field forward.
+
+And if you look around, the way we do things has already shifted. The way we write code. The way we build slides. The way we draft reports. The way we visualize data. Every one of these used to take hours -- now it takes minutes. So the real question is not whether to use AI. It is how to put it to work on the problems that actually matter: engineering applications, real data, real decisions, real systems. That is what this course is about.
+
+---
+
+PART 03: Wrap-Up &amp; Handoff
+
+That is the short version of who I am. In the next video, my teaching assistant Harini will walk you through the course structure, the tools we will use, and what to expect each week. I will see you back here in Module 1. Let us get started.
+
+
+================================================================
+MODULE M01: GETTING STARTED WITH LLM APIs
+================================================================
+
+Video 1: "The Spark"
+
+PART 01: Opening Hook
+
+They say the best things in life are free. That is true for ChatGPT. But free gets you a chat window. An API key gets you a product.
+
+Right now, hundreds of millions of people use AI the same way. Open a browser, type a question, get an answer. But there is another world where developers write code that talks directly to the AI. Code that runs a thousand times while you sleep. Code that connects to your data and builds products.
+
+This module is about getting the key to that world.
+
+---
+
+PART 02: Key Message
+
+The chat window is the demo. The API is the product. And this module teaches you to build the product.
+
+
+Video 2: "What Are LLMs?"
+
+PART A: What Is a Large Language Model
+
+LLM stands for Large Language Model. Here is what that means.
+
+Take a significant portion of human knowledge -- books, code, research, conversations. Compress it into a mathematical model. The model does not store the text word-for-word. It learns patterns.
+
+When you give it a prompt, it uses those patterns to generate something new. Every response is original. Every piece of code is composed, not retrieved. That is generative AI -- and LLMs are the engine behind it.
+
+---
+
+PART B: Platform vs API
+
+You can access these models two ways.
+
+The first is through a platform -- ChatGPT, Gemini, Claude. You open a browser, type a message, get a response. Think of it as walking into a restaurant and ordering at the counter. It works. It is convenient.
+
+The second way is through an API. Your Python code sends a request directly to the model. Think of this as building the delivery app -- you handle thousands of orders, route them, process them, all automatically. Same kitchen, same food, completely different power.
+
+---
+
+PART C: How LLMs Generate Text
+
+Here is something worth understanding. LLMs do not think. They predict.
+
+When you send a prompt, the model looks at all the words so far and asks one question: what is the most likely next word? It picks one, adds it, and repeats. Word by word. Token by token.
+
+This is why temperature matters. At zero, it always picks the safest word. At higher values, it takes risks. And this is why LLMs sometimes hallucinate. They generate text that sounds right but is factually wrong.
+
+The model does not know what is true. It knows what is likely.
+
+
+Video 3: "What Is an API?"
+
+PART A: API from Zero
+
+API stands for Application Programming Interface. Let me make that simple.
+
+Think of a vending machine. You put something in -- a coin and a button press. Something happens inside that you cannot see. And something comes out -- your drink.
+
+You do not need to know how the machine works inside. You just need to know two things: what to put in, and what comes out.
+
+An LLM API works the exact same way. You put in a prompt -- your question. Something happens on the model provider's servers -- the model thinks. And out comes a response -- the answer.
+
+And here is the important part: every major LLM has an API. OpenAI has one. Google has one for Gemini. Anthropic has one for Claude. Meta's Llama, Mistral, xAI's Grok -- all of them. Different companies, different models, but the same idea. Once you know how to use one API, you can use them all. The pattern is the same: send a prompt, get a response.
+
+---
+
+PART B: The Code
+
+Here is what it looks like in code.
+
+Seven lines. That is all it takes. Seven lines and you have programmatic access to one of the most powerful AI models on earth.
+
+Here is what happens when you run it. You hit enter. About one second later, the output appears in your terminal:
+
+That is it. A real response, from a real model, running on real servers -- triggered by your seven lines of code.
+
+Now imagine running those seven lines ten thousand times in a loop. Or connecting them to a database. Or triggering them from a web application. Or swapping the model name from gpt-4.1-mini to gemini-2.5-flash or claude-sonnet -- same pattern, different provider. That is the power of an API.
+
+
+Video 5: "Parameters, Tokens &amp; Temperature"
+
+PART A: Three Things You Control
+
+Before you start Lab 2, let us talk about what you are actually controlling when you call the API.
+
+Three things matter: temperature, tokens, and cost. Let us take them one at a time.
+
+---
+
+PART B: Temperature
+
+First: temperature. Temperature controls randomness.
+
+At zero, the model gives you the same answer every time -- the most predictable, most likely response. Ask it the same question twice, you get the same reply twice. This is what you want for tasks like data extraction, classification, or anything where you need repeatable output.
+
+At one, the model takes more risks. Some creativity, some variation. This is the sweet spot for most conversational tasks.
+
+At two, the model gets very creative -- sometimes too creative. Useful for brainstorming, poetry, or ideation. Less useful when you need accuracy.
+
+Rule of thumb: if you want reliability, go lower. If you want variety, go higher.
+
+---
+
+PART C: Tokens
+
+Second: tokens. Tokens are how LLMs measure text.
+
+A token is roughly four characters, or about three-quarters of a word. The word "building" might be one token, or it might be split into "build" and "ing" -- depending on the tokenizer. Short common words are usually one token. Long or rare words often split into two or three.
+
+Here is why this matters. When you send a prompt, you pay for input tokens. When the model responds, you pay for output tokens. Both counts show up on your bill. The model also has a maximum context window -- the total number of tokens it can handle in one call. Go over, and the request fails.
+
+So tokens are two things at once: the unit of measurement, and the unit of billing.
+
+---
+
+PART D: Cost
+
+Third: cost. Here is the good news. This technology is remarkably cheap.
+
+GPT-4.1 Mini, the model you will use for most of this course, costs about fifteen cents per million input tokens. A million tokens is roughly seven hundred and fifty thousand words -- more than ten full-length novels. For fifteen cents. Output tokens are a bit more expensive, but the total cost for most labs in this course will land around a few cents per run.
+
+That changes how you think about building. You do not have to be stingy. You can run a prompt a thousand times while testing. You can let your script iterate. Cost is rarely the limiting factor anymore -- time and design are.
+
+You will experiment with all three of these -- temperature, tokens, and cost -- in Lab 2.
+
+
+Video 6: Gamification Tools — NO SCRIPT NEEDED
+
+GAME: Temperature Playground &amp; Token Explorer
+
+Two interactive HTML tools: Temperature Playground and Token Explorer. Students play with them to build intuition about how temperature and tokenization work -- before they dive into the Python labs.
+
+
+Video 7: Python Labs — NO SCRIPT NEEDED
+
+LAB 1: API Basics
+
+Walkthrough of Lab 1: API Basics. Students connect to OpenAI and Gemini APIs for the first time, send their first programmatic requests, and compare responses.
+
+Notebook: M01_Lab1_API_Basics.ipynb
+
+---
+
+LAB 2: Parameters &amp; Tokens
+
+Walkthrough of Lab 2: Parameters and Tokens. Students experiment with temperature, max_tokens, and system messages. They count tokens, estimate costs, and compare model behavior at different settings.
+
+Notebook: M01_Lab2_Parameters_Tokens.ipynb
+
+
+Video 8: "Module 1 Wrap-Up"
+
+PART 01: Closing
+
+Here is what you accomplished this week. You connected to two of the most powerful AI models on the planet -- not through a chat window, but through code. You controlled parameters. You saw how temperature changes output. You counted tokens and estimated costs.
+
+That might sound simple. But think about what it means. You now have programmatic access to intelligence. Everything else in this course builds on this foundation.
+
+Next week, you put it to work. You build two real tools -- an Excel GPT that writes formulas from plain English, and a Bitcoin analyzer that processes live market data. Same seven lines of code. Completely different applications.
+
+
+================================================================
+MODULE M02: AI IN ACTION
+================================================================
+
+Video 1: "The Spark" -- AI Is Already in Everything You Use
+
+PART 01: Look Around -- It's Already Here
+
+Open up Google Chrome today, and there is a little button that summarizes any news article for you in about two seconds.
+
+Open Google Maps, and it no longer just gives you directions -- it answers questions like "find me a quiet coffee shop near my hotel that opens before seven."
+
+And if you booked a flight recently, you may have noticed something new in your confirmation email: an AI-generated itinerary, ready to use the moment you land.
+
+None of these features existed two years ago. Today, they are just... there. Showing up quietly inside the tools you already use.
+
+---
+
+PART 02: The Pattern Nobody Is Talking About
+
+Here is what is happening, and it is happening fast. Every serious software company on the planet is asking the same question right now -- and it is not "should we add AI?" That question is over.
+
+The question now is "where do we add it, and how soon?" Chrome added it to reading. Maps added it to search. Airlines added it to travel planning. Photoshop added it to editing. Notion added it to writing. Slack added it to summarizing conversations.
+
+The common thread is this: AI is not becoming a product on its own. It is becoming a layer. A layer that sits inside every tool you already use and quietly makes it smarter.
+
+---
+
+PART 03: So Why Not Us?
+
+And that is where this module begins. If the biggest companies in the world are racing to embed AI into their tools, there is no reason you cannot start embedding it into yours.
+
+The spreadsheet you already open every morning. The financial analysis you already do by hand. The workflow you already have. These are not toy problems -- these are the things you work on. And they are exactly where AI belongs next.
+
+This module is not about building a demo. It is about sparking an idea -- the idea that the moment you see how simple it is to drop AI into something that already exists, you stop asking if you can build it. You start asking what you will build next.
+
+This might be the beginning. So... let's.
+
+---
+
+PART 04: The Two Tools
+
+The first one writes Excel formulas and VBA code for you -- you paste data, describe what you want, and the AI generates working spreadsheet code. Your colleagues will think you spent hours on it. You spent five minutes.
+
+The second one analyzes Bitcoin prices, identifies trends, and generates investment reports -- using real market data and the same API you set up last week.
+
+By the end of this module, you will have two working tools you can show anyone. That is what applied AI looks like.
+
+
+Video 2: "Excel GPT -- AI Meets Spreadsheets"
+
+PART A: Why Excel + GenAI
+
+Let me start with something personal. I firmly believe Excel is one of the most powerful tools ever built for business. Data analysis. Visualization. Reporting. Modeling. You name it -- Excel can do it. That is why nearly every organization on the planet runs on spreadsheets. It is the silent workhorse of how work actually gets done.
+
+So when I started building this course, adding generative AI to Excel was a no-brainer. If we can make Excel smarter, faster, and easier to work with, we touch the daily workflow of millions of professionals. That is where this module starts.
+
+---
+
+PART B: The Problem -- Manual Excel Work
+
+Here is the problem most of us know too well. You have a spreadsheet with sales data -- thousands of rows. You need to calculate monthly growth rates, create a pivot summary, and highlight outliers. Normally, you would spend an hour writing formulas. Remembering the exact syntax. Debugging typos. Copying formulas down thousands of rows. By the time you are done, you have forgotten what question you were trying to answer in the first place.
+
+With an API call, this changes. You describe what you want to the model in plain English: "Analyze this sales data. Calculate month-over-month growth rates. Flag any month where growth dropped below negative ten percent. Generate the Excel formulas I need."
+
+The model responds with working formulas. You paste them into Excel. Done.
+
+---
+
+PART C: Extend Excel with VBA + AI
+
+Now here is where it gets really interesting. If you know Excel well, you know that you can go beyond formulas -- you can extend its capabilities with VBA. Visual Basic for Applications is Excel's built-in scripting language. With VBA, you can build custom functions, automate tasks, format data, generate charts, even connect to external systems. VBA is what turns Excel from a spreadsheet into a mini application platform.
+
+The catch? Most people do not know VBA. It is an older language, the syntax is clunky, and writing it from scratch is slow and painful.
+
+This is where the same API call pattern unlocks something big. You can ask the AI to write the VBA for you. "Write a VBA macro that automatically formats the top 10 products by revenue in bold and adds a chart." The model writes the macro. You paste it into Excel's VBA editor. Run it. Your spreadsheet transforms.
+
+In Lab 1, you will build exactly this from scratch. The starter code is on GitHub. Your assignment is to extend it with your own functions.
+
+---
+
+PART D: Lab 1 Preview
+
+In Lab 1, you will build this Excel GPT from scratch. You will connect to the API, send sales data with natural language instructions, receive working formulas, and generate VBA macros for automation.
+
+Notebook: M02_Lab1_Excel_GPT.ipynb
+
+
+Video 4: "Bitcoin Analyzer -- AI Meets Real Data"
+
+PART A: Real Data, Real Analysis
+
+Right now, somewhere in the world, the price of Bitcoin just moved. It moves every second of every day. No opening bell, no closing bell, no weekends off.
+
+It is probably the most watched number on the planet -- and certainly the most opinionated one. Everyone has a theory about where it is going. And that is exactly why it is the perfect playground for applied AI.
+
+Because if you can point an LLM at a stream of live market data and get a clean, structured analysis out the other side -- you have just built the same kind of tool that firms pay analysts six figures to write. Let's do it.
+
+---
+
+PART B: The Analysis Pipeline
+
+You will load real market data using a free API. You will send it to an LLM along with instructions for analysis. And the model will return a structured report with trend analysis, support and resistance levels, and a summary recommendation.
+
+Is it financial advice? Absolutely not. But it is a working demonstration of how AI can process real data and generate structured analysis -- the same pattern used in every industry from finance to manufacturing to healthcare.
+
+---
+
+PART C: Lab 2 Preview
+
+In Lab 2, you will build this Bitcoin analyzer. You will fetch real market data, send it to an LLM for analysis, generate a structured report with trends and indicators, and create a price chart with matplotlib.
+
+Notebook: M02_Lab2_Bitcoin_Analyzer.ipynb
+
+
+Video 6: "Module 2 Wrap-Up"
+
+PART 01: Recap
+
+This week you built two real tools.
+
+An Excel GPT that writes formulas and VBA macros from plain English. A Bitcoin analyzer that processes real market data and generates investment reports.
+
+And if something clicked this week, that was the moment. You stopped using AI and started building with it. That shift is the whole course.
+
+That is the power of generative AI -- the same technology, infinite applications.
+
+---
+
+PART 02: Bridge to Module 3
+
+But you also noticed something. Sometimes the output was perfect. Sometimes it was not quite right. Sometimes the format was inconsistent. That inconsistency is the gap between a demo and a product.
+
+Next module, we close that gap. Prompt engineering -- the skill of getting exactly what you want from AI, every single time. And it starts with a coffee order.
+
+
+================================================================
+MODULE M03: PROMPT ENGINEERING, STRUCTURED OUTPUT & FUNCTION CALLING
+================================================================
+
+Video 1: "The Spark" -- The Coffee Order
+
+PART 01: The Coffee Order Analogy
+
+Every morning I place the same coffee order. Medium dark roast, whole milk on the side, cinnamon on top. My barista knows it by heart. I never have to explain myself twice.
+
+That is exactly the standard we should hold ourselves to when we communicate with AI models.
+
+---
+
+PART 02: The Three Levels of Control
+
+You have probably already noticed something when you use AI. It works -- mostly. But sometimes the output is inconsistent. Sometimes the model gives you a paragraph when you needed a formula. Sometimes the format is wrong. Sometimes you have to run the same prompt three times to get what you actually wanted.
+
+This module fixes that. You will learn three levels of control. First -- how to write prompts that get exactly the response you need. Second -- how to force the output into structured JSON that code can use. Third -- how to make the model decide when to call a function and take action.
+
+By the end of this module, your AI outputs will be reliable, structured, and actionable. Every single time.
+
+
+Video 3: "Prompting Strategies"
+
+PART A: Intro — Why Strategies Matter
+
+Now that you know the anatomy of a prompt, let me tell you something that might surprise you. Large language models actually enjoy getting examples. Just like us.
+
+Think about it. If I asked you to "classify these customer reviews" with no context, you would probably ask me to show you a few first. "What does a positive one look like? What does a tricky one look like?" You would want to see the pattern before you start.
+
+LLMs work the same way. Sometimes they can figure it out on their own. Sometimes they need a few examples. And sometimes, for harder problems, they need to slow down and think out loud. These three modes have names: zero-shot, few-shot, and chain-of-thought. In this video, we will walk through all three -- when to use each one, and why.
+
+---
+
+PART B: Zero-Shot Prompting
+
+Let us start with zero-shot. Zero-shot means exactly what it sounds like -- you give the model a task with zero examples. You just tell it what to do and trust it to figure out the pattern.
+
+Here is a classic zero-shot prompt: "Classify this review as positive, negative, or neutral." No examples. No training. Just the task. And most of the time, this works beautifully -- the model has seen millions of reviews during training, so it knows what positive and negative look like.
+
+But what about edge cases? "The food was amazing but the service ruined everything." Is that positive or negative? A human would probably say "mixed." The model might say "positive" one time and "negative" the next, depending on which part it focused on. Same prompt, different answer. That is the risk with zero-shot.
+
+---
+
+PART C: Few-Shot Prompting
+
+Strategy two: few-shot. You give the model a few examples before the actual task. "Here are three reviews with their classifications. Now classify this one." Suddenly the edge case gets consistent results. The model learns the pattern from your examples.
+
+---
+
+PART D: Chain-of-Thought -- The Bat and Ball
+
+Strategy three: chain-of-thought. You tell the model to think step by step. Here is the classic example. "A bat and a ball cost $1.10 together. The bat costs $1.00 more than the ball. How much does the ball cost?"
+
+Without chain-of-thought, most models say 10 cents. That is wrong. With chain-of-thought -- "Think step by step" -- the model works through the algebra and gets 5 cents. Just four words can dramatically improve accuracy on reasoning tasks.
+
+When do you use which? Zero-shot for simple tasks. Few-shot when you need consistent formatting. Chain-of-thought when the task requires reasoning. You will practice all three in Lab 1.
+
+
+Video 4: "From Text to Structure"
+
+PART A: Intro — The Second Level of Control
+
+So far in this module, you have learned how to talk to the model. You know how to set the role, the task, the context, the format. You know when to use examples and when to ask for step-by-step reasoning. That is the first level of control -- input control.
+
+But here is the thing. Even when you ask the model beautifully, you still get back text. Free-form paragraphs. A block of writing. And that is fine when the answer is for a human to read. But the moment you want to do something with the output -- store it, filter it, feed it into another system -- text becomes a problem.
+
+This video is about the second level of control. Not just what the model says, but the exact shape of what it hands you back. We will cover two tools: JSON mode, which forces the model to return valid JSON, and Pydantic, which makes sure that JSON has exactly the fields and types your code needs.
+
+---
+
+PART B: The Problem with Text
+
+Let me make the problem concrete. The output of a model, by default, is text. Free-form, unstructured text. And text is great for humans -- but terrible for code.
+
+You cannot put a paragraph into a database column. You cannot feed prose into an analytics pipeline. You cannot reliably pull three numbers out of a sentence using string matching without it breaking the moment the wording changes. If your goal is to use the model's output in code, text is the enemy.
+
+What you need instead is structure. You need to know, in advance, that the field called "sentiment" will always be there, and it will always be one of three values, and "confidence" will always be a number between zero and one. That is what JSON gives you -- a contract.
+
+---
+
+PART C: JSON Mode
+
+JSON mode forces the model to return valid JSON -- guaranteed parseable, guaranteed structured.
+
+Watch the difference. Same question, two modes.
+
+Text mode: "The sentiment of the review is positive. The customer expressed satisfaction with the product quality and delivery speed."
+
+JSON mode: {"sentiment": "positive", "confidence": 0.92, "keywords": ["quality", "delivery speed"]}
+
+Same information. But the JSON version can be parsed by code in one line. No regex. No string manipulation. Just json.loads() and you have a Python dictionary.
+
+---
+
+PART D: Pydantic Validation
+
+But JSON mode has a gap. It guarantees valid JSON, but it does not guarantee the right fields or the right types. That is where Pydantic comes in.
+
+Pydantic lets you define a schema -- a class that says "I expect a field called sentiment of type string, a field called confidence of type float between 0 and 1." If the model returns something that does not match, Pydantic catches it immediately. No silent bugs. No bad data reaching your database.
+
+
+Video 6: "Function Calling -- From Text to Action"
+
+PART A: What Is Function Calling
+
+Until now, the model only produces text -- or structured text. Function calling lets it produce actions.
+
+You define tools -- functions with names, descriptions, and parameter schemas. The model reads the user request and decides: which tool should I use? What arguments should I pass?
+
+The model does not execute the function. It generates a structured call -- a JSON object saying "call this function with these arguments." Your code handles execution.
+
+This is the bridge between a chatbot and an agent. The model reasons about which tool to use. Your code does the work.
+
+---
+
+PART B: The Five-Step Weather Example
+
+Here is a complete example.
+
+Step 1: You define a function called get_weather with parameters city and units.
+
+Step 2: User says "What is the weather in Boston?"
+
+Step 3: The model does not answer directly. Instead it returns: {"name": "get_weather", "arguments": {"city": "Boston", "units": "fahrenheit"}}
+
+Step 4: Your code calls the real weather API with those arguments.
+
+Step 5: You send the result back to the model. Now it generates a human-readable response: "It is currently 72 degrees in Boston with partly cloudy skies."
+
+Five steps. The model decided which function to call. Your code did the work. That is function calling.
+
+---
+
+PART C: One Small Question Before We Go
+
+Before we wrap this up, let me leave you with one small question.
+
+We have been throwing around the word JSON this entire module. JSON mode, JSON schema, JSON this, JSON that. But have you ever stopped and asked yourself &mdash; why is it called JSON? What does it even stand for? And who invented it?
+
+I am not going to tell you. I want you to take two minutes after this video, search it up, and find out for yourself. Read about where it came from, who named it, and how it became the language that almost every API on the internet now speaks. I promise you &mdash; the story is more interesting than you think.
+
+Because here is a habit I want you to build in this course: when a tool shows up in your work over and over again, get curious about it. Learn its history. Learn its shape. The engineers who understand why a tool exists always build better things with it than the engineers who just use it.
+
+Go look it up. I will see you in the next video.
+
+
+Video 8: "Module 3 Wrap-Up"
+
+PART 01: The Complete Pipeline
+
+This was the biggest module in the course -- and for good reason.
+
+You learned to engineer prompts that produce reliable output. You learned to force that output into structured JSON and validate it with Pydantic. And you learned to let the model decide when to call functions and take actions.
+
+That is the complete pipeline. Input control. Output control. Action control.
+
+Think about what you can build now. An AI that reads invoices and validates the data before it touches your database. An AI that answers questions by querying a real database. An AI assistant with tools.
+
+---
+
+PART 02: Bridge to Module 4
+
+Next module -- we chain these operations into multi-step workflows. That is LangChain. And we put it to the test with a supply chain simulation called the Beer Game.
+
+
+================================================================
+MODULE M04: LANGCHAIN & BEER GAME
+================================================================
+
+Video 1: "The Spark" -- The Symphony Conductor
+
+PART 01: The Symphony Analogy
+
+Picture a symphony orchestra. Dozens of musicians on stage, each playing a completely different instrument. Individually, every one of them is talented. But without the conductor standing at the front, coordinating every section, every tempo change, every entrance -- it would just be noise.
+
+LangChain is that conductor for your AI applications.
+
+---
+
+PART 02: Why Pipelines Matter
+
+Until now, you have been making single API calls. One prompt in, one response out. But real AI applications are rarely that simple. You might need the model to remember what the user said three messages ago. You might need it to search a database before responding. You might need it to call a tool, format the output, and pass it to a second model.
+
+LangChain gives you pre-built components for every part of an AI pipeline -- and a standard way to connect them together.
+
+
+Video 2: "LangChain Foundations"
+
+PART A: The Four Building Blocks
+
+LangChain is an open-source framework for building AI pipelines. It was created by Harrison Chase in late 2022, and it has become one of the most widely used frameworks for connecting language models to the real world.
+
+There are four core elements you need to understand.
+
+First, LLMs. LangChain gives you a unified interface to every major model -- GPT, Gemini, Claude. Same code, swap models in one line. You do not rewrite your application when you change providers.
+
+Second, Prompt Templates. Instead of hardcoding prompts, you create templates with variables. This makes your prompts reusable at scale. One template, a thousand different inputs.
+
+Third, Memory. By default, LLMs are stateless -- they forget everything between calls. LangChain adds memory so your application can maintain conversation history across multiple interactions.
+
+Fourth, Chains. This is the core idea. A chain connects steps together. The output of step one becomes the input of step two. Summarize, then translate, then format -- three steps, one chain.
+
+---
+
+PART B: Workflow Modeling for AI
+
+Here is what LangChain actually does, with an example you already know.
+
+Imagine a process inside an Amazon fulfillment center. You click "buy" on your phone, and that one click kicks off a whole pipeline. A picker walks the aisle and grabs your item from the shelf. A packer drops it in the right-sized box. A labeler prints the shipping label and slaps it on. A sorter routes the box to the truck going to your zip code. And a driver delivers it to your door. Each station has one job. Each station is independent. And the conveyor belt between them is what makes the whole thing work -- it carries the package from one station to the next, without anyone having to carry it by hand.
+
+LangChain does the exact same thing for AI workflows. Each of the four building blocks you just saw -- prompt templates, LLMs, memory, chains -- is a station on your AI fulfillment line. Input comes in one end. Each component does its one job. The finished output comes out the other end.
+
+And here is the beautiful part. Just like Amazon can swap out the labeling machine without shutting down the entire warehouse, you can swap one component in your LangChain pipeline -- change the LLM, update the prompt template, add memory -- without touching the rest of your application. That is what makes LangChain powerful. LangChain is a fulfillment center for AI.
+
+---
+
+PART C: LCEL -- The Pipe Operator
+
+The modern way to build chains is called LCEL -- LangChain Expression Language. It uses the pipe operator to connect components. It is clean, it is readable, and it is powerful.
+
+Here is a quick preview of what that looks like in code.
+
+
+Video 3: "Building Your First Chain"
+
+PART A: The LCEL Pipeline
+
+This is how you build your first chain with LCEL.
+
+The syntax is beautifully simple. You write: prompt, pipe, llm, pipe, output_parser. That is it. Three components connected with the pipe operator.
+
+Here is what happens. The user asks a question. The prompt template wraps it with structure and context. The model generates a response. The output parser extracts the clean text.
+
+---
+
+PART B: Adding Memory and Multi-Step
+
+Now let us extend it. Add memory -- and suddenly the model remembers what the user said before. Add a second step -- and now the output of the first model becomes the input of the next.
+
+In three lines of code, you have a pipeline that would take dozens of lines without LangChain. And the best part? Every component is swappable. Change the model, change the prompt, change the parser -- the pipeline still works.
+
+That is the power of composability. And that is what you will build in Lab 1.
+
+
+Video 4: "AI Meets the Beer Game"
+
+PART A: The Beer Game Explained
+
+Now let us take LangChain and apply it to something real -- the Beer Game.
+
+The Beer Game is a supply chain simulation invented at MIT in the 1960s. It has been used in business schools around the world to teach one of the most important concepts in supply chain management: the bullwhip effect.
+
+Here is the idea. You have four roles in a supply chain: Retailer, Wholesaler, Distributor, and Factory. Each one orders inventory from the next. The problem? There are delays. And when demand changes at the retail level, each player overreacts. Small changes in demand amplify into massive swings at the factory level.
+
+---
+
+PART B: AI Agents in the Supply Chain
+
+Now here is where it gets interesting. What if each supply chain role is an AI agent? Each agent has its own prompt, its own inventory data, its own decision-making logic. And we chain them together using LangChain.
+
+The Retailer agent sees customer demand and places an order. That order flows to the Wholesaler agent. The Wholesaler sees the order and makes its own decision. And so on, up the chain.
+
+---
+
+PART C: The Bullwhip Emerges
+
+When you run this simulation over 20 rounds, you will see the bullwhip effect emerge naturally -- from the AI agents' decisions. This is not a toy example. This is how companies model supply chain decisions.
+
+---
+
+FFT: Food for Thought &mdash; Who Was Jay Forrester?
+
+Before we wrap this up, let me leave you with one small question.
+
+You just played the Beer Game and watched the bullwhip effect emerge out of nothing. But have you ever stopped and asked yourself &mdash; who invented that game? And what kind of mind sits down and says, "I am going to build a simulation that proves supply chains amplify their own noise"?
+
+I am not going to tell you. Take five minutes after this video and search two names: Jay Forrester and system dynamics. Read about the professor at MIT who invented this game in the 1960s, what he was working on before this (hint: it involved WWII radar and one of the earliest computers ever built), and how he created an entire field of study called system dynamics almost single-handedly. It is one of those stories that makes you realize the most influential people in a field are often the ones whose names you have never heard.
+
+Because here is a habit I want you to build: when a tool shows up in your work over and over again, get curious about its history. The engineers and managers who understand why a simulation was invented always learn more from playing it than the ones who just play.
+
+Go look it up. I will see you in the next video.
+
+
+Video 7: "Module 4 Wrap-Up"
+
+PART 01: Recap
+
+This week you went from single API calls to multi-step pipelines.
+
+You built chains that connect prompts, models, and memory into coherent workflows. And you put them to the test with the Beer Game -- watching AI agents make supply chain decisions and the bullwhip effect emerge from their interactions.
+
+That is what LangChain gives you.
+
+---
+
+PART 02: Bridge to Module 5
+
+Next module -- what happens when your AI needs to retrieve information from real documents before answering? That is RAG -- Retrieval-Augmented Generation. And it solves one of the biggest problems in AI: hallucination.
+
+
+================================================================
+MODULE M05: RETRIEVAL-AUGMENTED GENERATION
+================================================================
+
+Video 1: "The Spark" -- The Context Flip
+
+PART 01: The Context Flip
+
+Let me ask you something. Who was the first person to walk on the moon? Easy -- Neil Armstrong, 1969. Now let me ask you another one. Who was the third engineer hired at your company, and what project did they ship first?
+
+You have no idea. Not because you are not smart -- because you do not have the information.
+
+That is the difference between what an LLM knows and what it does not. It trained on the internet. It never read your documents. Ask it about your company's revenue, your product specs, your internal policies? It guesses. And it guesses with complete confidence.
+
+---
+
+PART 02: Introducing RAG
+
+That is what RAG does. Retrieval-Augmented Generation. Before the AI answers your question, it searches your documents first. It finds the relevant pages. And then it generates an answer grounded in real data.
+
+Closed book to open book. Guessing to knowing. That is the entire idea.
+
+---
+
+PART 03: What You Will Build
+
+This week, you are going to build that open book. You will take a real document, break it into pieces, turn those pieces into numbers a computer can search, store them in a database, and then ask questions that get answered with real data instead of hallucinations.
+
+Let us get started.
+
+
+Video 2: "How RAG Works"
+
+PART A: The Hallucination Problem
+
+There is a word you are going to hear a lot in AI -- hallucination. Let me show you what it looks like.
+
+Ask an LLM to summarize your company's employee handbook. It has never seen your handbook. But it will not say "I do not know." It will write you a summary anyway -- with policy names, section numbers, even direct quotes. All fabricated. Every word of it. The confidence is impressive. The accuracy is not.
+
+This is hallucination. The model generates text that sounds right but is factually wrong. It is not lying -- it is predicting the most likely next words. And sometimes those words form statements that are completely false.
+
+If that happens on a homework assignment, you might get a bad grade. If it happens in a legal contract or a medical report, someone gets hurt.
+
+---
+
+PART B: The RAG Pipeline Overview
+
+RAG -- Retrieval-Augmented Generation -- solves this with one simple idea: before the model generates an answer, give it the real data first.
+
+There are three core steps. First, you chunk your documents -- break them into smaller pieces that each contain one idea. Second, you embed those chunks -- convert them into numerical vectors that capture their meaning. Third, when a user asks a question, you retrieve the most relevant chunks and feed them to the LLM as context.
+
+The model still generates the response. But now it has real data to work with. It is the difference between a closed-book exam and an open-book exam.
+
+---
+
+PART C: What Are Embeddings
+
+Let me explain embeddings, because this is the key insight.
+
+An embedding is a list of numbers -- a vector -- that represents the meaning of a piece of text. Here is what matters: texts with similar meanings have similar vectors. "How do I return a product?" and "What is the refund policy?" have completely different words. But their embeddings are nearly identical -- because they mean nearly the same thing.
+
+This is what makes RAG possible. When a user asks a question, you convert the question into a vector. Then you find the stored vectors that are closest to it. Those are your most relevant chunks. No keyword matching. No exact string search. You are searching by meaning.
+
+---
+
+PART D: Vector Stores
+
+You store these embeddings in a vector database -- a database optimized for similarity search. Instead of "find me the row where name equals X," you say "find me the five vectors closest to this query."
+
+We will use ChromaDB in the labs. It is open source, runs locally, and does not need a server. In production, you would look at Pinecone or FAISS for scale. But the concept is the same everywhere.
+
+---
+
+FFT: Food for Thought &mdash; Who Coined "RAG"?
+
+Before we move on, let me leave you with one small question.
+
+We have been saying the word RAG this entire video. RAG this, RAG that. But have you ever stopped and asked yourself &mdash; where did that term actually come from? Who wrote it down first? And in what year?
+
+I am not going to tell you. Take five minutes after this video and search it up. Find the original paper, read the title, look at who the authors were, and notice what lab they worked at. And here is the part that will surprise you &mdash; the paper was not published in 2023 or 2024, when ChatGPT made RAG famous. It was published years before almost anyone outside of research circles had even heard of a large language model.
+
+Because here is a habit I want you to build in this course: when a technique shows up in your work over and over again, get curious about where it came from. Read the original paper. Learn who named it and why. The engineers who understand why a technique exists always build better things with it than the engineers who just use it.
+
+Go look it up. I will see you in the next video.
+
+
+Video 7: "Module 5 Wrap-Up"
+
+PART 01: What You Accomplished
+
+Let us take a step back and look at what you built this week.
+
+You started with a problem -- LLMs hallucinate. They generate confident answers that are completely wrong. And you solved it. You learned that embeddings turn text into numbers that capture meaning. You learned that vector stores let you search by meaning, not just keywords. And you built a complete RAG pipeline: load, split, embed, store, query.
+
+Five steps. That is how you ground any AI in real data. That is how you go from a model that guesses to a model that knows.
+
+---
+
+PART 02: Next Module Preview
+
+Next week, we take the next leap. You have built chains. You have built RAG pipelines. But what happens when the AI does not just retrieve and respond -- but actually reasons about what to do next? What happens when it decides which tools to use, which steps to take, and when to stop?
+
+Next week: AI Agents and LangGraph.
+
+
+================================================================
+MODULE M06: AGENTS & LANGGRAPH
+================================================================
+
+Video 1: "The Spark" -- The Support Call
+
+PART 01: The Support Call
+
+Think about what happens when you call customer support. The first thing they ask is -- what is your issue? And depending on your answer, everything changes. Billing goes one direction. Technical goes another. Returns goes somewhere else. And if the first fix does not work, they loop back and try something different.
+
+That is not a pipeline. That is a graph -- with branches, conditions, and loops.
+
+---
+
+PART 02: Key Message -- LangGraph
+
+Most AI systems you have built so far run in a straight line. Input goes in, output comes out. But real tasks do not work that way. They branch. They loop. They depend on what just happened. And the tool that lets you design these kinds of workflows in Python is called LangGraph.
+
+Before we get to LangGraph, though, we need to understand what powers it -- agents and tools. That is where we start.
+
+
+Video 2: "What Is an Agent?"
+
+PART A: Chains vs Agents
+
+Before we build with LangGraph, it is worth understanding what makes it different from everything you have built so far.
+
+Until now, you have built chains. Step one feeds into step two feeds into step three. Same path every time. That is powerful -- and for many tasks, it is all you need.
+
+But some tasks are open-ended. Research a topic. Debug a problem. Plan a trip. You do not know the steps in advance. You need something that can look at the situation, decide what to do next, and change direction if the first attempt does not work. That is an agent.
+
+---
+
+PART B: Three Ingredients of an Agent
+
+So what actually makes something an agent? Three ingredients. An LLM that can reason. Tools it can reach for. And a loop that lets it keep going until the job is done.
+
+At each step, the agent looks at the current situation, decides what information it needs, picks a tool to get it, reads the result, and then decides what to do next. It is not following a script -- it is making decisions.
+
+---
+
+PART C: The ReAct Loop
+
+Under the hood, every agent runs on a pattern called ReAct -- Reason, Act, Observe. Here is what that actually looks like.
+
+Say a user asks: "What is the weather in Boston, and should I bring an umbrella?" The agent looks at the question and thinks -- I do not have weather data, but I have a weather tool. So it calls the weather API. The result comes back: 62 degrees, 40 percent chance of rain. Now the agent has what it needs. It puts the pieces together -- 40 percent rain, probably bring an umbrella -- and responds.
+
+That whole thing was one loop. Reason about what is missing, go get it, look at what came back, and decide if you are done. If you are not done, go again. That is ReAct. Simple idea, but it is the engine behind every agent you will build in this course.
+
+---
+
+PART D: When to Use Agents
+
+Not every task needs an agent. If the workflow is predictable and the steps are always the same, a chain is the right choice. Summarize a document. Translate text. Extract data from a form. Same path every time.
+
+Agents are for open-ended tasks. Research a topic where you do not know how many searches it will take. Debug a problem where you do not know which files to check. Answer a question that might need multiple tools in an order you cannot predict. The agent figures out the path at runtime.
+
+Chains are efficient and predictable. Agents are flexible and smart. You want both in your toolkit.
+
+
+Video 4: "Introduction to LangGraph"
+
+PART A: Why LangGraph
+
+Remember the customer support call from the opening? Billing goes one way, technical goes another, and if the first fix fails, you loop back and try something different. That was a graph. And now you have a way to build it.
+
+LangGraph lets you lay out your entire agent workflow as a graph. You decide what the steps are, how they connect, and where the branches happen. The AI navigates that graph at runtime, choosing its own path based on what it finds along the way.
+
+To build one, you need to understand three pieces. Nodes, edges, and state. That is what we cover next.
+
+---
+
+PART B: Nodes, Edges, State
+
+LangGraph has three pieces, and once you see them, the whole thing clicks.
+
+A node is just a Python function. It receives the current state of the conversation, does one thing with it, and passes the updated state forward. That one thing could be calling the LLM, running a tool, or making a routing decision.
+
+An edge connects one node to the next. Some edges are simple. "After the LLM responds, always go to the tool node." But the powerful ones are conditional. "Look at what the LLM just said. If it wants to call a tool, go to the tool node. If it is done, go to the end." That is where the branching happens.
+
+And state is the shared memory that ties it all together. Every node reads from it, every node writes to it. The LLM node adds its response. The tool node adds its result. By the time you reach the end, state contains the full story of everything that happened.
+
+Nodes, edges, and state. That is the whole framework. But you might be wondering why we need it at all.
+
+---
+
+PART C: LangGraph in Context
+
+You may ask -- why learn LangGraph when model providers now ship their own agent SDKs? OpenAI has one. Anthropic has one. Google has one. And they are good. For simple agent tasks, they work out of the box.
+
+But the moment your workflow gets complex -- multiple branches, conditional loops, different models at different stages, human approval steps -- those SDKs are not enough. LangGraph gives you full control over every decision point in your workflow. You see the graph. You own the graph. Nothing is hidden behind an abstraction you cannot inspect.
+
+Think of it this way. The SDKs are like using a ride-sharing app. LangGraph is like having the keys to the car. Both get you there. But when the road gets complicated, you want the keys. We will cover the newer SDKs in Module 12.
+
+---
+
+PART D: The 5-Step Pattern
+
+Building a LangGraph agent follows five steps. Every time.
+
+Step one: define the state. What information flows through the graph? Messages, tool results, decisions -- all stored in a typed dictionary.
+
+Step two: create nodes. Each node is a Python function that takes state and returns updated state.
+
+Step three: add edges. Connect your nodes. "After classify, go to respond."
+
+Step four: add conditional edges. "After the LLM responds, check: did it want to call a tool? If yes, go to the tool node. If no, go to the end." This is the decision-making.
+
+Step five: compile and run. Call graph.compile() to get a runnable object. Invoke it with your initial state.
+
+---
+
+PART E: The Code
+
+Here is a minimal LangGraph agent.
+
+Look at the conditional edge. That is where the intelligence lives. After the agent responds, we ask one question: did the LLM request a tool call? If yes, we route to the tools node. The tools node runs the function, gets the result, and routes back to the agent. The agent sees the new information, thinks again, and decides whether to call another tool or finish.
+
+That loop can run once, or it can run ten times. The agent keeps going until it decides it has enough to answer. And that is the ReAct pattern you learned earlier, except now it is not a concept. It is a graph you can see, debug, and control.
+
+
+Video 7: "Module 6 Wrap-Up"
+
+PART 01: What You Accomplished
+
+Let us look at what you built.
+
+You learned the difference between chains and agents -- scripts versus intelligence. You learned the ReAct loop -- reason, act, observe, repeat. You learned how tools give agents the ability to interact with the real world. And you built LangGraph agents with nodes, edges, conditional routing, and state management.
+
+That is a massive leap. You went from fixed pipelines to dynamic AI systems that make their own decisions.
+
+---
+
+PART 02: Next: The Hackathon
+
+Next week is different. No new concepts. No new frameworks. Just building.
+
+You have LLM APIs, prompt engineering, structured output, LangChain, RAG, and agents in your toolkit. Next week, you put them all together in the hackathon. Forty-eight hours. Build something real. Break something. Ship it.
+
+
+================================================================
+MODULE M07: HACKATHON
+================================================================
+
+Video 1: "The Spark" -- Build Something Real
+
+PART 01: The Shift
+
+For six weeks, I have been teaching you. This week, you teach me.
+
+No new lectures. No new frameworks. No new concepts. Just you, your team, and everything you have learned so far. LLM APIs. Prompt engineering. Structured output. LangChain. RAG. Agents. All of it. Combined into one project. Something real.
+
+This is the hackathon.
+
+---
+
+PART 02: Startup Inspiration
+
+Let me give you some perspective on what is possible.
+
+Jasper AI -- built on GPT API calls to generate marketing copy. Grew to tens of millions in annual revenue within its first couple of years. Cursor -- an AI code editor built on LLM APIs plus RAG over codebases. Raised hundreds of millions from top venture firms. Perplexity -- RAG applied to the entire internet. Now a multi-billion-dollar company.
+
+Every one of these companies started with the same tools you have right now. An API key and an idea. The difference is they shipped it.
+
+Your hackathon project will not be the next Perplexity. But the process of building, breaking, and shipping? That is exactly the same.
+
+---
+
+PART 03: Key Message
+
+Build something real. Break something. Ship it. The clock starts now.
+
+
+Video 2: "Hackathon Kickoff"
+
+PART 01: Logistics
+
+Here are the rules.
+
+Teams of two to three students. You submit two things: a GitHub repository with working code and a three-minute video demo. The exact timeline will be announced at kickoff.
+
+Your project must use at least two course techniques -- that means some combination of API calls, prompt engineering, structured output, LangChain, RAG, or agents. It must be Python-based and it must actually work. The judges will run your code.
+
+Office hours are running continuously during the sprint. Slack channel is live for quick questions and team coordination.
+
+---
+
+PART 02: Project Ideas
+
+Not sure what to build? Here are categories that have produced strong projects.
+
+AI Assistant -- a domain-specific chatbot with RAG. Legal research, medical FAQ, course advisor. Content Pipeline -- a chain that takes raw input and produces polished output. Blog posts, reports, social media threads. Data Analyzer -- upload a CSV, ask questions in plain English, get charts and insights. Code Tool -- an agent that reads a codebase and answers questions or generates tests. Workflow Automator -- connect multiple APIs to solve a real business process.
+
+Pick something you care about. The best projects come from real problems, not hypothetical ones.
+
+---
+
+PART 03: Judging Criteria
+
+You are judged on four things, equally weighted.
+
+Technical depth -- meaningful use of two or more course techniques. Not just an API call. Show me architecture. Creativity -- original problem choice. Surprise us. Build something we have not seen before. Polish -- it works, no crashes, clean code, good error handling. And presentation -- a clear three-minute video where you explain what you built and why it matters.
+
+Twenty-five percent each. Notice that presentation counts as much as technical depth. If you build something brilliant and cannot explain it, that is a problem.
+
+---
+
+PART 04: Final Words
+
+One more thing. The goal is not perfection. The goal is momentum. Build the simplest version that works. Get it running. Then improve it. Do not spend thirty hours planning and eighteen hours panicking.
+
+Build early. Test often. Ship it. Good luck.
+
+
+================================================================
+MODULE M08: MULTI-AGENT SYSTEMS (CREWAI)
+================================================================
+
+Video 1: "The Spark" -- Why Teams Beat Solo
+
+PART 01: The Hiring Analogy
+
+Imagine you are starting a company. Day one, it is just you. You are the CEO, the developer, the marketer, the accountant, the customer support team, and the one who makes the coffee. You can do all of it. But you cannot do all of it well. Not at the same time.
+
+So what do you do? You hire specialists. A developer who only writes code. A marketer who only thinks about growth. An accountant who only handles the books. Each person focuses on one job. And suddenly, the whole operation gets better.
+
+That is exactly what happens with AI agents.
+
+---
+
+PART 02: Single vs Team
+
+That is the idea behind CrewAI. You define the specialists -- a researcher, a writer, an editor. You give each one a clear role and a clear job. And then you let them collaborate, pass context to each other, and check each other's work.
+
+You do not manage the handoffs. You do not babysit the workflow. You describe the team, and CrewAI runs it. That is what this module is about.
+
+
+Video 2: "CrewAI: Building Agent Teams"
+
+PART A: The Story Behind CrewAI
+
+CrewAI was created in late 2023 by Joao Moura, a Brazilian-born engineer who had spent years building AI systems at large companies. He noticed the same problem over and over -- developers were writing hundreds of lines of boilerplate just to get two agents to talk to each other.
+
+His idea was simple. What if multi-agent systems worked the way real teams work? You define who is on the team, what each person is responsible for, and how they collaborate. The framework handles the rest.
+
+He open-sourced it in early 2024, and it took off. Within months, CrewAI had tens of thousands of stars on GitHub and a growing community of developers building everything from research assistants to automated content pipelines. By 2025, CrewAI had raised funding and become one of the most popular multi-agent frameworks in the Python ecosystem.
+
+What makes CrewAI special is the level of abstraction. You do not think in nodes and edges. You think in people and jobs. You describe the team, and CrewAI figures out how to run it.
+
+---
+
+PART B: The Three Building Blocks
+
+Everything in CrewAI comes down to three things. An agent, a task, and a crew.
+
+Start with the agent. Imagine you are hiring someone. You would tell them their job title -- "Senior Researcher." You would explain what success looks like -- "Find the three most relevant papers on this topic." And you would give them some background so they know how to approach the work -- maybe they are an expert in academic literature, maybe they specialize in industry reports. That is exactly what you do in CrewAI. You define a role, a goal, and a backstory. And if the agent needs to go out and do something -- search the web, read a file, call an API -- you hand it the right tools.
+
+Next comes the task. A task is the actual assignment. You write a clear description of what needs to happen, you describe what the finished output should look like -- a summary, a report, a list of recommendations -- and you assign it to one of your agents. One agent, one task, one clear deliverable.
+
+Finally, the crew. The crew is where it all comes together. You take your agents, you take your tasks, you pick how they should work -- one after another in sequence, or with a manager coordinating from above -- and you hit run. CrewAI handles the execution, the handoffs, and the context sharing between agents. You designed the team. CrewAI runs it.
+
+---
+
+PART C: The Code
+
+Here is what it looks like in code.
+
+The researcher runs first, finds the papers. Its output automatically flows to the writer. The writer uses those findings to produce the summary. Two agents, two tasks, one crew. That is multi-agent AI.
+
+---
+
+PART D: Sequential vs Hierarchical
+
+Once you have your agents and tasks, you need to decide how they work together. CrewAI gives you two options.
+
+The first is sequential. The researcher goes first, finishes, and hands everything to the writer. The writer finishes and hands everything to the reviewer. One after another, like a production line. You know exactly what happens and in what order.
+
+The second is hierarchical. Instead of a fixed order, you add a manager agent. The manager reads the overall goal, decides which agent should work next, reviews the output, and can send it back if it is not good enough. It is closer to how a real project team operates.
+
+For most tasks, sequential is the right starting point. You will know when you need hierarchical because sequential will start feeling too rigid.
+
+---
+
+PART E: Delegation
+
+One of CrewAI's most powerful features is delegation. An agent can ask another agent for help.
+
+The writer is drafting a section and realizes it needs a specific statistic. Instead of guessing, it delegates to the researcher: "Find me the 2024 market size for vector databases." The researcher runs, finds the number, and passes it back. The writer continues with real data.
+
+This is not hardcoded. The agents decide when to delegate based on the task at hand. It is collaboration, not just sequencing.
+
+
+Video 3: "Orchestrating Complex Workflows"
+
+PART A: Task Dependencies
+
+Real workflows have dependencies. The analyst cannot analyze until the researcher has gathered data. The writer cannot write until the analyst has produced insights. The editor cannot edit until the writer has a draft.
+
+CrewAI handles this through task ordering and context passing. Each task's output becomes available to downstream tasks. You define the order, and the framework ensures that each agent gets the context it needs from the agents that ran before it.
+
+---
+
+PART B: Memory and Context
+
+CrewAI also handles memory. When the researcher finishes, its output is automatically passed to the next agent as context. The analyst does not just see its own task description -- it sees everything the researcher found. And when the analyst finishes, the writer sees both the research and the analysis.
+
+Think of it like a relay race. Each runner passes the baton to the next. The baton is the accumulated context -- and it gets richer at every handoff. You do not wire this up manually. You define the task order, and CrewAI handles the rest.
+
+---
+
+PART C: Real-World Patterns
+
+CrewAI is already running in production at companies like Uber, LinkedIn, and hundreds of others. The use cases follow the same pattern every time.
+
+A content team where one agent researches, another writes, and a third edits. A lead scoring pipeline where one agent qualifies the prospect, another checks the CRM, and a human reviewer approves or rejects. An email responder where one agent reads the incoming message, classifies the intent, and routes it to a specialist agent that drafts the reply.
+
+The pattern is always the same. Break the job into roles. Give each role one clear task. Let CrewAI handle the handoffs.
+
+
+Video 5: "CrewAI Tools &amp; Processes"
+
+PART A: CrewAI Tools &mdash; Giving Agents Superpowers
+
+In the last video you saw how to define agents, assign them roles, and wire them into a crew. But there is a piece we have not talked about yet -- and it changes everything.
+
+Tools. A CrewAI tool is a Python function that an agent can call during its work. Search the web. Read a file. Query a database. Scrape a website. Send an email. Calculate a number. Without tools, an agent can only think. With tools, it can act.
+
+CrewAI ships with a library of built-in tools -- SerperDevTool for web search, ScrapeWebsiteTool for pulling web content, FileReadTool for reading local files, and more. But the real power is custom tools. You write a Python function, decorate it with @tool, give it a good docstring, and the agent knows how to use it.
+
+Here is the key insight: the quality of your tools determines the quality of your crew. An agent with bad tools is like a surgeon with dull instruments -- smart, but limited.
+
+---
+
+PART B: Processes &mdash; Sequential vs Hierarchical
+
+You already know the difference between sequential and hierarchical from the last video. Now let us talk about when you actually switch from one to the other.
+
+Sequential breaks down when the task requires back-and-forth. If your editor finds a factual error, in sequential mode the crew is already done. There is no way to send it back to the researcher. In hierarchical mode, the manager catches that and says "researcher, verify this claim before we continue."
+
+Hierarchical also shines when you do not know the right order in advance. Maybe some queries need research first, others need analysis first. The manager figures that out at runtime based on what the user asked.
+
+The trade-off is cost and predictability. Hierarchical uses more LLM calls because the manager reasons at every step. And the output path is harder to debug because you did not design it. For production systems, start with sequential, measure quality, and only switch to hierarchical if you see the quality ceiling.
+
+---
+
+PART C: Memory, Delegation &amp; Guardrails
+
+Three more features you should know about before the lab.
+
+Memory. CrewAI can give agents short-term memory (within a task), long-term memory (across crew runs), and entity memory (facts about specific things). Turn it on with memory=True on the Crew. It makes a real difference when agents need to build on each other's work.
+
+Delegation. In hierarchical mode, agents can delegate sub-tasks to other agents. The manager says "Agent B, handle this piece" and Agent B runs its own mini-workflow. You control this with allow_delegation=True on the agent.
+
+Guardrails. You can set max_iter to limit how many reasoning steps an agent takes, and max_rpm to throttle API calls. Without these, a confused agent can loop forever and burn through your API budget. Always set limits.
+
+Tools, processes, memory, delegation, guardrails. That is the full CrewAI toolkit. You have everything you need for the next lab.
+
+
+Video 7: "Module 8 Wrap-Up"
+
+PART 01: What You Accomplished
+
+Building an AI system is not about making one agent smarter. It is about making the right agents work together.
+
+That is what you learned this module. You built crews with agents that have clear roles, clear goals, and real tools. You ran sequential pipelines where each agent builds on the work of the one before it. You explored hierarchical mode where a manager coordinates the team. You set guardrails so your agents do not spiral out of control.
+
+You went from building one agent to designing a team. That is a different way of thinking about AI systems.
+
+---
+
+PART 02: Next Module Preview
+
+Next week, we shift gears. You have built powerful backends -- APIs, chains, RAG, agents, multi-agent crews. But if nobody can use what you built, it does not exist.
+
+Next module: Frontends. How do you take everything you have built and put it in front of a real user -- with Gradio and Streamlit?
+
+
+================================================================
+MODULE M09: FRONTEND FOR AI — GRADIO & STREAMLIT
+================================================================
+
+Video 1: "The Spark" -- If Nobody Can Use It
+
+PART 01: The Problem Nobody Talks About
+
+Do not judge a book by its cover. You have heard that your whole life. But apps are not books. When someone opens your application, they are judging it before they type a single word. The layout. The colors. The feel. If it looks like a homework assignment, they close the tab. That is just how people work.
+
+Everything you have built so far lives in a Jupyter notebook. Powerful, but invisible. Your manager cannot open a notebook. Your client cannot run Python. This module changes that. You will turn your AI into real, clickable, shareable applications, in under 50 lines of code.
+
+---
+
+PART 02: Two Tools, One Goal
+
+Two tools. Gradio and Streamlit. Both are Python libraries. Both turn your AI code into web applications. No HTML. No CSS. No JavaScript. Just Python.
+
+Gradio is built for demos. You want to show your boss what your model can do? Gradio gives you a shareable link in three lines of code. Streamlit is built for dashboards. You want to build a data analysis tool with charts, filters, and AI-powered insights? Streamlit.
+
+---
+
+PART 03: What You Will Build
+
+By the end of this module, you will have built two working applications. One with Gradio, one with Streamlit. And you will be able to share them with anyone. No installation required.
+
+The gap between "I built something cool in a notebook" and "here, try it" is smaller than you think. Let us close it.
+
+
+Video 2: Gradio -- Instant AI Demos
+
+PART A: Gradio Origins
+
+Gradio was created by Abubakar Abid in 2019 and acquired by Hugging Face in 2021. The idea is simple: take any Python function and turn it into a web interface automatically.
+
+Here is how it works. You write a function. You wrap it in gr.Interface. You call launch. That is it. Gradio looks at your function signature, creates input components for the parameters, creates an output component for the return value, and gives you a local URL.
+
+---
+
+PART B: The Share Link Magic
+
+But here is what makes this powerful: add share=True and Gradio creates a public URL. Anyone in the world can use your app. No deployment. No server. Just a link.
+
+Gradio has components for everything: text, images, audio, video, files, code, chatbots. You can build a text analyzer, a chatbot, an image classifier. All with the same pattern.
+
+---
+
+PART C: Gradio Blocks
+
+For more complex apps, Gradio Blocks gives you full layout control. Rows, columns, tabs, accordions. You design the interface, wire up the events, and Gradio handles the rest.
+
+---
+
+PART D: Lab Preview
+
+In the lab, you will build three Gradio apps: a text analyzer, a chatbot UI, and an image interface. All in under 50 lines of Python each. Let us go build.
+
+
+Video 3: Streamlit -- AI Dashboards
+
+PART A: Streamlit Philosophy
+
+Streamlit was created in 2018 by Adrien Treuille, Amanda Kelly, and Thiago Teixeira. It takes a different approach than Gradio. Instead of wrapping functions, you write a script. The script runs top to bottom. Every Streamlit call adds something to the page.
+
+st.title adds a title. st.write adds text. st.line_chart adds a chart. st.text_input adds an input box. It reads like English.
+
+---
+
+PART B: State and Caching
+
+What makes Streamlit powerful for AI is its session state and caching. Session state remembers user inputs across reruns. Caching prevents expensive API calls from running every time the page refreshes. Together, they make it possible to build responsive AI dashboards.
+
+---
+
+PART C: Deployment
+
+Streamlit also has a sidebar, columns, tabs, and metrics. Those are all the building blocks of a professional dashboard. And Streamlit Community Cloud lets you deploy for free. Push to GitHub, connect Streamlit Cloud, and your app is live.
+
+---
+
+PART D: Gradio vs Streamlit
+
+If Gradio is for demos, Streamlit is for products. Both are essential tools in your toolkit.
+
+
+Video 6: Wrap-Up
+
+PART 01: What You Accomplished
+
+Here is what you accomplished. You took AI code that lived in notebooks and turned it into applications that anyone can use. Gradio gave you instant demos with shareable links. Streamlit gave you dashboards with charts, filters, and state management.
+
+Think about the progression. You started with API calls, then built RAG pipelines, then agents, then multi-agent teams. And now, you can put a user interface on top of any of it.
+
+You can now build end-to-end AI applications. From data to model to interface to user. That is a complete stack.
+
+---
+
+PART 02: Next Module Preview
+
+Next up is connection and safety. MCP gives your AI a standard way to connect to any tool. Guardrails make sure it does not go off the rails. It is about building AI that is both powerful and responsible.
+
+
+================================================================
+MODULE M10: MCP & GUARDRAILS
+================================================================
+
+Video 1: "The Spark" -- The USB of AI
+
+PART 01: The USB Analogy
+
+Think about USB. Before USB, every device had its own proprietary connector. Printers, cameras, keyboards. All different cables. USB created one standard.
+
+MCP, the Model Context Protocol, is doing the same thing for AI. One standard way for any AI model to connect to any tool, any database, any service.
+
+---
+
+PART 02: Before MCP
+
+Before MCP, every integration was custom. Want your AI to read from a database? Write a custom tool. Want it to search the web? Write another tool. Want it to send emails? Another tool. Every integration, from scratch.
+
+MCP changes that. It defines a standard protocol. A server exposes capabilities, a client connects to them. Any AI model can connect to any MCP server. OpenAI adopted it. Google adopted it. Anthropic created it. The entire industry is converging on this one standard.
+
+---
+
+PART 03: Connection + Safety
+
+But connection without safety is a liability, not a feature. If your AI can read from a database, it can also leak data. If it can send emails, it can send harmful ones. If it can execute code, it can execute malicious code.
+
+That is why this module covers both MCP and guardrails. Connection and safety. Power and responsibility. You need both.
+
+
+Video 2: Building MCP Servers
+
+PART A: MCP Architecture
+
+An MCP server is a program that exposes tools to AI models through a standard protocol. Here is how to build one.
+
+The architecture is simple. You have a server that registers tools. These are functions with names, descriptions, and parameter schemas. You have a client, your AI application, that discovers those tools and calls them.
+
+---
+
+PART B: Building with the MCP SDK
+
+In Python, you use the MCP SDK. You create a server, decorate functions as tools, and run it. The SDK handles the protocol. The JSON-RPC messages, the capability negotiation, the error handling.
+
+Here is what makes this powerful. Once you build an MCP server, any MCP client can use it. Claude Desktop, Cursor, your own applications. They all speak the same protocol. Build once, connect everywhere.
+
+---
+
+PART C: Lab Preview -- Database MCP
+
+In the lab, you will build an MCP server that connects AI to a SQLite database. The AI will be able to query tables, run SQL, and get results. All through MCP. No custom tool code. Just the standard protocol.
+
+
+Video 3: Implementing Guardrails
+
+PART A: Three Layers of Safety
+
+Guardrails are the safety systems that keep AI applications from going off the rails. There are three layers you need.
+
+Layer one: input validation. Before any user input reaches the LLM, you validate it. Check for prompt injection attacks, someone trying to override the system prompt. Check for prohibited content. Check for excessive length. This is your first line of defense.
+
+---
+
+PART B: Output Filtering
+
+Layer two: output filtering. After the LLM generates a response, you check it. Does it contain harmful content? Does it reveal system prompts or internal data? Does it include hallucinated facts that could be dangerous? You filter before the user sees it.
+
+---
+
+PART C: Behavioral Constraints
+
+Layer three: behavioral constraints. These are the rules your AI follows. It will not execute arbitrary code. It will not access data outside its scope. It will not make claims about topics it should not discuss. These constraints are embedded in the system prompt and enforced in code.
+
+---
+
+PART D: Frameworks
+
+The frameworks make this easier. Guardrails AI, NeMo Guardrails from NVIDIA, and OpenAI's moderation API all provide pre-built safety checks. In the lab, you will implement all three layers.
+
+
+Video 6: Wrap-Up
+
+PART 01: The Full Picture
+
+Here is what you accomplished. You learned MCP, the standard protocol that lets AI connect to anything. And you learned guardrails, the safety systems that make sure those connections are responsible.
+
+Think about the full picture now. You can build AI applications with APIs. You can make them smart with prompting, chains, RAG, and agents. You can orchestrate teams with CrewAI. You can give them user interfaces with Gradio and Streamlit. You can connect them to any tool with MCP. And you can make them safe with guardrails.
+
+That is a complete toolkit. From idea to production. From notebook to product. From prototype to responsible deployment.
+
+---
+
+PART 02: Next Module Preview
+
+Next module: Vision and Evaluation. How do you give AI the ability to see, to read engineering drawings, charts, and images? And how do you actually measure whether your AI is working? You cannot ship what you cannot measure.
+
+
+================================================================
+MODULE M11: VISION & EVALUATION
+================================================================
+
+Video 1: "The Spark" -- Engineering Drawings
+
+PART 01: Personal Story -- CAD Diagrams
+
+Until now, every tool you have built only handled text. Prompts, JSON, function calls, RAG, agents. All text in, text out. This module breaks that wall. The latest models from OpenAI, Google, and Anthropic process images, audio, even video. They see.
+
+---
+
+PART 02: The Multimodal Shift
+
+For years, AI was a text-only game. You type, it responds. But something shifted. The latest models from OpenAI, Google, and Anthropic are now multimodal. They process images, audio, even video. They do not just read your question about a chart. They look at the chart.
+
+This changes everything. Medical imaging. Manufacturing quality control. Document analysis. Architectural review. Any domain where visual information matters, and that is most domains, multimodal AI is now relevant.
+
+---
+
+PART 03: The Measurement Problem
+
+But here is the catch. If these models can see, how do you know they are seeing correctly? How do you measure whether the output is good? That is the second half of this module. Evaluation. Because if you cannot measure it, you cannot trust it.
+
+
+Video 2: Vision APIs -- Sending Images to AI
+
+PART A: How to Send Images
+
+Sending an image to an AI model is simpler than you think.
+
+With OpenAI's multimodal models, you send a message that contains both text and an image. The image can be a URL or a base64-encoded file. The model processes both together and responds.
+
+With Gemini, the approach is similar but the API structure differs slightly. You can send images, PDFs, even short video clips.
+
+---
+
+PART B: What Vision Models Can Do
+
+Vision models can do more than you might expect. Object detection, text extraction from photos, diagram analysis, comparing two images, describing scenes, reading handwriting. The accuracy varies by task, but for many practical applications it is remarkably good.
+
+---
+
+PART C: Conversational Vision
+
+The key insight is this. Vision is not a separate capability. It is integrated into the same conversation. You can ask follow-up questions about an image. You can send multiple images and ask the model to compare them. It is a conversation, not a one-shot analysis.
+
+
+Video 3: LLM Evaluation -- Metrics and Frameworks
+
+PART A: The Hard Problem
+
+You have built a RAG system. You have built agents. But here is the question nobody asks until it is too late. How do you know if they are working well?
+
+LLM evaluation is one of the hardest problems in AI engineering. Traditional software has unit tests. Input X, expect output Y. But LLMs are non-deterministic. The same input can produce different outputs every time.
+
+---
+
+PART B: Automated Metrics
+
+Evaluation starts with knowing what to measure. There are automated metrics like BLEU and ROUGE. They compare generated text against reference text. Useful for translation and summarization. There is semantic similarity, embedding the output and comparing it to expected answers. And there is human evaluation, having people rate quality, accuracy, helpfulness.
+
+---
+
+PART C: RAG Evaluation with RAGAS
+
+For RAG systems specifically, you measure retrieval quality (did we find the right documents?) and generation quality (did the answer correctly use those documents?). Frameworks like RAGAS give you metrics for both.
+
+---
+
+PART D: Practical Approach -- Regression Testing for AI
+
+The practical approach? Build a test suite. A set of questions with known good answers. Run your system against it regularly. Track the scores over time. That is regression testing for AI.
+
+
+Video 6: Wrap-Up
+
+PART 01: Production-Ready
+
+This module covered two capabilities that make your AI systems production-ready. Vision gives your applications the ability to process the visual world. Evaluation gives you the confidence that they are doing it correctly.
+
+---
+
+PART 02: Next Module Preview
+
+Next module, we shift to the cutting edge. Claude Agent SDK, Google ADK, and Claude Code. It is workshop time.
+
+
+================================================================
+MODULE M12: AGENT SDKs & CLAUDE CODE
+================================================================
+
+Video 1: "The Spark" -- The Smartphone Moment
+
+PART 01: The Smartphone Analogy
+
+Think about the first time you used a smartphone. Before that, you needed a separate camera, GPS, MP3 player, calculator, and phone. The smartphone put them all in one device.
+
+Claude Agent SDK and Google ADK did the same thing for agent development. Built-in tools. No setup. Just build.
+
+---
+
+PART 02: The Platform Shift
+
+In 2024, building an AI agent meant choosing a framework, writing glue code, debugging tool integrations, and hoping everything worked together. LangChain, CrewAI, AutoGen. Each had strengths, but all required significant scaffolding.
+
+In 2026, the major AI companies released their own SDKs. Anthropic shipped the Claude Agent SDK with built-in tools. Read, Write, Bash, WebSearch. Google released the Agent Development Kit with multi-agent support and deployment flexibility. These are not frameworks. They are platforms.
+
+---
+
+PART 03: Workshop Preview
+
+This module is a workshop. Less lecture, more building. You will use both SDKs. You will rebuild the Beer Game with modern tools. And you will see why the best agent framework is the one that gets out of your way.
+
+
+Video 2: Claude Agent SDK
+
+PART A: Built-In Tools
+
+The Claude Agent SDK is Anthropic's official toolkit for building AI agents. Here is what makes it different.
+
+First, built-in tools. The SDK comes with tools like Read (read files), Write (create files), Bash (run commands), and WebSearch. You do not need to implement these yourself. They just work.
+
+---
+
+PART B: Skills and Subagents
+
+Second, Skills versus Tools. Tools are atomic actions. Skills are higher-level capabilities. Reusable instruction sets that the agent can invoke. Think of tools as functions and skills as libraries.
+
+Third, subagents. You can create specialized agents that work under a main orchestrator. Each subagent has its own tools and instructions. The orchestrator delegates tasks and collects results.
+
+---
+
+PART C: Mental Model
+
+The mental model is simple. You define what the agent should do (instructions), what it can do (tools), and how it should work with others (subagents). The SDK handles the rest.
+
+
+Video 3: Google ADK
+
+PART A: Code-First Approach
+
+Google's Agent Development Kit takes a code-first approach. If you are a developer who thinks in functions and classes, ADK will feel natural.
+
+The core concept is the Agent class. You define an agent with a name, model, instructions, and tools. Tools are Python functions decorated with metadata. The agent calls them as needed.
+
+---
+
+PART B: Multi-Agent Orchestration
+
+What makes ADK interesting is multi-agent orchestration. You can define multiple agents that collaborate on complex tasks. A research agent gathers information. An analysis agent processes it. A writing agent produces the final output.
+
+---
+
+PART C: Deployment Flexibility
+
+Deployment is flexible. Run locally, deploy to Cloud Run, or use Vertex AI. Same code, different environments.
+
+
+Video 4: Beer Game V2 -- Workshop Introduction
+
+PART 01: From M04 to M12
+
+Remember the Beer Game from earlier in the course? You built a supply chain simulation with simple LLM-powered decision making. That was a great start. Now we are going to rebuild it with everything you have learned since then.
+
+Beer Game V2 uses Claude Code and the Agent SDK. The agents are smarter. They have memory, they analyze trends, they coordinate. The visualization dashboard shows real-time supply chain dynamics. And the whole system is built using modern AI engineering practices.
+
+---
+
+PART 02: Workshop Instructions
+
+This workshop will take about 25 minutes. Follow the steps. Experiment. Break things and fix them. That is how you learn.
+
+
+Video 5: Wrap-Up
+
+PART 01: Engineering Session Complete
+
+You just built three working projects using two different SDKs and Claude Code. That is not a lecture. That is an engineering session.
+
+The tools will keep evolving. New SDKs will launch. But the skill you built today, the ability to pick up a new platform and build something real with it quickly, that is permanent.
+
+---
+
+PART 02: Next Module Preview
+
+Next module, we shift to business deployment. n8n, workflow automation, and applying everything you know to real business problems.
+
+
+================================================================
+MODULE M13: BUSINESS GenAI & n8n
+================================================================
+
+Video 1: "The Spark" -- The Morning Routine
+
+PART 01: The Automated Morning
+
+Imagine this. Every morning you have a routine. Check email, review overnight alerts, update my task list, send a summary to my team. It takes 45 minutes.
+
+What if you automated the entire thing with n8n. It runs at 6 AM while you sleep. That is the difference between knowing AI and deploying AI.
+
+---
+
+PART 02: Building vs Deploying
+
+Nobody dreams of copying data from one spreadsheet to another. But somehow, that is how most people spend their Mondays. This module is about making Monday disappear.
+
+You have learned how to build with AI. Now you learn how to deploy it. How to put AI inside real business workflows that run without you, triggered by emails, schedules, webhooks. We will use n8n, a visual automation tool that connects AI to everything your business runs on.
+
+---
+
+PART 03: Theory Is Over
+
+Theory is over. This module is about deployment and business impact.
+
+
+Video 2: Introduction to n8n
+
+PART A: What Is n8n
+
+n8n is a workflow automation platform. Think of it as a visual programming environment where each node is an action. Send an email, call an API, query a database, process text with AI.
+
+You connect nodes with wires. Data flows from one node to the next. When something triggers the workflow, a new email, a scheduled time, a webhook, the entire pipeline runs automatically.
+
+---
+
+PART B: AI Integration
+
+What makes n8n special for us is its AI integration. You can drop an LLM node into any workflow. Receive a document, extract information with GPT, store it in a database, and send a summary email. All without writing a single line of code.
+
+---
+
+PART C: Open Source and Integrations
+
+It is open-source, self-hostable, and has hundreds of integrations. For our purposes, it is the fastest way to go from "I built an AI prototype" to "I deployed an AI system."
+
+
+Video 3: Advanced n8n -- AI-Powered Automation
+
+PART A: The LLM Pattern
+
+Now that you have the basics, let us connect LLMs to n8n workflows.
+
+The pattern is simple. A trigger fires. Data comes in. An AI node processes it, classifying, extracting, summarizing, or generating. The result flows to the next node. Database, email, Slack, spreadsheet.
+
+---
+
+PART B: Three Production Patterns
+
+I will show you three patterns. First, document processing. A file arrives, AI extracts structured data, it goes into a database. Second, intelligent routing. An email comes in, AI classifies it, and the workflow routes it to the right team. Third, content generation. A scheduled trigger fires, AI generates a report from database data, and it gets emailed to stakeholders.
+
+These are not toy examples. These are the exact patterns businesses use in production today.
+
+---
+
+PART C: Lab Preview
+
+In the lab, you will build all three patterns yourself. You will also connect your existing AI code, the RAG pipeline, the agents, to n8n triggers. This is where everything comes together.
+
+
+Video 4: TA -- n8n Setup Guide
+
+PART 01: n8n Installation and Setup
+
+TA covers: Install n8n locally (npm or Docker). Access the n8n interface at localhost:5678. Create your first workflow. Manual trigger plus HTTP request. Configure credentials for email and AI services. Common issues: port conflicts, credential errors, node versioning.
+
+
+Video 5: Wrap-Up
+
+PART 01: From API Calls to Deployed Workflows
+
+You have gone from API calls to deployed AI workflows. You have seen how real companies use GenAI. You have built automation pipelines that run without you.
+
+---
+
+PART 02: The Finale
+
+Next module is the finale. Your final project. Everything you have learned, APIs, prompting, structured output, RAG, agents, multi-agent systems, MCP, vision, SDKs, and automation, it all comes together in one project that you design, build, and present.
+
+Make it count.
+
+
+================================================================
+MODULE M14: FINAL PROJECT
+================================================================
+
+Video 1: "The Spark" -- Look How Far You Have Come
+
+PART 01: The Journey
+
+Thirteen modules ago, you made your first API call. You did not know what a token was. Now you build agents, orchestrate multi-agent teams, connect AI to any tool through MCP, and automate workflows. Look how far you have come.
+
+This final project is your portfolio piece. It is the thing you point to in job interviews when someone asks "What can you build with AI?" It is proof. Not of what you learned, but of what you can do.
+
+---
+
+PART 02: Make It Count
+
+The scope is yours to define. The technology is yours to choose. The only requirement is that it must be real. A working system that solves a real problem, demonstrates genuine engineering, and uses what you have learned in this course.
+
+Make it count.
+
+
+Video 2: Tips for a Great Project
+
+PART 01: Tip 1 -- Scope Ruthlessly
+
+Here is some advice from watching hundreds of student projects.
+
+First, scope ruthlessly. The most common mistake is building too much. A polished, working demo of one thing beats a broken prototype of five things. Every time.
+
+---
+
+PART 02: Tip 2 -- Pick a Problem You Care About
+
+Second, pick a problem you care about. If you are in supply chain, build a supply chain tool. If you are in healthcare, build a healthcare tool. Your domain expertise combined with AI skills is what makes the project unique.
+
+---
+
+PART 03: Tip 3 -- Architecture Matters
+
+Third, architecture matters. Think about your system design before you write a single line of code. Which LLM? Which tools? How do components connect? A clean architecture is easier to build, easier to debug, and easier to present.
+
+---
+
+PART 04: Tip 4 -- Demo Over Slides
+
+Fourth, demo over slides. When you present, show the working system. Click through it live. Nothing is more convincing than a system that works in front of the audience.
+
+---
+
+PART 05: Tip 5 -- Document Everything
+
+Fifth, document everything. Your report should explain not just what you built, but why you made each technical decision. That is what separates an engineering project from a coding exercise.
+
+
+Video 3: Course Wrap-Up -- The Final Closing
+
+PART 01: The Transformation
+
+You walked in as students learning about AI. You are walking out as engineers who build with it.
+
+Over fourteen modules, you connected to AI through code. You built tools that write Excel formulas and analyze Bitcoin. You mastered prompt engineering. You forced AI output into structured, validated formats. You chained operations with LangChain. You grounded AI in real data with RAG. You built autonomous agents. You orchestrated multi-agent teams. You built frontends. You connected AI to every tool through MCP. You kept it safe with guardrails. You saw through AI's eyes with vision. You deployed with the latest SDKs. You automated workflows.
+
+That is not a course. That is an engineering toolkit.
+
+---
+
+PART 02: What Lasts
+
+The tools will change. New models will come. But the skill of knowing how to think about AI, how to architect with it, how to evaluate it. That does not expire.
+
+---
+
+PART 03: Go Build Something
+
+Thank you for being part of this course. Now go build something.

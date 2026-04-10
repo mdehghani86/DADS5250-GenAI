@@ -1565,13 +1565,18 @@ function toggleModule(id) {
 }
 </style>
 
-<button class="export-fab" onclick="exportAllScripts()">
+<a class="export-fab" href="../scripts/DADS5250_All_Scripts.txt" download="DADS5250_All_Scripts.txt">
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
   Export All Scripts
-</button>
+</a>
 
+<!-- Export All Scripts: now served from pre-generated file.
+     To regenerate: python scripts/export_all_scripts.py
+     The button above links directly to scripts/DADS5250_All_Scripts.txt
+-->
+<!-- OLD exportAllScripts() function removed — was 500+ lines of hardcoded text.
 <script>
-function exportAllScripts() {
+function _removed_exportAllScripts() {
   const now = new Date();
   const dateStr = now.toLocaleDateString('en-US', { year:'numeric', month:'long', day:'numeric' });
 
@@ -2069,7 +2074,7 @@ See you at the hackathon.` }
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
 }
-</script>
+</script> -->
 
 <!-- Gallery Modal -->
 <div id="gallery-modal" class="gallery-overlay" onclick="if(event.target===this)closeGallery()">
