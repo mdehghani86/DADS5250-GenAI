@@ -1144,8 +1144,8 @@ body.teleprompter .scroll-controls {
     </div>
     <div class="script-col">
       <p>Here is something worth understanding. LLMs do not think. They predict.</p>
-      <p>When you send a prompt, the model looks at all the words so far and calculates -- what is the most likely next word? It picks one, adds it, and repeats. Word by word. Token by token.</p>
-      <p>This is why temperature matters -- at zero, it always picks the most likely word. At higher values, it takes risks. And this is why LLMs sometimes hallucinate -- they generate text that sounds right but is factually wrong.</p>
+      <p>When you send a prompt, the model looks at all the words so far and asks one question: what is the most likely next word? It picks one, adds it, and repeats. Word by word. Token by token.</p>
+      <p>This is why temperature matters. At zero, it always picks the safest word. At higher values, it takes risks. And this is why LLMs sometimes hallucinate. They generate text that sounds right but is factually wrong.</p>
       <p>The model does not know what is true. It knows what is likely.</p>
     </div>
     <div class="media-col">
@@ -1296,7 +1296,7 @@ response = client.chat.completions.<span class="fn">create</span>(
 
 <span class="fn">print</span>(response.choices[0].message.content)</pre></div>
       <p>Seven lines. That is all it takes. Seven lines and you have programmatic access to one of the most powerful AI models on earth.</p>
-      <p>Let me show you what happens when you run it. You hit enter. About one second later, the output appears in your terminal:</p>
+      <p>Here is what happens when you run it. You hit enter. About one second later, the output appears in your terminal:</p>
       <div class="code-block"><pre><span class="cm">>>> Output:</span>
 An API, or Application Programming Interface, is a set of rules
 and protocols that allows different software applications to

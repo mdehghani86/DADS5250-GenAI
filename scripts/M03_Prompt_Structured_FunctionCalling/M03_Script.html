@@ -1343,7 +1343,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="script-col">
       <p>JSON mode forces the model to return valid JSON -- guaranteed parseable, guaranteed structured.</p>
-      <p>Let me show you the difference. Same question, two modes.</p>
+      <p>Watch the difference. Same question, two modes.</p>
       <p>Text mode: "The sentiment of the review is positive. The customer expressed satisfaction with the product quality and delivery speed."</p>
       <p>JSON mode: {"sentiment": "positive", "confidence": 0.92, "keywords": ["quality", "delivery speed"]}</p>
       <p>Same information. But the JSON version can be parsed by code in one line. No regex. No string manipulation. Just json.loads() and you have a Python dictionary.</p>
@@ -1601,7 +1601,7 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Let me walk through a complete example.</p>
+      <p>Here is a complete example.</p>
       <p>Step 1: You define a function called get_weather with parameters city and units.</p>
       <p>Step 2: User says "What is the weather in Boston?"</p>
       <p>Step 3: The model does not answer directly. Instead it returns: {"name": "get_weather", "arguments": {"city": "Boston", "units": "fahrenheit"}}</p>

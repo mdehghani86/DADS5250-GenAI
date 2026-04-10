@@ -541,7 +541,7 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Let me show you what LangChain actually does with an example you already know.</p>
+      <p>Here is what LangChain actually does, with an example you already know.</p>
       <p>Imagine a process inside an Amazon fulfillment center. You click "buy" on your phone, and that one click kicks off a whole pipeline. A picker walks the aisle and grabs your item from the shelf. A packer drops it in the right-sized box. A labeler prints the shipping label and slaps it on. A sorter routes the box to the truck going to your zip code. And a driver delivers it to your door. Each station has one job. Each station is independent. And the conveyor belt between them is what makes the whole thing work -- it carries the package from one station to the next, without anyone having to carry it by hand.</p>
       <p>LangChain does the exact same thing for AI workflows. Each of the four building blocks you just saw -- prompt templates, LLMs, memory, chains -- is a station on your AI fulfillment line. Input comes in one end. Each component does its one job. The finished output comes out the other end.</p>
       <p>And here is the beautiful part. Just like Amazon can swap out the labeling machine without shutting down the entire warehouse, you can swap one component in your LangChain pipeline -- change the LLM, update the prompt template, add memory -- without touching the rest of your application. That is what makes LangChain powerful. LangChain is a fulfillment center for AI.</p>
@@ -614,7 +614,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="script-col">
       <p>The modern way to build chains is called LCEL -- LangChain Expression Language. It uses the pipe operator to connect components. It is clean, it is readable, and it is powerful.</p>
-      <p>Let me show you a quick preview of what that looks like in code.</p>
+      <p>Here is a quick preview of what that looks like in code.</p>
       <div class="code-block"><pre>chain = prompt <span class="kw">|</span> llm <span class="kw">|</span> output_parser
 
 result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>: <span class="str">"supply chain optimization"</span>})</pre></div>
@@ -685,7 +685,7 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
       </div>
     </div>
     <div class="script-col">
-      <p>Let me walk you through building your first chain with LCEL.</p>
+      <p>This is how you build your first chain with LCEL.</p>
       <p>The syntax is beautifully simple. You write: prompt, pipe, llm, pipe, output_parser. That is it. Three components connected with the pipe operator.</p>
       <p>Here is what happens. The user asks a question. The prompt template wraps it with structure and context. The model generates a response. The output parser extracts the clean text.</p>
     </div>
