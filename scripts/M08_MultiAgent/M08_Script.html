@@ -816,31 +816,41 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
       </div>
     </div>
     <div class="script-col">
-      <p>Where are multi-agent systems actually being used?</p>
-      <p>Cognition's Devin uses multiple specialized agents -- a planner, a coder, a debugger, and a tester -- working together to complete software engineering tasks. Valued in the billions.</p>
-      <p>Harvey uses multi-agent workflows for legal research -- one agent finds case law, another analyzes precedents, a third drafts arguments. Used by elite law firms.</p>
-      <p>The pattern is the same everywhere. Break a complex task into specialized roles. Let each role do what it does best. Orchestrate the handoffs. That is multi-agent AI.</p>
+      <p>CrewAI is already running in production at companies like Uber, LinkedIn, and hundreds of others. The use cases follow the same pattern every time.</p>
+      <p>A content team where one agent researches, another writes, and a third edits. A lead scoring pipeline where one agent qualifies the prospect, another checks the CRM, and a human reviewer approves or rejects. An email responder where one agent reads the incoming message, classifies the intent, and routes it to a specialist agent that drafts the reply.</p>
+      <p>The pattern is always the same. Break the job into roles. Give each role one clear task. Let CrewAI handle the handoffs.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Multi-Agent Systems in the Wild</span>
+      <span class="media-label">Storyboard -- CrewAI in Production</span>
       <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Production Multi-Agent Systems</text>
-        <rect x="14" y="38" width="180" height="148" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
-        <text x="104" y="58" text-anchor="middle" font-family="Outfit" font-size="13" fill="#2563EB" font-weight="700">Cognition · Devin</text>
-        <text x="104" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">software engineering</text>
-        <line x1="34" y1="86" x2="174" y2="86" stroke="#dbeafe"/>
-        <text x="104" y="106" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Planner → Coder →</text>
-        <text x="104" y="118" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Debugger → Tester</text>
-        <text x="104" y="148" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#2563EB" font-weight="600">multi-billion-$</text>
-        <text x="104" y="166" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">company</text>
-        <rect x="206" y="38" width="180" height="148" rx="10" fill="rgba(168,85,247,0.06)" stroke="#a855f7" stroke-width="1.2"/>
-        <text x="296" y="58" text-anchor="middle" font-family="Outfit" font-size="13" fill="#a855f7" font-weight="700">Harvey</text>
-        <text x="296" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">legal research</text>
-        <line x1="226" y1="86" x2="366" y2="86" stroke="#e9d5ff"/>
-        <text x="296" y="106" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Case-finder → Analyst</text>
-        <text x="296" y="118" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">→ Drafter</text>
-        <text x="296" y="148" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a855f7" font-weight="600">elite law firms</text>
-        <text x="296" y="166" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">use it daily</text>
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Same Pattern · Three Real Use Cases</text>
+        <rect x="14" y="38" width="120" height="148" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="74" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="700">Content Team</text>
+        <line x1="22" y1="68" x2="126" y2="68" stroke="#dbeafe"/>
+        <text x="74" y="88" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Researcher</text>
+        <text x="74" y="100" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB">↓</text>
+        <text x="74" y="114" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Writer</text>
+        <text x="74" y="126" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB">↓</text>
+        <text x="74" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Editor</text>
+        <text x="74" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">sequential crew</text>
+        <rect x="140" y="38" width="120" height="148" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#10b981" font-weight="700">Lead Scoring</text>
+        <line x1="148" y1="68" x2="252" y2="68" stroke="#dcfce7"/>
+        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Qualifier</text>
+        <text x="200" y="100" text-anchor="middle" font-family="Outfit" font-size="10" fill="#10b981">↓</text>
+        <text x="200" y="114" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">CRM Checker</text>
+        <text x="200" y="126" text-anchor="middle" font-family="Outfit" font-size="10" fill="#10b981">↓</text>
+        <text x="200" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Human Review</text>
+        <text x="200" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">human-in-the-loop</text>
+        <rect x="266" y="38" width="120" height="148" rx="10" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="326" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#f59e0b" font-weight="700">Email Responder</text>
+        <line x1="274" y1="68" x2="378" y2="68" stroke="#fef3c7"/>
+        <text x="326" y="88" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Classifier</text>
+        <text x="326" y="100" text-anchor="middle" font-family="Outfit" font-size="10" fill="#f59e0b">↓</text>
+        <text x="326" y="114" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Router</text>
+        <text x="326" y="126" text-anchor="middle" font-family="Outfit" font-size="10" fill="#f59e0b">↓</text>
+        <text x="326" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b">Draft Agent</text>
+        <text x="326" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">intent routing</text>
       </svg>
     </div>
   </div>
