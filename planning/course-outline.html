@@ -796,7 +796,7 @@
 
   <!-- Course Description -->
   <div class="glass description">
-    This graduate course teaches applied Generative AI -- from LLM API basics to production-ready agent systems. Students build hands-on with the latest SDKs (OpenAI, Claude Agent SDK, Google ADK), learn prompt engineering, RAG, multi-agent orchestration, MCP, and workflow automation. The course emphasizes practical skills over theory (20/80 split) with Jupyter notebook labs on Google Colab. Each module features an AI Spotlight -- a real-world AI tool students should know.
+    This graduate course teaches applied Generative AI -- from LLM API basics to production-ready agent systems. Students build hands-on with the latest SDKs (OpenAI, Claude, Google ADK), learn prompt engineering, RAG, multi-agent orchestration, multimodal AI, and AI safety. The course emphasizes practical skills over theory (20/80 split) with Jupyter notebook labs on Google Colab. Each module features an AI Spotlight -- a real-world AI tool students should know.
   </div>
 
   <!-- Phase Pipeline -->
@@ -1311,13 +1311,13 @@
       <div class="mod-header" onclick="toggleModule('m10')">
         <div class="mod-border mod-border--advanced"></div>
         <span class="mod-num">M10</span>
-        <span class="mod-title">MCP &amp; Guardrails</span>
+        <span class="mod-title">Vision, Multimodal &amp; Evaluation</span>
         <span class="ai-spotlight-chip"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg>Bolt.new</span>
         <div class="mod-icons">
-          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M10_MCP_Guardrails/M10_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M10_MCP_Guardrails/M10_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab1_MCP_Servers.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab2_Guardrails_Safety.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M10_Vision_Eval/M10_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M10_Vision_Eval/M10_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab1_Vision_Multimodal.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab2_LLM_Evaluation.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
           <span class="mod-icon mod-icon--pending" data-tip="Quiz — TBD"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a3 3 0 015 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
           <span class="mod-icon mod-icon--pending" data-tip="Assignment — TBD"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 2v2h6V2"/><path d="M9 12h6M9 16h4"/></svg></span>
           <a class="mod-icon mod-icon--active" data-tip="Images (5)" onclick="showGallery('m10')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></a>
@@ -1326,7 +1326,7 @@
       </div>
       <div class="mod-body">
         <div class="mod-body-inner">
-          <div class="mod-desc">Model Context Protocol -- the universal standard for connecting AI to tools. Safety and responsible AI.</div>
+          <div class="mod-desc">Multimodal AI: send images, audio, and video to LLMs. Evaluation: measure if your AI is actually good.</div>
           <div class="ai-spotlight-box">
             <div class="spotlight-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg></div>
             <div class="spotlight-text">
@@ -1338,8 +1338,8 @@
           <div class="mod-detail-row">
             <span class="mod-detail-label">Labs</span>
             <div class="mod-detail-value">
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab1_MCP_Servers.ipynb" target="_blank">Lab 1: MCP Servers</a><br>
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab2_Guardrails_Safety.ipynb" target="_blank">Lab 2: Guardrails &amp; Safety</a>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab1_Vision_Multimodal.ipynb" target="_blank">Lab 1: Vision &amp; Multimodal</a><br>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M10/M10_Lab2_LLM_Evaluation.ipynb" target="_blank">Lab 2: LLM Evaluation</a>
             </div>
           </div>
           <div class="mod-detail-row">
@@ -1355,13 +1355,13 @@
       <div class="mod-header" onclick="toggleModule('m11')">
         <div class="mod-border mod-border--advanced"></div>
         <span class="mod-num">M11</span>
-        <span class="mod-title">Vision, Multimodal &amp; Evaluation</span>
+        <span class="mod-title">Claude Code</span>
         <span class="ai-spotlight-chip"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg>ElevenLabs</span>
         <div class="mod-icons">
-          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M11_Vision_Eval/M11_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M11_Vision_Eval/M11_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab1_Vision_Multimodal.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab2_LLM_Evaluation.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M11_ClaudeCode/M11_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M11_ClaudeCode/M11_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab1_Claude_Code_Basics.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab2_Claude_Code_Projects.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
           <span class="mod-icon mod-icon--pending" data-tip="Quiz — TBD"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a3 3 0 015 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
           <span class="mod-icon mod-icon--pending" data-tip="Assignment — TBD"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 2v2h6V2"/><path d="M9 12h6M9 16h4"/></svg></span>
           <a class="mod-icon mod-icon--active" data-tip="Images (5)" onclick="showGallery('m11')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></a>
@@ -1370,7 +1370,7 @@
       </div>
       <div class="mod-body">
         <div class="mod-body-inner">
-          <div class="mod-desc">Vision APIs, multimodal prompts, image understanding, LLM evaluation metrics.</div>
+          <div class="mod-desc">Deep dive into Claude Code as an AI engineering tool. Build, debug, and ship with AI-powered coding.</div>
           <div class="ai-spotlight-box">
             <div class="spotlight-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg></div>
             <div class="spotlight-text">
@@ -1382,8 +1382,8 @@
           <div class="mod-detail-row">
             <span class="mod-detail-label">Labs</span>
             <div class="mod-detail-value">
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab1_Vision_Multimodal.ipynb" target="_blank">Lab 1: Vision &amp; Multimodal</a><br>
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab2_LLM_Evaluation.ipynb" target="_blank">Lab 2: LLM Evaluation</a>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab1_Claude_Code_Basics.ipynb" target="_blank">Lab 1: Claude Code Basics</a><br>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M11/M11_Lab2_Claude_Code_Projects.ipynb" target="_blank">Lab 2: Claude Code Projects</a>
             </div>
           </div>
           <div class="mod-detail-row">
@@ -1406,13 +1406,13 @@
       <div class="mod-header" onclick="toggleModule('m12')">
         <div class="mod-border mod-border--production"></div>
         <span class="mod-num">M12</span>
-        <span class="mod-title">Claude Agent SDK, Google ADK &amp; Claude Code</span>
+        <span class="mod-title">AI Platforms (Claude, OpenAI, Google)</span>
         <span class="ai-spotlight-chip"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg>Devin / Windsurf</span>
         <div class="mod-icons">
-          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M12_SDKs_ClaudeCode/M12_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M12_SDKs_ClaudeCode/M12_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Workshop1_Claude_Agent_SDK.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Workshop2_Google_ADK.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M12_AI_Platforms/M12_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M12_AI_Platforms/M12_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 1" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Lab1_Claude_API_Tools.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Lab 2" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Lab2_OpenAI_Google_ADK.ipynb" target="_blank"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></a>
           <span class="mod-icon mod-icon--pending" data-tip="Quiz — TBD"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a3 3 0 015 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
           <span class="mod-icon mod-icon--pending" data-tip="Assignment — TBD"><svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M9 2v2h6V2"/><path d="M9 12h6M9 16h4"/></svg></span>
           <a class="mod-icon mod-icon--active" data-tip="Images (5)" onclick="showGallery('m12')"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></a>
@@ -1421,7 +1421,7 @@
       </div>
       <div class="mod-body">
         <div class="mod-body-inner">
-          <div class="mod-desc">Batteries-included SDKs for building agents. Built-in tools, skills, subagents. Claude Code as an engineering tool.</div>
+          <div class="mod-desc">Three AI ecosystems compared. Claude API and tools, OpenAI Agents SDK, Google Gemini and ADK.</div>
           <div class="ai-spotlight-box">
             <div class="spotlight-icon"><svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10"/></svg></div>
             <div class="spotlight-text">
@@ -1433,8 +1433,8 @@
           <div class="mod-detail-row">
             <span class="mod-detail-label">Labs</span>
             <div class="mod-detail-value">
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Workshop1_Claude_Agent_SDK.ipynb" target="_blank">Lab 1: Claude Agent SDK</a><br>
-              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Workshop2_Google_ADK.ipynb" target="_blank">Lab 2: Google ADK + Claude Code</a>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Lab1_Claude_API_Tools.ipynb" target="_blank">Lab 1: Claude API &amp; Tools</a><br>
+              <a class="lab-link" href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M12/M12_Lab2_OpenAI_Google_ADK.ipynb" target="_blank">Lab 2: OpenAI Agents SDK &amp; Google ADK</a>
             </div>
           </div>
           <div class="mod-detail-row">
@@ -1450,10 +1450,10 @@
       <div class="mod-header" onclick="toggleModule('m13')">
         <div class="mod-border mod-border--production"></div>
         <span class="mod-num">M13</span>
-        <span class="mod-title">Workflow Automation (n8n)</span>
+        <span class="mod-title">AI Ethics, Safety &amp; Guardrails</span>
         <div class="mod-icons">
-          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M13_Business_n8n/M13_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
-          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M13_Business_n8n/M13_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Pages" href="../scripts/M13_Ethics_Safety/M13_Module.html"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h18"/></svg></a>
+          <a class="mod-icon mod-icon--active" data-tip="Script — TBD" href="../scripts/M13_Ethics_Safety/M13_Script.html"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 8h8M8 12h6"/></svg></a>
           <span class="mod-icon mod-icon--inactive" data-tip="Lab 1"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></span>
           <span class="mod-icon mod-icon--inactive" data-tip="Lab 2"><svg viewBox="0 0 24 24"><path d="M9 3v3a1 1 0 01-1 1H5"/><path d="M14 3v3a1 1 0 001 1h3"/><path d="M5 7v12a2 2 0 002 2h10a2 2 0 002-2V7"/><path d="M10 14l2 2 4-4"/></svg></span>
           <span class="mod-icon mod-icon--inactive" data-tip="Quiz"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a3 3 0 015 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
@@ -1464,12 +1464,12 @@
       </div>
       <div class="mod-body">
         <div class="mod-body-inner">
-          <div class="mod-desc">No-code AI workflow automation with n8n. Build automated pipelines connecting AI to email, databases, and APIs.</div>
+          <div class="mod-desc">Responsible AI: prompt injection defense, PII protection, bias awareness, output filtering, and production guardrails.</div>
           <div class="mod-detail-row">
             <span class="mod-detail-label">Labs</span>
             <div class="mod-detail-value">
-              <span class="lab-link lab-link--disabled">Lab 1: n8n Basics &amp; First Workflow</span><br>
-              <span class="lab-link lab-link--disabled">Lab 2: AI-Powered Automation Pipeline</span>
+              <span class="lab-link lab-link--disabled">Lab 1: Prompt Injection &amp; PII Defense</span><br>
+              <span class="lab-link lab-link--disabled">Lab 2: Output Filtering &amp; Guardrails</span>
             </div>
           </div>
           <div class="mod-detail-row">
@@ -1595,7 +1595,7 @@ And I saw it in my own inbox. After generative AI took off, the emails I receive
         { num: 4, title: '"Teaching Philosophy"', presenter: 'Prof. Dehghani', duration: '2-3 min', type: 'ON CAMERA',
           text: `Three principles guide this course. First -- learn by building. Every module has labs with real code and real APIs. Second -- stay current. We use the tools that industry uses right now, not what was popular two years ago. Third -- think critically. AI is powerful, but it is not magic. You will learn to evaluate, verify, and improve AI output -- not just accept it. That combination of practical skill and critical thinking is what makes you valuable.` },
         { num: 5, title: '"Course Overview"', presenter: 'Prof. Dehghani', duration: '3-4 min', type: 'ON CAMERA',
-          text: `This course has fourteen modules organized in four phases, plus a midterm hackathon. Phase One is Foundations. You start by connecting to AI models through code. Then you see what is possible with tools like Excel GPT. Then you learn to communicate with them precisely through prompt engineering. Phase Two is Core. LangChain for chaining operations, RAG for grounding AI in real documents, and agents that reason and act autonomously. At the midpoint, you put it all together in a hackathon. Phase Three is Advanced. Multi-agent systems, building frontends, the Model Context Protocol, and vision. Phase Four is Production. The latest SDKs, workflow automation, and your final project.` },
+          text: `This course has fourteen modules organized in four phases, plus a midterm hackathon. Phase One is Foundations. You start by connecting to AI models through code. Then you see what is possible with tools like Excel GPT. Then you learn to communicate with them precisely through prompt engineering. Phase Two is Core. LangChain for chaining operations, RAG for grounding AI in real documents, and agents that reason and act autonomously. At the midpoint, you put it all together in a hackathon. Phase Three is Advanced. Multi-agent systems, building frontends, vision and multimodal AI, and Claude Code. Phase Four is Production. AI platforms compared, ethics and safety guardrails, and your final project.` },
         { num: 6, title: '"Expectations & Getting Started"', presenter: 'Prof. Dehghani', duration: '2-3 min', type: 'ON CAMERA',
           text: `A few expectations. This course moves fast. Every week introduces new tools and concepts. If you fall behind, the labs compound. My advice -- do not just watch the videos. Do the labs. Break the code. Try things that are not in the instructions. That is where the real learning happens. You have my support, you have your TA, and you have each other. Everything you need is here. Let us get to work.` },
         { num: 7, title: '"TA Video: Course Logistics"', presenter: 'TA', duration: '5-7 min', type: 'SCREEN RECORDING',
@@ -2003,30 +2003,30 @@ See you at the hackathon.` }
       ]
     },
     {
-      id: 'M10', title: 'MCP & GUARDRAILS',
-      videos: [
-        { num: 1, title: '"MCP Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
-          text: `Scripts to be developed.` }
-      ]
-    },
-    {
-      id: 'M11', title: 'VISION, MULTIMODAL & EVALUATION',
+      id: 'M10', title: 'VISION, MULTIMODAL & EVALUATION',
       videos: [
         { num: 1, title: '"Vision Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
           text: `Scripts to be developed.` }
       ]
     },
     {
-      id: 'M12', title: 'CLAUDE AGENT SDK, GOOGLE ADK & CLAUDE CODE',
+      id: 'M11', title: 'CLAUDE CODE',
       videos: [
-        { num: 1, title: '"SDKs Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
+        { num: 1, title: '"Claude Code Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
           text: `Scripts to be developed.` }
       ]
     },
     {
-      id: 'M13', title: 'WORKFLOW AUTOMATION (N8N)',
+      id: 'M12', title: 'AI PLATFORMS (CLAUDE, OPENAI, GOOGLE)',
       videos: [
-        { num: 1, title: '"Workflow Automation Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
+        { num: 1, title: '"AI Platforms Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
+          text: `Scripts to be developed.` }
+      ]
+    },
+    {
+      id: 'M13', title: 'AI ETHICS, SAFETY & GUARDRAILS',
+      videos: [
+        { num: 1, title: '"Ethics & Safety Opening"', presenter: 'Prof. Dehghani', duration: 'TBD', type: 'ON CAMERA',
           text: `Scripts to be developed.` }
       ]
     },
@@ -2184,7 +2184,7 @@ const GALLERY = {
     ]
   },
   m10: {
-    title: 'M10: MCP & Safety Guardrails',
+    title: 'M10: Vision, Multimodal & Evaluation',
     images: [
       { src: '../images/M10/M10_mcp_universal_connector_wide.png', label: 'MCP Universal Connector' },
       { src: '../images/M10/M10_safety_guardrails_wide.png', label: 'Safety Guardrails' },
@@ -2194,7 +2194,7 @@ const GALLERY = {
     ]
   },
   m11: {
-    title: 'M11: Vision & Evaluation',
+    title: 'M11: Claude Code',
     images: [
       { src: '../images/M11/M11_ai_vision_wide.png', label: 'AI Vision' },
       { src: '../images/M11/M11_multimodal_inputs_wide.png', label: 'Multimodal Inputs' },
@@ -2204,7 +2204,7 @@ const GALLERY = {
     ]
   },
   m12: {
-    title: 'M12: Agent SDKs',
+    title: 'M12: AI Platforms',
     images: [
       { src: '../images/M12/M12_batteries_included_sdk_wide.png', label: 'Batteries-Included SDK' },
       { src: '../images/M12/M12_claude_agent_sdk_wide.png', label: 'Claude Agent SDK' },
@@ -2214,7 +2214,7 @@ const GALLERY = {
     ]
   },
   m13: {
-    title: 'M13: Workflow Automation',
+    title: 'M13: AI Ethics, Safety & Guardrails',
     images: [
       { src: '../images/M13/M13_workflow_automation_wide.png', label: 'Workflow Automation' },
       { src: '../images/M13/M13_n8n_canvas_wide.png', label: 'n8n Canvas' },
