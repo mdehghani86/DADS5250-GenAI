@@ -2036,24 +2036,26 @@ See you at the hackathon.` }
 
   let output = [];
   output.push('DADS 5250 \u2014 GENERATIVE AI IN PRACTICE');
-  output.push('All Video Scripts (Teleprompter-Ready)');
   output.push('Generated: ' + dateStr);
   output.push('');
 
   for (const mod of modules) {
+    output.push('');
     output.push('================================================================');
     output.push('MODULE ' + mod.id + ': ' + mod.title);
     output.push('================================================================');
     output.push('');
 
     for (const v of mod.videos) {
+      output.push('');
       output.push('VIDEO ' + v.num + ': ' + v.title);
-      output.push('[' + v.type + '] ' + v.presenter + ' | ' + v.duration);
-      output.push('----------------------------------------------------------------');
       output.push('');
-      output.push(v.text.trim());
-      output.push('');
-      output.push('');
+      // Split text into paragraphs and add blank lines between them
+      const paragraphs = v.text.trim().split(/\n\n+/);
+      for (const p of paragraphs) {
+        output.push(p.trim());
+        output.push('');
+      }
     }
   }
 
