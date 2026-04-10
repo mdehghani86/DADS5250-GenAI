@@ -629,10 +629,9 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Every modern agent runs on the same loop. It is called ReAct -- Reason, Act, Observe.</p>
-      <p>First, the agent reasons. "What do I know? What do I need?" Then it acts -- it calls a tool. A search, a calculator, a database query. Then it observes the result. "What did I learn?" And then it reasons again. "Is the task done? Do I need another step?" The loop continues until the agent decides it has enough information to respond.</p>
-      <p>Let me give you a concrete example. A user asks: "What is the weather in Boston, and should I bring an umbrella?" The agent reasons: I need weather data. It acts: calls the weather API. It observes: 62 degrees, 40 percent chance of rain. It reasons again: 40 percent rain means bring an umbrella. Done.</p>
-      <p>That is three lines of reasoning, one tool call, and a complete answer. A chain could not do this -- it would need the weather tool hardcoded into a fixed pipeline. The agent decided to use it.</p>
+      <p>Under the hood, every agent runs on a pattern called ReAct -- Reason, Act, Observe. Here is what that actually looks like.</p>
+      <p>Say a user asks: "What is the weather in Boston, and should I bring an umbrella?" The agent looks at the question and thinks -- I do not have weather data, but I have a weather tool. So it calls the weather API. The result comes back: 62 degrees, 40 percent chance of rain. Now the agent has what it needs. It puts the pieces together -- 40 percent rain, probably bring an umbrella -- and responds.</p>
+      <p>That whole thing was one loop. Reason about what is missing, go get it, look at what came back, and decide if you are done. If you are not done, go again. That is ReAct. Simple idea, but it is the engine behind every agent you will build in this course.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- The ReAct Loop</span>
