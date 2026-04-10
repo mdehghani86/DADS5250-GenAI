@@ -19,119 +19,1459 @@
   --card-border: rgba(255,255,255,0.5);
   --card-shadow: 0 4px 24px rgba(37,99,235,0.08);
   --radius: 14px;
+  --green: #10b981;
+  --amber: #f59e0b;
+  --muted: #94a3b8;
+  --col-left: 60%;
+  --col-right: 40%;
 }
 
-body {
-  font-family: 'Outfit', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  line-height: 1.7;
-  min-height: 100vh;
-  overflow-x: hidden;
-}
+body { font-family: 'Outfit', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.7; min-height: 100vh; position: relative; overflow-x: hidden; }
+body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
 
-body::before {
-  content: '';
-  position: fixed;
-  top: -120px;
-  right: -120px;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(37,99,235,0.09) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  background: rgba(240,244,250,0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(37,99,235,0.08);
-  padding: 12px 20px;
+.topbar { position: sticky; top: 0; z-index: 100; background: rgba(240,244,250,0.85); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid rgba(37,99,235,0.08); padding: 8px 20px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.topbar-left { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+.topbar-title { font-size: 0.92rem; font-weight: 600; color: var(--text); white-space: nowrap; }
+.topbar-subtitle { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+.video-tabs {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  gap: 4px;
+  flex-basis: 100%;
+  width: 100%;
+  order: 10;
+  flex-wrap: wrap;
+  margin-top: 6px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(37,99,235,0.08);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(37,99,235,0.3) transparent;
+  padding-bottom: 2px;
 }
+.video-tabs::-webkit-scrollbar { height: 4px; }
+.video-tabs::-webkit-scrollbar-thumb { background: rgba(37,99,235,0.25); border-radius: 2px; }
+.video-tabs::-webkit-scrollbar-track { background: transparent; }
+.video-tab { padding: 5px 14px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.15); background: transparent; color: var(--text-muted); font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+.video-tab:hover { background: var(--accent-light); color: var(--accent); }
+.video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.topbar-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text);
+.video-tab.scripted { border-color: rgba(37,99,235,0.25); }
+.video-tab.scripted::before {
+  content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px;
+  background-repeat: no-repeat; background-position: center; background-size: contain;
 }
+.video-tab.scripted::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
+.video-tab.scripted.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
 
-.topbar-subtitle {
-  font-size: 0.8rem;
+.topbar-actions { display: flex; gap: 8px; }
+.btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
+.btn-action:hover { background: var(--accent-light); color: var(--accent); }
+.btn-action.teleprompter-active { background: #0f172a; color: #fff; border-color: #0f172a; }
+
+.container { max-width: 1440px; margin: 0 auto; padding: 28px 32px 80px; position: relative; z-index: 1; }
+.video-section { display: none; }
+.video-section.active { display: block; }
+.video-header { margin-bottom: 28px; }
+.video-header h2 { font-size: 1.5rem; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+.video-header .video-meta { font-size: 0.88rem; color: var(--text-muted); font-weight: 400; }
+
+.segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
+.segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+.edit-btn {
+  margin-left: 8px;
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 4px 7px;
+  font-size: 0.85rem;
   color: var(--text-muted);
-  font-weight: 400;
+  transition: all 0.2s;
+  opacity: 0;
 }
+.segment:hover .edit-btn,
+.segment.editing .edit-btn { opacity: 1; }
+.edit-btn:hover { color: var(--accent); background: var(--accent-light); border-color: rgba(37,99,235,0.15); }
 
-.container {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 80px 32px;
-  position: relative;
-  z-index: 1;
-  text-align: center;
-}
-
-.placeholder-card {
-  background: var(--card-bg);
-  border: 1px solid var(--card-border);
+.segment.editing .script-col,
+.segment.editing .media-col {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
   border-radius: var(--radius);
-  box-shadow: var(--card-shadow);
-  padding: 48px 40px;
-  max-width: 640px;
-  margin: 0 auto;
+}
+.segment.editing .script-col [contenteditable],
+.segment.editing .media-col [contenteditable] {
+  min-height: 40px;
 }
 
-.placeholder-card h2 {
-  font-size: 1.4rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  color: var(--accent);
+.edit-actions {
+  display: none;
+  gap: 6px;
+  margin-left: auto;
 }
+.segment.editing .edit-actions { display: flex; }
+.segment.editing .segment-badges { display: none; }
 
-.placeholder-card p {
-  font-size: 1rem;
+.edit-actions button {
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  border: 1px solid;
+}
+.btn-save {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn-save:hover { background: var(--accent-dark); }
+.btn-cancel {
+  background: transparent;
+  color: var(--text-muted);
+  border-color: rgba(37,99,235,0.15);
+}
+.btn-cancel:hover { background: #f1f5f9; color: var(--text); }
+
+.segment-edited-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  display: none;
+  flex-shrink: 0;
+}
+.segment.was-edited .segment-edited-dot { display: block; }
+/* Review Status */
+.review-toggle {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: 4px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.segment:hover .review-toggle,
+.segment[data-review] .review-toggle { opacity: 1; }
+
+.review-toggle button {
+  background: none;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 2px 5px;
+  font-size: 0.7rem;
+  line-height: 1;
+  transition: all 0.15s;
   color: var(--text-muted);
 }
+.review-toggle button:hover { background: #f1f5f9; }
+.review-toggle button.active { border-color: currentColor; }
 
-.topic-list {
-  text-align: left;
-  margin-top: 20px;
-  padding-left: 24px;
-  color: var(--text);
-}
+.review-toggle .rv-approve { color: #10b981; }
+.review-toggle .rv-approve.active { background: #ecfdf5; }
+.review-toggle .rv-maybe  { color: #f59e0b; }
+.review-toggle .rv-maybe.active  { background: #fffbeb; }
+.review-toggle .rv-reject { color: #ef4444; }
+.review-toggle .rv-reject.active { background: #fef2f2; }
 
-.topic-list li {
-  margin-bottom: 6px;
-  font-size: 0.95rem;
-}
+.segment[data-review="approved"] { border-left: 3px solid #10b981; padding-left: 12px; }
+.segment[data-review="maybe"]    { border-left: 3px solid #f59e0b; padding-left: 12px; }
+.segment[data-review="rejected"] { border-left: 3px solid #ef4444; padding-left: 12px; }
+
+
+.segment-number { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 3px 10px; border-radius: 999px; }
+.segment-title { font-size: 1.05rem; font-weight: 600; color: var(--text); }
+.segment-badges { display: flex; gap: 6px; margin-left: auto; }
+.badge { font-size: 0.7rem; font-weight: 500; padding: 2px 10px; border-radius: 999px; white-space: nowrap; }
+.badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
+.badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
+.badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+.badge-discussion { background: rgba(20,184,166,0.1); color: #0d9488; font-weight: 600; letter-spacing: 0.04em; }
+
+.script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
+.script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
+.script-col p:last-child { margin-bottom: 0; }
+
+.media-col { background: rgba(255,255,255,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border: 1px solid rgba(37,99,235,0.06); border-radius: var(--radius); padding: 20px; display: flex; flex-direction: column; gap: 16px; }
+.media-col .media-label { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent); margin-bottom: 4px; }
+.media-col .media-note { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; background: rgba(37,99,235,0.04); border-left: 2px solid var(--accent); padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.media-col .shot-note { font-size: 0.85rem; color: var(--text-muted); line-height: 1.55; font-style: italic; }
+
+.media-placeholder { background: #f8fafc; border: 1px dashed rgba(37,99,235,0.2); border-radius: 10px; padding: 20px; text-align: center; min-height: 100px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.media-placeholder .placeholder-type { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+.media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
+.media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
+
+.code-block { background: #1e293b; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin: 12px 0; }
+.code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-block .kw { color: #93c5fd; } .code-block .str { color: #86efac; } .code-block .fn { color: #fde68a; } .code-block .cm { color: #64748b; }
+
+.key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
+.key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
+.key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+.discussion-guidelines { background: rgba(20,184,166,0.03); border: 1px solid rgba(20,184,166,0.2); border-radius: 10px; padding: 24px; }
+.discussion-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #0d9488; letter-spacing: 0.06em; margin-bottom: 12px; }
+.discussion-guidelines .disc-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.discussion-guidelines ol { padding-left: 18px; }
+.discussion-guidelines li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+
+.references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
+.references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+.ref-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; }
+.ref-table th { text-align: left; font-weight: 600; color: var(--text-muted); padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.08); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.04em; }
+.ref-table td { padding: 3px 6px; border-bottom: 1px solid rgba(37,99,235,0.03); color: var(--text-muted); vertical-align: top; line-height: 1.4; }
+.ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
+.ref-table a:hover { text-decoration: underline; }
+
+/* Teleprompter */
+body.teleprompter { background: #0a0a0a; }
+body.teleprompter::before { display: none; }
+body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .topbar-title, body.teleprompter .topbar-subtitle { color: rgba(255,255,255,0.5); }
+body.teleprompter .video-tab { color: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.1); }
+body.teleprompter .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+body.teleprompter .btn-action { color: rgba(255,255,255,0.5); border-color: rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); }
+body.teleprompter .video-header h2 { color: rgba(255,255,255,0.3); }
+body.teleprompter .video-header .video-meta { color: rgba(255,255,255,0.15); }
+body.teleprompter .media-col { display: none; }
+body.teleprompter .key-message-bar { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .key-message-bar .km-text { color: rgba(255,255,255,0.85); }
+body.teleprompter .segment { grid-template-columns: 1fr; max-width: 800px; margin-left: auto; margin-right: auto; }
+body.teleprompter .segment-header { border-bottom-color: rgba(255,255,255,0.06); }
+body.teleprompter .segment-number { background: rgba(37,99,235,0.15); color: var(--accent); }
+body.teleprompter .segment-title { color: rgba(255,255,255,0.4); }
+body.teleprompter .badge { opacity: 0.5; }
+body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
+body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
+body.teleprompter .references-section { display: none; }
+
+.scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
+body.teleprompter .scroll-controls { display: flex; }
+.scroll-controls label { font-size: 0.78rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.scroll-controls input[type="range"] { width: 100px; accent-color: var(--accent); }
+.scroll-controls button { padding: 4px 14px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); background: transparent; color: rgba(255,255,255,0.7); font-family: 'Outfit', sans-serif; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; }
+.scroll-controls button:hover { background: rgba(255,255,255,0.1); }
+.scroll-controls button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+@media print { .topbar, .scroll-controls { display: none !important; } body { background: #fff; } body::before { display: none; } .container { max-width: 100%; padding: 16px; } .video-section { display: block !important; page-break-before: always; } .video-section:first-of-type { page-break-before: avoid; } .segment { page-break-inside: avoid; } .script-col { background: #fff; box-shadow: none; border: 1px solid #e2e8f0; } .media-col { background: #f8fafc; border: 1px solid #e2e8f0; } }
+@media (max-width: 900px) { .segment { grid-template-columns: 1fr; } .topbar { flex-direction: column; align-items: flex-start; gap: 8px; } .video-tabs { flex-wrap: wrap; } }
 </style>
 </head>
 <body>
+<a href="../../planning/course-outline.html" style="position:fixed;top:8px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#2563EB;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(37,99,235,0.15);">&#8592; Course Outline</a>
 
 <div class="topbar">
-  <span class="topbar-title">M12 Production Script</span>
-  <span class="topbar-subtitle">AI Platforms Overview</span>
+  <div class="topbar-left">
+    <span class="topbar-title">M12 Production Script</span>
+    <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
+  </div>
+  <div class="video-tabs">
+    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Claude Platform</button>
+    <button class="video-tab scripted" onclick="switchVideo(3)">V3: OpenAI Platform</button>
+    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Google Platform</button>
+    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Comparison</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+  </div>
+  <div class="topbar-actions">
+    <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
+    <button class="btn-action" onclick="window.print()">Print</button>
+    <button class="btn-action" onclick="exportScript()">Export Script</button>
+  </div>
 </div>
 
 <div class="container">
-  <div class="placeholder-card">
-    <h2>Module 12: AI Platforms Overview</h2>
-    <p>Script content coming soon.</p>
-    <ul class="topic-list">
-      <li>Claude (Anthropic) -- Models, API, Agent SDK</li>
-      <li>OpenAI Platform -- GPT-4.1, Assistants API, Codex</li>
-      <li>Google AI -- Gemini, A2A Protocol, ADK</li>
-      <li>Platform comparison and selection criteria</li>
-    </ul>
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 1: "The Spark" -- Three Giants, One Skill                 -->
+<!-- ================================================================ -->
+<div class="video-section active" id="video-1">
+
+  <div class="video-header">
+    <h2>Video 1: "Three Giants, One Skill"</h2>
+    <div class="video-meta">Prof on camera -- ~2 minutes -- 2 segments</div>
+  </div>
+
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The concepts are the same. The syntax is different. Learn one, understand all three.</span>
+  </div>
+
+  <!-- PART 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART 01</span>
+      <span class="segment-title">The Landscape Shift</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-shot">Medium close-up</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>A year ago, there was one API to learn. You called OpenAI, got a response, and moved on. That was the whole story.</p>
+      <p>Today there are three ecosystems. Anthropic built Claude. OpenAI evolved far beyond chat completions. Google shipped Gemini with native multimodal capabilities and an agent framework. Each one built their own way to create AI agents, their own way to call tools, their own way to orchestrate workflows.</p>
+      <p>The good news? The concepts are the same. The syntax is different. Once you understand one platform deeply, the other two feel familiar. You are learning patterns, not memorizing documentation.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting. Confident, direct delivery. This is a framing statement, not a lecture. Pause after "the syntax is different."</p>
+      <div class="media-note">
+        MEDIA TEAM: No overlays. Clean shot. Let the professor set the stage.
+      </div>
+    </div>
+  </div>
+
+  <!-- PART 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART 02</span>
+      <span class="segment-title">Why Multi-Platform Matters</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~50 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Knowing multiple platforms makes you versatile. And versatility is what companies actually hire for.</p>
+      <p>Some teams choose Claude for safety-critical applications. Others pick OpenAI because their existing stack already uses it. Others go with Google because the Gemini free tier fits their budget, or because they need native image and video understanding.</p>
+      <p>The engineer who can only use one platform is limited. The engineer who understands the patterns across all three can walk into any team and be productive on day one. That is the skill you build today.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Three Platforms</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Three Platforms, One Skill Set</text>
+        <!-- Claude -->
+        <rect x="14" y="40" width="116" height="140" rx="10" fill="rgba(251,146,60,0.06)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="72" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#fb923c" font-weight="700">Claude</text>
+        <text x="72" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Anthropic</text>
+        <text x="24" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Safety-first</text>
+        <text x="24" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Tool use</text>
+        <text x="24" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agent SDK</text>
+        <text x="24" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">MCP protocol</text>
+        <text x="24" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: safety,</text>
+        <text x="24" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">complex reasoning</text>
+        <!-- OpenAI -->
+        <rect x="142" y="40" width="116" height="140" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">OpenAI</text>
+        <text x="200" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">GPT + Agents SDK</text>
+        <text x="152" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Function calling</text>
+        <text x="152" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Structured output</text>
+        <text x="152" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agents SDK</text>
+        <text x="152" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">Assistants API</text>
+        <text x="152" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: ecosystem,</text>
+        <text x="152" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">broadest adoption</text>
+        <!-- Google -->
+        <rect x="270" y="40" width="116" height="140" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="328" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#60a5fa" font-weight="700">Google</text>
+        <text x="328" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Gemini + ADK</text>
+        <text x="280" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Multimodal native</text>
+        <text x="280" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Generous free tier</text>
+        <text x="280" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agent Dev Kit</text>
+        <text x="280" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">A2A protocol</text>
+        <text x="280" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: multimodal,</text>
+        <text x="280" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">cost-sensitive</text>
+        <!-- Bottom bar -->
+        <rect x="14" y="192" width="372" height="22" rx="6" fill="rgba(37,99,235,0.1)"/>
+        <text x="200" y="207" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">Same patterns: messages, tools, agents. Different syntax.</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate each platform card appearing left to right as the professor names them. The bottom bar appears at the punchline.
+      </div>
+    </div>
+  </div>
+
+
+</div><!-- end video-1 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 2: Claude Platform                                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-2">
+
+  <div class="video-header">
+    <h2>Video 2: "Claude Platform"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+  </div>
+
+  <!-- PART A: Claude API Basics -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART A</span>
+      <span class="segment-title">Claude API Basics</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Anthropic takes a different stance than the rest of the industry. Their founding principle is building AI that is safe and steerable. That philosophy shows up in everything, from the way Claude handles sensitive prompts to the way the API is designed.</p>
+      <p>The Claude API uses a messages format. You send a list of messages with roles: user and assistant. System prompts go in a separate system parameter, not inside the messages array. This is a small difference from OpenAI, but it matters when you are debugging.</p>
+      <div class="code-block"><pre><span class="kw">import</span> anthropic
+
+client = anthropic.<span class="fn">Anthropic</span>()
+
+response = client.messages.<span class="fn">create</span>(
+    model=<span class="str">"claude-sonnet-4-20250514"</span>,
+    max_tokens=<span class="str">1024</span>,
+    system=<span class="str">"You are a helpful data analyst."</span>,
+    messages=[
+        {<span class="str">"role"</span>: <span class="str">"user"</span>,
+         <span class="str">"content"</span>: <span class="str">"Summarize Q3 revenue trends."</span>}
+    ]
+)
+
+<span class="kw">print</span>(response.content[0].text)</pre></div>
+      <p>Notice the response structure. Claude returns a content array, not a single string. Each element has a type. For text responses, the type is "text" and the value is in the text field. This matters when tool use enters the picture, because tool calls show up as a different content type in that same array.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Claude API Flow</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Claude API -- Messages Format</text>
+        <!-- Request side -->
+        <rect x="14" y="38" width="180" height="180" rx="8" fill="rgba(251,146,60,0.06)" stroke="#fb923c" stroke-width="1.2"/>
+        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fb923c" font-weight="600" letter-spacing="0.08em">REQUEST</text>
+        <text x="24" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">model: "claude-sonnet-4-..."</text>
+        <text x="24" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">system: "You are a..."</text>
+        <text x="24" y="108" font-family="JetBrains Mono" font-size="7" fill="#475569">messages: [</text>
+        <rect x="30" y="114" width="154" height="26" rx="4" fill="rgba(37,99,235,0.08)"/>
+        <text x="40" y="130" font-family="JetBrains Mono" font-size="7" fill="#2563EB">role: "user"</text>
+        <text x="24" y="156" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
+        <text x="24" y="176" font-family="JetBrains Mono" font-size="7" fill="#475569">max_tokens: 1024</text>
+        <text x="104" y="208" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">system prompt is separate</text>
+        <!-- Arrow -->
+        <line x1="200" y1="128" x2="214" y2="128" stroke="#fb923c" stroke-width="2" marker-end="url(#m12Arrow)"/>
+        <defs><marker id="m12Arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb923c"/></marker></defs>
+        <!-- Response side -->
+        <rect x="220" y="38" width="166" height="180" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="303" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">RESPONSE</text>
+        <text x="230" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">content: [</text>
+        <rect x="236" y="82" width="140" height="36" rx="4" fill="rgba(16,185,129,0.08)"/>
+        <text x="246" y="96" font-family="JetBrains Mono" font-size="7" fill="#10b981">type: "text"</text>
+        <text x="246" y="110" font-family="JetBrains Mono" font-size="7" fill="#10b981">text: "Q3 revenue..."</text>
+        <text x="230" y="130" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
+        <text x="230" y="150" font-family="JetBrains Mono" font-size="7" fill="#475569">stop_reason: "end_turn"</text>
+        <text x="230" y="166" font-family="JetBrains Mono" font-size="7" fill="#475569">usage:</text>
+        <text x="240" y="180" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">input_tokens: 42</text>
+        <text x="240" y="194" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">output_tokens: 318</text>
+        <text x="303" y="208" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">content is an array</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART B: Claude Tool Use -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART B</span>
+      <span class="segment-title">Claude Tool Use</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Tool use is where Claude becomes more than a text generator. You define tools with a name, a description, and a JSON schema for the input parameters. When Claude decides it needs to call a tool, it does not return text. It returns a content block with type "tool_use" that includes the tool name and the arguments.</p>
+      <p>Your code executes the tool, then sends the result back as a message with role "user" and a content block of type "tool_result." Claude reads the result and formulates its final answer. This is a two-turn loop: Claude asks to use a tool, you run it, you send back the result.</p>
+      <div class="code-block"><pre><span class="cm"># Define a tool</span>
+tools = [{
+    <span class="str">"name"</span>: <span class="str">"get_stock_price"</span>,
+    <span class="str">"description"</span>: <span class="str">"Get current stock price"</span>,
+    <span class="str">"input_schema"</span>: {
+        <span class="str">"type"</span>: <span class="str">"object"</span>,
+        <span class="str">"properties"</span>: {
+            <span class="str">"ticker"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
+        },
+        <span class="str">"required"</span>: [<span class="str">"ticker"</span>]
+    }
+}]
+
+<span class="cm"># Claude returns: type="tool_use"</span>
+<span class="cm"># You execute, then send back: type="tool_result"</span></pre></div>
+      <p>The key insight: Claude never executes anything. It proposes a tool call. Your code is always in the loop. That is the safety model. The LLM decides what to call. You decide whether to actually run it.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Tool Use Loop</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Claude Tool Use -- Two-Turn Loop</text>
+        <!-- Your Code -->
+        <rect x="14" y="40" width="100" height="44" rx="8" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
+        <text x="64" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">Your Code</text>
+        <text x="64" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">sends messages</text>
+        <!-- Claude -->
+        <rect x="150" y="40" width="100" height="44" rx="8" fill="rgba(251,146,60,0.18)" stroke="#fb923c"/>
+        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fed7aa" font-weight="600">Claude</text>
+        <text x="200" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">proposes tool call</text>
+        <!-- Tool -->
+        <rect x="286" y="40" width="100" height="44" rx="8" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
+        <text x="336" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0" font-weight="600">Tool</text>
+        <text x="336" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">get_stock_price</text>
+        <!-- Step 1 -->
+        <line x1="114" y1="56" x2="148" y2="56" stroke="#60a5fa" stroke-width="1.5"/>
+        <text x="131" y="50" text-anchor="middle" font-family="Outfit" font-size="6" fill="#60a5fa">1</text>
+        <!-- Step 2: Claude returns tool_use -->
+        <path d="M 200 84 L 200 110 L 64 110 L 64 100" stroke="#fb923c" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <text x="132" y="106" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#fb923c">type: "tool_use"</text>
+        <text x="200" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fb923c">2</text>
+        <!-- Step 3: Code executes tool -->
+        <line x1="64" y1="130" x2="336" y2="130" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="126" text-anchor="middle" font-family="Outfit" font-size="6" fill="#10b981">3 execute</text>
+        <text x="200" y="142" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">your code runs the tool</text>
+        <!-- Step 4: Send tool_result back -->
+        <path d="M 64 155 L 64 165 L 200 165 L 200 155" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
+        <text x="132" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#60a5fa">type: "tool_result"</text>
+        <text x="64" y="153" font-family="Outfit" font-size="6" fill="#60a5fa">4</text>
+        <!-- Step 5: Claude responds -->
+        <path d="M 200 175 L 200 185 L 64 185" stroke="#fb923c" stroke-width="1.5" fill="none"/>
+        <text x="132" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#fb923c">type: "text" (final answer)</text>
+        <text x="200" y="178" font-family="Outfit" font-size="6" fill="#fb923c">5</text>
+        <!-- Safety note -->
+        <rect x="60" y="196" width="280" height="18" rx="4" fill="rgba(251,146,60,0.1)"/>
+        <text x="200" y="209" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fb923c" font-weight="600">Claude proposes. Your code executes. Always in the loop.</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART C: Claude Agent SDK -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART C</span>
+      <span class="segment-title">Claude Agent SDK</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Anthropic also ships a Claude Agent SDK for building agentic applications in Python. If you used Claude Code earlier in this course, you saw what a fully built agent looks like. The SDK is the foundation underneath it.</p>
+      <p>The SDK gives you an agent loop, tool registration, and conversation management out of the box. You define your tools, configure the agent, and the SDK handles the back-and-forth of tool calls and responses automatically. It is the difference between building an agent from raw API calls versus using a framework that manages the loop for you.</p>
+      <p>For most production use cases, you start with the raw API to understand how it works, then graduate to the SDK when you need persistent agents with multiple tools.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- API vs SDK</span>
+      <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Raw API vs Agent SDK</text>
+        <!-- Raw API side -->
+        <rect x="14" y="38" width="180" height="120" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">RAW API</text>
+        <text x="24" y="76" font-family="Outfit" font-size="8" fill="#475569">You manage the loop</text>
+        <text x="24" y="92" font-family="Outfit" font-size="8" fill="#475569">You parse tool_use blocks</text>
+        <text x="24" y="108" font-family="Outfit" font-size="8" fill="#475569">You send tool_result back</text>
+        <text x="24" y="124" font-family="Outfit" font-size="8" fill="#475569">Full control, more code</text>
+        <text x="104" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">best for: learning, simple tasks</text>
+        <!-- Arrow -->
+        <text x="200" y="98" text-anchor="middle" font-family="Outfit" font-size="14" fill="#94a3b8">&#8594;</text>
+        <!-- SDK side -->
+        <rect x="206" y="38" width="180" height="120" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="296" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">AGENT SDK</text>
+        <text x="216" y="76" font-family="Outfit" font-size="8" fill="#475569">SDK manages the loop</text>
+        <text x="216" y="92" font-family="Outfit" font-size="8" fill="#475569">Tool registration built in</text>
+        <text x="216" y="108" font-family="Outfit" font-size="8" fill="#475569">Conversation state managed</text>
+        <text x="216" y="124" font-family="Outfit" font-size="8" fill="#475569">Less code, same power</text>
+        <text x="296" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">best for: production, multi-tool</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Keep this brief. Students already experienced Claude Code in M11. This is context for the programmatic SDK, not a deep dive.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-2 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 3: OpenAI Platform                                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-3">
+
+  <div class="video-header">
+    <h2>Video 3: "OpenAI Platform"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+  </div>
+
+  <!-- PART A: OpenAI API -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART A</span>
+      <span class="segment-title">OpenAI API and Function Calling</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>OpenAI is the platform most of you started with. The chat completions endpoint is the foundation. You send messages with roles: system, user, and assistant. You get back a response with choices, each containing a message.</p>
+      <p>Function calling is OpenAI's version of tool use. You define functions with a name, description, and JSON schema for the parameters. When the model decides to call a function, the response includes a tool_calls array instead of regular content. You execute the function, then send the result back as a message with role "tool."</p>
+      <div class="code-block"><pre><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+
+client = <span class="fn">OpenAI</span>()
+
+response = client.chat.completions.<span class="fn">create</span>(
+    model=<span class="str">"gpt-4.1-mini"</span>,
+    messages=[
+        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"You are a data analyst."</span>},
+        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Summarize Q3 revenue."</span>}
+    ],
+    tools=[{
+        <span class="str">"type"</span>: <span class="str">"function"</span>,
+        <span class="str">"function"</span>: {
+            <span class="str">"name"</span>: <span class="str">"get_revenue"</span>,
+            <span class="str">"description"</span>: <span class="str">"Fetch quarterly revenue"</span>,
+            <span class="str">"parameters"</span>: {
+                <span class="str">"type"</span>: <span class="str">"object"</span>,
+                <span class="str">"properties"</span>: {
+                    <span class="str">"quarter"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
+                }
+            }
+        }
+    }]
+)</pre></div>
+      <p>OpenAI also supports structured outputs. You can pass a response_format with a JSON schema, and the model guarantees its output matches that schema exactly. No parsing errors. No malformed JSON. This is extremely useful for production pipelines where downstream code depends on a specific data shape.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- OpenAI API Structure</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">OpenAI -- Chat Completions + Function Calling</text>
+        <!-- Request -->
+        <rect x="14" y="38" width="180" height="170" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">REQUEST</text>
+        <text x="24" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">model: "gpt-4.1-mini"</text>
+        <text x="24" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">messages: [</text>
+        <rect x="30" y="98" width="154" height="20" rx="3" fill="rgba(16,185,129,0.08)"/>
+        <text x="40" y="112" font-family="JetBrains Mono" font-size="7" fill="#10b981">role: "system"</text>
+        <rect x="30" y="122" width="154" height="20" rx="3" fill="rgba(37,99,235,0.08)"/>
+        <text x="40" y="136" font-family="JetBrains Mono" font-size="7" fill="#2563EB">role: "user"</text>
+        <text x="24" y="156" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
+        <text x="24" y="172" font-family="JetBrains Mono" font-size="7" fill="#475569">tools: [{function:...}]</text>
+        <text x="104" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">system is inside messages</text>
+        <!-- Response -->
+        <rect x="206" y="38" width="180" height="170" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="296" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600" letter-spacing="0.08em">RESPONSE</text>
+        <text x="216" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">choices: [{</text>
+        <text x="226" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">message: {</text>
+        <text x="236" y="108" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">tool_calls: [{</text>
+        <text x="246" y="122" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">function: {</text>
+        <text x="256" y="136" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">name, arguments</text>
+        <text x="246" y="150" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">}</text>
+        <text x="236" y="164" font-family="JetBrains Mono" font-size="7" fill="#475569">}]</text>
+        <text x="216" y="180" font-family="JetBrains Mono" font-size="7" fill="#475569">}]</text>
+        <text x="296" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">tool_calls array in message</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART B: OpenAI Agents SDK -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART B</span>
+      <span class="segment-title">OpenAI Agents SDK</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>In early 2025, OpenAI released the Agents SDK. This is their answer to the question: how do you build multi-step, multi-agent workflows without writing all the orchestration code yourself?</p>
+      <p>The SDK introduces three core concepts. An Agent is a configured LLM with instructions, tools, and optional guardrails. A Handoff lets one agent transfer control to another agent when the task requires different expertise. And a Runner executes the whole workflow, managing the agent loop, tool calls, and handoffs automatically.</p>
+      <div class="code-block"><pre><span class="kw">from</span> agents <span class="kw">import</span> Agent, Runner
+
+research_agent = <span class="fn">Agent</span>(
+    name=<span class="str">"Researcher"</span>,
+    instructions=<span class="str">"Find relevant data sources."</span>,
+    tools=[search_tool]
+)
+
+writer_agent = <span class="fn">Agent</span>(
+    name=<span class="str">"Writer"</span>,
+    instructions=<span class="str">"Write a clear summary."</span>,
+    handoffs=[research_agent]
+)
+
+result = <span class="fn">Runner</span>.<span class="fn">run_sync</span>(
+    writer_agent,
+    <span class="str">"Summarize AI trends for Q3."</span>
+)</pre></div>
+      <p>The handoff mechanism is worth understanding. When the writer agent realizes it needs data, it hands off to the research agent. The research agent does its work and returns. The writer picks up where it left off. No manual orchestration. No custom state management. The SDK handles the transitions.</p>
+      <p>Guardrails are built into the SDK as well. You can define input and output validators that run automatically before and after each agent turn. If a guardrail fails, the agent stops. This is production-grade safety without extra infrastructure.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- OpenAI Agents SDK</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">OpenAI Agents SDK -- Agent + Handoff + Runner</text>
+        <!-- Agent 1: Writer -->
+        <rect x="30" y="40" width="140" height="70" rx="8" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="100" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#a7f3d0" font-weight="600">Writer Agent</text>
+        <text x="100" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
+        <text x="100" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">handoffs: [researcher]</text>
+        <!-- Agent 2: Researcher -->
+        <rect x="230" y="40" width="140" height="70" rx="8" fill="rgba(37,99,235,0.15)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="300" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">Research Agent</text>
+        <text x="300" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
+        <text x="300" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">search_tool</text>
+        <!-- Handoff arrow -->
+        <path d="M 170 65 C 200 45, 200 45, 230 65" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
+        <text x="200" y="42" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24" font-weight="600">handoff</text>
+        <!-- Return arrow -->
+        <path d="M 230 90 C 200 110, 200 110, 170 90" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
+        <text x="200" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24">returns</text>
+        <!-- Runner -->
+        <rect x="100" y="140" width="200" height="40" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b"/>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600">Runner.run_sync()</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">manages the loop, tool calls, handoffs</text>
+        <!-- Guardrails -->
+        <rect x="100" y="190" width="200" height="22" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)"/>
+        <text x="200" y="205" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fca5a5" font-weight="600">Guardrails: input + output validators, auto-fire</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART C: Assistants API -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART C</span>
+      <span class="segment-title">Assistants API</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>OpenAI also offers the Assistants API, which takes a different approach. Instead of stateless chat completions, the Assistants API manages persistent threads. You create an assistant with instructions and tools. You create a thread for a conversation. You add messages to the thread and create a run. The assistant processes the whole thread and responds.</p>
+      <p>The Assistants API includes two powerful built-in tools. File search lets the assistant search through uploaded documents. Code interpreter lets it write and execute Python code in a sandboxed environment. These tools run on OpenAI's infrastructure. You do not host anything.</p>
+      <p>For applications that need persistent conversations with file handling and code execution, the Assistants API is a strong choice. For lightweight, stateless workflows, the chat completions endpoint or the Agents SDK is simpler.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Assistants API</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Assistants API -- Thread + Run Model</text>
+        <!-- Assistant -->
+        <rect x="14" y="40" width="120" height="60" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="74" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#10b981" font-weight="600">Assistant</text>
+        <text x="74" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
+        <text x="74" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model config</text>
+        <!-- Thread -->
+        <rect x="150" y="40" width="100" height="60" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="200" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">Thread</text>
+        <text x="200" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">persistent</text>
+        <text x="200" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">conversation</text>
+        <!-- Run -->
+        <rect x="266" y="40" width="120" height="60" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="326" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#f59e0b" font-weight="600">Run</text>
+        <text x="326" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">process thread</text>
+        <text x="326" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">with assistant</text>
+        <!-- Built-in tools -->
+        <rect x="80" y="120" width="120" height="50" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
+        <text x="140" y="138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a855f7" font-weight="600">File Search</text>
+        <text x="140" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">search uploaded docs</text>
+        <text x="140" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">on OpenAI infra</text>
+        <rect x="210" y="120" width="120" height="50" rx="8" fill="rgba(20,184,166,0.06)" stroke="#14b8a6"/>
+        <text x="270" y="138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#14b8a6" font-weight="600">Code Interpreter</text>
+        <text x="270" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">sandboxed Python</text>
+        <text x="270" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">execution</text>
+        <!-- Label -->
+        <text x="200" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Stateful: threads persist across sessions</text>
+      </svg>
+    </div>
+  </div>
+
+</div><!-- end video-3 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Google Platform                                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: "Google Platform"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+  </div>
+
+  <!-- PART A: Gemini API -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART A</span>
+      <span class="segment-title">Gemini API</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Google's Gemini is multimodal from the ground up. Text, images, video, audio, and code all go through the same model. You do not need separate endpoints for vision versus text. You send a mixed content array, and Gemini handles it.</p>
+      <p>The practical advantage is the free tier. Google AI Studio gives you access to Gemini models with generous rate limits at no cost. For students and small projects, this is significant. You can prototype entire applications without a credit card.</p>
+      <div class="code-block"><pre><span class="kw">import</span> google.generativeai <span class="kw">as</span> genai
+
+genai.<span class="fn">configure</span>(api_key=<span class="str">"YOUR_API_KEY"</span>)
+
+model = genai.<span class="fn">GenerativeModel</span>(<span class="str">"gemini-2.5-flash"</span>)
+
+<span class="cm"># Text + image in one call</span>
+response = model.<span class="fn">generate_content</span>([
+    <span class="str">"Describe what you see in this chart."</span>,
+    image_data  <span class="cm"># PIL Image or bytes</span>
+])
+
+<span class="kw">print</span>(response.text)</pre></div>
+      <p>The API design is simpler than OpenAI or Claude for basic use cases. You create a model object, call generate_content, and get back a response with a text property. For multimodal inputs, you pass a list with text and images mixed together. No special configuration. No separate vision model.</p>
+      <p>Google AI Studio also provides a web playground where you can test prompts, upload files, and experiment with system instructions before writing any code. Think of it as Google's version of the OpenAI Playground.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Gemini Multimodal</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Gemini -- One Model, Every Modality</text>
+        <!-- Input modalities -->
+        <rect x="14" y="38" width="160" height="170" rx="8" fill="rgba(37,99,235,0.08)" stroke="#2563EB"/>
+        <text x="94" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">INPUTS</text>
+        <rect x="24" y="66" width="140" height="22" rx="4" fill="rgba(37,99,235,0.12)"/>
+        <text x="94" y="81" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">Text</text>
+        <rect x="24" y="94" width="140" height="22" rx="4" fill="rgba(16,185,129,0.12)"/>
+        <text x="94" y="109" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Images</text>
+        <rect x="24" y="122" width="140" height="22" rx="4" fill="rgba(245,158,11,0.12)"/>
+        <text x="94" y="137" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">Video</text>
+        <rect x="24" y="150" width="140" height="22" rx="4" fill="rgba(168,85,247,0.12)"/>
+        <text x="94" y="165" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">Audio</text>
+        <text x="94" y="196" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">all in one API call</text>
+        <!-- Arrow -->
+        <line x1="180" y1="120" x2="206" y2="120" stroke="#60a5fa" stroke-width="2"/>
+        <!-- Gemini model -->
+        <rect x="210" y="60" width="170" height="80" rx="10" fill="rgba(37,99,235,0.15)" stroke="#2563EB" stroke-width="2"/>
+        <text x="295" y="90" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="700">Gemini</text>
+        <text x="295" y="108" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">generate_content()</text>
+        <text x="295" y="128" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">native multimodal</text>
+        <!-- Free tier callout -->
+        <rect x="210" y="160" width="170" height="36" rx="6" fill="rgba(16,185,129,0.1)" stroke="#10b981"/>
+        <text x="295" y="176" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">Free Tier</text>
+        <text x="295" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Google AI Studio: no credit card</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART B: Google ADK -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART B</span>
+      <span class="segment-title">Google ADK (Agent Development Kit)</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Google released the Agent Development Kit, or ADK, in 2025. It is Google's framework for building AI agents that can use tools, maintain state, and collaborate with other agents.</p>
+      <p>The core abstraction is an Agent class. You give it a name, a model, instructions, and a list of tools. The ADK handles the agent loop: the model generates a response, the ADK checks if it includes tool calls, executes them, and feeds the results back. Same pattern you saw with Claude and OpenAI, just different syntax.</p>
+      <div class="code-block"><pre><span class="kw">from</span> google.adk <span class="kw">import</span> Agent
+
+agent = <span class="fn">Agent</span>(
+    name=<span class="str">"data_analyst"</span>,
+    model=<span class="str">"gemini-2.5-flash"</span>,
+    instruction=<span class="str">"Analyze data and provide insights."</span>,
+    tools=[query_database, create_chart]
+)
+
+<span class="cm"># Run the agent</span>
+response = agent.<span class="fn">run</span>(
+    <span class="str">"What were the top products last quarter?"</span>
+)</pre></div>
+      <p>The ADK supports sub-agents, which are agents that can delegate to other agents. This is Google's approach to multi-agent orchestration. You define a parent agent and give it child agents as tools. When the parent needs specialized work, it delegates to the right child, gets the result, and continues.</p>
+      <p>One advantage of the ADK is tight integration with Google Cloud services. If your stack already runs on Google Cloud, the ADK gives you seamless access to BigQuery, Vertex AI, and other services without extra configuration.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Google ADK Architecture</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Google ADK -- Agent + Sub-Agents</text>
+        <!-- Parent Agent -->
+        <rect x="120" y="38" width="160" height="60" rx="10" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">Parent Agent</text>
+        <text x="200" y="74" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">instruction + model + tools</text>
+        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">delegates to sub-agents</text>
+        <!-- Sub-agents -->
+        <rect x="14" y="120" width="110" height="50" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="69" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">Data Sub-Agent</text>
+        <text x="69" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">query_database</text>
+        <rect x="145" y="120" width="110" height="50" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
+        <text x="200" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#f59e0b" font-weight="600">Chart Sub-Agent</text>
+        <text x="200" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">create_chart</text>
+        <rect x="276" y="120" width="110" height="50" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
+        <text x="331" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a855f7" font-weight="600">Report Sub-Agent</text>
+        <text x="331" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">compile_report</text>
+        <!-- Lines from parent to subs -->
+        <line x1="160" y1="98" x2="69" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+        <line x1="200" y1="98" x2="200" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+        <line x1="240" y1="98" x2="331" y2="120" stroke="#cbd5e1" stroke-width="1"/>
+        <!-- Google Cloud bar -->
+        <rect x="60" y="188" width="280" height="22" rx="6" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)"/>
+        <text x="200" y="203" text-anchor="middle" font-family="Outfit" font-size="7" fill="#2563EB" font-weight="600">Tight Google Cloud integration: BigQuery, Vertex AI, Cloud Functions</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART C: A2A Protocol -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART C</span>
+      <span class="segment-title">A2A Protocol</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Google also introduced the A2A protocol. A2A stands for Agent-to-Agent. It is an open standard for agents built on different platforms to communicate with each other.</p>
+      <p>Think about it this way. Right now, a Claude agent and a Gemini agent cannot easily talk to each other. They live in separate ecosystems with different APIs. A2A defines a common protocol so agents can discover each other, exchange messages, and coordinate work regardless of which platform built them.</p>
+      <p>This is still emerging. The specification was published in 2025 and adoption is in early stages. But the direction is important. The future of AI agents is not one platform wins. It is agents from different platforms working together. A2A is Google's bet on that future.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- A2A Protocol</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">A2A -- Agent-to-Agent Protocol</text>
+        <!-- Claude Agent -->
+        <rect x="20" y="50" width="100" height="50" rx="8" fill="rgba(251,146,60,0.15)" stroke="#fb923c"/>
+        <text x="70" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fb923c" font-weight="600">Claude Agent</text>
+        <text x="70" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Anthropic</text>
+        <!-- GPT Agent -->
+        <rect x="150" y="50" width="100" height="50" rx="8" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
+        <text x="200" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">GPT Agent</text>
+        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">OpenAI</text>
+        <!-- Gemini Agent -->
+        <rect x="280" y="50" width="100" height="50" rx="8" fill="rgba(37,99,235,0.15)" stroke="#2563EB"/>
+        <text x="330" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">Gemini Agent</text>
+        <text x="330" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Google</text>
+        <!-- A2A protocol layer -->
+        <rect x="40" y="120" width="320" height="36" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="200" y="138" text-anchor="middle" font-family="Outfit" font-size="10" fill="#fbbf24" font-weight="600">A2A Protocol</text>
+        <text x="200" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">discover, exchange messages, coordinate work</text>
+        <!-- Lines down to protocol -->
+        <line x1="70" y1="100" x2="70" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="200" y1="100" x2="200" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
+        <line x1="330" y1="100" x2="330" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
+        <!-- Status -->
+        <rect x="120" y="170" width="160" height="20" rx="4" fill="rgba(245,158,11,0.08)"/>
+        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24" font-weight="500">Emerging (2025) -- early adoption</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate the three platform agents appearing, then the A2A protocol bar sliding in underneath to connect them. Emphasize that this is forward-looking, not production-ready yet.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 5: Comparison & When to Choose                            -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: "Comparison and When to Choose"</h2>
+    <div class="video-meta">Prof on camera -- ~3 minutes -- 2 segments</div>
+  </div>
+
+  <!-- PART A: Side-by-Side -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART A</span>
+      <span class="segment-title">Side-by-Side Comparison</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera + Overlay</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Now that you have seen all three, the patterns should be obvious. Every platform has messages. Every platform has tool calling. Every platform has an agent framework. The differences are in the details.</p>
+      <p>Claude separates the system prompt from messages. OpenAI puts it inside messages. Gemini uses a model-level system_instruction. Claude returns tool calls as content blocks in a content array. OpenAI returns them in a tool_calls array inside the message. Gemini uses function_call parts. Different shapes, same idea.</p>
+      <p>On the agent side: Claude has the Agent SDK, OpenAI has the Agents SDK with handoffs and guardrails, Google has the ADK with sub-agents and Google Cloud integration. Each framework reflects the priorities of the company that built it.</p>
+      <p>For pricing, Claude and OpenAI charge per token with different tiers. Gemini offers a generous free tier through Google AI Studio. For production, all three offer enterprise pricing with SLAs. The cost difference for most applications is small enough that it should not be the primary decision factor. Capability and ecosystem fit matter more.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Comparison Table</span>
+      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Platform Comparison</text>
+        <!-- Header row -->
+        <rect x="14" y="34" width="82" height="24" rx="4" fill="#1e293b"/>
+        <text x="55" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#e2e8f0" font-weight="600">Feature</text>
+        <rect x="100" y="34" width="92" height="24" rx="4" fill="rgba(251,146,60,0.15)"/>
+        <text x="146" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fb923c" font-weight="600">Claude</text>
+        <rect x="196" y="34" width="92" height="24" rx="4" fill="rgba(16,185,129,0.15)"/>
+        <text x="242" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">OpenAI</text>
+        <rect x="292" y="34" width="94" height="24" rx="4" fill="rgba(37,99,235,0.15)"/>
+        <text x="339" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#2563EB" font-weight="600">Google</text>
+        <!-- Row: System prompt -->
+        <line x1="14" y1="62" x2="386" y2="62" stroke="#e2e8f0"/>
+        <text x="20" y="78" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">System prompt</text>
+        <text x="146" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">separate param</text>
+        <text x="242" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">inside messages</text>
+        <text x="339" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">model-level</text>
+        <!-- Row: Tool calls -->
+        <line x1="14" y1="86" x2="386" y2="86" stroke="#f1f5f9"/>
+        <text x="20" y="102" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Tool calls</text>
+        <text x="146" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">content blocks</text>
+        <text x="242" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">tool_calls array</text>
+        <text x="339" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">function_call parts</text>
+        <!-- Row: Agent Framework -->
+        <line x1="14" y1="110" x2="386" y2="110" stroke="#e2e8f0"/>
+        <text x="20" y="126" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Agent framework</text>
+        <text x="146" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Agent SDK</text>
+        <text x="242" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Agents SDK</text>
+        <text x="339" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">ADK</text>
+        <!-- Row: Multi-agent -->
+        <line x1="14" y1="134" x2="386" y2="134" stroke="#f1f5f9"/>
+        <text x="20" y="150" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Multi-agent</text>
+        <text x="146" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP + tools</text>
+        <text x="242" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">handoffs</text>
+        <text x="339" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">sub-agents</text>
+        <!-- Row: Multimodal -->
+        <line x1="14" y1="158" x2="386" y2="158" stroke="#e2e8f0"/>
+        <text x="20" y="174" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Multimodal</text>
+        <text x="146" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + image</text>
+        <text x="242" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + image + audio</text>
+        <text x="339" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + img + vid + audio</text>
+        <!-- Row: Free tier -->
+        <line x1="14" y1="182" x2="386" y2="182" stroke="#f1f5f9"/>
+        <text x="20" y="198" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Free tier</text>
+        <text x="146" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">limited</text>
+        <text x="242" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">limited</text>
+        <text x="339" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#10b981" font-weight="600">generous</text>
+        <!-- Row: Strength -->
+        <line x1="14" y1="206" x2="386" y2="206" stroke="#e2e8f0"/>
+        <text x="20" y="222" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Best for</text>
+        <text x="146" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fb923c">safety, reasoning</text>
+        <text x="242" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#10b981">ecosystem, tooling</text>
+        <text x="339" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#2563EB">multimodal, cost</text>
+        <!-- Row: Protocol -->
+        <line x1="14" y1="230" x2="386" y2="230" stroke="#f1f5f9"/>
+        <text x="20" y="246" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Interop protocol</text>
+        <text x="146" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP</text>
+        <text x="242" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP (adopted)</text>
+        <text x="339" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">A2A + MCP</text>
+        <!-- Bottom insight -->
+        <rect x="40" y="264" width="320" height="40" rx="8" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.15)"/>
+        <text x="200" y="280" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b" font-weight="600">Same pattern everywhere: messages + tools + agent loop</text>
+        <text x="200" y="294" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">The syntax changes. The thinking does not.</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART B: The Real Skill -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART B</span>
+      <span class="segment-title">The Real Skill</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~1 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>The real skill is not mastering one platform. It is knowing which one to reach for.</p>
+      <p>Need bulletproof safety and the best reasoning? Claude. Need the broadest ecosystem with the most third-party integrations? OpenAI. Need multimodal on a budget with tight Google Cloud integration? Gemini.</p>
+      <p>And the best part: switching is not hard. Once you understand the pattern of messages, tools, and agent loops, moving from one platform to another is a matter of changing import statements and adjusting a few field names. The hard part is the thinking. The syntax is just syntax.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Direct to camera. Confident, closing-argument energy. This is the thesis of the module. Pause after "The syntax is just syntax."</p>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 6: Wrap-Up                                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Module 12 Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- ~1 minute -- 2 segments</div>
+  </div>
+
+  <!-- PART 01 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART 01</span>
+      <span class="segment-title">What You Learned</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>You covered three AI platforms in one module. Claude, OpenAI, and Google. You saw how each one handles messages, tool calling, and agent orchestration. You saw the differences in syntax and the similarities in design.</p>
+      <p>You are not locked into one vendor anymore. You understand the patterns that all three share, and you know when to reach for each one. That is a skill that stays relevant no matter which platform leads the market next year.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same studio setup as opening. Reflective, satisfied delivery. Let the accomplishment land.</p>
+    </div>
+  </div>
+
+  <!-- PART 02 -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART 02</span>
+      <span class="segment-title">Next Module Preview</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~30 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Next module, we go from building AI systems to deploying them. How do you take everything you have built and put it into production where real users interact with it every day? That is the next step.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">End Card</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
+        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
+        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 12 / 14</text>
+        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 12 Complete</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">AI Platforms: Claude, OpenAI, Google</text>
+        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Deployment &amp; Production</text>
+        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">From prototype to production</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani -- Northeastern University</text>
+      </svg>
+    </div>
+  </div>
+
+</div><!-- end video-6 -->
+
+
+<!-- Student Discussion Guide -->
+<div style="margin-top:48px; padding-top:24px; border-top:1px solid rgba(37,99,235,0.08);">
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number" style="background:rgba(20,184,166,0.1);color:#0d9488;">DISC</span>
+      <span class="segment-title">Student Discussion Guide -- Choosing Your Platform</span>
+      <div class="segment-badges">
+        <span class="badge badge-discussion">STUDENT DISCUSSION</span>
+        <span class="badge badge-duration">~10 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="discussion-guidelines">
+        <h4>STUDENT DISCUSSION GUIDE</h4>
+        <p class="disc-intro">Two former students join Prof. Dehghani to discuss real-world platform selection. Semi-structured, conversation-driven.</p>
+        <ol>
+          <li>Which platform does your team or company use, and why did they choose it?</li>
+          <li>Have you ever had to switch from one AI provider to another mid-project? What was that like?</li>
+          <li>When would you choose Claude over OpenAI, or Gemini over both?</li>
+          <li>How important is vendor lock-in when choosing an AI platform for a production application?</li>
+          <li>What do you think about interoperability protocols like MCP and A2A? Will they matter in two years?</li>
+        </ol>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Note</span>
+      <div class="media-note">
+        MEDIA TEAM: Three-person setup. Prof. and two students. Relaxed conversation. No slides. 10-12 minutes. Can be edited down to 8-10 for final cut.
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- References -->
+<div class="references-section">
+  <h3>References &amp; Resources</h3>
+  <table class="ref-table">
+    <thead><tr><th>Resource</th><th>Link</th></tr></thead>
+    <tbody>
+      <tr><td>Anthropic Claude API Docs</td><td><a href="https://docs.anthropic.com/" target="_blank">docs.anthropic.com</a></td></tr>
+      <tr><td>Claude Agent SDK</td><td><a href="https://github.com/anthropics/claude-code" target="_blank">github.com/anthropics/claude-code</a></td></tr>
+      <tr><td>OpenAI API Docs</td><td><a href="https://platform.openai.com/docs" target="_blank">platform.openai.com/docs</a></td></tr>
+      <tr><td>OpenAI Agents SDK</td><td><a href="https://github.com/openai/openai-agents-python" target="_blank">github.com/openai/openai-agents-python</a></td></tr>
+      <tr><td>Google AI Studio</td><td><a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a></td></tr>
+      <tr><td>Google ADK Docs</td><td><a href="https://google.github.io/adk-docs/" target="_blank">google.github.io/adk-docs</a></td></tr>
+      <tr><td>A2A Protocol</td><td><a href="https://github.com/google/A2A" target="_blank">github.com/google/A2A</a></td></tr>
+      <tr><td>MCP Specification</td><td><a href="https://modelcontextprotocol.io/" target="_blank">modelcontextprotocol.io</a></td></tr>
+    </tbody>
+  </table>
+</div>
+
+</div><!-- end container -->
+
+<div class="scroll-controls" id="scrollControls">
+  <label>Speed</label>
+  <input type="range" min="0" max="5" step="0.25" value="1" id="scrollSpeed">
+  <button id="scrollToggle" onclick="toggleAutoScroll()">Start</button>
+</div>
+
+<script>
+function switchVideo(num) {
+  document.querySelectorAll('.video-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.video-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('video-' + num).classList.add('active');
+  document.querySelectorAll('.video-tab')[num - 1].classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+let teleMode = false;
+function toggleTeleprompter() {
+  teleMode = !teleMode;
+  document.body.classList.toggle('teleprompter', teleMode);
+  const btn = document.getElementById('teleBtn');
+  btn.classList.toggle('teleprompter-active', teleMode);
+  btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
+  if (!teleMode) { stopAutoScroll(); }
+}
+
+let scrollInterval = null;
+let isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) { stopAutoScroll(); } else { startAutoScroll(); } }
+function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
+function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
+  if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+});
+
+// Inline Segment Editing
+(function() {
+  const PAGE_KEY = document.title.replace(/[^a-zA-Z0-9]/g, '_');
+
+  function getStore() {
+    return JSON.parse(localStorage.getItem('dads_script_edits') || '{}');
+  }
+
+  function segId(seg) {
+    const num = seg.querySelector('.segment-number')?.textContent.trim() || '';
+    const title = seg.querySelector('.segment-title')?.textContent.trim() || '';
+    return PAGE_KEY + '__' + num + '__' + title;
+  }
+
+  document.querySelectorAll('.segment').forEach(seg => {
+    const header = seg.querySelector('.segment-header');
+    if (!header) return;
+
+    const dot = document.createElement('span');
+    dot.className = 'segment-edited-dot';
+    dot.title = 'Edited';
+    header.insertBefore(dot, header.firstChild);
+
+    const btn = document.createElement('button');
+    btn.className = 'edit-btn';
+    btn.innerHTML = '&#9998;';
+    btn.title = 'Edit segment';
+    header.appendChild(btn);
+
+    const actions = document.createElement('div');
+    actions.className = 'edit-actions';
+    actions.innerHTML = '<button class="btn-save">Save</button><button class="btn-cancel">Cancel</button>';
+    header.appendChild(actions);
+
+    let backup = {};
+
+    btn.addEventListener('click', () => {
+      seg.classList.add('editing');
+      backup = {};
+      seg.querySelectorAll('.script-col, .media-col').forEach(col => {
+        col.querySelectorAll('p, .media-note, .media-label, .placeholder-type, .placeholder-desc, .shot-note').forEach(el => {
+          el.setAttribute('contenteditable', 'true');
+        });
+        backup[col.className] = col.innerHTML;
+      });
+    });
+
+    actions.querySelector('.btn-cancel').addEventListener('click', () => {
+      seg.classList.remove('editing');
+      seg.querySelectorAll('.script-col, .media-col').forEach(col => {
+        if (backup[col.className]) col.innerHTML = backup[col.className];
+        col.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+      });
+    });
+
+    actions.querySelector('.btn-save').addEventListener('click', () => {
+      seg.classList.remove('editing');
+      seg.classList.add('was-edited');
+      const store = getStore();
+      const id = segId(seg);
+      store[id] = {};
+      seg.querySelectorAll('.script-col, .media-col').forEach(col => {
+        col.querySelectorAll('[contenteditable]').forEach(el => el.removeAttribute('contenteditable'));
+        store[id][col.className] = col.innerHTML;
+      });
+      localStorage.setItem('dads_script_edits', JSON.stringify(store));
+    });
+  });
+
+  const store = getStore();
+  document.querySelectorAll('.segment').forEach(seg => {
+    const id = segId(seg);
+    if (store[id]) {
+      seg.classList.add('was-edited');
+      seg.querySelectorAll('.script-col, .media-col').forEach(col => {
+        if (store[id][col.className]) col.innerHTML = store[id][col.className];
+      });
+    }
+  });
+})();
+
+
+// Review Status (approve / maybe / reject)
+(function() {
+  const PAGE_KEY = document.title.replace(/[^a-zA-Z0-9]/g, '_');
+  const STORE_KEY = 'dads_script_reviews';
+
+  function getReviews() {
+    return JSON.parse(localStorage.getItem(STORE_KEY) || '{}');
+  }
+
+  function revId(seg) {
+    const num = seg.querySelector('.segment-number')?.textContent.trim() || '';
+    const title = seg.querySelector('.segment-title')?.textContent.trim() || '';
+    return PAGE_KEY + '__' + num + '__' + title;
+  }
+
+  const statuses = [
+    { key: 'approved', label: '\u2713', cls: 'rv-approve', tip: 'Approve' },
+    { key: 'maybe',   label: '?',       cls: 'rv-maybe',  tip: 'Maybe' },
+    { key: 'rejected',label: '\u2717', cls: 'rv-reject', tip: 'Reject' }
+  ];
+
+  document.querySelectorAll('.segment').forEach(seg => {
+    const header = seg.querySelector('.segment-header');
+    if (!header) return;
+
+    const wrap = document.createElement('span');
+    wrap.className = 'review-toggle';
+
+    statuses.forEach(s => {
+      const b = document.createElement('button');
+      b.className = s.cls;
+      b.textContent = s.label;
+      b.title = s.tip;
+      b.addEventListener('click', () => {
+        const id = revId(seg);
+        const reviews = getReviews();
+        const current = seg.getAttribute('data-review');
+        if (current === s.key) {
+          seg.removeAttribute('data-review');
+          delete reviews[id];
+          wrap.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+        } else {
+          seg.setAttribute('data-review', s.key);
+          reviews[id] = s.key;
+          wrap.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+          b.classList.add('active');
+        }
+        localStorage.setItem(STORE_KEY, JSON.stringify(reviews));
+      });
+      wrap.appendChild(b);
+    });
+
+    const title = header.querySelector('.segment-title');
+    if (title && title.nextSibling) {
+      header.insertBefore(wrap, title.nextSibling);
+    } else {
+      header.appendChild(wrap);
+    }
+  });
+
+  // Restore on load
+  const reviews = getReviews();
+  document.querySelectorAll('.segment').forEach(seg => {
+    const id = revId(seg);
+    if (reviews[id]) {
+      seg.setAttribute('data-review', reviews[id]);
+      const wrap = seg.querySelector('.review-toggle');
+      if (wrap) {
+        const s = statuses.find(x => x.key === reviews[id]);
+        if (s) wrap.querySelector('.' + s.cls)?.classList.add('active');
+      }
+    }
+  });
+})();
+
+
+function exportScript() {
+  let videoBlocks = [];
+
+  document.querySelectorAll('.video-section').forEach(section => {
+    if (section.dataset.scriptExport === 'false') return;
+    if (section.dataset.taOnly === 'true') return;
+
+    const videoNum = section.id.replace('video-', '');
+    const h2El = section.querySelector('.video-header h2');
+    const h2Raw = h2El ? h2El.textContent.trim() : '';
+    const titleMatch = h2Raw.match(/Video\s+\d+:\s*"?([^"]*)"?\s*$/);
+    const videoTitle = titleMatch ? titleMatch[1].replace(/\s*$/, '') : h2Raw;
+
+    let partBlocks = [];
+
+    section.querySelectorAll('.segment').forEach(seg => {
+      const segNum = seg.querySelector('.segment-number')?.textContent?.trim() || '';
+      const segTitle = seg.querySelector('.segment-title')?.textContent?.trim() || '';
+      const partLabel = segNum ? segNum : 'PART';
+      const partHeader = segTitle ? partLabel + ': ' + segTitle : partLabel;
+
+      let paragraphs = [];
+
+      const scriptCol = seg.querySelector('.script-col');
+      if (scriptCol) {
+        const ta = scriptCol.querySelector('.ta-guidelines');
+        scriptCol.querySelectorAll(':scope > p').forEach(p => {
+          if (ta && ta.contains(p)) return;
+          const text = p.textContent.trim();
+          if (text) paragraphs.push(text);
+        });
+
+        const selected = scriptCol.querySelector('.option-card.selected');
+        if (selected) {
+          selected.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) paragraphs.push(text);
+          });
+        }
+
+        const scriptCard = scriptCol.querySelector('.script-card');
+        if (scriptCard) {
+          scriptCard.querySelectorAll('p').forEach(p => {
+            const text = p.textContent.trim();
+            if (text) paragraphs.push(text);
+          });
+        }
+      }
+
+      partBlocks.push(partHeader + '\n\n' + paragraphs.join('\n\n'));
+    });
+
+    const videoHeader = 'VIDEO ' + videoNum + ' \u2014 ' + videoTitle;
+    videoBlocks.push(videoHeader + '\n\n' + partBlocks.join('\n\n---\n\n'));
+  });
+
+  const text = videoBlocks.join('\n\n===\n\n');
+  const modMatch = document.title.match(/M(\d+)/);
+  const filename = modMatch ? 'M' + modMatch[1] + '_Script.txt' : 'Script_Export.txt';
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
+  const original = btn.textContent;
+  btn.textContent = 'Downloaded!';
+  btn.style.background = 'var(--accent)';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 1500);
+}
+
+</script>
 
 </body>
 </html>
