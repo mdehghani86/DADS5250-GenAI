@@ -295,10 +295,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="km-text">Build something real. Break something. Ship it.</span>
   </div>
 
-  <!-- SEG 01 -->
+  <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 01</span>
+      <span class="segment-number">PART 01</span>
       <span class="segment-title">The Shift</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -320,10 +320,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 02 -->
+  <!-- PART 02 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 02</span>
+      <span class="segment-number">PART 02</span>
       <span class="segment-title">Startup Inspiration</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -368,10 +368,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 03 -->
+  <!-- PART 03 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 03</span>
+      <span class="segment-number">PART 03</span>
       <span class="segment-title">Key Message</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -409,10 +409,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <div class="video-meta">Prof on camera -- 5-6 minutes -- 4 segments</div>
   </div>
 
-  <!-- SEG 01 -->
+  <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 01</span>
+      <span class="segment-number">PART 01</span>
       <span class="segment-title">Logistics</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -455,10 +455,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 02 -->
+  <!-- PART 02 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 02</span>
+      <span class="segment-number">PART 02</span>
       <span class="segment-title">Project Ideas</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -498,10 +498,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 03 -->
+  <!-- PART 03 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 03</span>
+      <span class="segment-number">PART 03</span>
       <span class="segment-title">Judging Criteria</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -545,10 +545,10 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-  <!-- SEG 04 -->
+  <!-- PART 04 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">SEG 04</span>
+      <span class="segment-number">PART 04</span>
       <span class="segment-title">Final Words</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
@@ -784,47 +784,41 @@ document.addEventListener('keydown', function(e) {
 
 
 function exportScript() {
-  let output = [];
+  let videoBlocks = [];
 
   document.querySelectorAll('.video-section').forEach(section => {
-    // Skip videos marked as not part of script export (TA-only, voiceover-only)
+    // Skip TA-only or export-disabled videos
     if (section.dataset.scriptExport === 'false') return;
+    if (section.dataset.taOnly === 'true') return;
 
     // Get video number from id="video-N"
     const videoNum = section.id.replace('video-', '');
-    // Get clean title from h2 (strip any inner HTML like spans)
+    // Get clean title from h2 (strip any HTML tags)
     const h2El = section.querySelector('.video-header h2');
     const h2Raw = h2El ? h2El.textContent.trim() : '';
-    // Extract just the title part after "Video N: " — remove quotes
+    // Extract just the title part after "Video N: " - remove quotes
     const titleMatch = h2Raw.match(/Video\s+\d+:\s*"?([^"]*)"?\s*$/);
     const videoTitle = titleMatch ? titleMatch[1].replace(/\s*$/, '') : h2Raw;
 
-    // Determine who delivers this video
-    const tab = document.querySelector(`.video-tab[onclick*="switchVideo(${videoNum})"]`);
-    let person = 'Prof. Dehghani';
-    if (tab) {
-      if (tab.classList.contains('ta-recorded')) person = 'TA';
-      else if (tab.classList.contains('voiceover-only')) person = 'TA Voiceover';
-    }
-    if (section.dataset.taOnly === 'true') person = 'TA';
+    let partBlocks = [];
 
-    output.push(`VIDEO ${videoNum} \u2014 ${videoTitle} (${person})`);
-
-    // Segments become PART 1, PART 2, etc.
-    let partNum = 1;
     section.querySelectorAll('.segment').forEach(seg => {
+      // Use the segment-number text from the HTML (e.g. "PART 01", "PART A")
+      const segNum = seg.querySelector('.segment-number')?.textContent?.trim() || '';
       const segTitle = seg.querySelector('.segment-title')?.textContent?.trim() || '';
-      output.push(`PART ${partNum}: ${segTitle}`);
+      // Format: "PART 1: Title" - use the number/letter from the span
+      const partLabel = segNum ? segNum : 'PART';
+      const partHeader = segTitle ? partLabel + ': ' + segTitle : partLabel;
 
-      // Collect script text from .script-col p (the main narration)
+      let paragraphs = [];
+
       const scriptCol = seg.querySelector('.script-col');
       if (scriptCol) {
-        // Skip TA guidelines blocks — those are not narration
         const ta = scriptCol.querySelector('.ta-guidelines');
         scriptCol.querySelectorAll(':scope > p').forEach(p => {
           if (ta && ta.contains(p)) return;
           const text = p.textContent.trim();
-          if (text) output.push(text);
+          if (text) paragraphs.push(text);
         });
 
         // Also handle selected option cards
@@ -832,7 +826,7 @@ function exportScript() {
         if (selected) {
           selected.querySelectorAll('p').forEach(p => {
             const text = p.textContent.trim();
-            if (text) output.push(text);
+            if (text) paragraphs.push(text);
           });
         }
 
@@ -841,17 +835,19 @@ function exportScript() {
         if (scriptCard) {
           scriptCard.querySelectorAll('p').forEach(p => {
             const text = p.textContent.trim();
-            if (text) output.push(text);
+            if (text) paragraphs.push(text);
           });
         }
       }
 
-      output.push('');  // blank line between parts
-      partNum++;
+      partBlocks.push(partHeader + '\n\n' + paragraphs.join('\n\n'));
     });
+
+    const videoHeader = 'VIDEO ' + videoNum + ' \u2014 ' + videoTitle;
+    videoBlocks.push(videoHeader + '\n\n' + partBlocks.join('\n\n---\n\n'));
   });
 
-  const text = output.join('\\n').replace(/\\n{3,}/g, '\\n\\n').trim();
+  const text = videoBlocks.join('\n\n===\n\n');
   navigator.clipboard.writeText(text).then(() => {
     const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
     const original = btn.textContent;
