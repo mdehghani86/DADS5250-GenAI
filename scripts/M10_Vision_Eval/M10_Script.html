@@ -873,7 +873,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>The practical approach? Build a test suite. A set of questions with known good answers. Run your system against it regularly. Track the scores over time. That is regression testing for AI.</p>
+      <p>The practical approach is simpler than most people think. You build a test suite. A spreadsheet with 50 questions and the correct answers. You run your AI system against those questions, compare the outputs to the expected answers, and score it. Then you do it again every time you change the prompt, swap the model, or update the retrieval pipeline.</p>
+      <p>If the scores go up, your change was good. If they drop, you caught a regression before your users did. That is regression testing for AI. The same idea software engineers have used for decades, applied to systems that generate text instead of returning numbers.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Regression Testing for AI</span>
@@ -915,6 +916,62 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="370" y="212" text-anchor="end" font-family="Outfit" font-size="6" fill="#94a3b8">w12</text>
         <defs>
           <marker id="m11rtArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <!-- PART E -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART E</span>
+      <span class="segment-title">Real Example: Customer Support Bot</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Say you built a customer support chatbot for an online store. It answers questions about orders, returns, and shipping. How do you know if it is actually good?</p>
+      <p>You start by collecting 50 real customer questions. For each one, you write the ideal answer. "Where is my order?" should return the tracking link. "Can I return this after 30 days?" should say no, the policy is 14 days. "Do you ship to Canada?" should say yes with estimated delivery time.</p>
+      <p>Now you run all 50 through your bot. You score each response. Did it get the facts right? Did it include the correct policy? Did it hallucinate a return window that does not exist? You end up with a number. Maybe 38 out of 50 are correct. That is your baseline: 76 percent.</p>
+      <p>Next week, you change the prompt. You run the same 50 questions. Now you get 43 correct. 86 percent. The prompt change worked. The week after, you switch from GPT-4.1 Mini to a cheaper model. You run the suite again. Score drops to 32. You just saved money but lost quality. Now you have data to make the trade-off decision instead of guessing.</p>
+      <p>That loop of measure, change, re-measure is the entire discipline of LLM evaluation. It is not glamorous. But it is what separates AI demos from AI products.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Customer Support Bot Eval Loop</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Real Example: Evaluating a Support Bot</text>
+        <!-- Week 1 -->
+        <rect x="14" y="40" width="120" height="80" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
+        <text x="74" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">WEEK 1 · Baseline</text>
+        <text x="74" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="#2563EB" font-weight="700">76%</text>
+        <text x="74" y="94" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">38/50 correct</text>
+        <text x="74" y="110" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">original prompt</text>
+        <!-- Arrow -->
+        <line x1="136" y1="80" x2="150" y2="80" stroke="#10b981" stroke-width="2" marker-end="url(#m10evalArrow)"/>
+        <!-- Week 2 -->
+        <rect x="152" y="40" width="120" height="80" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
+        <text x="212" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">WEEK 2 · Better</text>
+        <text x="212" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="#10b981" font-weight="700">86%</text>
+        <text x="212" y="94" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">43/50 correct</text>
+        <text x="212" y="110" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">improved prompt</text>
+        <!-- Arrow -->
+        <line x1="274" y1="80" x2="288" y2="80" stroke="#ef4444" stroke-width="2" marker-end="url(#m10evalArrowR)"/>
+        <!-- Week 3 -->
+        <rect x="290" y="40" width="96" height="80" rx="8" fill="rgba(239,68,68,0.06)" stroke="#ef4444"/>
+        <text x="338" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600">WEEK 3 · Cheaper</text>
+        <text x="338" y="78" text-anchor="middle" font-family="JetBrains Mono" font-size="20" fill="#ef4444" font-weight="700">64%</text>
+        <text x="338" y="94" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">32/50 correct</text>
+        <text x="338" y="110" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">cheaper model</text>
+        <!-- Footer -->
+        <rect x="14" y="140" width="372" height="80" rx="8" fill="rgba(37,99,235,0.04)" stroke="rgba(37,99,235,0.15)"/>
+        <text x="200" y="162" text-anchor="middle" font-family="Outfit" font-size="10" fill="#1e293b" font-weight="600">The Eval Loop</text>
+        <text x="200" y="180" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569">Measure → Change one thing → Re-measure → Decide</text>
+        <text x="200" y="200" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">Not glamorous. But it separates demos from products.</text>
+        <defs>
+          <marker id="m10evalArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/></marker>
+          <marker id="m10evalArrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444"/></marker>
         </defs>
       </svg>
     </div>
