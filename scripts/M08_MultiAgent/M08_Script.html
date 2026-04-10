@@ -421,7 +421,7 @@ body.teleprompter .scroll-controls { display: flex; }
       <p>CrewAI was created in late 2023 by Joao Moura, a Brazilian-born engineer who had spent years building AI systems at large companies. He noticed the same problem over and over -- developers were writing hundreds of lines of boilerplate just to get two agents to talk to each other.</p>
       <p>His idea was simple. What if multi-agent systems worked the way real teams work? You define who is on the team, what each person is responsible for, and how they collaborate. The framework handles the rest.</p>
       <p>He open-sourced it in early 2024, and it took off. Within months, CrewAI had tens of thousands of stars on GitHub and a growing community of developers building everything from research assistants to automated content pipelines. By 2025, CrewAI had raised funding and become one of the most popular multi-agent frameworks in the Python ecosystem.</p>
-      <p>What makes CrewAI different from building agents in LangGraph is the level of abstraction. LangGraph gives you nodes, edges, and state -- you build the graph yourself. CrewAI gives you agents, tasks, and crews -- you describe the team, and it builds the graph for you.</p>
+      <p>What makes CrewAI special is the level of abstraction. You do not think in nodes and edges. You think in people and jobs. You describe the team, and CrewAI figures out how to run it.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- CrewAI Timeline</span>
@@ -617,10 +617,10 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
       </div>
     </div>
     <div class="script-col">
-      <p>CrewAI supports two orchestration patterns.</p>
-      <p>Sequential: tasks run in order. The researcher finishes, then the writer starts, then the reviewer. Output flows downstream. Simple, predictable, great for linear workflows.</p>
-      <p>Hierarchical: a manager agent delegates tasks, reviews outputs, and can reassign work. The manager decides the order. It can send work back for revision. More complex, more flexible, better for dynamic projects where the path is not fixed.</p>
-      <p>Start with sequential. Move to hierarchical when you need it.</p>
+      <p>Once you have your agents and tasks, you need to decide how they work together. CrewAI gives you two options.</p>
+      <p>The first is sequential. The researcher goes first, finishes, and hands everything to the writer. The writer finishes and hands everything to the reviewer. One after another, like a production line. You know exactly what happens and in what order.</p>
+      <p>The second is hierarchical. Instead of a fixed order, you add a manager agent. The manager reads the overall goal, decides which agent should work next, reviews the output, and can send it back if it is not good enough. It is closer to how a real project team operates.</p>
+      <p>For most tasks, sequential is the right starting point. You will know when you need hierarchical because sequential will start feeling too rigid.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Sequential vs Hierarchical</span>
@@ -1001,10 +1001,10 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
       </div>
     </div>
     <div class="script-col">
-      <p>Now that your agents have tools, the next question is: who goes when?</p>
-      <p>CrewAI calls this the <em>process</em>. There are two built-in processes. Sequential means Agent 1 finishes, then Agent 2 starts, then Agent 3. Like an assembly line. Each agent gets the output of the previous one as context. Simple. Predictable. Great for pipelines where each step depends on the last.</p>
-      <p>Hierarchical is different. One agent acts as the manager. It reads the overall goal, decides which agent should work next, delegates tasks, reviews the output, and decides whether to send it back for revision or move on. It is closer to how a real team works -- a project lead coordinating specialists.</p>
-      <p>Which one should you use? Start with sequential. It is easier to debug. Move to hierarchical when you have agents that need to collaborate, not just pass work down a line.</p>
+      <p>You already know the difference between sequential and hierarchical from the last video. Now let us talk about when you actually switch from one to the other.</p>
+      <p>Sequential breaks down when the task requires back-and-forth. If your editor finds a factual error, in sequential mode the crew is already done. There is no way to send it back to the researcher. In hierarchical mode, the manager catches that and says "researcher, verify this claim before we continue."</p>
+      <p>Hierarchical also shines when you do not know the right order in advance. Maybe some queries need research first, others need analysis first. The manager figures that out at runtime based on what the user asked.</p>
+      <p>The trade-off is cost and predictability. Hierarchical uses more LLM calls because the manager reasons at every step. And the output path is harder to debug because you did not design it. For production systems, start with sequential, measure quality, and only switch to hierarchical if you see the quality ceiling.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Sequential vs Hierarchical</span>
