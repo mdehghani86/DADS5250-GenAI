@@ -311,8 +311,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Think about USB. Before USB, every device had its own proprietary connector. Printers, cameras, keyboards -- all different cables. USB created one standard.</p>
-      <p>MCP -- the Model Context Protocol -- is doing the same thing for AI. One standard way for any AI model to connect to any tool, any database, any service.</p>
+      <p>Think about USB. Before USB, every device had its own proprietary connector. Printers, cameras, keyboards. All different cables. USB created one standard.</p>
+      <p>MCP, the Model Context Protocol, is doing the same thing for AI. One standard way for any AI model to connect to any tool, any database, any service.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- USB → MCP</span>
@@ -366,7 +366,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
     <div class="script-col">
       <p>Before MCP, every integration was custom. Want your AI to read from a database? Write a custom tool. Want it to search the web? Write another tool. Want it to send emails? Another tool. Every integration, from scratch.</p>
-      <p>MCP changes that. It defines a standard protocol -- a server exposes capabilities, a client connects to them. Any AI model can connect to any MCP server. OpenAI adopted it. Google adopted it. Anthropic created it. The entire industry is converging on this one standard.</p>
+      <p>MCP changes that. It defines a standard protocol. A server exposes capabilities, a client connects to them. Any AI model can connect to any MCP server. OpenAI adopted it. Google adopted it. Anthropic created it. The entire industry is converging on this one standard.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- The MCP Hub</span>
@@ -458,8 +458,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>An MCP server is a program that exposes tools to AI models through a standard protocol. Let me walk you through how to build one.</p>
-      <p>The architecture is simple. You have a server that registers tools -- functions with names, descriptions, and parameter schemas. You have a client -- your AI application -- that discovers those tools and calls them.</p>
+      <p>An MCP server is a program that exposes tools to AI models through a standard protocol. Here is how to build one.</p>
+      <p>The architecture is simple. You have a server that registers tools. These are functions with names, descriptions, and parameter schemas. You have a client, your AI application, that discovers those tools and calls them.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- MCP Server / Client Architecture</span>
@@ -508,8 +508,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>In Python, you use the MCP SDK. You create a server, decorate functions as tools, and run it. The SDK handles the protocol -- the JSON-RPC messages, the capability negotiation, the error handling.</p>
-      <p>Here is what makes this powerful. Once you build an MCP server, any MCP client can use it. Claude Desktop, Cursor, your own applications -- they all speak the same protocol. Build once, connect everywhere.</p>
+      <p>In Python, you use the MCP SDK. You create a server, decorate functions as tools, and run it. The SDK handles the protocol. The JSON-RPC messages, the capability negotiation, the error handling.</p>
+      <p>Here is what makes this powerful. Once you build an MCP server, any MCP client can use it. Claude Desktop, Cursor, your own applications. They all speak the same protocol. Build once, connect everywhere.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Build an MCP Server in ~15 Lines</span>
@@ -559,7 +559,7 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>In the lab, you will build an MCP server that connects AI to a SQLite database. The AI will be able to query tables, run SQL, and get results -- all through MCP. No custom tool code. Just the standard protocol.</p>
+      <p>In the lab, you will build an MCP server that connects AI to a SQLite database. The AI will be able to query tables, run SQL, and get results. All through MCP. No custom tool code. Just the standard protocol.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Demo Preview</span>
@@ -591,8 +591,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Guardrails are the safety systems that keep AI applications from going off the rails. Let me show you the three layers you need.</p>
-      <p>Layer one: input validation. Before any user input reaches the LLM, you validate it. Check for prompt injection attacks -- someone trying to override the system prompt. Check for prohibited content. Check for excessive length. This is your first line of defense.</p>
+      <p>Guardrails are the safety systems that keep AI applications from going off the rails. There are three layers you need.</p>
+      <p>Layer one: input validation. Before any user input reaches the LLM, you validate it. Check for prompt injection attacks, someone trying to override the system prompt. Check for prohibited content. Check for excessive length. This is your first line of defense.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Three Layers of Guardrails</span>
@@ -956,7 +956,7 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Here is what you accomplished. You learned MCP -- the standard protocol that lets AI connect to anything. And you learned guardrails -- the safety systems that make sure those connections are responsible.</p>
+      <p>Here is what you accomplished. You learned MCP, the standard protocol that lets AI connect to anything. And you learned guardrails, the safety systems that make sure those connections are responsible.</p>
       <p>Think about the full picture now. You can build AI applications with APIs. You can make them smart with prompting, chains, RAG, and agents. You can orchestrate teams with CrewAI. You can give them user interfaces with Gradio and Streamlit. You can connect them to any tool with MCP. And you can make them safe with guardrails.</p>
       <p>That is a complete toolkit. From idea to production. From notebook to product. From prototype to responsible deployment.</p>
     </div>
@@ -977,7 +977,7 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Next module: Vision and Evaluation. How do you give AI the ability to see -- to read engineering drawings, charts, and images? And how do you actually measure whether your AI is working? You cannot ship what you cannot measure.</p>
+      <p>Next module: Vision and Evaluation. How do you give AI the ability to see, to read engineering drawings, charts, and images? And how do you actually measure whether your AI is working? You cannot ship what you cannot measure.</p>
     </div>
     <div class="media-col">
       <span class="media-label">End Card</span>
