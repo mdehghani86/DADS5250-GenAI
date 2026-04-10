@@ -989,10 +989,10 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Let me define the three building blocks.</p>
-      <p>Nodes are functions. Each node takes the current state, does something -- calls the LLM, runs a tool, makes a decision -- and returns updated state. That is it. A function in, updated state out.</p>
-      <p>Edges connect nodes. A normal edge says "after this node, always go to that node." A conditional edge says "after this node, look at the state and decide where to go." This is where the intelligence lives -- the graph makes different decisions based on the data.</p>
-      <p>State is a dictionary that every node can read and write. It is how nodes communicate. The LLM node writes its response to state. The tool node reads the response and writes its result. Everything flows through state.</p>
+      <p>LangGraph has three pieces, and once you see them, the whole thing clicks.</p>
+      <p>A node is just a Python function. It receives the current state of the conversation, does one thing with it, and passes the updated state forward. That one thing could be calling the LLM, running a tool, or making a routing decision.</p>
+      <p>An edge connects one node to the next. Some edges are simple. "After the LLM responds, always go to the tool node." But the powerful ones are conditional. "Look at what the LLM just said. If it wants to call a tool, go to the tool node. If it is done, go to the end." That is where the branching happens.</p>
+      <p>And state is the shared memory that ties it all together. Every node reads from it, every node writes to it. The LLM node adds its response. The tool node adds its result. By the time you reach the end, state contains the full story of everything that happened.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Nodes · Edges · State</span>
