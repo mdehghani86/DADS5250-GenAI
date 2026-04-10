@@ -2212,18 +2212,28 @@ function exportScript() {
   });
 
   const text = videoBlocks.join('\n\n===\n\n');
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
-    const original = btn.textContent;
-    btn.textContent = 'Copied!';
-    btn.style.background = 'var(--accent)';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = original;
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 1500);
-  });
+  // Extract module number from title for filename
+  const modMatch = document.title.match(/M(\d+)/);
+  const filename = modMatch ? 'M' + modMatch[1] + '_Script.txt' : 'Script_Export.txt';
+  const blob = new Blob([text], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  const btn = document.querySelector('.btn-action[onclick="exportScript()"]');
+  const original = btn.textContent;
+  btn.textContent = 'Downloaded!';
+  btn.style.background = 'var(--accent)';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.textContent = original;
+    btn.style.background = '';
+    btn.style.color = '';
+  }, 1500);
 }
 
 </script>
