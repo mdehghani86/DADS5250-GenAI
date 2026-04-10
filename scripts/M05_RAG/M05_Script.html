@@ -151,104 +151,184 @@ body::before {
 .video-tab.voiceover-only.active { background: #14b8a6; color: #fff; border-color: #14b8a6; }
 .video-tab.voiceover-only.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'/><path d='M19 10v2a7 7 0 0 1-14 0v-2'/><line x1='12' y1='19' x2='12' y2='23'/><line x1='8' y1='23' x2='16' y2='23'/></svg>"); }
 
-/* ── Audio Segment · Clean Card UI ── */
-.audio-segment {
-  max-width: 720px; margin: 0 auto 20px;
-  background: #fff;
-  border: 1px solid #e8ecf1;
-  border-radius: 16px;
-  box-shadow: 0 2px 12px rgba(0,0,0,0.04), 0 0 0 1px rgba(0,0,0,0.02);
-  overflow: hidden;
-  transition: box-shadow 0.25s;
-}
-.audio-segment:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07), 0 0 0 1px rgba(37,99,235,0.08); }
+/* ── Audio Player · iOS Liquid Glass · One-at-a-time ── */
 
+/* Step navigator */
+.audio-nav {
+  display: flex; justify-content: center; gap: 10px;
+  padding: 16px 0 20px; flex-wrap: wrap;
+}
+.audio-nav-step {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  cursor: pointer; padding: 8px 14px; border-radius: 14px;
+  background: rgba(255,255,255,0.35);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.5);
+  transition: all 0.3s; min-width: 80px;
+}
+.audio-nav-step:hover {
+  background: rgba(255,255,255,0.55);
+  box-shadow: 0 4px 16px rgba(37,99,235,0.1);
+  transform: translateY(-2px);
+}
+.audio-nav-step.active {
+  background: rgba(37,99,235,0.1);
+  border-color: rgba(37,99,235,0.3);
+  box-shadow: 0 4px 20px rgba(37,99,235,0.15);
+}
+.audio-nav-num {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff; font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 8px rgba(37,99,235,0.3);
+  transition: all 0.3s;
+}
+.audio-nav-step.active .audio-nav-num {
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  box-shadow: 0 3px 12px rgba(37,99,235,0.4);
+  transform: scale(1.1);
+}
+.audio-nav-step.played .audio-nav-num {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: 0 2px 8px rgba(16,185,129,0.3);
+}
+.audio-nav-label {
+  font-family: 'Outfit', sans-serif; font-size: 0.68rem; font-weight: 500;
+  color: var(--text-muted); text-align: center; line-height: 1.2;
+  max-width: 90px;
+}
+.audio-nav-step.active .audio-nav-label { color: var(--accent); font-weight: 600; }
+
+/* Card container — only active card visible */
+.audio-segment { display: none; max-width: 720px; margin: 0 auto 20px; }
+.audio-segment.active { display: flex; flex-direction: column; }
+
+/* Glass card */
+.audio-segment .audio-card {
+  background: rgba(255,255,255,0.45);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255,255,255,0.6);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.06), 0 2px 8px rgba(0,0,0,0.03),
+              inset 0 1px 0 rgba(255,255,255,0.7);
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.audio-segment.active .audio-card:hover {
+  box-shadow: 0 12px 40px rgba(37,99,235,0.09), 0 3px 10px rgba(0,0,0,0.04),
+              inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+/* Card header with play button */
 .audio-segment .audio-header {
-  display: flex; align-items: center; gap: 14px;
-  padding: 16px 22px;
-  background: #fff;
-  border-bottom: 1px solid #f0f2f5;
+  display: flex; align-items: center; gap: 16px;
+  padding: 20px 24px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.5) 0%, rgba(255,255,255,0.2) 100%);
+  border-bottom: 1px solid rgba(255,255,255,0.4);
 }
 
 .audio-play-btn {
-  width: 40px; height: 40px; border-radius: 50%;
+  width: 48px; height: 48px; border-radius: 50%;
   border: none;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
   cursor: pointer;
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
-  box-shadow: 0 2px 8px rgba(37,99,235,0.25);
-  transition: all 0.2s;
-  position: relative;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.3);
+  transition: all 0.25s;
 }
 .audio-play-btn::after {
   content: ""; display: block;
   width: 0; height: 0;
   border-style: solid;
-  border-width: 7px 0 7px 12px;
+  border-width: 9px 0 9px 15px;
   border-color: transparent transparent transparent #fff;
-  margin-left: 2px;
+  margin-left: 3px;
 }
 .audio-play-btn svg { display: none; }
-.audio-play-btn:hover { transform: scale(1.08); box-shadow: 0 4px 14px rgba(37,99,235,0.35); }
-.audio-play-btn.playing { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 2px 8px rgba(239,68,68,0.3); animation: none; }
+.audio-play-btn:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37,99,235,0.4); }
+.audio-play-btn.playing {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: 0 4px 14px rgba(239,68,68,0.3);
+}
 .audio-play-btn.playing::after {
-  border-width: 0; width: 12px; height: 12px; margin-left: 0;
-  border-radius: 2px; background: #fff;
+  border-width: 0; width: 14px; height: 14px; margin-left: 0;
+  border-radius: 3px; background: #fff;
 }
 
 .audio-segment .audio-part-label {
-  font-family: 'Outfit', sans-serif; font-size: 0.72rem; font-weight: 700;
-  color: #3b82f6; letter-spacing: 0.04em;
+  font-family: 'Outfit', sans-serif; font-size: 0.7rem; font-weight: 700;
+  color: #3b82f6; letter-spacing: 0.05em;
   background: rgba(59,130,246,0.08); padding: 3px 10px; border-radius: 8px;
 }
 .audio-segment .audio-part-title {
-  font-family: 'Outfit', sans-serif; font-size: 0.95rem; font-weight: 600;
+  font-family: 'Outfit', sans-serif; font-size: 1.05rem; font-weight: 600;
   color: #1e293b; flex: 1;
 }
-.audio-segment .audio-duration {
-  font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
-  color: #94a3b8; white-space: nowrap;
+
+.audio-progress { height: 4px; background: rgba(37,99,235,0.06); }
+.audio-progress-bar {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa);
+  border-radius: 4px; transition: width 0.3s linear;
 }
 
-.audio-progress { height: 3px; background: #f1f5f9; }
-.audio-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #3b82f6, #60a5fa); border-radius: 3px; transition: width 0.3s linear; }
-
+/* Script text area */
 .audio-segment .audio-script {
-  padding: 20px 24px;
-  background: #fafbfc;
-  border-bottom: 1px solid #f0f2f5;
+  padding: 22px 26px;
+  background: rgba(255,255,255,0.3);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
 }
 .audio-segment .audio-script p {
-  font-size: 0.93rem; line-height: 1.8; color: #334155; margin-bottom: 12px;
+  font-size: 0.95rem; line-height: 1.82; color: #334155; margin-bottom: 12px;
 }
 .audio-segment .audio-script p:last-child { margin-bottom: 0; }
 .audio-segment .audio-script .code-block { margin: 12px 0; }
 .audio-segment .audio-script strong { color: #1e293b; }
-.audio-segment .audio-script em { color: #2563eb; font-style: italic; }
+.audio-segment .audio-script em { color: #2563eb; }
 .audio-segment .audio-script code {
   font-family: 'JetBrains Mono', monospace; font-size: 0.85em;
   background: rgba(37,99,235,0.06); color: #2563eb;
   padding: 2px 6px; border-radius: 4px;
 }
 
+/* Visual / SVG area */
 .audio-segment .audio-visual {
   padding: 20px; display: flex; justify-content: center;
-  background: #fff;
+  background: rgba(248,250,252,0.4);
+  border-top: 1px solid rgba(255,255,255,0.3);
 }
 .audio-segment .audio-visual svg {
   max-width: 520px; width: 100%; height: auto;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+  border-radius: 14px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
 .audio-not-recorded {
   font-size: 0.8rem; color: #94a3b8; font-style: italic;
   text-align: center; padding: 10px 0;
-  background: #fafbfc;
 }
 
-@keyframes pulse-mic { 0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 0 8px rgba(37,99,235,0); } } }
+/* Navigation arrows */
+.audio-nav-arrows {
+  display: flex; justify-content: center; gap: 12px;
+  padding: 12px 0;
+  max-width: 720px; margin: 0 auto;
+}
+.audio-arrow-btn {
+  padding: 8px 20px; border-radius: 12px; border: none;
+  background: rgba(255,255,255,0.4); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.5);
+  font-family: 'Outfit', sans-serif; font-size: 0.82rem; font-weight: 600;
+  color: var(--accent); cursor: pointer;
+  transition: all 0.2s;
+}
+.audio-arrow-btn:hover { background: rgba(37,99,235,0.08); border-color: rgba(37,99,235,0.2); }
+.audio-arrow-btn:disabled { opacity: 0.3; cursor: default; }
+.audio-arrow-btn:disabled:hover { background: rgba(255,255,255,0.4); border-color: rgba(255,255,255,0.5); }
+
+@keyframes pulse-mic { 0%,100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.3); } 50% { box-shadow: 0 0 0 10px rgba(37,99,235,0); } } } }
 
 .audio-progress { height: 3px; background: rgba(37,99,235,0.06); overflow: hidden; }
 .audio-progress-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #14b8a6, #2563EB); border-radius: 3px; transition: width 0.3s linear; }
@@ -1048,7 +1128,23 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
 
   <!-- ══════ PART 1: The 5-Step Build ══════ -->
+
+  <div class="audio-nav" data-video="video-3">
+      <div class="audio-nav-step" onclick="showAudioPart('video-3', 0)">
+        <div class="audio-nav-num">1</div>
+        <div class="audio-nav-label">The 5-Step Build</div>
+      </div>
+      <div class="audio-nav-step" onclick="showAudioPart('video-3', 1)">
+        <div class="audio-nav-num">2</div>
+        <div class="audio-nav-label">Chunking Strategies</div>
+      </div>
+      <div class="audio-nav-step" onclick="showAudioPart('video-3', 2)">
+        <div class="audio-nav-num">3</div>
+        <div class="audio-nav-label">The Code Pipeline</div>
+      </div>
+  </div>
   <div class="audio-segment" id="audio-part-v3-1">
+    <div class="audio-card">
     <div class="audio-header">
       <button class="audio-play-btn" onclick="playPart('v3-1')" title="Play voiceover">
         <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -1102,10 +1198,12 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="200" y="166" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">load → split → embed → store → query</text>
       </svg>
     </div>
-  </div>
+  
+    </div></div>
 
   <!-- ══════ PART 2: Chunking Strategies ══════ -->
   <div class="audio-segment" id="audio-part-v3-2">
+    <div class="audio-card">
     <div class="audio-header">
       <button class="audio-play-btn" onclick="playPart('v3-2')" title="Play voiceover">
         <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -1154,10 +1252,12 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="14" y="208" font-family="Outfit" font-size="8" fill="#94a3b8" font-style="italic">No universal answer — legal contracts ≠ product manuals. Experiment.</text>
       </svg>
     </div>
-  </div>
+  
+    </div></div>
 
   <!-- ══════ PART 3: The Code Pipeline ══════ -->
   <div class="audio-segment" id="audio-part-v3-3">
+    <div class="audio-card">
     <div class="audio-header">
       <button class="audio-play-btn" onclick="playPart('v3-3')" title="Play voiceover">
         <svg viewBox="0 0 24 24" fill="none" stroke="#0f766e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
@@ -1225,6 +1325,13 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="316" y="248" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">)</text>
       </svg>
     </div>
+  
+    </div></div>
+
+
+  <div class="audio-nav-arrows">
+    <button class="audio-arrow-btn audio-arrow-prev" onclick="prevAudioPart('video-3')">&#8592; Previous</button>
+    <button class="audio-arrow-btn audio-arrow-next" onclick="nextAudioPart('video-3')">Next &#8594;</button>
   </div>
 
 </div><!-- end video-3 -->
@@ -1878,39 +1985,95 @@ function exportScript() {
   });
 }
 
-// ── Audio Playback for voiceover-only videos ──
+// ── Audio Player v3: one-at-a-time navigation ──
 let currentlyPlaying = null;
+let currentAudioPart = {};  // track per-video
+
+function initAudioNav(videoId) {
+  const container = document.getElementById(videoId);
+  if (!container) return;
+  const segments = container.querySelectorAll('.audio-segment');
+  if (segments.length === 0) return;
+  // Show first segment
+  segments[0].classList.add('active');
+  const navSteps = container.querySelectorAll('.audio-nav-step');
+  if (navSteps.length > 0) navSteps[0].classList.add('active');
+  currentAudioPart[videoId] = 0;
+  updateArrows(videoId);
+}
+
+function showAudioPart(videoId, idx) {
+  const container = document.getElementById(videoId);
+  if (!container) return;
+  const segments = container.querySelectorAll('.audio-segment');
+  const navSteps = container.querySelectorAll('.audio-nav-step');
+  // Stop any playing audio
+  if (currentlyPlaying) {
+    const pa = document.getElementById('audio-' + currentlyPlaying);
+    const pb = document.querySelector('.audio-play-btn.playing');
+    if (pa) { pa.pause(); pa.currentTime = 0; }
+    if (pb) pb.classList.remove('playing');
+    currentlyPlaying = null;
+  }
+  segments.forEach(s => s.classList.remove('active'));
+  navSteps.forEach(s => s.classList.remove('active'));
+  if (segments[idx]) segments[idx].classList.add('active');
+  if (navSteps[idx]) navSteps[idx].classList.add('active');
+  currentAudioPart[videoId] = idx;
+  updateArrows(videoId);
+}
+
+function nextAudioPart(videoId) {
+  const container = document.getElementById(videoId);
+  const total = container ? container.querySelectorAll('.audio-segment').length : 0;
+  const cur = currentAudioPart[videoId] || 0;
+  if (cur < total - 1) showAudioPart(videoId, cur + 1);
+}
+
+function prevAudioPart(videoId) {
+  const cur = currentAudioPart[videoId] || 0;
+  if (cur > 0) showAudioPart(videoId, cur - 1);
+}
+
+function updateArrows(videoId) {
+  const container = document.getElementById(videoId);
+  if (!container) return;
+  const total = container.querySelectorAll('.audio-segment').length;
+  const cur = currentAudioPart[videoId] || 0;
+  const prev = container.querySelector('.audio-arrow-prev');
+  const next = container.querySelector('.audio-arrow-next');
+  if (prev) prev.disabled = (cur === 0);
+  if (next) next.disabled = (cur === total - 1);
+}
 
 function playPart(id) {
   const audio = document.getElementById('audio-' + id);
-  const btn = document.querySelector('#audio-v3-part-' + id.toString().replace('v3-','') + ' .audio-play-btn') ||
-              document.querySelector('#audio-part-' + id + ' .audio-play-btn');
+  const seg = document.getElementById('audio-part-' + id) ||
+              document.querySelector('[id$="part-' + id + '"]');
+  if (!audio || !seg) return;
+  const btn = seg.querySelector('.audio-play-btn');
   const progress = document.getElementById('progress-' + id);
-  if (!audio || !btn) return;
 
   if (currentlyPlaying && currentlyPlaying !== id) {
-    const prevAudio = document.getElementById('audio-' + currentlyPlaying);
-    const prevBtn = document.querySelector('[id^="audio-"] .audio-play-btn.playing');
-    const prevProgress = document.getElementById('progress-' + currentlyPlaying);
-    if (prevAudio) { prevAudio.pause(); prevAudio.currentTime = 0; }
-    if (prevBtn) prevBtn.classList.remove('playing');
-    if (prevProgress) prevProgress.style.width = '0%';
+    const pa = document.getElementById('audio-' + currentlyPlaying);
+    const pb = document.querySelector('.audio-play-btn.playing');
+    const pp = document.getElementById('progress-' + currentlyPlaying);
+    if (pa) { pa.pause(); pa.currentTime = 0; }
+    if (pb) pb.classList.remove('playing');
+    if (pp) pp.style.width = '0%';
     currentlyPlaying = null;
   }
 
-  if (!audio.paused) {
-    audio.pause(); btn.classList.remove('playing'); currentlyPlaying = null; return;
-  }
+  if (!audio.paused) { audio.pause(); btn.classList.remove('playing'); currentlyPlaying = null; return; }
 
-  audio.play().then(() => {
-    btn.classList.add('playing'); currentlyPlaying = id;
-  }).catch(() => {
-    let note = btn.closest('.audio-segment').querySelector('.audio-not-recorded');
+  audio.play().then(() => { btn.classList.add('playing'); currentlyPlaying = id; }).catch(() => {
+    let note = seg.querySelector('.audio-not-recorded');
     if (!note) {
       note = document.createElement('div');
       note.className = 'audio-not-recorded';
       note.textContent = 'Audio not yet recorded \u2014 voiceover will be added by the TA.';
-      btn.closest('.audio-segment').querySelector('.audio-progress').after(note);
+      const header = seg.querySelector('.audio-header');
+      if (header) header.parentNode.insertBefore(note, header.nextSibling);
     }
     setTimeout(() => { if (note && note.parentNode) note.remove(); }, 3000);
   });
@@ -1922,8 +2085,27 @@ function playPart(id) {
     btn.classList.remove('playing');
     if (progress) progress.style.width = '0%';
     currentlyPlaying = null;
+    // Mark step as played and auto-advance
+    const container = seg.closest('.video-section');
+    if (container) {
+      const idx = currentAudioPart[container.id] || 0;
+      const navSteps = container.querySelectorAll('.audio-nav-step');
+      if (navSteps[idx]) navSteps[idx].classList.add('played');
+      // Auto-advance to next part
+      const total = container.querySelectorAll('.audio-segment').length;
+      if (idx < total - 1) showAudioPart(container.id, idx + 1);
+    }
   };
 }
+
+// Initialize audio nav for all video sections that have audio-segments
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.video-section').forEach(vs => {
+    if (vs.querySelectorAll('.audio-segment').length > 0) {
+      initAudioNav(vs.id);
+    }
+  });
+});
 
 </script>
 
