@@ -412,10 +412,10 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Gradio Intro</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: Streamlit Intro</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: Gradio Apps Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Streamlit Dashboard Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Gradio</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Gradio Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Streamlit</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Streamlit Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
@@ -694,12 +694,102 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 3: Streamlit -- AI Dashboards                              -->
+<!-- VIDEO 3: Wrap-Up                                                 -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 3: TA — Gradio Apps Lab                                 -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 3: Streamlit -- AI Dashboards</h2>
+    <h2>Video 3: "Gradio Apps Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M09_Lab1_Gradio_Apps.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Gradio Apps Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open <code>M09_Lab1_Gradio_Apps.ipynb</code> in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open <code>M09_Lab1_Gradio_Apps.ipynb</code> in Google Colab</li>
+            <li>Show the table of contents and explain the flow of the lab</li>
+            <li>Confirm any required API keys are loaded from Colab Secrets</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Walk Through the Code Cells</h5>
+          <ul>
+            <li>Cell by cell, explain what each line does in plain English</li>
+            <li>Run each cell live and show the output</li>
+            <li>If a cell fails, fix it on camera &mdash; students learn from seeing errors resolved</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Highlight the Key Concept</h5>
+          <ul>
+            <li>Pause on the most important idea in this lab and explain <em>why</em> it matters</li>
+            <li>Connect it back to what the instructor covered in the scripted video right before this one</li>
+            <li>Show a second mini-example if there is time</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Common Gotchas</h5>
+          <ul>
+            <li>Point out 2&ndash;3 places where students typically get stuck in this lab</li>
+            <li>Show the fix for each one</li>
+            <li>Remind students to read error messages carefully</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-3 (TA Gradio Apps Lab) -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 4: Streamlit -- AI Dashboards                              -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-4">
+
+  <div class="video-header">
+    <h2>Video 4: Streamlit -- AI Dashboards</h2>
     <div class="video-meta">Prof on camera + screen recording -- 6-8 minutes -- 4 segments</div>
   </div>
 
@@ -874,97 +964,7 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-</div><!-- end video-3 -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 4: Wrap-Up                                                 -->
-<!-- ================================================================ -->
-
-
-<!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 4: TA — Gradio Apps Lab                                 -->
-<!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-4" data-script-export="false" data-ta-only="true">
-
-  <div class="video-header">
-    <h2>Video 4: "Gradio Apps Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
-    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
-    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
-      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of <code>M09_Lab1_Gradio_Apps.ipynb</code> in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
-    </div>
-  </div>
-
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">TA</span>
-      <span class="segment-title">Gradio Apps Lab Walkthrough</span>
-      <div class="segment-badges">
-        <span class="badge badge-ta">TA GUIDELINES</span>
-        <span class="badge badge-duration">8-12 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <div class="ta-guidelines">
-        <h4>GUIDELINES FOR TA</h4>
-        <p class="ta-intro">Open <code>M09_Lab1_Gradio_Apps.ipynb</code> in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
-
-        <div class="ta-section">
-          <h5>1. Open the Notebook</h5>
-          <ul>
-            <li>Open <code>M09_Lab1_Gradio_Apps.ipynb</code> in Google Colab</li>
-            <li>Show the table of contents and explain the flow of the lab</li>
-            <li>Confirm any required API keys are loaded from Colab Secrets</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>2. Walk Through the Code Cells</h5>
-          <ul>
-            <li>Cell by cell, explain what each line does in plain English</li>
-            <li>Run each cell live and show the output</li>
-            <li>If a cell fails, fix it on camera &mdash; students learn from seeing errors resolved</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>3. Highlight the Key Concept</h5>
-          <ul>
-            <li>Pause on the most important idea in this lab and explain <em>why</em> it matters</li>
-            <li>Connect it back to what the instructor covered in the scripted video right before this one</li>
-            <li>Show a second mini-example if there is time</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>4. Common Gotchas</h5>
-          <ul>
-            <li>Point out 2&ndash;3 places where students typically get stuck in this lab</li>
-            <li>Show the fix for each one</li>
-            <li>Remind students to read error messages carefully</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>5. Assignment Handoff</h5>
-          <ul>
-            <li>Point to the exercise at the bottom of the notebook</li>
-            <li>Tell students what to submit and where</li>
-            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Recording Setup</span>
-      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
-      <div class="media-note">
-        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
-      </div>
-    </div>
-  </div>
-
-</div><!-- end video-4 (TA Gradio Apps Lab) -->
+</div><!-- end video-4 -->
 
 
 <!-- ════════════════════════════════════════════════════════ -->
