@@ -925,6 +925,27 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART E</span>
+      <span class="segment-title">Evaluating Vision Models</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~90 sec</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Evaluating vision models has its own challenges. Text evaluation asks "did you get the right answer?" Image evaluation asks "did you see the right thing?"</p>
+      <p>The simplest approach is the same test-suite pattern. You collect 30 images with known ground truth. A photo of a damaged product where you know the defect. A CAD drawing where you know the dimensions. A handwritten form where you know what it says. You send each image to the model, compare the output to the truth, and score it.</p>
+      <p>The tricky part is that image descriptions are subjective. Two correct answers can sound completely different. "A cracked bearing housing" and "fracture visible on the left side of the casing" are both right. So instead of exact matching, you often use an LLM as a judge. You ask a second model: "Given this ground truth description, does this answer capture the key information?" That gives you a yes/no score you can track over time.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Show an image sent to two models, two different but correct descriptions side by side, then an LLM judge scoring both as "correct." The point: vision eval needs semantic comparison, not string matching.</p>
+    </div>
+  </div>
+
+  <!-- PART F -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART F</span>
       <span class="segment-title">Real Example: Customer Support Bot</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
