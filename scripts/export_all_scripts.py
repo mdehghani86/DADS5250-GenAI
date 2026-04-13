@@ -22,10 +22,10 @@ MODULE_FOLDERS = [
     ("M07_Hackathon", "M07", "HACKATHON"),
     ("M08_MultiAgent", "M08", "MULTI-AGENT SYSTEMS (CREWAI)"),
     ("M09_Frontend", "M09", "FRONTEND FOR AI — GRADIO & STREAMLIT"),
-    ("M10_MCP_Guardrails", "M10", "MCP & GUARDRAILS"),
-    ("M11_Vision_Eval", "M11", "VISION & EVALUATION"),
-    ("M12_SDKs_ClaudeCode", "M12", "AGENT SDKs & CLAUDE CODE"),
-    ("M13_Business_n8n", "M13", "BUSINESS GenAI & n8n"),
+    ("M10_Vision_Eval", "M10", "VISION & EVALUATION"),
+    ("M11_ClaudeCode", "M11", "CLAUDE CODE"),
+    ("M12_AI_Platforms", "M12", "AI PLATFORMS (GOOGLE A2A & OPENAI)"),
+    ("M13_Ethics_Safety", "M13", "AI ETHICS, SAFETY & GUARDRAILS"),
     ("M14_Final_Project", "M14", "FINAL PROJECT"),
 ]
 
