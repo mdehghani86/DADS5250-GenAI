@@ -62,6 +62,11 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 }
 .video-tab.scripted::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
 .video-tab.scripted.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
+.video-tab.ta-recorded { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.45); color: #92400e; }
+.video-tab.ta-recorded:hover { background: rgba(245,158,11,0.18); color: #78350f; }
+.video-tab.ta-recorded::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>"); }
+.video-tab.ta-recorded.active { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+.video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
 
 .topbar-actions { display: flex; gap: 8px; }
 .btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
@@ -272,8 +277,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: Claude Platform</button>
     <button class="video-tab scripted" onclick="switchVideo(3)">V3: OpenAI Platform</button>
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: Google Platform</button>
-    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Comparison</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Claude API Lab</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: OpenAI &amp; Google Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Comparison</button>
+    <button class="video-tab scripted" onclick="switchVideo(8)">V8: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -961,13 +968,172 @@ response = agent.<span class="fn">run</span>(
 </div><!-- end video-4 -->
 
 
-<!-- ================================================================ -->
-<!-- VIDEO 5: Comparison & When to Choose                            -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-5">
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 5: TA — Claude API & Tools Lab                    -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 5: "Comparison and When to Choose"</h2>
+    <h2>Video 5: "Claude API &amp; Tools Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Claude API lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Claude API &amp; Tools Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the Claude API lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Setup (~2 min)</h5>
+          <ul>
+            <li>Open the Claude API lab notebook in Google Colab</li>
+            <li>Set up <code>ANTHROPIC_API_KEY</code> in Colab Secrets</li>
+            <li>Install the <code>anthropic</code> Python package and verify connection</li>
+            <li>Show the table of contents and explain the flow of the lab</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Claude Messages API (~3 min)</h5>
+          <ul>
+            <li>Walk through the basic <code>messages.create()</code> call structure</li>
+            <li>Show system prompts, user/assistant message roles, and model selection</li>
+            <li>Demonstrate streaming vs. non-streaming responses</li>
+            <li>Point out how Claude&rsquo;s response structure differs from OpenAI</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Tool Use (~4 min)</h5>
+          <ul>
+            <li>Define a tool schema and pass it to the API</li>
+            <li>Show how Claude returns a <code>tool_use</code> content block</li>
+            <li>Walk through the tool execution loop: call &rarr; tool_use &rarr; tool_result &rarr; final response</li>
+            <li>Run a concrete example (e.g., calculator or weather lookup)</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Exercise Handoff (~2 min)</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Demonstrate one approach, leave the rest for students</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 (TA Claude API Lab) -->
+
+
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 6: TA — OpenAI & Google ADK Lab                   -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+
+  <div class="video-header">
+    <h2>Video 6: "OpenAI &amp; Google ADK Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the OpenAI and Google ADK lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">OpenAI &amp; Google ADK Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the OpenAI &amp; Google ADK lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Setup (~2 min)</h5>
+          <ul>
+            <li>Open the lab notebook in Google Colab</li>
+            <li>Set up <code>OPENAI_API_KEY</code> and <code>GEMINI_API_KEY</code> in Colab Secrets</li>
+            <li>Install required packages (<code>openai</code>, <code>google-genai</code>) and verify connections</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. OpenAI Agents SDK (~4 min)</h5>
+          <ul>
+            <li>Walk through the OpenAI chat completions call and compare to Claude&rsquo;s syntax</li>
+            <li>Show function calling with OpenAI&rsquo;s <code>tools</code> parameter</li>
+            <li>Demonstrate the Agents SDK: define an agent, attach tools, run it</li>
+            <li>Highlight the differences in tool schema format vs. Claude</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Google ADK (~4 min)</h5>
+          <ul>
+            <li>Walk through the Gemini API basic call</li>
+            <li>Show the Agent Development Kit (ADK) agent definition</li>
+            <li>Run an ADK agent with a tool and show the execution trace</li>
+            <li>Compare the three platforms side by side: Claude, OpenAI, Google</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Exercise Handoff (~2 min)</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Show the expected deliverable and explain the comparison task</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-6 (TA OpenAI & Google Lab) -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 7: Comparison & When to Choose                            -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-7">
+
+  <div class="video-header">
+    <h2>Video 7: "Comparison and When to Choose"</h2>
     <div class="video-meta">Prof on camera -- ~3 minutes -- 2 segments</div>
   </div>
 
@@ -1077,16 +1243,16 @@ response = agent.<span class="fn">run</span>(
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-7 -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 6: Wrap-Up                                                -->
+<!-- VIDEO 8: Wrap-Up                                                -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-8">
 
   <div class="video-header">
-    <h2>Video 6: "Module 12 Wrap-Up"</h2>
+    <h2>Video 8: "Module 12 Wrap-Up"</h2>
     <div class="video-meta">Prof on camera -- ~1 minute -- 2 segments</div>
   </div>
 
@@ -1140,7 +1306,7 @@ response = agent.<span class="fn">run</span>(
     </div>
   </div>
 
-</div><!-- end video-6 -->
+</div><!-- end video-8 -->
 
 
 <!-- Student Discussion Guide -->
@@ -1230,7 +1396,7 @@ function stopAutoScroll() { isScrolling = false; const btn = document.getElement
 document.addEventListener('keydown', function(e) {
   if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+  if (['1','2','3','4','5','6','7','8'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
 });
 
 // Inline Segment Editing

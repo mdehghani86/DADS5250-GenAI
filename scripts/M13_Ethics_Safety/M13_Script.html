@@ -62,6 +62,11 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 }
 .video-tab.scripted::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563eb' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
 .video-tab.scripted.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
+.video-tab.ta-recorded { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.45); color: #92400e; }
+.video-tab.ta-recorded:hover { background: rgba(245,158,11,0.18); color: #78350f; }
+.video-tab.ta-recorded::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>"); }
+.video-tab.ta-recorded.active { background: #f59e0b; color: #fff; border-color: #f59e0b; }
+.video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
 
 .topbar-actions { display: flex; gap: 8px; }
 .btn-action { padding: 6px 16px; border-radius: 999px; border: 1px solid rgba(37,99,235,0.18); background: var(--card-bg); color: var(--text); font-family: 'Outfit', sans-serif; font-size: 0.8rem; font-weight: 500; cursor: pointer; transition: all 0.2s; backdrop-filter: blur(8px); }
@@ -266,9 +271,11 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: Prompt Injection &amp; Attacks</button>
     <button class="video-tab scripted" onclick="switchVideo(3)">V3: Output Safety &amp; Filtering</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Bias &amp; Fairness</button>
-    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Building Guardrails</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: Injection Defense Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Bias &amp; Fairness</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Building Guardrails</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="TA lab walkthrough -- no script">V7: Guardrails Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(8)">V8: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -699,13 +706,93 @@ body.teleprompter .scroll-controls { display: flex; }
 </div><!-- end video-3 -->
 
 
-<!-- ================================================================ -->
-<!-- VIDEO 4: Bias & Fairness                                        -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-4">
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 4: TA — Prompt Injection & PII Defense Lab        -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-4" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 4: "Bias &amp; Fairness"</h2>
+    <h2>Video 4: "Prompt Injection &amp; PII Defense Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Prompt Injection &amp; PII Defense lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Prompt Injection &amp; PII Defense Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the Prompt Injection &amp; PII Defense lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Setup (~2 min)</h5>
+          <ul>
+            <li>Open the lab notebook in Google Colab</li>
+            <li>Set up API key in Colab Secrets</li>
+            <li>Install dependencies and verify connection</li>
+            <li>Show the table of contents and explain the flow of the lab</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Prompt Injection Attacks (~3 min)</h5>
+          <ul>
+            <li>Demonstrate common injection patterns: ignore-previous, role-switching, delimiter-breaking</li>
+            <li>Show how an unprotected system prompt leaks information</li>
+            <li>Run each attack live and show the model&rsquo;s response</li>
+            <li>Explain why each attack works and what makes it dangerous</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Defenses &amp; PII Detection (~4 min)</h5>
+          <ul>
+            <li>Walk through input sanitization techniques: delimiter enforcement, role anchoring</li>
+            <li>Show PII detection using regex patterns and/or Microsoft Presidio</li>
+            <li>Demonstrate redacting PII before sending to the LLM</li>
+            <li>Run the before/after comparison: undefended vs. defended</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Exercise Handoff (~2 min)</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Demonstrate one defense approach, leave the rest for students</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-4 (TA Injection Defense Lab) -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 5: Bias & Fairness                                        -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-5">
+
+  <div class="video-header">
+    <h2>Video 5: "Bias &amp; Fairness"</h2>
     <div class="video-meta">Prof on camera -- ~4 minutes -- 2 segments</div>
   </div>
 
@@ -828,16 +915,16 @@ body.teleprompter .scroll-controls { display: flex; }
     </div>
   </div>
 
-</div><!-- end video-4 -->
+</div><!-- end video-5 -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 5: Building Guardrails                                    -->
+<!-- VIDEO 6: Building Guardrails                                    -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-5">
+<div class="video-section" id="video-6">
 
   <div class="video-header">
-    <h2>Video 5: "Building Guardrails"</h2>
+    <h2>Video 6: "Building Guardrails"</h2>
     <div class="video-meta">Voiceover + code -- ~5 minutes -- 3 segments</div>
   </div>
 
@@ -993,16 +1080,96 @@ client = OpenAI()
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-6 -->
 
 
-<!-- ================================================================ -->
-<!-- VIDEO 6: Wrap-Up                                                -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-6">
+<!-- ════════════════════════════════════════════════════════ -->
+<!-- VIDEO 7: TA — Output Filtering & Guardrails Lab         -->
+<!-- ════════════════════════════════════════════════════════ -->
+<div class="video-section" id="video-7" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 6: "Wrap-Up"</h2>
+    <h2>Video 7: "Output Filtering &amp; Guardrails Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Output Filtering &amp; Guardrails lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
+  </div>
+
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Output Filtering &amp; Guardrails Lab Walkthrough</span>
+      <div class="segment-badges">
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the Output Filtering &amp; Guardrails lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Setup (~2 min)</h5>
+          <ul>
+            <li>Open the lab notebook in Google Colab</li>
+            <li>Set up API key in Colab Secrets</li>
+            <li>Install dependencies (e.g., <code>guardrails-ai</code>, <code>openai</code>) and verify connection</li>
+            <li>Show the table of contents and explain the flow of the lab</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Output Filtering (~3 min)</h5>
+          <ul>
+            <li>Walk through the OpenAI Moderation API: send text, inspect category scores</li>
+            <li>Show threshold tuning: what happens when you lower/raise the cutoff</li>
+            <li>Demonstrate filtering toxic or off-topic outputs before they reach the user</li>
+            <li>Run a before/after example: raw output vs. filtered output</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Guardrails Framework (~4 min)</h5>
+          <ul>
+            <li>Show the Guardrails AI library: define a guard with validators</li>
+            <li>Walk through schema validation: structured output with enforced types</li>
+            <li>Demonstrate chaining guards: input filter &rarr; LLM call &rarr; output filter</li>
+            <li>Show what happens when a guard fails: error handling and fallback responses</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Exercise Handoff (~2 min)</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Demonstrate one guardrail configuration, leave the rest for students</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-7 (TA Guardrails Lab) -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 8: Wrap-Up                                                -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-8">
+
+  <div class="video-header">
+    <h2>Video 8: "Wrap-Up"</h2>
     <div class="video-meta">Prof on camera -- ~2 minutes -- 2 segments</div>
   </div>
 
@@ -1059,7 +1226,7 @@ client = OpenAI()
     </div>
   </div>
 
-</div><!-- end video-6 -->
+</div><!-- end video-8 -->
 
 
 <!-- References -->
@@ -1114,7 +1281,7 @@ function stopAutoScroll() { isScrolling = false; const btn = document.getElement
 document.addEventListener('keydown', function(e) {
   if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+  if (['1','2','3','4','5','6','7','8'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
 });
 
 // Inline Segment Editing
