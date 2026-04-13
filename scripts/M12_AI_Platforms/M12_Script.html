@@ -56,7 +56,8 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .video-tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 .video-tab.scripted { border-color: rgba(37,99,235,0.25); }
-.video-tab.scripted::before {
+.video-tab.scripted::before,
+.video-tab.ta-recorded::before {
   content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px;
   background-repeat: no-repeat; background-position: center; background-size: contain;
 }
@@ -64,7 +65,7 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .video-tab.scripted.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z'/><polyline points='14 2 14 8 20 8'/><line x1='8' y1='13' x2='16' y2='13'/><line x1='8' y1='17' x2='16' y2='17'/><line x1='8' y1='9' x2='10' y2='9'/></svg>"); }
 .video-tab.ta-recorded { background: rgba(245,158,11,0.08); border-color: rgba(245,158,11,0.45); color: #92400e; }
 .video-tab.ta-recorded:hover { background: rgba(245,158,11,0.18); color: #78350f; }
-.video-tab.ta-recorded::before { content: ""; display: inline-block; width: 14px; height: 14px; margin-right: 7px; vertical-align: -2px; background-repeat: no-repeat; background-position: center; background-size: contain; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>"); }
+.video-tab.ta-recorded::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23b45309' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='%23b45309'/></svg>"); }
 .video-tab.ta-recorded.active { background: #f59e0b; color: #fff; border-color: #f59e0b; }
 .video-tab.ta-recorded.active::before { background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/><polygon points='10 8 15 10 10 12 10 8' fill='white'/></svg>"); }
 
@@ -82,6 +83,7 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 
 .segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
 .segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
+/* Inline Edit */
 .edit-btn {
   margin-left: 8px;
   background: none;
@@ -216,11 +218,15 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
 .key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
 
-.discussion-guidelines { background: rgba(20,184,166,0.03); border: 1px solid rgba(20,184,166,0.2); border-radius: 10px; padding: 24px; }
-.discussion-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #0d9488; letter-spacing: 0.06em; margin-bottom: 12px; }
-.discussion-guidelines .disc-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
-.discussion-guidelines ol { padding-left: 18px; }
-.discussion-guidelines li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+/* TA Guidelines */
+.ta-guidelines { background: rgba(245,158,11,0.03); border: 1px solid rgba(245,158,11,0.2); border-radius: 10px; padding: 24px; margin-bottom: 28px; }
+.ta-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #b45309; letter-spacing: 0.06em; margin-bottom: 12px; }
+.ta-guidelines .ta-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.ta-guidelines .ta-section { margin-bottom: 14px; }
+.ta-guidelines .ta-section h5 { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.ta-guidelines .ta-section ul { padding-left: 18px; }
+.ta-guidelines .ta-section li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 4px; }
+.badge-ta { background: rgba(245,158,11,0.12); color: #b45309; font-weight: 600; }
 
 .references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
 .references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -251,6 +257,7 @@ body.teleprompter .badge { opacity: 0.5; }
 body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
 body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
 body.teleprompter .references-section { display: none; }
+body.teleprompter .ta-guidelines { display: none; }
 
 .scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
 body.teleprompter .scroll-controls { display: flex; }
@@ -274,13 +281,11 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Claude Platform</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: OpenAI Platform</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Google Platform</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Claude API Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: OpenAI &amp; Google Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Comparison</button>
-    <button class="video-tab scripted" onclick="switchVideo(8)">V8: Wrap-Up</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Google A2A Protocol</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: A2A Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(4)">V4: OpenAI SDK</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: OpenAI SDK Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -293,25 +298,25 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 1: "The Spark" -- Three Giants, One Skill                 -->
+<!-- VIDEO 1: "The Spark" -- Platforms, Not Just Models                -->
 <!-- ================================================================ -->
 <div class="video-section active" id="video-1">
 
   <div class="video-header">
-    <h2>Video 1: "Three Giants, One Skill"</h2>
-    <div class="video-meta">Prof on camera -- ~2 minutes -- 2 segments</div>
+    <h2>Video 1: "The Spark" -- Platforms, Not Just Models</h2>
+    <div class="video-meta">Prof on camera -- ~2 minutes -- 2 parts</div>
   </div>
 
   <div class="key-message-bar">
     <span class="km-label">KEY MESSAGE</span>
-    <span class="km-text">The concepts are the same. The syntax is different. Learn one, understand all three.</span>
+    <span class="km-text">The companies that win in AI are not just building better models. They are building platforms. Knowing how to work across them is what makes you versatile.</span>
   </div>
 
   <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART 01</span>
-      <span class="segment-title">The Landscape Shift</span>
+      <span class="segment-title">The Familiar Saying Flip</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
         <span class="badge badge-duration">~60 sec</span>
@@ -319,15 +324,38 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>A year ago, there was one API to learn. You called OpenAI, got a response, and moved on. That was the whole story.</p>
-      <p>Today there are three ecosystems. Anthropic built Claude. OpenAI evolved far beyond chat completions. Google shipped Gemini with native multimodal capabilities and an agent framework. Each one built their own way to create AI agents, their own way to call tools, their own way to orchestrate workflows.</p>
-      <p>The good news? The concepts are the same. The syntax is different. Once you understand one platform deeply, the other two feel familiar. You are learning patterns, not memorizing documentation.</p>
+      <p>They say competition drives innovation. In AI, competition drove an entire ecosystem. Google, OpenAI, and Anthropic did not just build better models. They built platforms. And knowing how to work across them is what makes you versatile.</p>
+      <p>Each platform reflects a philosophy. Google thinks in protocols, open standards that let any agent talk to any other agent. OpenAI thinks in SDKs, giving you a clean Python interface to build agents fast. Same goal, different paths to get there.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Medium close-up, warm lighting. Confident, direct delivery. This is a framing statement, not a lecture. Pause after "the syntax is different."</p>
+      <p class="shot-note">Medium close-up, warm lighting. Confident opening. Pause after "what makes you versatile" for emphasis. Let the line land.</p>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Three Giants, Three Philosophies</text>
+        <rect x="14" y="40" width="120" height="140" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="74" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#2563EB" font-weight="700">Google</text>
+        <line x1="24" y1="72" x2="124" y2="72" stroke="#dbeafe"/>
+        <text x="74" y="92" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Protocols</text>
+        <text x="74" y="108" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">A2A Standard</text>
+        <text x="74" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Open Interop</text>
+        <text x="74" y="168" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"any agent talks to any agent"</text>
+        <rect x="140" y="40" width="120" height="140" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">OpenAI</text>
+        <line x1="150" y1="72" x2="250" y2="72" stroke="#dcfce7"/>
+        <text x="200" y="92" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">SDKs</text>
+        <text x="200" y="108" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Agents + Handoffs</text>
+        <text x="200" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Built-in Guardrails</text>
+        <text x="200" y="168" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"build agents fast in Python"</text>
+        <rect x="266" y="40" width="120" height="140" rx="10" fill="rgba(168,85,247,0.06)" stroke="#a855f7" stroke-width="1.2"/>
+        <text x="326" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#a855f7" font-weight="700">Anthropic</text>
+        <line x1="276" y1="72" x2="376" y2="72" stroke="#ede9fe"/>
+        <text x="326" y="92" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Tools + MCP</text>
+        <text x="326" y="108" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Claude Code</text>
+        <text x="326" y="124" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Agentic Coding</text>
+        <text x="326" y="168" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">"covered in Module 11"</text>
+      </svg>
       <div class="media-note">
-        MEDIA TEAM: No overlays. Clean shot. Let the professor set the stage.
+        MEDIA TEAM: Clean shot, no overlays. The three-platform visual can appear as a lower-third after the opening line lands.
       </div>
     </div>
   </div>
@@ -336,252 +364,207 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART 02</span>
-      <span class="segment-title">Why Multi-Platform Matters</span>
+      <span class="segment-title">What This Module Covers</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
         <span class="badge badge-duration">~50 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Knowing multiple platforms makes you versatile. And versatility is what companies actually hire for.</p>
-      <p>Some teams choose Claude for safety-critical applications. Others pick OpenAI because their existing stack already uses it. Others go with Google because the Gemini free tier fits their budget, or because they need native image and video understanding.</p>
-      <p>The engineer who can only use one platform is limited. The engineer who understands the patterns across all three can walk into any team and be productive on day one. That is the skill you build today.</p>
+      <p>This module covers two platforms. Google A2A, the agent-to-agent protocol that lets agents discover and talk to each other across companies and frameworks. And the OpenAI Agents SDK, a Python toolkit for building multi-agent systems with handoffs, guardrails, and a clean execution model.</p>
+      <p>Two platforms. Two philosophies. By the end, you will have built with both.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Three Platforms</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Three Platforms, One Skill Set</text>
-        <!-- Claude -->
-        <rect x="14" y="40" width="116" height="140" rx="10" fill="rgba(251,146,60,0.06)" stroke="#fb923c" stroke-width="1.5"/>
-        <text x="72" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#fb923c" font-weight="700">Claude</text>
-        <text x="72" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Anthropic</text>
-        <text x="24" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Safety-first</text>
-        <text x="24" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Tool use</text>
-        <text x="24" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agent SDK</text>
-        <text x="24" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">MCP protocol</text>
-        <text x="24" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: safety,</text>
-        <text x="24" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">complex reasoning</text>
-        <!-- OpenAI -->
-        <rect x="142" y="40" width="116" height="140" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.5"/>
-        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">OpenAI</text>
-        <text x="200" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">GPT + Agents SDK</text>
-        <text x="152" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Function calling</text>
-        <text x="152" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Structured output</text>
-        <text x="152" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agents SDK</text>
-        <text x="152" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">Assistants API</text>
-        <text x="152" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: ecosystem,</text>
-        <text x="152" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">broadest adoption</text>
-        <!-- Google -->
-        <rect x="270" y="40" width="116" height="140" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
-        <text x="328" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#60a5fa" font-weight="700">Google</text>
-        <text x="328" y="78" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Gemini + ADK</text>
-        <text x="280" y="100" font-family="Outfit" font-size="7" fill="#e2e8f0">Multimodal native</text>
-        <text x="280" y="114" font-family="Outfit" font-size="7" fill="#e2e8f0">Generous free tier</text>
-        <text x="280" y="128" font-family="Outfit" font-size="7" fill="#e2e8f0">Agent Dev Kit</text>
-        <text x="280" y="142" font-family="Outfit" font-size="7" fill="#e2e8f0">A2A protocol</text>
-        <text x="280" y="168" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Best for: multimodal,</text>
-        <text x="280" y="178" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">cost-sensitive</text>
-        <!-- Bottom bar -->
-        <rect x="14" y="192" width="372" height="22" rx="6" fill="rgba(37,99,235,0.1)"/>
-        <text x="200" y="207" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">Same patterns: messages, tools, agents. Different syntax.</text>
-      </svg>
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same medium close-up. Slightly faster energy. "Two platforms. Two philosophies." should feel like a promise, not a list.</p>
       <div class="media-note">
-        MEDIA TEAM: Animate each platform card appearing left to right as the professor names them. The bottom bar appears at the punchline.
+        MEDIA TEAM: No overlays. This is a clean prof-on-camera close. Hold for a beat after the final line.
       </div>
     </div>
   </div>
-
 
 </div><!-- end video-1 -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 2: Claude Platform                                        -->
+<!-- VIDEO 2: Google A2A Protocol                                     -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-2">
 
   <div class="video-header">
-    <h2>Video 2: "Claude Platform"</h2>
-    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+    <h2>Video 2: "Google A2A Protocol"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 parts</div>
   </div>
 
-  <!-- PART A: Claude API Basics -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">A2A is the HTTP of agents. A standard protocol so agents built by different teams, in different frameworks, can find each other and collaborate.</span>
+  </div>
+
+  <!-- PART A -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART A</span>
-      <span class="segment-title">Claude API Basics</span>
+      <span class="segment-title">What is A2A</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Anthropic takes a different stance than the rest of the industry. Their founding principle is building AI that is safe and steerable. That philosophy shows up in everything, from the way Claude handles sensitive prompts to the way the API is designed.</p>
-      <p>The Claude API uses a messages format. You send a list of messages with roles: user and assistant. System prompts go in a separate system parameter, not inside the messages array. This is a small difference from OpenAI, but it matters when you are debugging.</p>
-      <div class="code-block"><pre><span class="kw">import</span> anthropic
-
-client = anthropic.<span class="fn">Anthropic</span>()
-
-response = client.messages.<span class="fn">create</span>(
-    model=<span class="str">"claude-sonnet-4-20250514"</span>,
-    max_tokens=<span class="str">1024</span>,
-    system=<span class="str">"You are a helpful data analyst."</span>,
-    messages=[
-        {<span class="str">"role"</span>: <span class="str">"user"</span>,
-         <span class="str">"content"</span>: <span class="str">"Summarize Q3 revenue trends."</span>}
-    ]
-)
-
-<span class="kw">print</span>(response.content[0].text)</pre></div>
-      <p>Notice the response structure. Claude returns a content array, not a single string. Each element has a type. For text responses, the type is "text" and the value is in the text field. This matters when tool use enters the picture, because tool calls show up as a different content type in that same array.</p>
+      <p>A2A stands for Agent-to-Agent. It is an open protocol published by Google in April 2025. The problem it solves is straightforward: agents built by different teams, using different frameworks, running at different companies, have no standard way to talk to each other.</p>
+      <p>Think about what HTTP did for the web. Before HTTP, every network had its own protocol. After HTTP, any browser could talk to any server. A2A aims to do the same thing for AI agents. Any agent that implements the A2A spec can discover, communicate with, and delegate tasks to any other A2A-compatible agent.</p>
+      <p>Google did not build this alone. Over 50 technology partners were involved at launch, including Salesforce, SAP, LangChain, and CrewAI. The spec is open. Anyone can implement it.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Claude API Flow</span>
+      <span class="media-label">Storyboard -- The A2A Vision</span>
       <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Claude API -- Messages Format</text>
-        <!-- Request side -->
-        <rect x="14" y="38" width="180" height="180" rx="8" fill="rgba(251,146,60,0.06)" stroke="#fb923c" stroke-width="1.2"/>
-        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fb923c" font-weight="600" letter-spacing="0.08em">REQUEST</text>
-        <text x="24" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">model: "claude-sonnet-4-..."</text>
-        <text x="24" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">system: "You are a..."</text>
-        <text x="24" y="108" font-family="JetBrains Mono" font-size="7" fill="#475569">messages: [</text>
-        <rect x="30" y="114" width="154" height="26" rx="4" fill="rgba(37,99,235,0.08)"/>
-        <text x="40" y="130" font-family="JetBrains Mono" font-size="7" fill="#2563EB">role: "user"</text>
-        <text x="24" y="156" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
-        <text x="24" y="176" font-family="JetBrains Mono" font-size="7" fill="#475569">max_tokens: 1024</text>
-        <text x="104" y="208" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">system prompt is separate</text>
-        <!-- Arrow -->
-        <line x1="200" y1="128" x2="214" y2="128" stroke="#fb923c" stroke-width="2" marker-end="url(#m12Arrow)"/>
-        <defs><marker id="m12Arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fb923c"/></marker></defs>
-        <!-- Response side -->
-        <rect x="220" y="38" width="166" height="180" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
-        <text x="303" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">RESPONSE</text>
-        <text x="230" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">content: [</text>
-        <rect x="236" y="82" width="140" height="36" rx="4" fill="rgba(16,185,129,0.08)"/>
-        <text x="246" y="96" font-family="JetBrains Mono" font-size="7" fill="#10b981">type: "text"</text>
-        <text x="246" y="110" font-family="JetBrains Mono" font-size="7" fill="#10b981">text: "Q3 revenue..."</text>
-        <text x="230" y="130" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
-        <text x="230" y="150" font-family="JetBrains Mono" font-size="7" fill="#475569">stop_reason: "end_turn"</text>
-        <text x="230" y="166" font-family="JetBrains Mono" font-size="7" fill="#475569">usage:</text>
-        <text x="240" y="180" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">input_tokens: 42</text>
-        <text x="240" y="194" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">output_tokens: 318</text>
-        <text x="303" y="208" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">content is an array</text>
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Before A2A vs After A2A</text>
+        <!-- Before -->
+        <rect x="10" y="36" width="185" height="190" rx="10" fill="rgba(239,68,68,0.04)" stroke="#ef4444" stroke-width="1"/>
+        <text x="102" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600" letter-spacing="0.08em">BEFORE: SILOED</text>
+        <circle cx="52" cy="100" r="18" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1"/>
+        <text x="52" y="104" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#2563EB">Agent A</text>
+        <circle cx="102" cy="140" r="18" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1"/>
+        <text x="102" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#10b981">Agent B</text>
+        <circle cx="152" cy="100" r="18" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1"/>
+        <text x="152" y="104" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#b45309">Agent C</text>
+        <text x="72" y="120" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ef4444">&#10005;</text>
+        <text x="132" y="120" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ef4444">&#10005;</text>
+        <text x="102" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#ef4444" font-style="italic">no shared protocol</text>
+        <!-- After -->
+        <rect x="205" y="36" width="185" height="190" rx="10" fill="rgba(16,185,129,0.04)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="297" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">AFTER: A2A PROTOCOL</text>
+        <circle cx="247" cy="100" r="18" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1"/>
+        <text x="247" y="104" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#2563EB">Agent A</text>
+        <circle cx="297" cy="140" r="18" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1"/>
+        <text x="297" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#10b981">Agent B</text>
+        <circle cx="347" cy="100" r="18" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1"/>
+        <text x="347" y="104" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#b45309">Agent C</text>
+        <line x1="265" y1="100" x2="329" y2="100" stroke="#10b981" stroke-width="1.2"/>
+        <line x1="265" y1="108" x2="285" y2="132" stroke="#10b981" stroke-width="1.2"/>
+        <line x1="329" y1="108" x2="309" y2="132" stroke="#10b981" stroke-width="1.2"/>
+        <rect x="270" y="162" width="54" height="18" rx="4" fill="#10b981"/>
+        <text x="297" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#fff">A2A</text>
+        <text x="297" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-style="italic">open standard, any framework</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate the "before" state first (agents isolated, red X between them), then transition to "after" (connections light up green, A2A badge appears). Hold 3 seconds on the final state.
+      </div>
     </div>
   </div>
 
-  <!-- PART B: Claude Tool Use -->
+  <!-- PART B -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART B</span>
-      <span class="segment-title">Claude Tool Use</span>
+      <span class="segment-title">How A2A Works</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Tool use is where Claude becomes more than a text generator. You define tools with a name, a description, and a JSON schema for the input parameters. When Claude decides it needs to call a tool, it does not return text. It returns a content block with type "tool_use" that includes the tool name and the arguments.</p>
-      <p>Your code executes the tool, then sends the result back as a message with role "user" and a content block of type "tool_result." Claude reads the result and formulates its final answer. This is a two-turn loop: Claude asks to use a tool, you run it, you send back the result.</p>
-      <div class="code-block"><pre><span class="cm"># Define a tool</span>
-tools = [{
-    <span class="str">"name"</span>: <span class="str">"get_stock_price"</span>,
-    <span class="str">"description"</span>: <span class="str">"Get current stock price"</span>,
-    <span class="str">"input_schema"</span>: {
-        <span class="str">"type"</span>: <span class="str">"object"</span>,
-        <span class="str">"properties"</span>: {
-            <span class="str">"ticker"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
-        },
-        <span class="str">"required"</span>: [<span class="str">"ticker"</span>]
-    }
-}]
-
-<span class="cm"># Claude returns: type="tool_use"</span>
-<span class="cm"># You execute, then send back: type="tool_result"</span></pre></div>
-      <p>The key insight: Claude never executes anything. It proposes a tool call. Your code is always in the loop. That is the safety model. The LLM decides what to call. You decide whether to actually run it.</p>
+      <p>A2A has three core concepts. Agent Cards, Tasks, and streaming updates.</p>
+      <p>An Agent Card is like a business card for an AI agent. It is a JSON document hosted at a well-known URL that describes what the agent can do, what inputs it expects, and what authentication it requires. When another agent wants to find a collaborator, it reads the Agent Card first.</p>
+      <p>Once an agent finds a partner, it sends a Task. A Task is a structured request with a clear goal. The receiving agent processes it and returns results, either all at once or as a stream of updates. Streaming is important because many agent tasks take time, and the calling agent needs to know what is happening.</p>
+      <p>The flow is: discover the Agent Card, create a Task, receive updates, get the final result. Four steps. That is the entire protocol.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Tool Use Loop</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Claude Tool Use -- Two-Turn Loop</text>
-        <!-- Your Code -->
-        <rect x="14" y="40" width="100" height="44" rx="8" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
-        <text x="64" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#bfdbfe" font-weight="600">Your Code</text>
-        <text x="64" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">sends messages</text>
-        <!-- Claude -->
-        <rect x="150" y="40" width="100" height="44" rx="8" fill="rgba(251,146,60,0.18)" stroke="#fb923c"/>
-        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fed7aa" font-weight="600">Claude</text>
-        <text x="200" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">proposes tool call</text>
-        <!-- Tool -->
-        <rect x="286" y="40" width="100" height="44" rx="8" fill="rgba(16,185,129,0.18)" stroke="#10b981"/>
-        <text x="336" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a7f3d0" font-weight="600">Tool</text>
-        <text x="336" y="72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">get_stock_price</text>
+      <span class="media-label">Storyboard -- A2A Flow</span>
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">A2A Protocol Flow: 4 Steps</text>
         <!-- Step 1 -->
-        <line x1="114" y1="56" x2="148" y2="56" stroke="#60a5fa" stroke-width="1.5"/>
-        <text x="131" y="50" text-anchor="middle" font-family="Outfit" font-size="6" fill="#60a5fa">1</text>
-        <!-- Step 2: Claude returns tool_use -->
-        <path d="M 200 84 L 200 110 L 64 110 L 64 100" stroke="#fb923c" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
-        <text x="132" y="106" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#fb923c">type: "tool_use"</text>
-        <text x="200" y="96" text-anchor="middle" font-family="Outfit" font-size="6" fill="#fb923c">2</text>
-        <!-- Step 3: Code executes tool -->
-        <line x1="64" y1="130" x2="336" y2="130" stroke="#10b981" stroke-width="1.5"/>
-        <text x="200" y="126" text-anchor="middle" font-family="Outfit" font-size="6" fill="#10b981">3 execute</text>
-        <text x="200" y="142" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">your code runs the tool</text>
-        <!-- Step 4: Send tool_result back -->
-        <path d="M 64 155 L 64 165 L 200 165 L 200 155" stroke="#60a5fa" stroke-width="1.5" fill="none"/>
-        <text x="132" y="162" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#60a5fa">type: "tool_result"</text>
-        <text x="64" y="153" font-family="Outfit" font-size="6" fill="#60a5fa">4</text>
-        <!-- Step 5: Claude responds -->
-        <path d="M 200 175 L 200 185 L 64 185" stroke="#fb923c" stroke-width="1.5" fill="none"/>
-        <text x="132" y="182" text-anchor="middle" font-family="JetBrains Mono" font-size="7" fill="#fb923c">type: "text" (final answer)</text>
-        <text x="200" y="178" font-family="Outfit" font-size="6" fill="#fb923c">5</text>
-        <!-- Safety note -->
-        <rect x="60" y="196" width="280" height="18" rx="4" fill="rgba(251,146,60,0.1)"/>
-        <text x="200" y="209" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fb923c" font-weight="600">Claude proposes. Your code executes. Always in the loop.</text>
+        <rect x="14" y="40" width="88" height="70" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="58" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#2563EB" font-weight="600">1</text>
+        <text x="58" y="74" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Discover</text>
+        <text x="58" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Read Agent Card</text>
+        <text x="58" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">/.well-known/agent.json</text>
+        <!-- Arrow -->
+        <line x1="106" y1="75" x2="118" y2="75" stroke="#2563EB" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <!-- Step 2 -->
+        <rect x="120" y="40" width="88" height="70" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="164" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#10b981" font-weight="600">2</text>
+        <text x="164" y="74" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Send Task</text>
+        <text x="164" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Structured request</text>
+        <text x="164" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">POST /tasks</text>
+        <!-- Arrow -->
+        <line x1="212" y1="75" x2="224" y2="75" stroke="#10b981" stroke-width="1.2"/>
+        <!-- Step 3 -->
+        <rect x="226" y="40" width="88" height="70" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="270" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#f59e0b" font-weight="600">3</text>
+        <text x="270" y="74" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Stream</text>
+        <text x="270" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Progress updates</text>
+        <text x="270" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#94a3b8">SSE / polling</text>
+        <!-- Arrow -->
+        <line x1="318" y1="75" x2="330" y2="75" stroke="#f59e0b" stroke-width="1.2"/>
+        <!-- Step 4 -->
+        <rect x="332" y="40" width="58" height="70" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7" stroke-width="1.2"/>
+        <text x="361" y="58" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#a855f7" font-weight="600">4</text>
+        <text x="361" y="74" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Result</text>
+        <text x="361" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Final output</text>
+        <!-- Agent Card detail -->
+        <rect x="14" y="130" width="376" height="118" rx="10" fill="#1e293b"/>
+        <text x="28" y="150" font-family="JetBrains Mono" font-size="8" fill="#64748b">// Agent Card (JSON)</text>
+        <text x="28" y="166" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">{</text>
+        <text x="42" y="180" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">"name"</text><text x="82" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">: </text><text x="94" y="180" font-family="JetBrains Mono" font-size="8" fill="#86efac">"Research Agent"</text><text x="216" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
+        <text x="42" y="194" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">"description"</text><text x="126" y="194" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">: </text><text x="138" y="194" font-family="JetBrains Mono" font-size="8" fill="#86efac">"Searches academic papers"</text><text x="330" y="194" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
+        <text x="42" y="208" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">"url"</text><text x="74" y="208" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">: </text><text x="86" y="208" font-family="JetBrains Mono" font-size="8" fill="#86efac">"https://agents.example.com"</text><text x="310" y="208" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
+        <text x="42" y="222" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">"skills"</text><text x="94" y="222" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">: [</text><text x="110" y="222" font-family="JetBrains Mono" font-size="8" fill="#86efac">"search"</text><text x="158" y="222" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">, </text><text x="166" y="222" font-family="JetBrains Mono" font-size="8" fill="#86efac">"summarize"</text><text x="226" y="222" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">]</text>
+        <text x="28" y="236" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">}</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate the four steps left-to-right, each box lighting up in sequence. Then fade in the Agent Card JSON below. Highlight each field as the narrator names it.
+      </div>
     </div>
   </div>
 
-  <!-- PART C: Claude Agent SDK -->
+  <!-- PART C -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART C</span>
-      <span class="segment-title">Claude Agent SDK</span>
+      <span class="segment-title">Why A2A Matters</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~1 min</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Anthropic also ships a Claude Agent SDK for building agentic applications in Python. If you used Claude Code earlier in this course, you saw what a fully built agent looks like. The SDK is the foundation underneath it.</p>
-      <p>The SDK gives you an agent loop, tool registration, and conversation management out of the box. You define your tools, configure the agent, and the SDK handles the back-and-forth of tool calls and responses automatically. It is the difference between building an agent from raw API calls versus using a framework that manages the loop for you.</p>
-      <p>For most production use cases, you start with the raw API to understand how it works, then graduate to the SDK when you need persistent agents with multiple tools.</p>
+      <p>The real value of A2A is interoperability. Right now, if you build an agent in CrewAI, it only talks to other CrewAI agents. If someone else builds an agent in LangGraph, those two systems cannot collaborate without custom glue code.</p>
+      <p>A2A changes that. Your CrewAI research agent publishes an Agent Card. Someone else's LangGraph analysis agent reads that card, sends a task, and gets results back. The frameworks do not matter. The protocol handles the translation.</p>
+      <p>This is how enterprise AI will work. Not one company building every agent, but many teams building specialized agents that discover and collaborate with each other through a shared standard. A2A is that standard.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- API vs SDK</span>
-      <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Raw API vs Agent SDK</text>
-        <!-- Raw API side -->
-        <rect x="14" y="38" width="180" height="120" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">RAW API</text>
-        <text x="24" y="76" font-family="Outfit" font-size="8" fill="#475569">You manage the loop</text>
-        <text x="24" y="92" font-family="Outfit" font-size="8" fill="#475569">You parse tool_use blocks</text>
-        <text x="24" y="108" font-family="Outfit" font-size="8" fill="#475569">You send tool_result back</text>
-        <text x="24" y="124" font-family="Outfit" font-size="8" fill="#475569">Full control, more code</text>
-        <text x="104" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">best for: learning, simple tasks</text>
-        <!-- Arrow -->
-        <text x="200" y="98" text-anchor="middle" font-family="Outfit" font-size="14" fill="#94a3b8">&#8594;</text>
-        <!-- SDK side -->
-        <rect x="206" y="38" width="180" height="120" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="296" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">AGENT SDK</text>
-        <text x="216" y="76" font-family="Outfit" font-size="8" fill="#475569">SDK manages the loop</text>
-        <text x="216" y="92" font-family="Outfit" font-size="8" fill="#475569">Tool registration built in</text>
-        <text x="216" y="108" font-family="Outfit" font-size="8" fill="#475569">Conversation state managed</text>
-        <text x="216" y="124" font-family="Outfit" font-size="8" fill="#475569">Less code, same power</text>
-        <text x="296" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">best for: production, multi-tool</text>
+      <span class="media-label">Storyboard -- Cross-Framework Interop</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Cross-Framework Agent Collaboration</text>
+        <!-- CrewAI Agent -->
+        <rect x="20" y="50" width="110" height="60" rx="10" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="75" y="72" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">CrewAI</text>
+        <text x="75" y="88" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">Research Agent</text>
+        <!-- A2A Bridge -->
+        <rect x="155" y="55" width="90" height="50" rx="25" fill="#10b981"/>
+        <text x="200" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="10" fill="#fff" font-weight="600">A2A</text>
+        <text x="200" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="rgba(255,255,255,0.8)">protocol</text>
+        <!-- LangGraph Agent -->
+        <rect x="270" y="50" width="110" height="60" rx="10" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="325" y="72" text-anchor="middle" font-family="Outfit" font-size="10" fill="#b45309" font-weight="600">LangGraph</text>
+        <text x="325" y="88" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">Analysis Agent</text>
+        <!-- Arrows -->
+        <line x1="130" y1="80" x2="155" y2="80" stroke="#10b981" stroke-width="1.5"/>
+        <line x1="245" y1="80" x2="270" y2="80" stroke="#10b981" stroke-width="1.5"/>
+        <!-- Bottom agents -->
+        <rect x="70" y="135" width="100" height="50" rx="10" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-width="1"/>
+        <text x="120" y="155" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a855f7" font-weight="600">AutoGen</text>
+        <text x="120" y="170" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Planning Agent</text>
+        <rect x="230" y="135" width="100" height="50" rx="10" fill="rgba(20,184,166,0.08)" stroke="#14b8a6" stroke-width="1"/>
+        <text x="280" y="155" text-anchor="middle" font-family="Outfit" font-size="9" fill="#0d9488" font-weight="600">Custom</text>
+        <text x="280" y="170" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">Execution Agent</text>
+        <line x1="170" y1="135" x2="200" y2="105" stroke="#10b981" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="230" y1="135" x2="200" y2="105" stroke="#10b981" stroke-width="1" stroke-dasharray="4"/>
       </svg>
       <div class="media-note">
-        MEDIA TEAM: Keep this brief. Students already experienced Claude Code in M11. This is context for the programmatic SDK, not a deep dive.
+        MEDIA TEAM: Show agents from different frameworks connecting through the green A2A hub. Animate connections appearing one by one. End state: all four agents connected through the central protocol node.
       </div>
     </div>
   </div>
@@ -590,377 +573,247 @@ tools = [{
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 3: OpenAI Platform                                        -->
+<!-- VIDEO 3: TA -- A2A Lab                                           -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 3: "OpenAI Platform"</h2>
-    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+    <h2>Video 3: "A2A Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the A2A lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
   </div>
 
-  <!-- PART A: OpenAI API -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">PART A</span>
-      <span class="segment-title">OpenAI API and Function Calling</span>
+      <span class="segment-number">TA</span>
+      <span class="segment-title">A2A Lab Walkthrough</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>OpenAI is the platform most of you started with. The chat completions endpoint is the foundation. You send messages with roles: system, user, and assistant. You get back a response with choices, each containing a message.</p>
-      <p>Function calling is OpenAI's version of tool use. You define functions with a name, description, and JSON schema for the parameters. When the model decides to call a function, the response includes a tool_calls array instead of regular content. You execute the function, then send the result back as a message with role "tool."</p>
-      <div class="code-block"><pre><span class="kw">from</span> openai <span class="kw">import</span> OpenAI
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open the A2A lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally. Friendly, patient, at a pace a first-time student can follow.</p>
 
-client = <span class="fn">OpenAI</span>()
+        <div class="ta-section">
+          <h5>1. Open the Notebook</h5>
+          <ul>
+            <li>Open the A2A lab notebook in Google Colab</li>
+            <li>Show the table of contents and explain the flow of the lab</li>
+            <li>Confirm any required API keys are loaded from Colab Secrets</li>
+          </ul>
+        </div>
 
-response = client.chat.completions.<span class="fn">create</span>(
-    model=<span class="str">"gpt-4.1-mini"</span>,
-    messages=[
-        {<span class="str">"role"</span>: <span class="str">"system"</span>, <span class="str">"content"</span>: <span class="str">"You are a data analyst."</span>},
-        {<span class="str">"role"</span>: <span class="str">"user"</span>, <span class="str">"content"</span>: <span class="str">"Summarize Q3 revenue."</span>}
-    ],
-    tools=[{
-        <span class="str">"type"</span>: <span class="str">"function"</span>,
-        <span class="str">"function"</span>: {
-            <span class="str">"name"</span>: <span class="str">"get_revenue"</span>,
-            <span class="str">"description"</span>: <span class="str">"Fetch quarterly revenue"</span>,
-            <span class="str">"parameters"</span>: {
-                <span class="str">"type"</span>: <span class="str">"object"</span>,
-                <span class="str">"properties"</span>: {
-                    <span class="str">"quarter"</span>: {<span class="str">"type"</span>: <span class="str">"string"</span>}
-                }
-            }
-        }
-    }]
-)</pre></div>
-      <p>OpenAI also supports structured outputs. You can pass a response_format with a JSON schema, and the model guarantees its output matches that schema exactly. No parsing errors. No malformed JSON. This is extremely useful for production pipelines where downstream code depends on a specific data shape.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- OpenAI API Structure</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">OpenAI -- Chat Completions + Function Calling</text>
-        <!-- Request -->
-        <rect x="14" y="38" width="180" height="170" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
-        <text x="104" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600" letter-spacing="0.08em">REQUEST</text>
-        <text x="24" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">model: "gpt-4.1-mini"</text>
-        <text x="24" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">messages: [</text>
-        <rect x="30" y="98" width="154" height="20" rx="3" fill="rgba(16,185,129,0.08)"/>
-        <text x="40" y="112" font-family="JetBrains Mono" font-size="7" fill="#10b981">role: "system"</text>
-        <rect x="30" y="122" width="154" height="20" rx="3" fill="rgba(37,99,235,0.08)"/>
-        <text x="40" y="136" font-family="JetBrains Mono" font-size="7" fill="#2563EB">role: "user"</text>
-        <text x="24" y="156" font-family="JetBrains Mono" font-size="7" fill="#475569">]</text>
-        <text x="24" y="172" font-family="JetBrains Mono" font-size="7" fill="#475569">tools: [{function:...}]</text>
-        <text x="104" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">system is inside messages</text>
-        <!-- Response -->
-        <rect x="206" y="38" width="180" height="170" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.2"/>
-        <text x="296" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600" letter-spacing="0.08em">RESPONSE</text>
-        <text x="216" y="76" font-family="JetBrains Mono" font-size="7" fill="#475569">choices: [{</text>
-        <text x="226" y="92" font-family="JetBrains Mono" font-size="7" fill="#475569">message: {</text>
-        <text x="236" y="108" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">tool_calls: [{</text>
-        <text x="246" y="122" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">function: {</text>
-        <text x="256" y="136" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">name, arguments</text>
-        <text x="246" y="150" font-family="JetBrains Mono" font-size="7" fill="#f59e0b">}</text>
-        <text x="236" y="164" font-family="JetBrains Mono" font-size="7" fill="#475569">}]</text>
-        <text x="216" y="180" font-family="JetBrains Mono" font-size="7" fill="#475569">}]</text>
-        <text x="296" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">tool_calls array in message</text>
-      </svg>
-    </div>
-  </div>
+        <div class="ta-section">
+          <h5>2. Agent Card Setup</h5>
+          <ul>
+            <li>Walk through creating an Agent Card JSON document</li>
+            <li>Explain each field: name, description, url, skills, authentication</li>
+            <li>Show how an agent publishes its card at a well-known endpoint</li>
+          </ul>
+        </div>
 
-  <!-- PART B: OpenAI Agents SDK -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART B</span>
-      <span class="segment-title">OpenAI Agents SDK</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~2 min</span>
+        <div class="ta-section">
+          <h5>3. Task Exchange</h5>
+          <ul>
+            <li>Demonstrate one agent discovering another through its Agent Card</li>
+            <li>Show sending a Task and receiving the response</li>
+            <li>Highlight the JSON structure of the Task object</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Common Gotchas</h5>
+          <ul>
+            <li>Agent Card URL must be publicly accessible or locally mocked</li>
+            <li>Task schema validation errors are common on first attempt</li>
+            <li>Remind students to read error messages carefully</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise at the bottom of the notebook</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck, and have fun with it."</li>
+          </ul>
+        </div>
       </div>
     </div>
-    <div class="script-col">
-      <p>In early 2025, OpenAI released the Agents SDK. This is their answer to the question: how do you build multi-step, multi-agent workflows without writing all the orchestration code yourself?</p>
-      <p>The SDK introduces three core concepts. An Agent is a configured LLM with instructions, tools, and optional guardrails. A Handoff lets one agent transfer control to another agent when the task requires different expertise. And a Runner executes the whole workflow, managing the agent loop, tool calls, and handoffs automatically.</p>
-      <div class="code-block"><pre><span class="kw">from</span> agents <span class="kw">import</span> Agent, Runner
-
-research_agent = <span class="fn">Agent</span>(
-    name=<span class="str">"Researcher"</span>,
-    instructions=<span class="str">"Find relevant data sources."</span>,
-    tools=[search_tool]
-)
-
-writer_agent = <span class="fn">Agent</span>(
-    name=<span class="str">"Writer"</span>,
-    instructions=<span class="str">"Write a clear summary."</span>,
-    handoffs=[research_agent]
-)
-
-result = <span class="fn">Runner</span>.<span class="fn">run_sync</span>(
-    writer_agent,
-    <span class="str">"Summarize AI trends for Q3."</span>
-)</pre></div>
-      <p>The handoff mechanism is worth understanding. When the writer agent realizes it needs data, it hands off to the research agent. The research agent does its work and returns. The writer picks up where it left off. No manual orchestration. No custom state management. The SDK handles the transitions.</p>
-      <p>Guardrails are built into the SDK as well. You can define input and output validators that run automatically before and after each agent turn. If a guardrail fails, the agent stops. This is production-grade safety without extra infrastructure.</p>
-    </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- OpenAI Agents SDK</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">OpenAI Agents SDK -- Agent + Handoff + Runner</text>
-        <!-- Agent 1: Writer -->
-        <rect x="30" y="40" width="140" height="70" rx="8" fill="rgba(16,185,129,0.15)" stroke="#10b981" stroke-width="1.5"/>
-        <text x="100" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#a7f3d0" font-weight="600">Writer Agent</text>
-        <text x="100" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
-        <text x="100" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">handoffs: [researcher]</text>
-        <!-- Agent 2: Researcher -->
-        <rect x="230" y="40" width="140" height="70" rx="8" fill="rgba(37,99,235,0.15)" stroke="#2563EB" stroke-width="1.5"/>
-        <text x="300" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">Research Agent</text>
-        <text x="300" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
-        <text x="300" y="92" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">search_tool</text>
-        <!-- Handoff arrow -->
-        <path d="M 170 65 C 200 45, 200 45, 230 65" stroke="#fbbf24" stroke-width="1.5" fill="none"/>
-        <text x="200" y="42" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24" font-weight="600">handoff</text>
-        <!-- Return arrow -->
-        <path d="M 230 90 C 200 110, 200 110, 170 90" stroke="#fbbf24" stroke-width="1.5" fill="none" stroke-dasharray="4 3"/>
-        <text x="200" y="116" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24">returns</text>
-        <!-- Runner -->
-        <rect x="100" y="140" width="200" height="40" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b"/>
-        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600">Runner.run_sync()</text>
-        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">manages the loop, tool calls, handoffs</text>
-        <!-- Guardrails -->
-        <rect x="100" y="190" width="200" height="22" rx="4" fill="rgba(239,68,68,0.08)" stroke="rgba(239,68,68,0.3)"/>
-        <text x="200" y="205" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fca5a5" font-weight="600">Guardrails: input + output validators, auto-fire</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- PART C: Assistants API -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART C</span>
-      <span class="segment-title">Assistants API</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~1 min</span>
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom. TA voiceover recorded with a decent mic. Clean, warm, conversational.</p>
+      <div class="media-note">
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic.
       </div>
     </div>
-    <div class="script-col">
-      <p>OpenAI also offers the Assistants API, which takes a different approach. Instead of stateless chat completions, the Assistants API manages persistent threads. You create an assistant with instructions and tools. You create a thread for a conversation. You add messages to the thread and create a run. The assistant processes the whole thread and responds.</p>
-      <p>The Assistants API includes two powerful built-in tools. File search lets the assistant search through uploaded documents. Code interpreter lets it write and execute Python code in a sandboxed environment. These tools run on OpenAI's infrastructure. You do not host anything.</p>
-      <p>For applications that need persistent conversations with file handling and code execution, the Assistants API is a strong choice. For lightweight, stateless workflows, the chat completions endpoint or the Agents SDK is simpler.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Assistants API</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Assistants API -- Thread + Run Model</text>
-        <!-- Assistant -->
-        <rect x="14" y="40" width="120" height="60" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="74" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#10b981" font-weight="600">Assistant</text>
-        <text x="74" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">instructions + tools</text>
-        <text x="74" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model config</text>
-        <!-- Thread -->
-        <rect x="150" y="40" width="100" height="60" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="200" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">Thread</text>
-        <text x="200" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">persistent</text>
-        <text x="200" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">conversation</text>
-        <!-- Run -->
-        <rect x="266" y="40" width="120" height="60" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="326" y="60" text-anchor="middle" font-family="Outfit" font-size="10" fill="#f59e0b" font-weight="600">Run</text>
-        <text x="326" y="76" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">process thread</text>
-        <text x="326" y="90" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">with assistant</text>
-        <!-- Built-in tools -->
-        <rect x="80" y="120" width="120" height="50" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
-        <text x="140" y="138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a855f7" font-weight="600">File Search</text>
-        <text x="140" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">search uploaded docs</text>
-        <text x="140" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">on OpenAI infra</text>
-        <rect x="210" y="120" width="120" height="50" rx="8" fill="rgba(20,184,166,0.06)" stroke="#14b8a6"/>
-        <text x="270" y="138" text-anchor="middle" font-family="Outfit" font-size="8" fill="#14b8a6" font-weight="600">Code Interpreter</text>
-        <text x="270" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">sandboxed Python</text>
-        <text x="270" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">execution</text>
-        <!-- Label -->
-        <text x="200" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">Stateful: threads persist across sessions</text>
-      </svg>
-    </div>
   </div>
 
-</div><!-- end video-3 -->
+</div><!-- end video-3 (TA A2A Lab) -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 4: Google Platform                                        -->
+<!-- VIDEO 4: OpenAI SDK                                              -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-4">
 
   <div class="video-header">
-    <h2>Video 4: "Google Platform"</h2>
-    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 segments</div>
+    <h2>Video 4: "OpenAI Agents SDK"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 parts</div>
   </div>
 
-  <!-- PART A: Gemini API -->
+  <div class="key-message-bar">
+    <span class="km-label">KEY MESSAGE</span>
+    <span class="km-text">The OpenAI Agents SDK gives you Agent, Handoff, and Runner. Three building blocks, and you can wire up a multi-agent system in under 50 lines of Python.</span>
+  </div>
+
+  <!-- PART A -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART A</span>
-      <span class="segment-title">Gemini API</span>
+      <span class="segment-title">OpenAI Agents SDK Overview</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Google's Gemini is multimodal from the ground up. Text, images, video, audio, and code all go through the same model. You do not need separate endpoints for vision versus text. You send a mixed content array, and Gemini handles it.</p>
-      <p>The practical advantage is the free tier. Google AI Studio gives you access to Gemini models with generous rate limits at no cost. For students and small projects, this is significant. You can prototype entire applications without a credit card.</p>
-      <div class="code-block"><pre><span class="kw">import</span> google.generativeai <span class="kw">as</span> genai
-
-genai.<span class="fn">configure</span>(api_key=<span class="str">"YOUR_API_KEY"</span>)
-
-model = genai.<span class="fn">GenerativeModel</span>(<span class="str">"gemini-2.5-flash"</span>)
-
-<span class="cm"># Text + image in one call</span>
-response = model.<span class="fn">generate_content</span>([
-    <span class="str">"Describe what you see in this chart."</span>,
-    image_data  <span class="cm"># PIL Image or bytes</span>
-])
-
-<span class="kw">print</span>(response.text)</pre></div>
-      <p>The API design is simpler than OpenAI or Claude for basic use cases. You create a model object, call generate_content, and get back a response with a text property. For multimodal inputs, you pass a list with text and images mixed together. No special configuration. No separate vision model.</p>
-      <p>Google AI Studio also provides a web playground where you can test prompts, upload files, and experiment with system instructions before writing any code. Think of it as Google's version of the OpenAI Playground.</p>
+      <p>OpenAI released the Agents SDK in March 2025. It is a lightweight Python framework for building agentic applications. The philosophy is minimalism: give developers a small number of powerful primitives and let them compose.</p>
+      <p>There are three core concepts. Agent: a configured LLM with instructions, tools, and optional guardrails. Handoff: a mechanism for one agent to transfer control to another agent. Runner: the execution engine that takes an agent and a task, runs the loop, and returns the result.</p>
+      <p>That is the entire surface area. Agent, Handoff, Runner. If you understand those three, you understand the SDK.</p>
+      <p>The SDK also includes built-in guardrails. You can define input validators and output validators that run before and after every agent turn. If a guardrail fails, the agent stops. No hallucinated output reaches the user. This is production thinking baked into the framework from day one.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Gemini Multimodal</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Gemini -- One Model, Every Modality</text>
-        <!-- Input modalities -->
-        <rect x="14" y="38" width="160" height="170" rx="8" fill="rgba(37,99,235,0.08)" stroke="#2563EB"/>
-        <text x="94" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">INPUTS</text>
-        <rect x="24" y="66" width="140" height="22" rx="4" fill="rgba(37,99,235,0.12)"/>
-        <text x="94" y="81" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">Text</text>
-        <rect x="24" y="94" width="140" height="22" rx="4" fill="rgba(16,185,129,0.12)"/>
-        <text x="94" y="109" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a7f3d0">Images</text>
-        <rect x="24" y="122" width="140" height="22" rx="4" fill="rgba(245,158,11,0.12)"/>
-        <text x="94" y="137" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fde68a">Video</text>
-        <rect x="24" y="150" width="140" height="22" rx="4" fill="rgba(168,85,247,0.12)"/>
-        <text x="94" y="165" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">Audio</text>
-        <text x="94" y="196" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">all in one API call</text>
-        <!-- Arrow -->
-        <line x1="180" y1="120" x2="206" y2="120" stroke="#60a5fa" stroke-width="2"/>
-        <!-- Gemini model -->
-        <rect x="210" y="60" width="170" height="80" rx="10" fill="rgba(37,99,235,0.15)" stroke="#2563EB" stroke-width="2"/>
-        <text x="295" y="90" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="700">Gemini</text>
-        <text x="295" y="108" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">generate_content()</text>
-        <text x="295" y="128" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">native multimodal</text>
-        <!-- Free tier callout -->
-        <rect x="210" y="160" width="170" height="36" rx="6" fill="rgba(16,185,129,0.1)" stroke="#10b981"/>
-        <text x="295" y="176" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">Free Tier</text>
-        <text x="295" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Google AI Studio: no credit card</text>
+      <span class="media-label">Storyboard -- SDK Architecture</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">OpenAI Agents SDK: Three Primitives</text>
+        <!-- Agent -->
+        <rect x="14" y="44" width="120" height="80" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="74" y="66" text-anchor="middle" font-family="Outfit" font-size="12" fill="#2563EB" font-weight="700">Agent</text>
+        <line x1="28" y1="74" x2="120" y2="74" stroke="#dbeafe"/>
+        <text x="74" y="90" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">instructions</text>
+        <text x="74" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">tools + guardrails</text>
+        <text x="74" y="118" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">model config</text>
+        <!-- Handoff -->
+        <rect x="140" y="44" width="120" height="80" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.5"/>
+        <text x="200" y="66" text-anchor="middle" font-family="Outfit" font-size="12" fill="#10b981" font-weight="700">Handoff</text>
+        <line x1="154" y1="74" x2="246" y2="74" stroke="#dcfce7"/>
+        <text x="200" y="90" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">transfer control</text>
+        <text x="200" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">agent-to-agent</text>
+        <text x="200" y="118" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">context passing</text>
+        <!-- Runner -->
+        <rect x="266" y="44" width="120" height="80" rx="10" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="326" y="66" text-anchor="middle" font-family="Outfit" font-size="12" fill="#b45309" font-weight="700">Runner</text>
+        <line x1="280" y1="74" x2="372" y2="74" stroke="#fef3c7"/>
+        <text x="326" y="90" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">execution engine</text>
+        <text x="326" y="104" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">agentic loop</text>
+        <text x="326" y="118" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">returns result</text>
+        <!-- Guardrails bar -->
+        <rect x="14" y="140" width="372" height="32" rx="6" fill="rgba(239,68,68,0.06)" stroke="#ef4444" stroke-width="1"/>
+        <text x="200" y="160" text-anchor="middle" font-family="Outfit" font-size="9" fill="#ef4444" font-weight="600">Built-in Guardrails: Input Validators + Output Validators</text>
+        <!-- Code snippet -->
+        <rect x="14" y="186" width="372" height="44" rx="8" fill="#1e293b"/>
+        <text x="28" y="204" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">agent</text><text x="62" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0"> = </text><text x="74" y="204" font-family="JetBrains Mono" font-size="8" fill="#fde68a">Agent</text><text x="102" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">(</text><text x="108" y="204" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">name</text><text x="130" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">=</text><text x="136" y="204" font-family="JetBrains Mono" font-size="8" fill="#86efac">"Researcher"</text><text x="216" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">, </text><text x="224" y="204" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">tools</text><text x="252" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">=[</text><text x="264" y="204" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">search</text><text x="298" y="204" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">])</text>
+        <text x="28" y="220" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">result</text><text x="66" y="220" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0"> = </text><text x="78" y="220" font-family="JetBrains Mono" font-size="8" fill="#fde68a">Runner</text><text x="118" y="220" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">.</text><text x="124" y="220" font-family="JetBrains Mono" font-size="8" fill="#fde68a">run_sync</text><text x="180" y="220" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">(</text><text x="186" y="220" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">agent</text><text x="214" y="220" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">, </text><text x="222" y="220" font-family="JetBrains Mono" font-size="8" fill="#86efac">"Find recent papers on A2A"</text><text x="378" y="220" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">)</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate the three boxes appearing one at a time (Agent, Handoff, Runner). Then the guardrails bar slides in from below. Finally, the code snippet fades in at the bottom.
+      </div>
     </div>
   </div>
 
-  <!-- PART B: Google ADK -->
+  <!-- PART B -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART B</span>
-      <span class="segment-title">Google ADK (Agent Development Kit)</span>
+      <span class="segment-title">The Code Pattern</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Code</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Google released the Agent Development Kit, or ADK, in 2025. It is Google's framework for building AI agents that can use tools, maintain state, and collaborate with other agents.</p>
-      <p>The core abstraction is an Agent class. You give it a name, a model, instructions, and a list of tools. The ADK handles the agent loop: the model generates a response, the ADK checks if it includes tool calls, executes them, and feeds the results back. Same pattern you saw with Claude and OpenAI, just different syntax.</p>
-      <div class="code-block"><pre><span class="kw">from</span> google.adk <span class="kw">import</span> Agent
-
-agent = <span class="fn">Agent</span>(
-    name=<span class="str">"data_analyst"</span>,
-    model=<span class="str">"gemini-2.5-flash"</span>,
-    instruction=<span class="str">"Analyze data and provide insights."</span>,
-    tools=[query_database, create_chart]
-)
-
-<span class="cm"># Run the agent</span>
-response = agent.<span class="fn">run</span>(
-    <span class="str">"What were the top products last quarter?"</span>
-)</pre></div>
-      <p>The ADK supports sub-agents, which are agents that can delegate to other agents. This is Google's approach to multi-agent orchestration. You define a parent agent and give it child agents as tools. When the parent needs specialized work, it delegates to the right child, gets the result, and continues.</p>
-      <p>One advantage of the ADK is tight integration with Google Cloud services. If your stack already runs on Google Cloud, the ADK gives you seamless access to BigQuery, Vertex AI, and other services without extra configuration.</p>
+      <p>Building a multi-agent system with the SDK follows a clean pattern. You define your agents, each with a name, instructions, and tools. You wire handoffs so agents know which other agents they can transfer to. Then you run the whole thing with Runner.</p>
+      <p>A triage agent receives the user request and decides which specialist handles it. A research agent searches the web. A writing agent drafts the response. The triage agent hands off to the right specialist based on the request, and Runner manages the execution loop until the task is complete.</p>
+      <p>The handoff is the key innovation. Unlike CrewAI where you define the entire crew up front, here each agent declares who it can hand off to. The routing is dynamic. The triage agent decides at runtime which specialist gets the job.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Google ADK Architecture</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Google ADK -- Agent + Sub-Agents</text>
-        <!-- Parent Agent -->
-        <rect x="120" y="38" width="160" height="60" rx="10" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.5"/>
-        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="600">Parent Agent</text>
-        <text x="200" y="74" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">instruction + model + tools</text>
-        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">delegates to sub-agents</text>
-        <!-- Sub-agents -->
-        <rect x="14" y="120" width="110" height="50" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="69" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">Data Sub-Agent</text>
-        <text x="69" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">query_database</text>
-        <rect x="145" y="120" width="110" height="50" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="200" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#f59e0b" font-weight="600">Chart Sub-Agent</text>
-        <text x="200" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">create_chart</text>
-        <rect x="276" y="120" width="110" height="50" rx="8" fill="rgba(168,85,247,0.06)" stroke="#a855f7"/>
-        <text x="331" y="140" text-anchor="middle" font-family="Outfit" font-size="8" fill="#a855f7" font-weight="600">Report Sub-Agent</text>
-        <text x="331" y="154" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">compile_report</text>
-        <!-- Lines from parent to subs -->
-        <line x1="160" y1="98" x2="69" y2="120" stroke="#cbd5e1" stroke-width="1"/>
-        <line x1="200" y1="98" x2="200" y2="120" stroke="#cbd5e1" stroke-width="1"/>
-        <line x1="240" y1="98" x2="331" y2="120" stroke="#cbd5e1" stroke-width="1"/>
-        <!-- Google Cloud bar -->
-        <rect x="60" y="188" width="280" height="22" rx="6" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.2)"/>
-        <text x="200" y="203" text-anchor="middle" font-family="Outfit" font-size="7" fill="#2563EB" font-weight="600">Tight Google Cloud integration: BigQuery, Vertex AI, Cloud Functions</text>
+      <span class="media-label">Storyboard -- Multi-Agent Handoff</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">OpenAI SDK: Handoff Pattern</text>
+        <!-- Triage Agent -->
+        <rect x="140" y="40" width="120" height="44" rx="10" fill="rgba(37,99,235,0.2)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#93c5fd" font-weight="600">Triage Agent</text>
+        <text x="200" y="74" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">routes requests</text>
+        <!-- Arrows down -->
+        <line x1="160" y1="84" x2="80" y2="110" stroke="#2563EB" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="200" y1="84" x2="200" y2="110" stroke="#10b981" stroke-width="1" stroke-dasharray="4"/>
+        <line x1="240" y1="84" x2="320" y2="110" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4"/>
+        <!-- Specialist agents -->
+        <rect x="20" y="110" width="120" height="44" rx="10" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1"/>
+        <text x="80" y="128" text-anchor="middle" font-family="Outfit" font-size="9" fill="#93c5fd" font-weight="600">Researcher</text>
+        <text x="80" y="144" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">tools: [search]</text>
+        <rect x="140" y="110" width="120" height="44" rx="10" fill="rgba(16,185,129,0.12)" stroke="#10b981" stroke-width="1"/>
+        <text x="200" y="128" text-anchor="middle" font-family="Outfit" font-size="9" fill="#34d399" font-weight="600">Writer</text>
+        <text x="200" y="144" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">tools: [draft]</text>
+        <rect x="260" y="110" width="120" height="44" rx="10" fill="rgba(245,158,11,0.12)" stroke="#f59e0b" stroke-width="1"/>
+        <text x="320" y="128" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fde68a" font-weight="600">Analyst</text>
+        <text x="320" y="144" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">tools: [calculate]</text>
+        <!-- Runner bar -->
+        <rect x="60" y="174" width="280" height="30" rx="8" fill="rgba(168,85,247,0.15)" stroke="#a855f7" stroke-width="1"/>
+        <text x="200" y="193" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#c4b5fd" font-weight="600">Runner.run_sync(triage_agent, user_input)</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animate the triage agent receiving a request, then a dashed arrow shooting down to one of the specialists. Show the Runner bar pulsing at the bottom to indicate it is managing the loop.
+      </div>
     </div>
   </div>
 
-  <!-- PART C: A2A Protocol -->
+  <!-- PART C -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART C</span>
-      <span class="segment-title">A2A Protocol</span>
+      <span class="segment-title">Assistants API (Brief)</span>
       <div class="segment-badges">
         <span class="badge badge-type">Voiceover + Animation</span>
-        <span class="badge badge-duration">~1 min</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Google also introduced the A2A protocol. A2A stands for Agent-to-Agent. It is an open standard for agents built on different platforms to communicate with each other.</p>
-      <p>Think about it this way. Right now, a Claude agent and a Gemini agent cannot easily talk to each other. They live in separate ecosystems with different APIs. A2A defines a common protocol so agents can discover each other, exchange messages, and coordinate work regardless of which platform built them.</p>
-      <p>This is still emerging. The specification was published in 2025 and adoption is in early stages. But the direction is important. The future of AI agents is not one platform wins. It is agents from different platforms working together. A2A is Google's bet on that future.</p>
+      <p>OpenAI also offers the Assistants API, which takes a different approach. Instead of running everything locally with the SDK, the Assistants API is a managed, server-side service. You create an Assistant, start a Thread, add Messages, and trigger a Run. OpenAI's servers handle the execution.</p>
+      <p>The Assistants API includes built-in tools like File Search and Code Interpreter. File Search indexes your documents and lets the assistant answer questions about them. Code Interpreter gives the assistant a sandboxed Python environment to write and execute code on the fly.</p>
+      <p>The trade-off is control versus convenience. The Agents SDK runs locally, you own the execution loop, you can customize everything. The Assistants API is managed, easier to set up, but you are relying on OpenAI's infrastructure. For this course, we focus on the SDK because it teaches you the mechanics. But knowing the Assistants API exists gives you a production option when speed matters more than customization.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- A2A Protocol</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">A2A -- Agent-to-Agent Protocol</text>
-        <!-- Claude Agent -->
-        <rect x="20" y="50" width="100" height="50" rx="8" fill="rgba(251,146,60,0.15)" stroke="#fb923c"/>
-        <text x="70" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fb923c" font-weight="600">Claude Agent</text>
-        <text x="70" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Anthropic</text>
-        <!-- GPT Agent -->
-        <rect x="150" y="50" width="100" height="50" rx="8" fill="rgba(16,185,129,0.15)" stroke="#10b981"/>
-        <text x="200" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">GPT Agent</text>
-        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">OpenAI</text>
-        <!-- Gemini Agent -->
-        <rect x="280" y="50" width="100" height="50" rx="8" fill="rgba(37,99,235,0.15)" stroke="#2563EB"/>
-        <text x="330" y="72" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600">Gemini Agent</text>
-        <text x="330" y="88" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">Google</text>
-        <!-- A2A protocol layer -->
-        <rect x="40" y="120" width="320" height="36" rx="8" fill="rgba(245,158,11,0.1)" stroke="#f59e0b" stroke-width="1.5"/>
-        <text x="200" y="138" text-anchor="middle" font-family="Outfit" font-size="10" fill="#fbbf24" font-weight="600">A2A Protocol</text>
-        <text x="200" y="152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">discover, exchange messages, coordinate work</text>
-        <!-- Lines down to protocol -->
-        <line x1="70" y1="100" x2="70" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
-        <line x1="200" y1="100" x2="200" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
-        <line x1="330" y1="100" x2="330" y2="120" stroke="#f59e0b" stroke-width="1" stroke-dasharray="3 3"/>
-        <!-- Status -->
-        <rect x="120" y="170" width="160" height="20" rx="4" fill="rgba(245,158,11,0.08)"/>
-        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fbbf24" font-weight="500">Emerging (2025) -- early adoption</text>
+      <span class="media-label">Storyboard -- SDK vs Assistants API</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Agents SDK vs Assistants API</text>
+        <!-- SDK side -->
+        <rect x="14" y="40" width="180" height="145" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="104" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#2563EB" font-weight="700">Agents SDK</text>
+        <line x1="28" y1="70" x2="180" y2="70" stroke="#dbeafe"/>
+        <text x="104" y="90" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Runs locally</text>
+        <text x="104" y="108" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">You own the loop</text>
+        <text x="104" y="126" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Full customization</text>
+        <text x="104" y="144" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Agent + Handoff + Runner</text>
+        <text x="104" y="174" text-anchor="middle" font-family="Outfit" font-size="8" fill="#2563EB" font-style="italic">best for learning</text>
+        <!-- Assistants API side -->
+        <rect x="206" y="40" width="180" height="145" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="296" y="62" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">Assistants API</text>
+        <line x1="220" y1="70" x2="372" y2="70" stroke="#dcfce7"/>
+        <text x="296" y="90" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Managed service</text>
+        <text x="296" y="108" text-anchor="middle" font-family="Outlet" font-size="9" fill="#1e293b">OpenAI runs it</text>
+        <text x="296" y="126" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">File Search + Code Interp</text>
+        <text x="296" y="144" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b">Thread + Run + Messages</text>
+        <text x="296" y="174" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-style="italic">best for production speed</text>
       </svg>
       <div class="media-note">
-        MEDIA TEAM: Animate the three platform agents appearing, then the A2A protocol bar sliding in underneath to connect them. Emphasize that this is forward-looking, not production-ready yet.
+        MEDIA TEAM: Split-screen comparison. Left (SDK) in blue, right (Assistants API) in green. No animation needed. Hold for 4 seconds so students can read both columns.
       </div>
     </div>
   </div>
@@ -968,23 +821,23 @@ response = agent.<span class="fn">run</span>(
 </div><!-- end video-4 -->
 
 
-<!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 5: TA — Claude API & Tools Lab                    -->
-<!-- ════════════════════════════════════════════════════════ -->
+<!-- ================================================================ -->
+<!-- VIDEO 5: TA -- OpenAI SDK Lab                                    -->
+<!-- ================================================================ -->
 <div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 5: "Claude API &amp; Tools Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <h2>Video 5: "OpenAI SDK Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
     <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
     <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
-      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the Claude API lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the OpenAI SDK lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
     </div>
   </div>
 
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">TA</span>
-      <span class="segment-title">Claude API &amp; Tools Lab Walkthrough</span>
+      <span class="segment-title">OpenAI SDK Lab Walkthrough</span>
       <div class="segment-badges">
         <span class="badge badge-ta">TA GUIDELINES</span>
         <span class="badge badge-duration">8-12 min</span>
@@ -993,267 +846,74 @@ response = agent.<span class="fn">run</span>(
     <div class="script-col">
       <div class="ta-guidelines">
         <h4>GUIDELINES FOR TA</h4>
-        <p class="ta-intro">Open the Claude API lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+        <p class="ta-intro">Open the OpenAI SDK lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally. Friendly, patient, at a pace a first-time student can follow.</p>
 
         <div class="ta-section">
-          <h5>1. Setup (~2 min)</h5>
+          <h5>1. Open the Notebook</h5>
           <ul>
-            <li>Open the Claude API lab notebook in Google Colab</li>
-            <li>Set up <code>ANTHROPIC_API_KEY</code> in Colab Secrets</li>
-            <li>Install the <code>anthropic</code> Python package and verify connection</li>
+            <li>Open the OpenAI Agents SDK lab notebook in Google Colab</li>
             <li>Show the table of contents and explain the flow of the lab</li>
+            <li>Confirm <code>OPENAI_API_KEY</code> is loaded from Colab Secrets</li>
           </ul>
         </div>
 
         <div class="ta-section">
-          <h5>2. Claude Messages API (~3 min)</h5>
+          <h5>2. Agent Definition</h5>
           <ul>
-            <li>Walk through the basic <code>messages.create()</code> call structure</li>
-            <li>Show system prompts, user/assistant message roles, and model selection</li>
-            <li>Demonstrate streaming vs. non-streaming responses</li>
-            <li>Point out how Claude&rsquo;s response structure differs from OpenAI</li>
+            <li>Walk through creating an Agent with name, instructions, and tools</li>
+            <li>Explain how the instructions shape agent behavior</li>
+            <li>Show how tools are attached to the agent</li>
           </ul>
         </div>
 
         <div class="ta-section">
-          <h5>3. Tool Use (~4 min)</h5>
+          <h5>3. Handoffs and Multi-Agent</h5>
           <ul>
-            <li>Define a tool schema and pass it to the API</li>
-            <li>Show how Claude returns a <code>tool_use</code> content block</li>
-            <li>Walk through the tool execution loop: call &rarr; tool_use &rarr; tool_result &rarr; final response</li>
-            <li>Run a concrete example (e.g., calculator or weather lookup)</li>
+            <li>Demonstrate defining a triage agent and specialist agents</li>
+            <li>Show the Handoff mechanism and how agents transfer control</li>
+            <li>Run the multi-agent pipeline and trace the execution flow</li>
           </ul>
         </div>
 
         <div class="ta-section">
-          <h5>4. Exercise Handoff (~2 min)</h5>
+          <h5>4. Common Gotchas</h5>
+          <ul>
+            <li>API key must be set before importing the SDK</li>
+            <li>Handoff targets must be defined before referencing them</li>
+            <li>Runner.run_sync vs Runner.run (async) confusion is common</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
           <ul>
             <li>Point to the exercise at the bottom of the notebook</li>
-            <li>Demonstrate one approach, leave the rest for students</li>
             <li>Tell students what to submit and where</li>
-            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
+            <li>Sign off warmly: "Good luck, and have fun with it."</li>
           </ul>
         </div>
       </div>
     </div>
     <div class="media-col">
       <span class="media-label">Recording Setup</span>
-      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom. TA voiceover recorded with a decent mic. Clean, warm, conversational.</p>
       <div class="media-note">
-        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic.
       </div>
     </div>
   </div>
 
-</div><!-- end video-5 (TA Claude API Lab) -->
+</div><!-- end video-5 (TA OpenAI SDK Lab) -->
 
 
-<!-- ════════════════════════════════════════════════════════ -->
-<!-- VIDEO 6: TA — OpenAI & Google ADK Lab                   -->
-<!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<!-- ================================================================ -->
+<!-- VIDEO 6: Wrap-Up                                                 -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-6">
 
   <div class="video-header">
-    <h2>Video 6: "OpenAI &amp; Google ADK Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
-    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
-    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
-      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of the OpenAI and Google ADK lab notebook in Colab, talking naturally through each cell. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
-    </div>
-  </div>
-
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">TA</span>
-      <span class="segment-title">OpenAI &amp; Google ADK Lab Walkthrough</span>
-      <div class="segment-badges">
-        <span class="badge badge-ta">TA GUIDELINES</span>
-        <span class="badge badge-duration">8-12 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <div class="ta-guidelines">
-        <h4>GUIDELINES FOR TA</h4>
-        <p class="ta-intro">Open the OpenAI &amp; Google ADK lab notebook in Google Colab and record a live screen walkthrough. Run every cell from top to bottom. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
-
-        <div class="ta-section">
-          <h5>1. Setup (~2 min)</h5>
-          <ul>
-            <li>Open the lab notebook in Google Colab</li>
-            <li>Set up <code>OPENAI_API_KEY</code> and <code>GEMINI_API_KEY</code> in Colab Secrets</li>
-            <li>Install required packages (<code>openai</code>, <code>google-genai</code>) and verify connections</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>2. OpenAI Agents SDK (~4 min)</h5>
-          <ul>
-            <li>Walk through the OpenAI chat completions call and compare to Claude&rsquo;s syntax</li>
-            <li>Show function calling with OpenAI&rsquo;s <code>tools</code> parameter</li>
-            <li>Demonstrate the Agents SDK: define an agent, attach tools, run it</li>
-            <li>Highlight the differences in tool schema format vs. Claude</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>3. Google ADK (~4 min)</h5>
-          <ul>
-            <li>Walk through the Gemini API basic call</li>
-            <li>Show the Agent Development Kit (ADK) agent definition</li>
-            <li>Run an ADK agent with a tool and show the execution trace</li>
-            <li>Compare the three platforms side by side: Claude, OpenAI, Google</li>
-          </ul>
-        </div>
-
-        <div class="ta-section">
-          <h5>4. Exercise Handoff (~2 min)</h5>
-          <ul>
-            <li>Point to the exercise at the bottom of the notebook</li>
-            <li>Show the expected deliverable and explain the comparison task</li>
-            <li>Tell students what to submit and where</li>
-            <li>Sign off warmly: "Good luck &mdash; and have fun with it."</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Recording Setup</span>
-      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Colab notebook at comfortable zoom (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
-      <div class="media-note">
-        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
-      </div>
-    </div>
-  </div>
-
-</div><!-- end video-6 (TA OpenAI & Google Lab) -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 7: Comparison & When to Choose                            -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-7">
-
-  <div class="video-header">
-    <h2>Video 7: "Comparison and When to Choose"</h2>
-    <div class="video-meta">Prof on camera -- ~3 minutes -- 2 segments</div>
-  </div>
-
-  <!-- PART A: Side-by-Side -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART A</span>
-      <span class="segment-title">Side-by-Side Comparison</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera + Overlay</span>
-        <span class="badge badge-duration">~2 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>Now that you have seen all three, the patterns should be obvious. Every platform has messages. Every platform has tool calling. Every platform has an agent framework. The differences are in the details.</p>
-      <p>Claude separates the system prompt from messages. OpenAI puts it inside messages. Gemini uses a model-level system_instruction. Claude returns tool calls as content blocks in a content array. OpenAI returns them in a tool_calls array inside the message. Gemini uses function_call parts. Different shapes, same idea.</p>
-      <p>On the agent side: Claude has the Agent SDK, OpenAI has the Agents SDK with handoffs and guardrails, Google has the ADK with sub-agents and Google Cloud integration. Each framework reflects the priorities of the company that built it.</p>
-      <p>For pricing, Claude and OpenAI charge per token with different tiers. Gemini offers a generous free tier through Google AI Studio. For production, all three offer enterprise pricing with SLAs. The cost difference for most applications is small enough that it should not be the primary decision factor. Capability and ecosystem fit matter more.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Storyboard -- Comparison Table</span>
-      <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Platform Comparison</text>
-        <!-- Header row -->
-        <rect x="14" y="34" width="82" height="24" rx="4" fill="#1e293b"/>
-        <text x="55" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#e2e8f0" font-weight="600">Feature</text>
-        <rect x="100" y="34" width="92" height="24" rx="4" fill="rgba(251,146,60,0.15)"/>
-        <text x="146" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fb923c" font-weight="600">Claude</text>
-        <rect x="196" y="34" width="92" height="24" rx="4" fill="rgba(16,185,129,0.15)"/>
-        <text x="242" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-weight="600">OpenAI</text>
-        <rect x="292" y="34" width="94" height="24" rx="4" fill="rgba(37,99,235,0.15)"/>
-        <text x="339" y="50" text-anchor="middle" font-family="Outfit" font-size="8" fill="#2563EB" font-weight="600">Google</text>
-        <!-- Row: System prompt -->
-        <line x1="14" y1="62" x2="386" y2="62" stroke="#e2e8f0"/>
-        <text x="20" y="78" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">System prompt</text>
-        <text x="146" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">separate param</text>
-        <text x="242" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">inside messages</text>
-        <text x="339" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">model-level</text>
-        <!-- Row: Tool calls -->
-        <line x1="14" y1="86" x2="386" y2="86" stroke="#f1f5f9"/>
-        <text x="20" y="102" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Tool calls</text>
-        <text x="146" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">content blocks</text>
-        <text x="242" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">tool_calls array</text>
-        <text x="339" y="102" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">function_call parts</text>
-        <!-- Row: Agent Framework -->
-        <line x1="14" y1="110" x2="386" y2="110" stroke="#e2e8f0"/>
-        <text x="20" y="126" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Agent framework</text>
-        <text x="146" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Agent SDK</text>
-        <text x="242" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">Agents SDK</text>
-        <text x="339" y="126" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">ADK</text>
-        <!-- Row: Multi-agent -->
-        <line x1="14" y1="134" x2="386" y2="134" stroke="#f1f5f9"/>
-        <text x="20" y="150" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Multi-agent</text>
-        <text x="146" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP + tools</text>
-        <text x="242" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">handoffs</text>
-        <text x="339" y="150" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">sub-agents</text>
-        <!-- Row: Multimodal -->
-        <line x1="14" y1="158" x2="386" y2="158" stroke="#e2e8f0"/>
-        <text x="20" y="174" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Multimodal</text>
-        <text x="146" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + image</text>
-        <text x="242" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + image + audio</text>
-        <text x="339" y="174" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">text + img + vid + audio</text>
-        <!-- Row: Free tier -->
-        <line x1="14" y1="182" x2="386" y2="182" stroke="#f1f5f9"/>
-        <text x="20" y="198" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Free tier</text>
-        <text x="146" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">limited</text>
-        <text x="242" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">limited</text>
-        <text x="339" y="198" text-anchor="middle" font-family="Outfit" font-size="7" fill="#10b981" font-weight="600">generous</text>
-        <!-- Row: Strength -->
-        <line x1="14" y1="206" x2="386" y2="206" stroke="#e2e8f0"/>
-        <text x="20" y="222" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Best for</text>
-        <text x="146" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#fb923c">safety, reasoning</text>
-        <text x="242" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#10b981">ecosystem, tooling</text>
-        <text x="339" y="222" text-anchor="middle" font-family="Outfit" font-size="7" fill="#2563EB">multimodal, cost</text>
-        <!-- Row: Protocol -->
-        <line x1="14" y1="230" x2="386" y2="230" stroke="#f1f5f9"/>
-        <text x="20" y="246" font-family="Outfit" font-size="7" fill="#475569" font-weight="600">Interop protocol</text>
-        <text x="146" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP</text>
-        <text x="242" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">MCP (adopted)</text>
-        <text x="339" y="246" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">A2A + MCP</text>
-        <!-- Bottom insight -->
-        <rect x="40" y="264" width="320" height="40" rx="8" fill="rgba(37,99,235,0.06)" stroke="rgba(37,99,235,0.15)"/>
-        <text x="200" y="280" text-anchor="middle" font-family="Outfit" font-size="8" fill="#1e293b" font-weight="600">Same pattern everywhere: messages + tools + agent loop</text>
-        <text x="200" y="294" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">The syntax changes. The thinking does not.</text>
-      </svg>
-    </div>
-  </div>
-
-  <!-- PART B: The Real Skill -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART B</span>
-      <span class="segment-title">The Real Skill</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~1 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>The real skill is not mastering one platform. It is knowing which one to reach for.</p>
-      <p>Need bulletproof safety and the best reasoning? Claude. Need the broadest ecosystem with the most third-party integrations? OpenAI. Need multimodal on a budget with tight Google Cloud integration? Gemini.</p>
-      <p>And the best part: switching is not hard. Once you understand the pattern of messages, tools, and agent loops, moving from one platform to another is a matter of changing import statements and adjusting a few field names. The hard part is the thinking. The syntax is just syntax.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Direct to camera. Confident, closing-argument energy. This is the thesis of the module. Pause after "The syntax is just syntax."</p>
-    </div>
-  </div>
-
-</div><!-- end video-7 -->
-
-
-<!-- ================================================================ -->
-<!-- VIDEO 8: Wrap-Up                                                -->
-<!-- ================================================================ -->
-<div class="video-section" id="video-8">
-
-  <div class="video-header">
-    <h2>Video 8: "Module 12 Wrap-Up"</h2>
-    <div class="video-meta">Prof on camera -- ~1 minute -- 2 segments</div>
+    <h2>Video 6: "Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- ~1 minute -- 2 parts</div>
   </div>
 
   <!-- PART 01 -->
@@ -1267,12 +927,25 @@ response = agent.<span class="fn">run</span>(
       </div>
     </div>
     <div class="script-col">
-      <p>You covered three AI platforms in one module. Claude, OpenAI, and Google. You saw how each one handles messages, tool calling, and agent orchestration. You saw the differences in syntax and the similarities in design.</p>
-      <p>You are not locked into one vendor anymore. You understand the patterns that all three share, and you know when to reach for each one. That is a skill that stays relevant no matter which platform leads the market next year.</p>
+      <p>Two platforms, two approaches. Google thinks in protocols. A2A gives agents a shared language so they can discover each other, exchange tasks, and collaborate across any framework. OpenAI thinks in SDKs. The Agents SDK gives you Agent, Handoff, and Runner to build multi-agent systems fast in Python.</p>
+      <p>Both are production-ready. Both are open. And now you have built with both.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Same studio setup as opening. Reflective, satisfied delivery. Let the accomplishment land.</p>
+      <p class="shot-note">Medium close-up. Calm, confident tone. This is a summary, not new material. Let the words land.</p>
+      <svg viewBox="0 0 400 140" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Two Platforms, Two Philosophies</text>
+        <rect x="30" y="40" width="160" height="80" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="110" y="64" text-anchor="middle" font-family="Outfit" font-size="12" fill="#2563EB" font-weight="700">Google A2A</text>
+        <text x="110" y="84" text-anchor="middle" font-family="Outfit" font-size="9" fill="#64748b">Open protocol</text>
+        <text x="110" y="100" text-anchor="middle" font-family="Outfit" font-size="9" fill="#64748b">Agent discovery + tasks</text>
+        <text x="110" y="114" text-anchor="middle" font-family="Outfit" font-size="8" fill="#2563EB" font-style="italic">interoperability</text>
+        <rect x="210" y="40" width="160" height="80" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="290" y="64" text-anchor="middle" font-family="Outfit" font-size="12" fill="#10b981" font-weight="700">OpenAI SDK</text>
+        <text x="290" y="84" text-anchor="middle" font-family="Outfit" font-size="9" fill="#64748b">Python framework</text>
+        <text x="290" y="100" text-anchor="middle" font-family="Outfit" font-size="9" fill="#64748b">Agent + Handoff + Runner</text>
+        <text x="290" y="114" text-anchor="middle" font-family="Outfit" font-size="8" fill="#10b981" font-style="italic">developer velocity</text>
+      </svg>
     </div>
   </div>
 
@@ -1283,64 +956,27 @@ response = agent.<span class="fn">run</span>(
       <span class="segment-title">Next Module Preview</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~30 sec</span>
+        <span class="badge badge-duration">~20 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Next module, we go from building AI systems to deploying them. How do you take everything you have built and put it into production where real users interact with it every day? That is the next step.</p>
+      <p>Next up, we move from building agents to deploying them. Workflow automation, connecting your AI to real business processes, and making it all run without you in the loop. See you there.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">End Card</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <rect x="0" y="0" width="400" height="32" fill="#1e293b"/>
-        <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
-        <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 12 / 14</text>
-        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 12 Complete</text>
-        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">AI Platforms: Claude, OpenAI, Google</text>
-        <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
-        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
-        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Deployment &amp; Production</text>
-        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">From prototype to production</text>
-        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani -- Northeastern University</text>
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Same medium close-up. Quick and warm. Smile on the last line. Cut clean after "See you there."</p>
+      <!-- End Card SVG -->
+      <svg viewBox="0 0 400 120" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="40" text-anchor="middle" font-family="Outfit" font-size="14" fill="#e2e8f0" font-weight="700">DADS 5250</text>
+        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="10" fill="#64748b">Generative AI in Practice</text>
+        <text x="200" y="88" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="500">Module 12: AI Platforms</text>
+        <text x="200" y="108" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Dr. Mohammad Dehghani</text>
       </svg>
     </div>
   </div>
 
-</div><!-- end video-8 -->
+</div><!-- end video-6 -->
 
-
-<!-- Student Discussion Guide -->
-<div style="margin-top:48px; padding-top:24px; border-top:1px solid rgba(37,99,235,0.08);">
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number" style="background:rgba(20,184,166,0.1);color:#0d9488;">DISC</span>
-      <span class="segment-title">Student Discussion Guide -- Choosing Your Platform</span>
-      <div class="segment-badges">
-        <span class="badge badge-discussion">STUDENT DISCUSSION</span>
-        <span class="badge badge-duration">~10 min</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <div class="discussion-guidelines">
-        <h4>STUDENT DISCUSSION GUIDE</h4>
-        <p class="disc-intro">Two former students join Prof. Dehghani to discuss real-world platform selection. Semi-structured, conversation-driven.</p>
-        <ol>
-          <li>Which platform does your team or company use, and why did they choose it?</li>
-          <li>Have you ever had to switch from one AI provider to another mid-project? What was that like?</li>
-          <li>When would you choose Claude over OpenAI, or Gemini over both?</li>
-          <li>How important is vendor lock-in when choosing an AI platform for a production application?</li>
-          <li>What do you think about interoperability protocols like MCP and A2A? Will they matter in two years?</li>
-        </ol>
-      </div>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Recording Note</span>
-      <div class="media-note">
-        MEDIA TEAM: Three-person setup. Prof. and two students. Relaxed conversation. No slides. 10-12 minutes. Can be edited down to 8-10 for final cut.
-      </div>
-    </div>
-  </div>
-</div>
 
 <!-- References -->
 <div class="references-section">
@@ -1348,14 +984,11 @@ response = agent.<span class="fn">run</span>(
   <table class="ref-table">
     <thead><tr><th>Resource</th><th>Link</th></tr></thead>
     <tbody>
-      <tr><td>Anthropic Claude API Docs</td><td><a href="https://docs.anthropic.com/" target="_blank">docs.anthropic.com</a></td></tr>
-      <tr><td>Claude Agent SDK</td><td><a href="https://github.com/anthropics/claude-code" target="_blank">github.com/anthropics/claude-code</a></td></tr>
-      <tr><td>OpenAI API Docs</td><td><a href="https://platform.openai.com/docs" target="_blank">platform.openai.com/docs</a></td></tr>
-      <tr><td>OpenAI Agents SDK</td><td><a href="https://github.com/openai/openai-agents-python" target="_blank">github.com/openai/openai-agents-python</a></td></tr>
-      <tr><td>Google AI Studio</td><td><a href="https://aistudio.google.com/" target="_blank">aistudio.google.com</a></td></tr>
-      <tr><td>Google ADK Docs</td><td><a href="https://google.github.io/adk-docs/" target="_blank">google.github.io/adk-docs</a></td></tr>
-      <tr><td>A2A Protocol</td><td><a href="https://github.com/google/A2A" target="_blank">github.com/google/A2A</a></td></tr>
-      <tr><td>MCP Specification</td><td><a href="https://modelcontextprotocol.io/" target="_blank">modelcontextprotocol.io</a></td></tr>
+      <tr><td>Google A2A Protocol Spec</td><td><a href="https://github.com/google/A2A" target="_blank">github.com/google/A2A</a></td></tr>
+      <tr><td>Google A2A Blog Post</td><td><a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/" target="_blank">developers.googleblog.com</a></td></tr>
+      <tr><td>OpenAI Agents SDK Docs</td><td><a href="https://openai.github.io/openai-agents-python/" target="_blank">openai.github.io/openai-agents-python</a></td></tr>
+      <tr><td>OpenAI Agents SDK GitHub</td><td><a href="https://github.com/openai/openai-agents-python" target="_blank">github.com/openai/openai-agents-python</a></td></tr>
+      <tr><td>OpenAI Assistants API Docs</td><td><a href="https://platform.openai.com/docs/assistants/overview" target="_blank">platform.openai.com</a></td></tr>
     </tbody>
   </table>
 </div>
@@ -1396,7 +1029,7 @@ function stopAutoScroll() { isScrolling = false; const btn = document.getElement
 document.addEventListener('keydown', function(e) {
   if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4','5','6','7','8'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
 });
 
 // Inline Segment Editing
@@ -1541,7 +1174,6 @@ document.addEventListener('keydown', function(e) {
     }
   });
 
-  // Restore on load
   const reviews = getReviews();
   document.querySelectorAll('.segment').forEach(seg => {
     const id = revId(seg);
