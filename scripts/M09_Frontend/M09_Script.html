@@ -413,10 +413,10 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: Gradio</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Gradio Lab</button>
+    <!-- HIDDEN: non-studio videos --><button class="video-tab ta-recorded" onclick="switchVideo(3)" style="display:none" title="TA lab walkthrough -- no script">V3: Gradio Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: Streamlit</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Streamlit Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" style="display:none" title="TA lab walkthrough -- no script">V5: Streamlit Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)" style="display:none">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1052,7 +1052,7 @@ body.teleprompter .scroll-controls { display: flex; }
 </div><!-- end video-5 (TA Streamlit Dashboard Lab) -->
 
 
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 6: Wrap-Up</h2>

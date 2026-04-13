@@ -284,10 +284,10 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: Introduction to Claude Code</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Setup &amp; Installation Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: Applications Lab 1</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Applications Lab 2</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <!-- HIDDEN: non-studio videos --><button class="video-tab ta-recorded" onclick="switchVideo(3)" style="display:none" title="TA lab walkthrough -- no script">V3: Setup &amp; Installation Lab</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" style="display:none" title="TA lab walkthrough -- no script">V4: Applications Lab 1</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" style="display:none" title="TA lab walkthrough -- no script">V5: Applications Lab 2</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)" style="display:none">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -849,7 +849,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 6: Wrap-Up                                                 -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 6: "Module 11 Wrap-Up"</h2>

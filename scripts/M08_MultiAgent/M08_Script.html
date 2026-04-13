@@ -280,11 +280,11 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: CrewAI Intro</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: Orchestrating Workflows</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: CrewAI Basics Lab</button>
+    <!-- HIDDEN: non-studio videos --><button class="video-tab scripted" onclick="switchVideo(3)" style="display:none">V3: Orchestrating Workflows</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" style="display:none" title="TA lab walkthrough -- no script">V4: CrewAI Basics Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(5)">V5: CrewAI Tools &amp; Processes</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Multi-Agent Project Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(6)" style="display:none" title="TA lab walkthrough -- no script">V6: Multi-Agent Project Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(7)" style="display:none">V7: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -702,7 +702,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
 <!-- ================================================================ -->
 <!-- VIDEO 3: Orchestrating Complex Workflows                        -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 3: "Orchestrating Complex Workflows"</h2>
@@ -1128,7 +1128,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
 </div><!-- end video-6 (TA Multi-Agent Project Lab) -->
 
 
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-7" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 7: "Module 8 Wrap-Up"</h2>

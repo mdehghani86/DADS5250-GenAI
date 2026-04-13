@@ -280,12 +280,12 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Google A2A Protocol</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: A2A Lab</button>
+    <!-- HIDDEN: non-studio videos --><button class="video-tab scripted" onclick="switchVideo(1)" style="display:none">V1: The Spark</button>
+    <button class="video-tab active scripted" onclick="switchVideo(2)">V2: Google A2A Protocol</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(3)" style="display:none" title="TA lab walkthrough -- no script">V3: A2A Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: OpenAI SDK</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: OpenAI SDK Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" style="display:none" title="TA lab walkthrough -- no script">V5: OpenAI SDK Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)" style="display:none">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -300,7 +300,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 1: "The Spark" -- Platforms, Not Just Models                -->
 <!-- ================================================================ -->
-<div class="video-section active" id="video-1">
+<div class="video-section" id="video-1" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- Platforms, Not Just Models</h2>
@@ -389,7 +389,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 2: Google A2A Protocol                                     -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-2">
+<div class="video-section active" id="video-2">
 
   <div class="video-header">
     <h2>Video 2: "Google A2A Protocol"</h2>
@@ -909,7 +909,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 6: Wrap-Up                                                 -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 6: "Wrap-Up"</h2>

@@ -265,12 +265,12 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Vision APIs</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Vision Lab</button>
+    <!-- HIDDEN: non-studio videos --><button class="video-tab scripted" onclick="switchVideo(1)" style="display:none">V1: The Spark</button>
+    <button class="video-tab active scripted" onclick="switchVideo(2)">V2: Vision APIs</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(3)" style="display:none" title="TA lab walkthrough -- no script">V3: Vision Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: LLM Evaluation</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Evaluation Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(5)" style="display:none" title="TA lab walkthrough -- no script">V5: Evaluation Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)" style="display:none">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -285,7 +285,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 1: "The Spark" -- Engineering Drawings                     -->
 <!-- ================================================================ -->
-<div class="video-section active" id="video-1">
+<div class="video-section" id="video-1" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- Engineering Drawings</h2>
@@ -426,7 +426,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 2: Vision APIs                                             -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-2">
+<div class="video-section active" id="video-2">
 
   <div class="video-header">
     <h2>Video 2: Vision APIs -- Sending Images to AI</h2>
@@ -1049,7 +1049,7 @@ body.teleprompter .scroll-controls { display: flex; }
 </div><!-- end video-5 (TA LLM Evaluation Lab) -->
 
 
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 6: Wrap-Up</h2>
