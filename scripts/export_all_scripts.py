@@ -199,6 +199,10 @@ def extract_scripts(html_path):
         )
 
         for seg_m in seg_pattern.finditer(vid_content):
+            # Skip segments marked as non-export
+            seg_full = seg_m.group(0)
+            if 'data-script-export="false"' in vid_content[max(0,seg_m.start()-200):seg_m.start()]:
+                continue
             part_num = seg_m.group(1).strip()
             part_title = seg_m.group(2).strip()
             script_html = seg_m.group(3)

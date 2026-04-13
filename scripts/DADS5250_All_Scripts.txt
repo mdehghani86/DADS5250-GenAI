@@ -18,39 +18,11 @@ And it struck me -- what if instead of using AI to produce more text, we taught 
 
 ---
 
-PART 02: What Is Generative AI
-
-So what exactly is Generative AI? Think of it this way. Imagine you had a colleague who had read every textbook, every research paper, every technical manual in your field. And whenever you had a question, instead of searching through documents, you could simply ask them -- and they would generate a thoughtful, original answer based on everything they had learned.
-
-That is what a large language model does. It does not search a database. It does not copy and paste. It generates new text, code, or analysis based on patterns it learned from an enormous amount of human knowledge.
-
-The breakthrough came from a 2017 Google paper called Attention Is All You Need by Vaswani and colleagues. That paper introduced the Transformer architecture -- the engine behind GPT, Claude, Gemini, and every major AI system you use today.
-
----
-
-PART 03: The Growth
-
-ChatGPT reached one million users in five days after its November 2022 launch. That single product forced every major technology company to respond. Google accelerated Gemini. Meta released LLaMA as open-source. Anthropic raised billions to build Claude. Amazon invested four billion dollars in Anthropic. In the span of eighteen months, the AI industry went from a research curiosity to a global arms race. The generative AI market has already grown into a multi-hundred-billion-dollar industry -- and it is still expanding fast.
-
----
-
-PART 04: Real-World Impact
-
-This is not limited to tech companies. In finance, JPMorgan built an AI system called COiN that does in seconds what used to take their lawyers 360,000 hours per year to review -- commercial loan contracts. At Google, over 30 percent of new code is now AI-generated. LinkedIn and the World Economic Forum reported that AI has already created 1.3 million new jobs globally, with a 70 percent year-over-year increase in US roles requiring AI literacy. The acceleration is real, and it is happening everywhere.
-
----
-
 PART 05: Why It Matters for Your Career
 
 In every industry, two types of professionals are emerging. Those who use AI as a consumer, typing into ChatGPT and accepting whatever comes out. And those who build with AI -- connecting to APIs, designing prompts, building pipelines, deploying agents. The first group gets incremental productivity gains. The second group builds products, gets promoted, starts companies.
 
 Jensen Huang, the CEO of NVIDIA, said it best: "You are not going to lose your job to AI. You are going to lose your job to someone who uses AI." This course puts you firmly in the second group.
-
----
-
-PART 06: What You Will Build
-
-I want to make you a promise and a challenge. The promise: by the end of this course, you will be able to build AI-powered applications from scratch -- using the same tools and techniques that startups and Fortune 500 companies use today. The challenge: every module requires you to build something real. Not watch. Not read. Build. If you are ready for that, you are in the right place. Let us go.
 
 
 Video 2: "Meet Your Instructor"
@@ -370,32 +342,6 @@ You may ask -- why learn LangGraph when model providers now ship their own agent
 
 Think of it this way. The SDKs are like a ride-sharing app. LangGraph is like having the keys to the car. When the road gets complicated, you want the keys. We cover the newer SDKs in Module 12.
 
----
-
-PART D: The 5-Step Pattern
-
-Building a LangGraph agent follows five steps. Every time.
-
-Step one: define the state. What information flows through the graph? Messages, tool results, decisions -- all stored in a typed dictionary.
-
-Step two: create nodes. Each node is a Python function that takes state and returns updated state.
-
-Step three: add edges. Connect your nodes. "After classify, go to respond."
-
-Step four: add conditional edges. "After the LLM responds, check: did it want to call a tool? If yes, go to the tool node. If no, go to the end." This is the decision-making.
-
-Step five: compile and run. Call graph.compile() to get a runnable object. Invoke it with your initial state.
-
----
-
-PART E: The Code
-
-Here is a minimal LangGraph agent.
-
-Look at the conditional edge. That is where the intelligence lives. After the agent responds, we ask one question: did the LLM request a tool call? If yes, we route to the tools node. The tools node runs the function, gets the result, and routes back to the agent. The agent sees the new information, thinks again, and decides whether to call another tool or finish.
-
-That loop can run once, or it can run ten times. The agent keeps going until it decides it has enough to answer. And that is the ReAct pattern you learned earlier, except now it is not a concept. It is a graph you can see, debug, and control.
-
 
 ================================================================
 MODULE M08: MULTI-AGENT SYSTEMS (CREWAI)
@@ -443,28 +389,6 @@ PART C: The Code
 Here is what it looks like in code.
 
 The researcher runs first, finds the papers. Its output automatically flows to the writer. The writer uses those findings to produce the summary. Two agents, two tasks, one crew. That is multi-agent AI.
-
----
-
-PART D: Sequential vs Hierarchical
-
-Once you have your agents and tasks, you need to decide how they work together. CrewAI gives you two options.
-
-The first is sequential. The researcher goes first, finishes, and hands everything to the writer. The writer finishes and hands everything to the reviewer. One after another, like a production line. You know exactly what happens and in what order.
-
-The second is hierarchical. Instead of a fixed order, you add a manager agent. The manager reads the overall goal, decides which agent should work next, reviews the output, and can send it back if it is not good enough. It is closer to how a real project team operates.
-
-For most tasks, sequential is the right starting point. You will know when you need hierarchical because sequential will start feeling too rigid.
-
----
-
-PART E: Delegation
-
-One of CrewAI's most powerful features is delegation. An agent can ask another agent for help.
-
-The writer is drafting a section and realizes it needs a specific statistic. Instead of guessing, it delegates to the researcher: "Find me the 2024 market size for vector databases." The researcher runs, finds the number, and passes it back. The writer continues with real data.
-
-This is not hardcoded. The agents decide when to delegate based on the task at hand. It is collaboration, not just sequencing.
 
 
 ================================================================
