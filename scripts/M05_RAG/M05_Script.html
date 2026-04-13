@@ -714,10 +714,10 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: How RAG Works</button>
     <button class="video-tab voiceover-only" onclick="switchVideo(3)" title="Voiceover + animation — click mic to listen">V3: Building RAG Pipeline</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script">V4: TA -- Vector DB Setup</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Embeddings & Vector Stores Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: RAG Pipeline Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script">V4: TA -- Vector DB Setup</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Embeddings & Vector Stores Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: RAG Pipeline Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1328,7 +1328,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 4: TA -- Vector DB Setup                                  -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-4" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 4: "TA -- Vector DB Setup" (TA)</h2>
@@ -1409,7 +1409,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 5: TA — Embeddings & Vector Stores Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 5: "Embeddings & Vector Stores Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1494,7 +1494,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 6: TA — RAG Pipeline Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 6: "RAG Pipeline Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1576,7 +1576,7 @@ body.teleprompter .scroll-controls { display: flex; }
 </div><!-- end video-6 (TA RAG Pipeline Lab) -->
 
 
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-7" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 7: "Module 5 Wrap-Up"</h2>

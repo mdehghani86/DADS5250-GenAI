@@ -718,7 +718,7 @@ body.teleprompter .scroll-controls {
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">Video 1: It Changed Everything</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">Video 2: Meet Your Instructor</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA-led screen recording">Video 3: Course Overview &amp; Logistics (TA)</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA-led screen recording">Video 3: Course Overview &amp; Logistics (TA)</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1255,7 +1255,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 3: "Course Overview"                              -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 3: "Course Overview &amp; Logistics" — presented by Harini (TA)</h2>

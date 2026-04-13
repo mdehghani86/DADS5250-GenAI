@@ -476,11 +476,11 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: What Is an Agent</button>
-    <button class="video-tab voiceover-only" onclick="switchVideo(3)" title="Interactive audio — click mic to listen">V3: Tools</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab voiceover-only" onclick="switchVideo(3)" title="Interactive audio — click mic to listen">V3: Tools</button> -->
     <button class="video-tab scripted" onclick="switchVideo(4)">V4: LangGraph</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Agent Concepts (ReAct) Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: LangGraph Agents Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Agent Concepts (ReAct) Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: LangGraph Agents Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -776,7 +776,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 3: Tools                                                  -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 3: "Tools: Teaching AI to Use Functions" &mdash; <span style="color:#0f766e;">Voiceover + Animation</span></h2>
@@ -1246,7 +1246,7 @@ app = graph.<span class="fn">compile</span>()</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 5: TA — Agent Concepts (ReAct) Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 5: "Agent Concepts (ReAct) Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1331,7 +1331,7 @@ app = graph.<span class="fn">compile</span>()</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 6: TA — LangGraph Agents Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 6: "LangGraph Agents Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1413,7 +1413,7 @@ app = graph.<span class="fn">compile</span>()</pre></div>
 </div><!-- end video-6 (TA LangGraph Agents Lab) -->
 
 
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-7" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 7: "Module 6 Wrap-Up"</h2>

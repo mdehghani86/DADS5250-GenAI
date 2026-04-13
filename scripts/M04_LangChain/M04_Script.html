@@ -326,13 +326,13 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: LangChain Foundations</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button> -->
+    <button class="video-tab scripted active" onclick="switchVideo(2)">V2: LangChain Foundations</button>
     <button class="video-tab scripted" onclick="switchVideo(3)">V3: First Chain</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Beer Game</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: LangChain Basics Lab</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Beer Game Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(4)">V4: Beer Game</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: LangChain Basics Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="TA lab walkthrough -- no script">V6: Beer Game Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(7)">V7: Wrap-Up</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -347,7 +347,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 1: "The Spark" -- The Symphony Conductor           -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section active" id="video-1">
+<div class="video-section" id="video-1" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- The Symphony Conductor</h2>
@@ -453,7 +453,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 2: LangChain Foundations                           -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-2">
+<div class="video-section active" id="video-2">
 
   <div class="video-header">
     <h2>Video 2: "LangChain Foundations"</h2>
@@ -790,7 +790,7 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 4: AI Meets the Beer Game                         -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-4" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 4: "AI Meets the Beer Game"</h2>
@@ -1017,7 +1017,7 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 5: TA — LangChain Basics Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 5: "LangChain Basics Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1102,7 +1102,7 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 6: TA — Beer Game Lab                                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-6" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 6: "Beer Game Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1184,7 +1184,7 @@ result = chain.<span class="fn">invoke</span>({<span class="str">"topic"</span>:
 </div><!-- end video-6 (TA Beer Game Lab) -->
 
 
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-7" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 7: "Module 4 Wrap-Up"</h2>

@@ -832,10 +832,10 @@ body.teleprompter .scroll-controls {
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
     <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: Excel GPT</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Excel GPT Lab</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Excel GPT Lab</button> -->
     <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Bitcoin Analyzer</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Bitcoin Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(6)" title="Scripted video">V6: Wrap-Up</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Bitcoin Lab</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(6)" title="Scripted video">V6: Wrap-Up</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1295,7 +1295,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 3: TA — Excel GPT Lab Walkthrough                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-3" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 3: "Excel GPT Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1599,7 +1599,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 5: TA — Bitcoin Analyzer Lab Walkthrough          -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-5" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 5: "Bitcoin Analyzer Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1693,7 +1693,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 6: Module 2 Wrap-Up                               -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 6: "Module 2 Wrap-Up"</h2>

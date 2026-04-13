@@ -878,13 +878,13 @@ body.teleprompter .scroll-controls {
   </div>
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: What Are LLMs?</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: What Are LLMs?</button> -->
     <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: What Is an API?</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script, guidelines only">V4: TA -- API Setup</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA screen recording -- no script, guidelines only">V4: TA -- API Setup</button> -->
     <button class="video-tab scripted" onclick="switchVideo(5)" title="Scripted video">V5: Parameters &amp; Tokens</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="Walkthrough -- no script">V6: Gamification Tools</button>
-    <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="Walkthrough -- no script">V7: Python Labs</button>
-    <button class="video-tab scripted" onclick="switchVideo(8)" title="Scripted video">V8: Wrap-Up</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(6)" title="Walkthrough -- no script">V6: Gamification Tools</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="Walkthrough -- no script">V7: Python Labs</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(8)" title="Scripted video">V8: Wrap-Up</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -1009,7 +1009,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 2: "What Are LLMs?"                               -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-2">
+<div class="video-section" id="video-2" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 2: "What Are LLMs?"</h2>
@@ -1388,7 +1388,7 @@ information...</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 4: TA — API Setup Guide                           -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-4" data-script-export="false" data-ta-only="true">
+<div class="video-section" id="video-4" data-script-export="false" data-ta-only="true" style="display:none">
 
   <div class="video-header">
     <h2>Video 4: "API Setup Guide" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
@@ -1695,7 +1695,7 @@ information...</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 6: Gamification Tools — NO SCRIPT                 -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-6">
+<div class="video-section" id="video-6" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 6: Gamification Tools — NO SCRIPT NEEDED</h2>
@@ -1738,7 +1738,7 @@ information...</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 7: Python Labs — NO SCRIPT                        -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-7">
+<div class="video-section" id="video-7" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 7: Python Labs — NO SCRIPT NEEDED</h2>
@@ -1805,7 +1805,7 @@ information...</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 8: "Module 1 Wrap-Up"                             -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-8">
+<div class="video-section" id="video-8" data-script-export="false" style="display:none">
 
   <div class="video-header">
     <h2>Video 8: "Module 1 Wrap-Up"</h2>
