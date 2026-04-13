@@ -84,7 +84,7 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 
 .segment { display: grid; grid-template-columns: var(--col-left) var(--col-right); gap: 24px; margin-bottom: 28px; min-height: 120px; }
 .segment-header { grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(37,99,235,0.08); margin-bottom: 4px; }
-/* ── Inline Edit ── */
+/* Inline Edit */
 .edit-btn {
   margin-left: 8px;
   background: none;
@@ -151,7 +151,7 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
   flex-shrink: 0;
 }
 .segment.was-edited .segment-edited-dot { display: block; }
-/* ── Review Status ── */
+/* Review Status */
 .review-toggle {
   display: inline-flex;
   gap: 2px;
@@ -196,6 +196,8 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .badge-type { background: rgba(37,99,235,0.1); color: var(--accent); }
 .badge-duration { background: rgba(16,185,129,0.1); color: var(--green); }
 .badge-shot { background: rgba(245,158,11,0.1); color: #b45309; }
+.badge-ta { background: rgba(245,158,11,0.12); color: #b45309; font-weight: 600; letter-spacing: 0.04em; }
+.badge-discussion { background: rgba(20,184,166,0.1); color: #0d9488; font-weight: 600; letter-spacing: 0.04em; }
 
 .script-col { background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--card-shadow); padding: 28px 32px; }
 .script-col p { font-size: 1.05rem; line-height: 1.85; color: var(--text); margin-bottom: 16px; }
@@ -211,9 +213,29 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .media-placeholder .placeholder-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; max-width: 280px; }
 .media-placeholder .placeholder-duration { font-size: 0.72rem; color: var(--muted); }
 
+.code-block { background: #1e293b; border-radius: 10px; padding: 20px 24px; overflow-x: auto; margin: 12px 0; }
+.code-block pre { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-block .kw { color: #93c5fd; } .code-block .str { color: #86efac; } .code-block .fn { color: #fde68a; } .code-block .cm { color: #64748b; }
+
 .key-message-bar { background: rgba(37,99,235,0.06); border: 1px solid rgba(37,99,235,0.15); border-radius: 10px; padding: 14px 24px; margin-bottom: 28px; display: flex; align-items: center; gap: 12px; }
 .key-message-bar .km-label { font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 600; color: var(--accent); background: var(--accent-light); padding: 2px 10px; border-radius: 999px; white-space: nowrap; letter-spacing: 0.04em; }
 .key-message-bar .km-text { font-size: 0.95rem; font-weight: 500; color: var(--text); line-height: 1.5; }
+
+/* Discussion guide card */
+.discussion-guidelines { background: rgba(20,184,166,0.03); border: 1px solid rgba(20,184,166,0.2); border-radius: 10px; padding: 24px; }
+.discussion-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #0d9488; letter-spacing: 0.06em; margin-bottom: 12px; }
+.discussion-guidelines .disc-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.discussion-guidelines ol { padding-left: 18px; }
+.discussion-guidelines li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 6px; }
+
+/* TA Guidelines */
+.ta-guidelines { background: rgba(245,158,11,0.03); border: 1px solid rgba(245,158,11,0.2); border-radius: 10px; padding: 24px; margin-bottom: 28px; }
+.ta-guidelines h4 { font-size: 0.82rem; font-weight: 700; color: #b45309; letter-spacing: 0.06em; margin-bottom: 12px; }
+.ta-guidelines .ta-intro { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+.ta-guidelines .ta-section { margin-bottom: 14px; }
+.ta-guidelines .ta-section h5 { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+.ta-guidelines .ta-section ul { padding-left: 18px; }
+.ta-guidelines .ta-section li { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 4px; }
 
 .references-section { margin-top: 32px; padding-top: 20px; border-top: 1px solid rgba(37,99,235,0.06); max-width: 600px; margin-left: auto; margin-right: auto; }
 .references-section h3 { font-size: 0.68rem; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
@@ -223,6 +245,7 @@ body::before { content: ''; position: fixed; top: -120px; right: -120px; width: 
 .ref-table a { color: var(--accent); text-decoration: none; font-size: 0.62rem; }
 .ref-table a:hover { text-decoration: underline; }
 
+/* Teleprompter */
 body.teleprompter { background: #0a0a0a; }
 body.teleprompter::before { display: none; }
 body.teleprompter .topbar { background: rgba(10,10,10,0.92); border-bottom-color: rgba(255,255,255,0.06); }
@@ -243,6 +266,7 @@ body.teleprompter .badge { opacity: 0.5; }
 body.teleprompter .script-col { background: transparent; border: none; box-shadow: none; backdrop-filter: none; -webkit-backdrop-filter: none; padding: 20px 0; }
 body.teleprompter .script-col p { font-size: 1.55rem; line-height: 2; color: rgba(255,255,255,0.92); font-weight: 400; }
 body.teleprompter .references-section { display: none; }
+body.teleprompter .ta-guidelines { display: none; }
 
 .scroll-controls { display: none; position: fixed; bottom: 24px; right: 24px; z-index: 200; background: rgba(30,30,30,0.9); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 10px 16px; gap: 10px; align-items: center; }
 body.teleprompter .scroll-controls { display: flex; }
@@ -266,10 +290,11 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div class="video-tabs">
     <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Claude Agent SDK</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: Google ADK</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: Beer Game Workshop</button>
-    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Wrap-Up</button>
+    <button class="video-tab scripted" onclick="switchVideo(2)">V2: What Is Claude Code</button>
+    <button class="video-tab scripted" onclick="switchVideo(3)">V3: Working with Claude Code</button>
+    <button class="video-tab ta-recorded" onclick="switchVideo(4)" title="TA lab walkthrough -- no script">V4: Claude Code Lab</button>
+    <button class="video-tab scripted" onclick="switchVideo(5)">V5: Building a Real Project</button>
+    <button class="video-tab scripted" onclick="switchVideo(6)">V6: Wrap-Up</button>
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -282,25 +307,25 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 1: "The Spark" -- The Smartphone Moment                    -->
+<!-- VIDEO 1: "The Spark" -- Your AI Engineering Partner              -->
 <!-- ================================================================ -->
 <div class="video-section active" id="video-1">
 
   <div class="video-header">
-    <h2>Video 1: "The Spark" -- The Smartphone Moment</h2>
-    <div class="video-meta">Prof on camera -- 3-4 minutes -- 3 segments</div>
+    <h2>Video 1: "The Spark" -- Your AI Engineering Partner</h2>
+    <div class="video-meta">Prof on camera -- ~2 minutes -- 2 parts</div>
   </div>
 
   <div class="key-message-bar">
     <span class="km-label">KEY MESSAGE</span>
-    <span class="km-text">The best agent framework is the one that gets out of your way.</span>
+    <span class="km-text">Claude Code does not replace the engineer. It removes the friction.</span>
   </div>
 
   <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART 01</span>
-      <span class="segment-title">The Smartphone Analogy</span>
+      <span class="segment-title">The Hook</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
         <span class="badge badge-duration">~60 sec</span>
@@ -308,49 +333,15 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Think about the first time you used a smartphone. Before that, you needed a separate camera, GPS, MP3 player, calculator, and phone. The smartphone put them all in one device.</p>
-      <p>Claude Agent SDK and Google ADK did the same thing for agent development. Built-in tools. No setup. Just build.</p>
+      <p>Every tool you have built in this course, you wrote by hand. Every prompt, every chain, every agent. You chose the model, wired the API, debugged the output, and fixed the code when it broke at 2 AM.</p>
+      <p>Claude Code changes that equation. It is an AI that writes code with you, not for you. It reads your files, understands your project, runs your tests, and helps you build faster than you ever could alone.</p>
+      <p>This is not autocomplete. This is not a chatbot that generates snippets you paste into your editor. This is a full engineering partner that lives inside your terminal and your IDE. It sees your entire codebase. It reasons about what needs to change. And it asks permission before it touches anything.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- The Smartphone Moment</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Five Devices → One Device. Same for Agents.</text>
-        <text x="14" y="46" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">BEFORE — five things</text>
-        <rect x="14" y="56" width="50" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="39" y="70" text-anchor="middle" font-family="Outfit" font-size="8" fill="#cbd5e1">camera</text>
-        <rect x="68" y="56" width="50" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="93" y="70" text-anchor="middle" font-family="Outfit" font-size="8" fill="#cbd5e1">GPS</text>
-        <rect x="122" y="56" width="50" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="147" y="70" text-anchor="middle" font-family="Outfit" font-size="8" fill="#cbd5e1">MP3</text>
-        <rect x="176" y="56" width="50" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="201" y="70" text-anchor="middle" font-family="Outfit" font-size="8" fill="#cbd5e1">calc</text>
-        <rect x="230" y="56" width="50" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="255" y="70" text-anchor="middle" font-family="Outfit" font-size="8" fill="#cbd5e1">phone</text>
-        <line x1="284" y1="67" x2="306" y2="67" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#m12smArrow)"/>
-        <rect x="310" y="50" width="64" height="34" rx="6" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
-        <text x="342" y="72" text-anchor="middle" font-family="Outfit" font-size="11" fill="#bfdbfe" font-weight="600">📱 phone</text>
-        <line x1="14" y1="100" x2="386" y2="100" stroke="#1e293b"/>
-        <text x="14" y="124" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">FOR AGENT BUILDING — same shift</text>
-        <rect x="14" y="134" width="48" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="38" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#cbd5e1">LangChain</text>
-        <rect x="66" y="134" width="48" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="90" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#cbd5e1">memory</text>
-        <rect x="118" y="134" width="48" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="142" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#cbd5e1">tools libs</text>
-        <rect x="170" y="134" width="48" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="194" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#cbd5e1">vector DB</text>
-        <rect x="222" y="134" width="60" height="22" rx="3" fill="rgba(148,163,184,0.12)" stroke="#94a3b8"/>
-        <text x="252" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#cbd5e1">glue code</text>
-        <line x1="286" y1="145" x2="306" y2="145" stroke="#fbbf24" stroke-width="1.5" marker-end="url(#m12smArrow)"/>
-        <rect x="310" y="128" width="76" height="34" rx="6" fill="rgba(37,99,235,0.18)" stroke="#2563EB"/>
-        <text x="348" y="150" text-anchor="middle" font-family="Outfit" font-size="10" fill="#bfdbfe" font-weight="600">Claude SDK</text>
-        <text x="200" y="194" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Built-in tools · zero glue · just build.</text>
-        <defs>
-          <marker id="m12smArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/></marker>
-        </defs>
-      </svg>
+      <span class="media-label">Shot Setup</span>
+      <p class="shot-note">Medium close-up, warm lighting. Direct to camera, conversational authority. Build intensity through the paragraph. Pause after "asks permission before it touches anything."</p>
       <div class="media-note">
-        MEDIA TEAM: Two-phase animation. Phase 1: five separate gadgets slide together and morph into a smartphone. Phase 2: five separate Python packages/libraries slide together and morph into a single SDK icon. Same visual rhythm. Clean, minimal.
+        MEDIA TEAM: No overlays for the first 30 seconds. Clean shot. On "full engineering partner" consider a subtle lower-third: "Claude Code" in JetBrains Mono, fades in and out.
       </div>
     </div>
   </div>
@@ -359,44 +350,39 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART 02</span>
-      <span class="segment-title">The Platform Shift</span>
+      <span class="segment-title">What This Module Covers</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-duration">~50 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>In 2024, building an AI agent meant choosing a framework, writing glue code, debugging tool integrations, and hoping everything worked together. LangChain, CrewAI, AutoGen. Each had strengths, but all required significant scaffolding.</p>
-      <p>In 2026, the major AI companies released their own SDKs. Anthropic shipped the Claude Agent SDK with built-in tools. Read, Write, Bash, WebSearch. Google released the Agent Development Kit with multi-agent support and deployment flexibility. These are not frameworks. They are platforms.</p>
+      <p>This module is a deep dive into Claude Code. The CLI tool, the IDE integration, and the workflows that make it powerful. You will learn how to start a session, how to give it good context, how to use it for debugging, building features, and refactoring.</p>
+      <p>You will also learn the boundaries. When to trust it and when to verify. When it saves you hours and when it leads you down the wrong path. Knowing the difference is what separates a productive engineer from someone who blindly accepts AI output.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Direct to camera. Authoritative delivery. Slight pause after "These are not frameworks. They are platforms." for emphasis.</p>
-    </div>
-  </div>
-
-  <!-- PART 03 -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART 03</span>
-      <span class="segment-title">Workshop Preview</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~40 sec</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>This module is a workshop. Less lecture, more building. You will use both SDKs. You will rebuild the Beer Game with modern tools. And you will see why the best agent framework is the one that gets out of your way.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Lower-Third Quote Card</span>
-      <svg viewBox="0 0 400 160" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <rect x="0" y="0" width="6" height="160" fill="#2563EB"/>
-        <text x="32" y="48" font-family="Outfit" font-size="10" fill="#60a5fa" font-weight="500" letter-spacing="0.1em">M11 · KEY MESSAGE</text>
-        <text x="32" y="86" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">The best agent framework is</text>
-        <text x="32" y="106" font-family="Outfit" font-size="14" fill="#ffffff" font-weight="600">the one that</text>
-        <text x="32" y="132" font-family="Outfit" font-size="20" fill="#60a5fa" font-weight="700" font-style="italic">gets out of your way.</text>
+      <span class="media-label">Storyboard -- Module Overview</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Module 11 -- Claude Code Deep Dive</text>
+        <rect x="20" y="40" width="170" height="140" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="105" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.08em">WHAT YOU WILL LEARN</text>
+        <text x="36" y="82" font-family="Outfit" font-size="8.5" fill="#e2e8f0">CLI + IDE integration</text>
+        <text x="36" y="98" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Session management</text>
+        <text x="36" y="114" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Debugging workflows</text>
+        <text x="36" y="130" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Building features</text>
+        <text x="36" y="146" font-family="Outfit" font-size="8.5" fill="#e2e8f0">CLAUDE.md + memory</text>
+        <text x="36" y="162" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Trust boundaries</text>
+        <rect x="210" y="40" width="170" height="140" rx="10" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="295" y="60" text-anchor="middle" font-family="Outfit" font-size="9" fill="#fbbf24" font-weight="600" letter-spacing="0.08em">WHEN TO VERIFY</text>
+        <text x="226" y="82" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Novel algorithms</text>
+        <text x="226" y="98" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Security-critical code</text>
+        <text x="226" y="114" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Creative design decisions</text>
+        <text x="226" y="130" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Domain-specific logic</text>
+        <text x="226" y="162" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">Trust but verify.</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Option A: animate the two columns building line by line as Prof speaks. Option B: static card that appears as Prof says "deep dive into Claude Code."
+      </div>
     </div>
   </div>
 
@@ -404,63 +390,66 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 2: Claude Agent SDK                                        -->
+<!-- VIDEO 2: What Is Claude Code                                     -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-2">
 
   <div class="video-header">
-    <h2>Video 2: Claude Agent SDK</h2>
-    <div class="video-meta">Voiceover + code walkthrough -- 6-8 minutes -- 3 segments</div>
+    <h2>Video 2: "What Is Claude Code"</h2>
+    <div class="video-meta">Voiceover + animation -- ~5 minutes -- 3 parts</div>
   </div>
 
   <!-- PART A -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART A</span>
-      <span class="segment-title">Built-In Tools</span>
+      <span class="segment-title">Claude Code Overview</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
-        <span class="badge badge-duration">~3 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>The Claude Agent SDK is Anthropic's official toolkit for building AI agents. Here is what makes it different.</p>
-      <p>First, built-in tools. The SDK comes with tools like Read (read files), Write (create files), Bash (run commands), and WebSearch. You do not need to implement these yourself. They just work.</p>
+      <p>Claude Code is Anthropic's AI-powered coding tool. It comes in two forms: a command-line interface you run in your terminal, and an extension for VS Code and JetBrains IDEs. Both connect to Claude, Anthropic's large language model, but they do much more than send prompts to an API.</p>
+      <p>Claude Code reads your codebase. It navigates your files, understands your directory structure, and builds a mental model of how your project fits together. It writes code, creates new files, edits existing ones. It runs terminal commands, executes tests, installs packages. It interacts with git, creating commits and managing branches.</p>
+      <p>This is not autocomplete. Autocomplete predicts the next few characters. Claude Code reasons about your entire project and takes action. The difference is like comparing a spell checker to a co-author.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Three SDKs at a Glance</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">2026 SDK Landscape</text>
-        <rect x="14" y="38" width="120" height="166" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
-        <text x="74" y="58" text-anchor="middle" font-family="Outfit" font-size="11" fill="#2563EB" font-weight="700">Claude Agent SDK</text>
-        <text x="74" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Anthropic</text>
-        <line x1="22" y1="86" x2="126" y2="86" stroke="#dbeafe"/>
-        <text x="22" y="106" font-family="Outfit" font-size="8" fill="#1e293b">▪ built-in tools</text>
-        <text x="32" y="118" font-family="JetBrains Mono" font-size="7" fill="#94a3b8">Read · Write · Bash</text>
-        <text x="22" y="134" font-family="Outfit" font-size="8" fill="#1e293b">▪ Skills + Subagents</text>
-        <text x="22" y="150" font-family="Outfit" font-size="8" fill="#1e293b">▪ Claude Code</text>
-        <text x="74" y="184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">FEWEST LINES</text>
-        <rect x="140" y="38" width="120" height="166" rx="10" fill="rgba(16,185,129,0.06)" stroke="#10b981" stroke-width="1"/>
-        <text x="200" y="58" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">OpenAI Agents SDK</text>
-        <text x="200" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">OpenAI</text>
-        <line x1="148" y1="86" x2="252" y2="86" stroke="#dcfce7"/>
-        <text x="148" y="106" font-family="Outfit" font-size="8" fill="#1e293b">▪ function tools</text>
-        <text x="148" y="120" font-family="Outfit" font-size="8" fill="#1e293b">▪ Responses API</text>
-        <text x="148" y="134" font-family="Outfit" font-size="8" fill="#1e293b">▪ handoffs btwn agents</text>
-        <text x="148" y "148" font-family="Outfit" font-size="8" fill="#1e293b">▪ tracing built-in</text>
-        <text x="200" y="184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">native to OpenAI</text>
-        <rect x="266" y="38" width="120" height="166" rx="10" fill="rgba(245,158,11,0.06)" stroke="#f59e0b" stroke-width="1"/>
-        <text x="326" y="58" text-anchor="middle" font-family="Outfit" font-size="11" fill="#f59e0b" font-weight="700">Google ADK</text>
-        <text x="326" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Google</text>
-        <line x1="274" y1="86" x2="378" y2="86" stroke="#fef3c7"/>
-        <text x="274" y="106" font-family="Outfit" font-size="8" fill="#1e293b">▪ Agent class</text>
-        <text x="274" y="120" font-family="Outfit" font-size="8" fill="#1e293b">▪ multi-agent flows</text>
-        <text x="274" y="134" font-family="Outfit" font-size="8" fill="#1e293b">▪ Vertex AI deploy</text>
-        <text x="274" y="148" font-family="Outfit" font-size="8" fill="#1e293b">▪ Cloud Run, local</text>
-        <text x="326" y="184" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">cloud-native</text>
+      <span class="media-label">Storyboard -- Claude Code Architecture</span>
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Claude Code -- Not Autocomplete. An Engineering Partner.</text>
+        <!-- Center: Claude Code -->
+        <rect x="135" y="80" width="130" height="50" rx="12" fill="rgba(37,99,235,0.18)" stroke="#2563EB" stroke-width="2"/>
+        <text x="200" y="100" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#60a5fa" font-weight="600">Claude Code</text>
+        <text x="200" y="118" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">CLI + IDE Extension</text>
+        <!-- Capabilities radiating out -->
+        <rect x="14" y="40" width="90" height="26" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="59" y="57" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">Read Files</text>
+        <line x1="104" y1="53" x2="135" y2="90" stroke="#10b981" stroke-width="0.8"/>
+        <rect x="296" y="40" width="90" height="26" rx="6" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="341" y="57" text-anchor="middle" font-family="Outfit" font-size="8" fill="#34d399">Write Code</text>
+        <line x1="296" y1="53" x2="265" y2="90" stroke="#10b981" stroke-width="0.8"/>
+        <rect x="14" y="145" width="90" height="26" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="59" y="162" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fbbf24">Run Terminal</text>
+        <line x1="104" y1="158" x2="135" y2="125" stroke="#f59e0b" stroke-width="0.8"/>
+        <rect x="296" y="145" width="90" height="26" rx="6" fill="rgba(245,158,11,0.12)" stroke="#f59e0b"/>
+        <text x="341" y="162" text-anchor="middle" font-family="Outfit" font-size="8" fill="#fbbf24">Git Operations</text>
+        <line x1="296" y1="158" x2="265" y2="125" stroke="#f59e0b" stroke-width="0.8"/>
+        <rect x="155" y="145" width="90" height="26" rx="6" fill="rgba(168,85,247,0.12)" stroke="#a855f7"/>
+        <text x="200" y="162" text-anchor="middle" font-family="Outfit" font-size="8" fill="#c4b5fd">Run Tests</text>
+        <line x1="200" y1="145" x2="200" y2="130" stroke="#a855f7" stroke-width="0.8"/>
+        <!-- Bottom comparison -->
+        <line x1="40" y1="195" x2="360" y2="195" stroke="#1e293b"/>
+        <rect x="40" y="208" width="140" height="30" rx="6" fill="rgba(148,163,184,0.08)" stroke="#475569"/>
+        <text x="110" y="220" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">Autocomplete</text>
+        <text x="110" y="232" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">predicts next characters</text>
+        <text x="200" y="220" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569">vs</text>
+        <rect x="220" y="208" width="140" height="30" rx="6" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="290" y="220" text-anchor="middle" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">Claude Code</text>
+        <text x="290" y="232" text-anchor="middle" font-family="Outfit" font-size="7" fill="#93c5fd">reasons about your project</text>
       </svg>
       <div class="media-note">
-        MEDIA TEAM: Three-column layout. Same task in each SDK. Highlight lines of code needed (Claude = fewest due to built-in tools). Use the course blue palette for Claude column, neutral for others.
+        MEDIA TEAM: Animate capabilities appearing one by one around the central Claude Code box. Each lights up as the voiceover names it. End with the autocomplete vs Claude Code comparison fading in at the bottom.
       </div>
     </div>
   </div>
@@ -469,49 +458,57 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART B</span>
-      <span class="segment-title">Skills and Subagents</span>
+      <span class="segment-title">How It Works</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Diagrams</span>
-        <span class="badge badge-duration">~3 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Second, Skills versus Tools. Tools are atomic actions. Skills are higher-level capabilities. Reusable instruction sets that the agent can invoke. Think of tools as functions and skills as libraries.</p>
-      <p>Third, subagents. You can create specialized agents that work under a main orchestrator. Each subagent has its own tools and instructions. The orchestrator delegates tasks and collects results.</p>
+      <p>When you start a Claude Code session, the first thing it does is build context. It looks at your project structure, your open files, your recent git history, and any errors in your terminal. It does not just see the file you are working on. It sees the whole project.</p>
+      <p>That context is the key insight. A traditional coding assistant sees one file at a time. Claude Code sees how your files connect. It knows that changing a function signature in one file means updating every caller in three other files. It knows that your test suite expects a specific return type. It reasons about the system, not just the syntax.</p>
+      <p>Then it acts. It proposes changes, explains why, and waits for your approval. If you accept, it makes the edits, runs the tests, and iterates if something breaks. The loop is tight: propose, approve, execute, verify.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Orchestrator + Subagents</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Skills · Tools · Subagents — Layered Capability</text>
-        <rect x="160" y="38" width="80" height="36" rx="8" fill="rgba(168,85,247,0.18)" stroke="#a855f7" stroke-width="2"/>
-        <text x="200" y="56" text-anchor="middle" font-family="Outfit" font-size="9" fill="#a855f7" font-weight="700">ORCHESTRATOR</text>
-        <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">main agent</text>
-        <line x1="180" y1="74" x2="80" y2="110" stroke="#a855f7" stroke-dasharray="3,2" marker-end="url(#m12saArrow)"/>
-        <line x1="200" y1="74" x2="200" y2="110" stroke="#a855f7" stroke-dasharray="3,2" marker-end="url(#m12saArrow)"/>
-        <line x1="220" y1="74" x2="320" y2="110" stroke="#a855f7" stroke-dasharray="3,2" marker-end="url(#m12saArrow)"/>
-        <rect x="14" y="116" width="120" height="80" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="74" y="134" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">Research</text>
-        <text x="74" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">subagent</text>
-        <text x="74" y "164" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#bfdbfe">▪ WebSearch</text>
-        <text x="74" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#bfdbfe">▪ Read</text>
-        <text x="74" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#bfdbfe">▪ extract_facts</text>
-        <rect x="140" y="116" width="120" height="80" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="200" y="134" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">Analysis</text>
-        <text x="200" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">subagent</text>
-        <text x="200" y="164" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#a7f3d0">▪ Bash (run script)</text>
-        <text x="200" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#a7f3d0">▪ statistical_test</text>
-        <text x="200" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#a7f3d0">▪ summarize</text>
-        <rect x="266" y="116" width="120" height="80" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="326" y="134" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">Writing</text>
-        <text x="326" y="148" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">subagent</text>
-        <text x="326" y="164" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#fde68a">▪ Write (file)</text>
-        <text x="326" y="174" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#fde68a">▪ format_md</text>
-        <text x="326" y="184" text-anchor="middle" font-family="JetBrains Mono" font-size="6" fill="#fde68a">▪ proofread skill</text>
-        <text x="200" y="220" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Each subagent has its own tools · the orchestrator just delegates.</text>
-        <defs>
-          <marker id="m12saArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#a855f7"/></marker>
-        </defs>
+      <span class="media-label">Storyboard -- Context Building</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Claude Code Sees Your Whole Project</text>
+        <!-- Traditional assistant -->
+        <rect x="14" y="40" width="175" height="160" rx="10" fill="rgba(148,163,184,0.06)" stroke="#475569" stroke-width="1.2"/>
+        <text x="101" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-weight="600" letter-spacing="0.06em">TRADITIONAL ASSISTANT</text>
+        <rect x="30" y="70" width="140" height="40" rx="6" fill="rgba(148,163,184,0.12)" stroke="#475569"/>
+        <text x="100" y="87" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">current_file.py</text>
+        <text x="100" y="100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">only this file</text>
+        <rect x="30" y="120" width="65" height="22" rx="4" fill="rgba(148,163,184,0.06)" stroke="#334155" stroke-dasharray="3"/>
+        <text x="62" y="134" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">utils.py</text>
+        <rect x="105" y="120" width="65" height="22" rx="4" fill="rgba(148,163,184,0.06)" stroke="#334155" stroke-dasharray="3"/>
+        <text x="137" y="134" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">tests.py</text>
+        <rect x="30" y="150" width="65" height="22" rx="4" fill="rgba(148,163,184,0.06)" stroke="#334155" stroke-dasharray="3"/>
+        <text x="62" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#475569">config.py</text>
+        <text x="101" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b" font-style="italic">blind to connections</text>
+        <!-- Claude Code -->
+        <rect x="210" y="40" width="175" height="160" rx="10" fill="rgba(37,99,235,0.06)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="297" y="58" text-anchor="middle" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.06em">CLAUDE CODE</text>
+        <rect x="226" y="70" width="140" height="40" rx="6" fill="rgba(37,99,235,0.15)" stroke="#2563EB"/>
+        <text x="296" y="87" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#93c5fd">current_file.py</text>
+        <text x="296" y="100" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa">+ all project context</text>
+        <rect x="226" y="120" width="65" height="22" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="258" y="134" text-anchor="middle" font-family="Outfit" font-size="7" fill="#93c5fd">utils.py</text>
+        <rect x="301" y="120" width="65" height="22" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="333" y="134" text-anchor="middle" font-family="Outfit" font-size="7" fill="#93c5fd">tests.py</text>
+        <rect x="226" y="150" width="65" height="22" rx="4" fill="rgba(37,99,235,0.12)" stroke="#2563EB"/>
+        <text x="258" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#93c5fd">config.py</text>
+        <rect x="301" y="150" width="65" height="22" rx="4" fill="rgba(16,185,129,0.12)" stroke="#10b981"/>
+        <text x="333" y="164" text-anchor="middle" font-family="Outfit" font-size="7" fill="#34d399">git log</text>
+        <line x1="258" y1="110" x2="258" y2="120" stroke="#2563EB" stroke-width="0.6"/>
+        <line x1="333" y1="110" x2="333" y2="120" stroke="#2563EB" stroke-width="0.6"/>
+        <line x1="258" y1="142" x2="258" y2="150" stroke="#2563EB" stroke-width="0.6"/>
+        <line x1="333" y1="142" x2="333" y2="150" stroke="#2563EB" stroke-width="0.6"/>
+        <text x="297" y="190" text-anchor="middle" font-family="Outfit" font-size="7" fill="#60a5fa" font-style="italic">sees how everything connects</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Side-by-side comparison. Left side is muted and dim. Right side is bright with connection lines animating between files. The contrast should feel like going from a flashlight to floodlights.
+      </div>
     </div>
   </div>
 
@@ -519,37 +516,64 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART C</span>
-      <span class="segment-title">Mental Model</span>
+      <span class="segment-title">The Permission Model</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Screen</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-type">Voiceover + Animation</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>The mental model is simple. You define what the agent should do (instructions), what it can do (tools), and how it should work with others (subagents). The SDK handles the rest.</p>
+      <p>Claude Code can do a lot. It can edit your files, run commands, push to git. That is powerful, and power needs guardrails.</p>
+      <p>Every time Claude Code wants to take an action, it asks permission. It shows you exactly what it plans to do: the file it wants to edit, the command it wants to run, the commit message it wants to use. You approve or reject each action individually. Nothing happens without your explicit consent.</p>
+      <p>You can also configure trust levels. Allow all file reads but require approval for file writes. Allow test execution but block pushes to remote repositories. The default is conservative: ask before everything. You relax the controls as you build confidence.</p>
+      <p>This is the right design. An AI tool that modifies your code without asking is not a partner. It is a liability. Claude Code treats your codebase with the same respect a good colleague would. It proposes. You decide.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Claude Code in Action</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Agent-Driven Development · Live Terminal</text>
-        <rect x="14" y="32" width="372" height="200" rx="6" fill="#0a1428" stroke="#1e293b"/>
-        <rect x="14" y="32" width="372" height="18" rx="6" fill="#1e293b"/>
-        <text x="22" y="44" font-family="JetBrains Mono" font-size="7" fill="#64748b">Claude Code · ~/dads5250</text>
-        <text x="22" y="64" font-family="JetBrains Mono" font-size="8" fill="#34d399">›</text>
-        <text x="32" y="64" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">add a function that loads a CSV and plots a histogram</text>
-        <text x="22" y="80" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">⏺ Read(data/sales.csv)</text>
-        <text x="22" y "94" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">⏺ Write(plot_hist.py)</text>
-        <text x="22" y "108" font-family="JetBrains Mono" font-size="7" fill="#475569">  + import pandas as pd</text>
-        <text x="22" y "118" font-family="JetBrains Mono" font-size="7" fill="#475569">  + import matplotlib.pyplot as plt</text>
-        <text x="22" y "128" font-family="JetBrains Mono" font-size="7" fill="#475569">  + def plot_histogram(csv_path):</text>
-        <text x="22" y "138" font-family="JetBrains Mono" font-size="7" fill="#475569">  +     df = pd.read_csv(csv_path)</text>
-        <text x="22" y "148" font-family="JetBrains Mono" font-size="7" fill="#475569">  +     df['amount'].hist(bins=20)</text>
-        <text x="22" y "158" font-family="JetBrains Mono" font-size="7" fill="#475569">  +     plt.savefig('hist.png')</text>
-        <text x="22" y "172" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">⏺ Bash(python plot_hist.py data/sales.csv)</text>
-        <text x="22" y "186" font-family="JetBrains Mono" font-size="8" fill="#34d399">  ✓ saved hist.png</text>
-        <text x="22" y "204" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">Done. The function reads the CSV and saves a histogram</text>
-        <text x="22" y "216" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">of the 'amount' column to hist.png.</text>
+      <span class="media-label">Storyboard -- Permission Flow</span>
+      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Nothing Happens Without Your Approval</text>
+        <!-- Flow: Propose > Review > Approve/Reject > Execute -->
+        <rect x="20" y="50" width="80" height="36" rx="8" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="60" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">Propose</text>
+        <text x="60" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">shows plan</text>
+        <line x1="100" y1="68" x2="120" y2="68" stroke="#2563EB" stroke-width="1" marker-end="url(#m11arrow)"/>
+        <rect x="120" y="50" width="80" height="36" rx="8" fill="rgba(245,158,11,0.08)" stroke="#f59e0b" stroke-width="1.2"/>
+        <text x="160" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#b45309" font-weight="600">Review</text>
+        <text x="160" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">you inspect</text>
+        <line x1="200" y1="68" x2="220" y2="68" stroke="#f59e0b" stroke-width="1" marker-end="url(#m11arrow2)"/>
+        <rect x="220" y="50" width="80" height="36" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="260" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#059669" font-weight="600">Approve</text>
+        <text x="260" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">you decide</text>
+        <line x1="300" y1="68" x2="320" y2="68" stroke="#10b981" stroke-width="1" marker-end="url(#m11arrow3)"/>
+        <rect x="320" y="50" width="66" height="36" rx="8" fill="rgba(37,99,235,0.12)" stroke="#2563EB" stroke-width="1.5"/>
+        <text x="353" y="64" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">Execute</text>
+        <text x="353" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#64748b">acts</text>
+        <!-- Trust levels -->
+        <text x="200" y="114" text-anchor="middle" font-family="Outfit" font-size="9" fill="#1e293b" font-weight="600">Configurable Trust Levels</text>
+        <rect x="20" y="126" width="116" height="76" rx="8" fill="rgba(16,185,129,0.04)" stroke="#10b981" stroke-width="1"/>
+        <text x="78" y="144" text-anchor="middle" font-family="Outfit" font-size="8" fill="#059669" font-weight="600">Auto-Allow</text>
+        <text x="78" y="160" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">File reads</text>
+        <text x="78" y="174" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Directory listing</text>
+        <text x="78" y="188" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Search/grep</text>
+        <rect x="142" y="126" width="116" height="76" rx="8" fill="rgba(245,158,11,0.04)" stroke="#f59e0b" stroke-width="1"/>
+        <text x="200" y="144" text-anchor="middle" font-family="Outfit" font-size="8" fill="#b45309" font-weight="600">Ask First</text>
+        <text x="200" y="160" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">File writes</text>
+        <text x="200" y="174" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Shell commands</text>
+        <text x="200" y="188" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Package installs</text>
+        <rect x="264" y="126" width="116" height="76" rx="8" fill="rgba(239,68,68,0.04)" stroke="#ef4444" stroke-width="1"/>
+        <text x="322" y="144" text-anchor="middle" font-family="Outfit" font-size="8" fill="#dc2626" font-weight="600">Always Block</text>
+        <text x="322" y="160" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Force push</text>
+        <text x="322" y="174" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Delete branches</text>
+        <text x="322" y="188" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Deploy to prod</text>
+        <defs>
+          <marker id="m11arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#2563EB"/></marker>
+          <marker id="m11arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#f59e0b"/></marker>
+          <marker id="m11arrow3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#10b981"/></marker>
+        </defs>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Two-phase animation. Phase 1: the Propose-Review-Approve-Execute flow animates left to right. Phase 2: the three trust-level cards fade in simultaneously. Light background for readability.
+      </div>
     </div>
   </div>
 
@@ -557,60 +581,62 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 3: Google ADK                                              -->
+<!-- VIDEO 3: Working with Claude Code                                -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-3">
 
   <div class="video-header">
-    <h2>Video 3: Google ADK</h2>
-    <div class="video-meta">Voiceover + code walkthrough -- 5-6 minutes -- 3 segments</div>
+    <h2>Video 3: "Working with Claude Code"</h2>
+    <div class="video-meta">Voiceover + screen recording -- ~5 minutes -- 3 parts</div>
   </div>
 
   <!-- PART A -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART A</span>
-      <span class="segment-title">Code-First Approach</span>
+      <span class="segment-title">Starting a Session</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Code</span>
+        <span class="badge badge-type">Voiceover + Screen Recording</span>
         <span class="badge badge-duration">~2 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Google's Agent Development Kit takes a code-first approach. If you are a developer who thinks in functions and classes, ADK will feel natural.</p>
-      <p>The core concept is the Agent class. You define an agent with a name, model, instructions, and tools. Tools are Python functions decorated with metadata. The agent calls them as needed.</p>
+      <p>You open your terminal, navigate to your project directory, and type <code>claude</code>. That is it. Claude Code starts, scans your project, and waits for instructions.</p>
+      <p>The quality of your first message determines the quality of the entire session. A vague request like "fix my code" gives Claude Code nothing to work with. A specific request like "the login endpoint returns a 500 error when the email field is empty, find the bug and add input validation" gives it everything it needs.</p>
+      <p>This is prompting, applied to software engineering. The same skills you learned earlier in this course apply here. Be specific. Provide context. State what you want, not how to get there. Claude Code will figure out the how.</p>
+      <p>One more thing. If your project has a README or documentation, Claude Code reads it. If it has test files, Claude Code understands your testing patterns. The more structure your project has, the better Claude Code performs. Good engineering practices make AI tools more effective. That is not a coincidence.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Google ADK · The Agent Class</span>
-      <svg viewBox="0 0 400 220" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="20" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">ADK · Pythonic Agent Definition</text>
-        <rect x="14" y="32" width="372" height="180" rx="6" fill="#0a1428" stroke="#1e293b"/>
-        <text x="22" y="50" font-family="JetBrains Mono" font-size="8" fill="#c084fc">from</text>
-        <text x="44" y="50" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">google.adk.agents</text>
-        <text x="124" y="50" font-family="JetBrains Mono" font-size="8" fill="#c084fc">import</text>
-        <text x="156" y="50" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">Agent</text>
-        <text x="22" y="70" font-family="JetBrains Mono" font-size="8" fill="#c084fc">def</text>
-        <text x="42" y="70" font-family="JetBrains Mono" font-size="8" fill="#60a5fa">get_weather</text>
-        <text x="106" y="70" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">(city: </text>
-        <text x="138" y="70" font-family="JetBrains Mono" font-size="8" fill="#fbbf24">str</text>
-        <text x="150" y="70" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">) -&gt; </text>
-        <text x="178" y="70" font-family="JetBrains Mono" font-size="8" fill="#fbbf24">str</text>
-        <text x="188" y="70" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">:</text>
-        <text x="32" y="84" font-family="JetBrains Mono" font-size="8" fill="#34d399">"""Get weather for a city."""</text>
-        <text x="32" y="98" font-family="JetBrains Mono" font-size="8" fill="#94a3b8">return weather_api.fetch(city)</text>
-        <text x="22" y="124" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">root_agent = Agent(</text>
-        <text x="32" y="138" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">name=</text>
-        <text x="64" y="138" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"weather_assistant"</text>
-        <text x="156" y="138" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
-        <text x="32" y="152" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">model=</text>
-        <text x="68" y="152" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"gemini-2.5-flash"</text>
-        <text x="156" y="152" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
-        <text x="32" y="166" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">instruction=</text>
-        <text x="98" y="166" font-family="JetBrains Mono" font-size="8" fill="#fb923c">"Help users with weather questions."</text>
-        <text x="316" y="166" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">,</text>
-        <text x="32" y="180" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">tools=[get_weather],</text>
-        <text x="22" y="194" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">)</text>
+      <span class="media-label">Storyboard -- Starting a Session</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Good Instructions = Good Results</text>
+        <!-- Bad prompt -->
+        <rect x="14" y="40" width="372" height="40" rx="8" fill="rgba(239,68,68,0.08)" stroke="#ef4444" stroke-width="1"/>
+        <text x="26" y="55" font-family="Outfit" font-size="8" fill="#fca5a5" font-weight="600">BAD</text>
+        <text x="26" y="72" font-family="JetBrains Mono" font-size="9" fill="#94a3b8">&gt; fix my code</text>
+        <!-- Good prompt -->
+        <rect x="14" y="90" width="372" height="56" rx="8" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1"/>
+        <text x="26" y="106" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600">GOOD</text>
+        <text x="26" y="122" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">&gt; the login endpoint returns a 500 error</text>
+        <text x="26" y="136" font-family="JetBrains Mono" font-size="8" fill="#e2e8f0">  when email is empty. add input validation.</text>
+        <!-- What Claude Code reads -->
+        <text x="200" y="170" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-weight="600" letter-spacing="0.06em">CLAUDE CODE AUTOMATICALLY READS</text>
+        <rect x="14" y="182" width="86" height="42" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB"/>
+        <text x="57" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#93c5fd">README.md</text>
+        <text x="57" y="214" text-anchor="middle" font-family="Outfit" font-size="6.5" fill="#64748b">project docs</text>
+        <rect x="108" y="182" width="86" height="42" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB"/>
+        <text x="151" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#93c5fd">CLAUDE.md</text>
+        <text x="151" y="214" text-anchor="middle" font-family="Outfit" font-size="6.5" fill="#64748b">AI instructions</text>
+        <rect x="202" y="182" width="86" height="42" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB"/>
+        <text x="245" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#93c5fd">tests/</text>
+        <text x="245" y="214" text-anchor="middle" font-family="Outfit" font-size="6.5" fill="#64748b">test patterns</text>
+        <rect x="296" y="182" width="86" height="42" rx="6" fill="rgba(37,99,235,0.1)" stroke="#2563EB"/>
+        <text x="339" y="200" text-anchor="middle" font-family="JetBrains Mono" font-size="7.5" fill="#93c5fd">git log</text>
+        <text x="339" y="214" text-anchor="middle" font-family="Outfit" font-size="6.5" fill="#64748b">recent changes</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Option A: live screen recording of opening a terminal, typing "claude", and watching it initialize. Option B: animate the SVG storyboard. Show the bad prompt with a red X, then the good prompt with a green checkmark. Then the four context cards fade in one by one.
+      </div>
     </div>
   </div>
 
@@ -618,50 +644,43 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART B</span>
-      <span class="segment-title">Multi-Agent Orchestration</span>
+      <span class="segment-title">Common Workflows</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Diagrams</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-type">Voiceover + Screen Recording</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>What makes ADK interesting is multi-agent orchestration. You can define multiple agents that collaborate on complex tasks. A research agent gathers information. An analysis agent processes it. A writing agent produces the final output.</p>
+      <p>Four workflows cover ninety percent of what you will use Claude Code for.</p>
+      <p><strong>Debugging.</strong> Paste the error, point to the file, and say "this test is failing, help me understand why." Claude Code reads the test, reads the source, traces the logic, and explains the bug. Often it fixes it in the same step.</p>
+      <p><strong>Building features.</strong> Describe the feature in plain English. "Add a login page with email and password fields, validate inputs, hash the password, store the user in the database." Claude Code creates the files, writes the routes, adds the templates, and wires everything together.</p>
+      <p><strong>Refactoring.</strong> "This function is 200 lines long. Break it into smaller functions with clear names." Claude Code reads the function, identifies logical boundaries, extracts helper functions, updates all callers, and runs the tests to make sure nothing broke.</p>
+      <p><strong>Code review.</strong> "Review this pull request for bugs, security issues, and style problems." Claude Code reads every changed file, compares against the base branch, and gives you a structured review with line-specific comments.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- ADK Multi-Agent Flow</span>
+      <span class="media-label">Storyboard -- Four Core Workflows</span>
       <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Three Agents · Sequential Pipeline</text>
-        <rect x="14" y="44" width="116" height="120" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="72" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#2563EB" font-weight="600">RESEARCH</text>
-        <text x="72" y "78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model: gemini-pro</text>
-        <line x1="22" y1="86" x2="122" y2="86" stroke="#dbeafe"/>
-        <text x="22" y="102" font-family="Outfit" font-size="7" fill="#1e293b">tools:</text>
-        <text x="32" y="116" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ web_search</text>
-        <text x="32" y="128" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ fetch_url</text>
-        <text x="72" y "152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">→ findings.md</text>
-        <line x1="132" y1="104" x2="146" y2="104" stroke="#94a3b8" marker-end="url(#m12adArrow)"/>
-        <rect x="148" y="44" width="116" height="120" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="206" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#10b981" font-weight="600">ANALYSIS</text>
-        <text x="206" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model: gemini-pro</text>
-        <line x1="156" y1="86" x2="256" y2="86" stroke="#dcfce7"/>
-        <text x="156" y="102" font-family="Outfit" font-size="7" fill="#1e293b">tools:</text>
-        <text x="166" y="116" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ run_python</text>
-        <text x="166" y="128" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ stat_test</text>
-        <text x="206" y "152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">→ insights.json</text>
-        <line x1="266" y1="104" x2="280" y2="104" stroke="#94a3b8" marker-end="url(#m12adArrow)"/>
-        <rect x="282" y="44" width="104" height="120" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="334" y="62" text-anchor="middle" font-family="Outfit" font-size="9" fill="#f59e0b" font-weight="600">WRITING</text>
-        <text x="334" y="78" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">model: gemini-pro</text>
-        <line x1="290" y1="86" x2="378" y2="86" stroke="#fef3c7"/>
-        <text x="290" y="102" font-family="Outfit" font-size="7" fill="#1e293b">tools:</text>
-        <text x="300" y="116" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ format_md</text>
-        <text x="300" y="128" font-family="JetBrains Mono" font-size="7" fill="#475569">▪ save_doc</text>
-        <text x="334" y "152" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8" font-style="italic">→ report.md</text>
-        <text x="200" y "188" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8" font-style="italic">Each agent picks up the previous one's output as input.</text>
-        <defs>
-          <marker id="m12adArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
-        </defs>
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Four Workflows -- 90% of Your Usage</text>
+        <rect x="14" y="38" width="180" height="68" rx="10" fill="rgba(239,68,68,0.05)" stroke="#ef4444" stroke-width="1"/>
+        <text x="104" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#dc2626" font-weight="700">Debugging</text>
+        <text x="104" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">"this test is failing"</text>
+        <text x="104" y="90" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">reads test + source + fixes</text>
+        <rect x="206" y="38" width="180" height="68" rx="10" fill="rgba(37,99,235,0.05)" stroke="#2563EB" stroke-width="1"/>
+        <text x="296" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#2563EB" font-weight="700">Building Features</text>
+        <text x="296" y="74" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">"add a login page"</text>
+        <text x="296" y="90" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">creates files + routes + tests</text>
+        <rect x="14" y="118" width="180" height="68" rx="10" fill="rgba(16,185,129,0.05)" stroke="#10b981" stroke-width="1"/>
+        <text x="104" y="138" text-anchor="middle" font-family="Outfit" font-size="10" fill="#059669" font-weight="700">Refactoring</text>
+        <text x="104" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">"simplify this function"</text>
+        <text x="104" y="170" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">extracts + renames + retests</text>
+        <rect x="206" y="118" width="180" height="68" rx="10" fill="rgba(168,85,247,0.05)" stroke="#a855f7" stroke-width="1"/>
+        <text x="296" y="138" text-anchor="middle" font-family="Outfit" font-size="10" fill="#7c3aed" font-weight="700">Code Review</text>
+        <text x="296" y="154" text-anchor="middle" font-family="Outfit" font-size="8" fill="#64748b">"review this PR"</text>
+        <text x="296" y="170" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">reads diff + structured feedback</text>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Four cards, each highlighting as the voiceover covers that workflow. Alternatively, show a brief screen recording snippet for each (2-3 seconds per workflow).
+      </div>
     </div>
   </div>
 
@@ -669,41 +688,49 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART C</span>
-      <span class="segment-title">Deployment Flexibility</span>
+      <span class="segment-title">Advanced Patterns</span>
       <div class="segment-badges">
-        <span class="badge badge-type">Voiceover + Screen</span>
-        <span class="badge badge-duration">~2 min</span>
+        <span class="badge badge-type">Voiceover + Screen Recording</span>
+        <span class="badge badge-duration">~1.5 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Deployment is flexible. Run locally, deploy to Cloud Run, or use Vertex AI. Same code, different environments.</p>
+      <p>Three features take Claude Code from useful to indispensable.</p>
+      <p><strong>CLAUDE.md files.</strong> You create a file called CLAUDE.md in your project root. It contains instructions for Claude Code: your coding conventions, your preferred libraries, things it should never do. Claude Code reads this file at the start of every session. Think of it as onboarding documentation for your AI partner.</p>
+      <p><strong>Memory.</strong> Claude Code remembers context across sessions. It stores project-specific notes, your preferences, and patterns it has learned about your codebase. You do not have to re-explain your project every time you start a new session. The memory builds over time, and the tool gets better the more you use it.</p>
+      <p><strong>Hooks and custom commands.</strong> You can define hooks that run automatically before or after certain actions. Format code before every commit. Run linting after every file edit. You can also create custom slash commands that bundle complex workflows into a single trigger. This is where Claude Code becomes a true extension of your engineering practice, not just a tool you use occasionally.</p>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Deploy Anywhere</span>
-      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Same Code · Three Environments</text>
-        <rect x="160" y="38" width="80" height="36" rx="6" fill="#0f172a" stroke="#1e293b"/>
-        <text x="200" y "56" text-anchor="middle" font-family="JetBrains Mono" font-size="8" fill="#bfdbfe">my_agent.py</text>
-        <text x="200" y "68" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">your code</text>
-        <line x1="180" y1="74" x2="80" y2="120" stroke="#475569" stroke-dasharray="3,2" marker-end="url(#m12dpArrow)"/>
-        <line x1="200" y1="74" x2="200" y2="120" stroke="#475569" stroke-dasharray="3,2" marker-end="url(#m12dpArrow)"/>
-        <line x1="220" y1="74" x2="320" y2="120" stroke="#475569" stroke-dasharray="3,2" marker-end="url(#m12dpArrow)"/>
-        <rect x="14" y "126" width="120" height="60" rx="8" fill="rgba(37,99,235,0.06)" stroke="#2563EB"/>
-        <text x="74" y "146" text-anchor="middle" font-family="Outfit" font-size="11" fill="#2563EB" font-weight="700">Local</text>
-        <text x="74" y "162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">your laptop</text>
-        <text x="74" y "176" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">prototype, debug</text>
-        <rect x="140" y "126" width="120" height="60" rx="8" fill="rgba(16,185,129,0.06)" stroke="#10b981"/>
-        <text x="200" y "146" text-anchor="middle" font-family="Outfit" font-size="11" fill="#10b981" font-weight="700">Cloud Run</text>
-        <text x="200" y "162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">serverless container</text>
-        <text x="200" y "176" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">scale to demand</text>
-        <rect x="266" y "126" width="120" height="60" rx="8" fill="rgba(245,158,11,0.06)" stroke="#f59e0b"/>
-        <text x="326" y "146" text-anchor="middle" font-family="Outfit" font-size="11" fill="#f59e0b" font-weight="700">Vertex AI</text>
-        <text x="326" y "162" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">managed agents</text>
-        <text x="326" y "176" text-anchor="middle" font-family="Outfit" font-size="7" fill="#94a3b8">enterprise scale</text>
+      <span class="media-label">Storyboard -- Advanced Features</span>
+      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Three Features That Change Everything</text>
+        <!-- CLAUDE.md -->
+        <rect x="14" y="40" width="372" height="52" rx="10" fill="rgba(37,99,235,0.08)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="30" y="58" font-family="JetBrains Mono" font-size="10" fill="#60a5fa" font-weight="600">CLAUDE.md</text>
+        <text x="130" y="58" font-family="Outfit" font-size="9" fill="#94a3b8">Project instructions for Claude Code</text>
+        <text x="30" y="78" font-family="JetBrains Mono" font-size="7.5" fill="#64748b"># Use TypeScript strict mode. Never use any.</text>
+        <text x="30" y="88" font-family="JetBrains Mono" font-size="7.5" fill="#64748b"># Always write tests before implementation.</text>
+        <!-- Memory -->
+        <rect x="14" y="102" width="372" height="52" rx="10" fill="rgba(16,185,129,0.08)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="30" y="120" font-family="JetBrains Mono" font-size="10" fill="#34d399" font-weight="600">Memory</text>
+        <text x="98" y="120" font-family="Outfit" font-size="9" fill="#94a3b8">Persists across sessions</text>
+        <text x="30" y="140" font-family="Outfit" font-size="8" fill="#64748b">Session 1: learns your patterns</text>
+        <text x="220" y="140" font-family="Outfit" font-size="8" fill="#64748b">Session 5: anticipates your needs</text>
+        <line x1="196" y1="134" x2="216" y2="134" stroke="#34d399" stroke-width="0.8" marker-end="url(#m11memArrow)"/>
+        <!-- Hooks -->
+        <rect x="14" y="164" width="372" height="60" rx="10" fill="rgba(168,85,247,0.08)" stroke="#a855f7" stroke-width="1.2"/>
+        <text x="30" y="182" font-family="JetBrains Mono" font-size="10" fill="#c4b5fd" font-weight="600">Hooks + Commands</text>
+        <text x="188" y="182" font-family="Outfit" font-size="9" fill="#94a3b8">Automate your workflow</text>
+        <text x="30" y="200" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">pre-commit: format + lint</text>
+        <text x="210" y="200" font-family="JetBrains Mono" font-size="7.5" fill="#64748b">/deploy: build + test + push</text>
+        <text x="30" y="216" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">Extends your engineering practice, not just assists it.</text>
         <defs>
-          <marker id="m12dpArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/></marker>
+          <marker id="m11memArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/></marker>
         </defs>
       </svg>
+      <div class="media-note">
+        MEDIA TEAM: Three horizontal cards stacked vertically. Each card expands as the voiceover covers it. Show a brief code snippet inside the CLAUDE.md card. The memory card should show a progress bar or timeline growing from session 1 to session 5.
+      </div>
     </div>
   </div>
 
@@ -711,123 +738,225 @@ body.teleprompter .scroll-controls { display: flex; }
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 4: Beer Game V2 -- Workshop                                -->
+<!-- VIDEO 4: TA -- Claude Code Lab                                   -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-4" data-script-export="false" data-ta-only="true">
 
   <div class="video-header">
-    <h2>Video 4: Beer Game V2 -- Workshop Introduction</h2>
-    <div class="video-meta">Prof on camera -- 3-4 minutes -- 2 segments</div>
+    <h2>Video 4: "Claude Code Lab Walkthrough" (TA) &mdash; <span style="color:#b45309;">Not Part of Script Export</span></h2>
+    <div class="video-meta">TA screen recording -- 8-12 minutes -- no script, walkthrough only</div>
+    <div style="background:#fff3cd;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:6px;margin-top:10px;font-size:0.95em;">
+      <strong>Note:</strong> This video has <em>no narration script</em>. The TA records a live screen walkthrough of Claude Code in action, talking naturally through each step. The items below are <strong>guidelines for the TA</strong> on how to record the video &mdash; they are <strong>not part of the script export</strong>.
+    </div>
   </div>
 
-  <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
-      <span class="segment-number">PART 01</span>
-      <span class="segment-title">From M04 to M11</span>
+      <span class="segment-number">TA</span>
+      <span class="segment-title">Claude Code Lab Walkthrough</span>
       <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~90 sec</span>
+        <span class="badge badge-ta">TA GUIDELINES</span>
+        <span class="badge badge-duration">8-12 min</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Remember the Beer Game from earlier in the course? You built a supply chain simulation with simple LLM-powered decision making. That was a great start. Now we are going to rebuild it with everything you have learned since then.</p>
-      <p>Beer Game V2 uses Claude Code and the Agent SDK. The agents are smarter. They have memory, they analyze trends, they coordinate. The visualization dashboard shows real-time supply chain dynamics. And the whole system is built using modern AI engineering practices.</p>
+      <div class="ta-guidelines">
+        <h4>GUIDELINES FOR TA</h4>
+        <p class="ta-intro">Open a terminal in a sample project directory and start a Claude Code session. Record a live screen walkthrough demonstrating key workflows. Talk naturally &mdash; no script. Friendly, patient, at a pace a first-time student can follow.</p>
+
+        <div class="ta-section">
+          <h5>1. Start a Session</h5>
+          <ul>
+            <li>Open terminal, navigate to the sample project</li>
+            <li>Type <code>claude</code> and show the initialization process</li>
+            <li>Point out how Claude Code scans the project structure</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>2. Demonstrate Debugging</h5>
+          <ul>
+            <li>Show a failing test or a known bug in the sample project</li>
+            <li>Ask Claude Code to find and fix the bug</li>
+            <li>Walk through the permission prompts and approve the fix</li>
+            <li>Run the test again to show it passes</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>3. Build a Small Feature</h5>
+          <ul>
+            <li>Ask Claude Code to add a simple feature (e.g., a new API endpoint)</li>
+            <li>Show how it creates files, writes code, and runs tests</li>
+            <li>Point out the permission model in action</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>4. Show CLAUDE.md</h5>
+          <ul>
+            <li>Open or create a CLAUDE.md file and explain what it does</li>
+            <li>Show how it changes Claude Code's behavior</li>
+          </ul>
+        </div>
+
+        <div class="ta-section">
+          <h5>5. Assignment Handoff</h5>
+          <ul>
+            <li>Point to the exercise for this module</li>
+            <li>Tell students what to submit and where</li>
+            <li>Sign off warmly: "Good luck, and have fun with it."</li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div class="media-col">
-      <span class="media-label">Storyboard -- Beer Game V1 → V2</span>
-      <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
-        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Same Game · Modern Engineering</text>
-        <text x="14" y "46" font-family="Outfit" font-size="8" fill="#94a3b8" letter-spacing="0.06em">M04 · BEER GAME V1</text>
-        <rect x="14" y "54" width="180" height="160" rx="6" fill="#0a1428" stroke="#1e293b"/>
-        <text x="22" y "70" font-family="JetBrains Mono" font-size="7" fill="#475569">Round 1</text>
-        <text x="22" y "82" font-family="JetBrains Mono" font-size="7" fill="#cbd5e1">Retailer order: 8</text>
-        <text x="22" y "94" font-family="JetBrains Mono" font-size="7" fill="#cbd5e1">Wholesaler: 12</text>
-        <text x="22" y "106" font-family="JetBrains Mono" font-size="7" fill="#cbd5e1">Distributor: 16</text>
-        <text x="22" y "118" font-family="JetBrains Mono" font-size="7" fill="#cbd5e1">Factory: 20</text>
-        <text x="22" y "138" font-family="JetBrains Mono" font-size="7" fill="#475569">Round 2</text>
-        <text x="22" y "150" font-family="JetBrains Mono" font-size="7" fill="#cbd5e1">...</text>
-        <text x="104" y "190" text-anchor="middle" font-family="Outfit" font-size="8" fill="#94a3b8">plain text · LangChain agents</text>
-        <text x="206" y "46" font-family="Outfit" font-size="8" fill="#60a5fa" letter-spacing="0.06em">M11 · BEER GAME V2</text>
-        <rect x="206" y "54" width="180" height="160" rx="6" fill="rgba(37,99,235,0.04)" stroke="#2563EB"/>
-        <rect x="214" y "62" width="164" height="14" rx="2" fill="#1e293b"/>
-        <text x="296" y "72" text-anchor="middle" font-family="Outfit" font-size="7" fill="#bfdbfe">Beer Game · Live Dashboard</text>
-        <!-- Mini chart -->
-        <rect x "214" y "82" width "78" height "44" rx="2" fill="rgba(255,255,255,0.04)"/>
-        <polyline points="220,118 232,116 244,114 256,108 268,100 280,92 290,86" stroke="#60a5fa" stroke-width="1.2" fill="none"/>
-        <text x="218" y "92" font-family="Outfit" font-size="6" fill="#475569">orders</text>
-        <!-- Inventory bars -->
-        <rect x "298" y "82" width "80" height "44" rx="2" fill="rgba(255,255,255,0.04)"/>
-        <rect x "302" y "108" width "8" height "16" fill="#34d399"/>
-        <rect x "314" y "100" width "8" height "24" fill="#34d399"/>
-        <rect x "326" y "94" width "8" height "30" fill="#fbbf24"/>
-        <rect x "338" y "88" width "8" height "36" fill="#fbbf24"/>
-        <rect x "350" y "84" width "8" height "40" fill="#ef4444"/>
-        <rect x "362" y "88" width "8" height "36" fill="#ef4444"/>
-        <text x "302" y "92" font-family="Outfit" font-size="6" fill="#475569">inventory</text>
-        <!-- AI explanation -->
-        <rect x "214" y "132" width "164" height "44" rx="2" fill="rgba(96,165,250,0.08)" stroke="rgba(96,165,250,0.5)"/>
-        <text x "218" y "144" font-family="Outfit" font-size="6" fill="#60a5fa" font-weight="600">AI EXPLANATION</text>
-        <text x "218" y "156" font-family="Outfit" font-size="6" fill="#bfdbfe">"Factory ordered 28 (above</text>
-        <text x "218" y "164" font-family="Outfit" font-size="6" fill="#bfdbfe">forecast 16) due to delayed</text>
-        <text x "218" y "172" font-family="Outfit" font-size="6" fill="#bfdbfe">Q2 demand signal..."</text>
-        <text x "296" y "190" text-anchor="middle" font-family="Outfit" font-size="8" fill="#bfdbfe">visual · memory · trend analysis</text>
-      </svg>
+      <span class="media-label">Recording Setup</span>
+      <p class="shot-note">TA screen recording at 1920x1080, 30fps. Terminal at comfortable font size (students should be able to read every line). TA voiceover recorded with a decent mic &mdash; clean, warm, conversational.</p>
       <div class="media-note">
-        MEDIA TEAM: Dramatic before/after. Left side: plain text terminal output from M04. Right side: rich dashboard with supply chain charts, inventory levels, order decisions with AI explanations. The contrast should be striking -- same game, completely different experience.
+        MEDIA TEAM: Walkthrough, not a scripted lecture. Record the screen, capture the audio, edit only for length. No B-roll, no overlays. Keep it raw and authentic &mdash; students trust walkthrough videos more than polished ones.
       </div>
     </div>
   </div>
 
-  <!-- PART 02 -->
-  <div class="segment">
-    <div class="segment-header">
-      <span class="segment-number">PART 02</span>
-      <span class="segment-title">Workshop Instructions</span>
-      <div class="segment-badges">
-        <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~60 sec</span>
-      </div>
-    </div>
-    <div class="script-col">
-      <p>This workshop will take about 25 minutes. Follow the steps. Experiment. Break things and fix them. That is how you learn.</p>
-    </div>
-    <div class="media-col">
-      <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Direct to camera. Encouraging, energetic. This is the hands-on part -- build excitement for the workshop.</p>
-    </div>
-  </div>
-
-</div><!-- end video-4 -->
+</div><!-- end video-4 (TA Claude Code Lab) -->
 
 
 <!-- ================================================================ -->
-<!-- VIDEO 5: Wrap-Up                                                 -->
+<!-- VIDEO 5: Building a Real Project                                 -->
 <!-- ================================================================ -->
 <div class="video-section" id="video-5">
 
   <div class="video-header">
-    <h2>Video 5: Wrap-Up</h2>
-    <div class="video-meta">Prof on camera -- 2-3 minutes -- 2 segments</div>
+    <h2>Video 5: "Building a Real Project"</h2>
+    <div class="video-meta">Prof on camera -- ~3 minutes -- 2 parts</div>
+  </div>
+
+  <!-- PART A -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART A</span>
+      <span class="segment-title">The Workflow, Step by Step</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~2 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Say you want to build a FastAPI backend with user authentication. From scratch. No boilerplate, no starter template. Just an empty directory and Claude Code.</p>
+      <p>Step one: you describe the project. "Build a FastAPI app with user registration, login, JWT authentication, and a protected endpoint that returns the current user's profile." That is your entire specification.</p>
+      <p>Claude Code starts by creating the project structure. A main application file, a models file for the database schema, a routes file for the endpoints, a config file for settings. It writes the code for each file, installs the dependencies, sets up the database migration.</p>
+      <p>Then it runs the tests. If something fails, it reads the error, fixes the code, and runs the tests again. You watch, approve the changes, and occasionally steer the direction. "Use bcrypt for password hashing." "Add rate limiting to the login endpoint." Each instruction refines the output.</p>
+      <p>Within fifteen minutes, you have a working application with authentication, tests, and clean code. Not perfect code. Not production-ready code. But a solid foundation that would have taken you hours to build from scratch.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Build Workflow</span>
+      <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg" style="background: #0f172a; border: 1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">Empty Directory to Working App in 15 Minutes</text>
+        <!-- Timeline -->
+        <line x1="40" y1="50" x2="40" y2="230" stroke="#1e293b" stroke-width="2"/>
+        <!-- Step 1 -->
+        <circle cx="40" cy="60" r="6" fill="#2563EB"/>
+        <text x="56" y="58" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">0 min</text>
+        <text x="56" y="72" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Describe the project in plain English</text>
+        <!-- Step 2 -->
+        <circle cx="40" cy="100" r="6" fill="#2563EB"/>
+        <text x="56" y="98" font-family="Outfit" font-size="8" fill="#60a5fa" font-weight="600">2 min</text>
+        <text x="56" y="112" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Claude Code creates project structure</text>
+        <text x="56" y="126" font-family="JetBrains Mono" font-size="7" fill="#64748b">main.py  models.py  routes.py  config.py</text>
+        <!-- Step 3 -->
+        <circle cx="40" cy="150" r="6" fill="#10b981"/>
+        <text x="56" y="148" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600">5 min</text>
+        <text x="56" y="162" font-family="Outfit" font-size="8.5" fill="#e2e8f0">Writes code, installs deps, runs tests</text>
+        <!-- Step 4 -->
+        <circle cx="40" cy="190" r="6" fill="#f59e0b"/>
+        <text x="56" y="188" font-family="Outfit" font-size="8" fill="#fbbf24" font-weight="600">10 min</text>
+        <text x="56" y="202" font-family="Outfit" font-size="8.5" fill="#e2e8f0">You refine: "use bcrypt", "add rate limiting"</text>
+        <!-- Step 5 -->
+        <circle cx="40" cy="230" r="6" fill="#10b981" stroke="#34d399" stroke-width="2"/>
+        <text x="56" y="228" font-family="Outfit" font-size="8" fill="#34d399" font-weight="600">15 min</text>
+        <text x="56" y="242" font-family="Outfit" font-size="8.5" fill="#e2e8f0" font-weight="500">Working app with auth, tests, clean code</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Animated timeline that builds from top to bottom as Prof narrates each step. Each node lights up and a brief code snippet or file tree appears beside it. The final node should glow green to signal completion.
+      </div>
+    </div>
+  </div>
+
+  <!-- PART B -->
+  <div class="segment">
+    <div class="segment-header">
+      <span class="segment-number">PART B</span>
+      <span class="segment-title">Know the Boundary</span>
+      <div class="segment-badges">
+        <span class="badge badge-type">On Camera</span>
+        <span class="badge badge-duration">~1 min</span>
+      </div>
+    </div>
+    <div class="script-col">
+      <p>Claude Code excels at boilerplate. CRUD endpoints, authentication flows, database schemas, configuration files. It writes these faster and more consistently than most developers. It excels at debugging because it can read error messages, trace the stack, and check multiple files simultaneously. And it excels at exploring unfamiliar codebases because it can scan thousands of files in seconds and build a map of how everything connects.</p>
+      <p>It struggles with novel algorithms. If you are inventing a new optimization technique or designing a custom data structure, Claude Code will give you something that looks plausible but may not be correct. It struggles with highly creative design decisions. Choosing the right architecture for a system, deciding which trade-offs to make, knowing when simplicity beats sophistication. Those are human judgments.</p>
+      <p>The engineers who get the most from Claude Code are the ones who use it for what it is good at and keep the hard thinking for themselves.</p>
+    </div>
+    <div class="media-col">
+      <span class="media-label">Storyboard -- Strengths and Limits</span>
+      <svg viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg" style="background: #f8fafc; border: 1px solid #e2e8f0;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#1e293b" font-weight="600">Know What It Does Well. Know What It Does Not.</text>
+        <rect x="14" y="38" width="180" height="148" rx="10" fill="rgba(16,185,129,0.04)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="104" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#059669" font-weight="700">Excels At</text>
+        <line x1="34" y1="66" x2="174" y2="66" stroke="#dcfce7"/>
+        <text x="104" y="86" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Boilerplate code</text>
+        <text x="104" y="104" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Debugging + error tracing</text>
+        <text x="104" y="122" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Exploring unfamiliar codebases</text>
+        <text x="104" y="140" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Refactoring + renaming</text>
+        <text x="104" y="158" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Tests + documentation</text>
+        <text x="104" y="176" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">fast, consistent, tireless</text>
+        <rect x="206" y="38" width="180" height="148" rx="10" fill="rgba(239,68,68,0.04)" stroke="#ef4444" stroke-width="1.2"/>
+        <text x="296" y="58" text-anchor="middle" font-family="Outfit" font-size="10" fill="#dc2626" font-weight="700">Struggles With</text>
+        <line x1="226" y1="66" x2="366" y2="66" stroke="#fee2e2"/>
+        <text x="296" y="86" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Novel algorithms</text>
+        <text x="296" y="104" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Creative design decisions</text>
+        <text x="296" y="122" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">System architecture choices</text>
+        <text x="296" y="140" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Domain-specific logic</text>
+        <text x="296" y="158" text-anchor="middle" font-family="Outfit" font-size="8.5" fill="#1e293b">Knowing when to stop</text>
+        <text x="296" y="176" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#94a3b8" font-style="italic">requires human judgment</text>
+      </svg>
+      <div class="media-note">
+        MEDIA TEAM: Two-column card. Left green, right red. Hold for 5 seconds at the end for the viewer to absorb both lists.
+      </div>
+    </div>
+  </div>
+
+</div><!-- end video-5 -->
+
+
+<!-- ================================================================ -->
+<!-- VIDEO 6: Wrap-Up                                                 -->
+<!-- ================================================================ -->
+<div class="video-section" id="video-6">
+
+  <div class="video-header">
+    <h2>Video 6: "Module 11 Wrap-Up"</h2>
+    <div class="video-meta">Prof on camera -- ~1 minute -- 2 parts</div>
   </div>
 
   <!-- PART 01 -->
   <div class="segment">
     <div class="segment-header">
       <span class="segment-number">PART 01</span>
-      <span class="segment-title">Engineering Session Complete</span>
+      <span class="segment-title">The Takeaway</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~60 sec</span>
+        <span class="badge badge-duration">~40 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>You just built three working projects using two different SDKs and Claude Code. That is not a lecture. That is an engineering session.</p>
-      <p>The tools will keep evolving. New SDKs will launch. But the skill you built today, the ability to pick up a new platform and build something real with it quickly, that is permanent.</p>
+      <p>Claude Code does not replace the engineer. It removes the friction. You still design the system. You still make the decisions. You still own the architecture, the trade-offs, and the consequences. But the distance between an idea and working code has never been shorter.</p>
+      <p>The best engineers will not be the ones who refuse to use AI tools. And they will not be the ones who delegate everything to AI tools. They will be the ones who know exactly where the boundary is and work both sides of it.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Shot Setup</span>
-      <p class="shot-note">Warm lighting, direct to camera. Proud of the students. Let "that is permanent" land with a pause.</p>
+      <p class="shot-note">Same studio setup as opening. Reflective, measured delivery. Pause after "has never been shorter" for emphasis. Let the final sentence land.</p>
     </div>
   </div>
 
@@ -838,11 +967,11 @@ body.teleprompter .scroll-controls { display: flex; }
       <span class="segment-title">Next Module Preview</span>
       <div class="segment-badges">
         <span class="badge badge-type">On Camera</span>
-        <span class="badge badge-duration">~30 sec</span>
+        <span class="badge badge-duration">~20 sec</span>
       </div>
     </div>
     <div class="script-col">
-      <p>Next module, we shift to business deployment. n8n, workflow automation, and applying everything you know to real business problems.</p>
+      <p>Next module, we go deeper into the infrastructure behind tools like Claude Code. Agent SDKs, orchestration layers, and the platform-level thinking that ties everything together. See you there.</p>
     </div>
     <div class="media-col">
       <span class="media-label">End Card</span>
@@ -851,40 +980,29 @@ body.teleprompter .scroll-controls { display: flex; }
         <text x="20" y="20" font-family="Outfit" font-size="9" fill="#60a5fa" font-weight="600" letter-spacing="0.14em">DADS 5250</text>
         <text x="380" y="20" text-anchor="end" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.1em">MODULE 11 / 14</text>
         <text x="200" y="68" text-anchor="middle" font-family="Outfit" font-size="18" fill="#ffffff" font-weight="600">Module 11 Complete</text>
-        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">SDKs · Claude Code · Beer Game V2</text>
+        <text x="200" y="86" text-anchor="middle" font-family="Outfit" font-size="10" fill="#94a3b8">Claude Code -- Your AI Engineering Partner</text>
         <line x1="120" y1="106" x2="280" y2="106" stroke="#1e293b" stroke-width="1"/>
-        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">NEXT WEEK</text>
-        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="14" fill="#60a5fa" font-weight="600">Module 12 — AI Platforms</text>
-        <text x="200" y="172" text-anchor="middle" font-family="Outfit" font-size="9" fill="#94a3b8">Claude · OpenAI · Google A2A · Platform comparison</text>
-        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani — Northeastern University</text>
+        <text x="200" y="132" text-anchor="middle" font-family="Outfit" font-size="9" fill="#475569" letter-spacing="0.12em">KEY TAKEAWAY</text>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="13" fill="#60a5fa" font-weight="600">It does not replace the engineer.</text>
+        <text x="200" y="176" text-anchor="middle" font-family="Outfit" font-size="13" fill="#60a5fa" font-weight="600">It removes the friction.</text>
+        <text x="200" y="202" text-anchor="middle" font-family="Outfit" font-size="8" fill="#475569">Prof. Mohammad Dehghani -- Northeastern University</text>
       </svg>
     </div>
   </div>
 
-</div><!-- end video-5 -->
+</div><!-- end video-6 -->
 
 
 <!-- References -->
 <div class="references-section">
-  <h3>References &amp; Fact-Check Sources</h3>
+  <h3>References &amp; Resources</h3>
   <table class="ref-table">
-    <thead><tr><th>Claim</th><th>Detail</th><th>Source</th></tr></thead>
+    <thead><tr><th>Resource</th><th>Link</th></tr></thead>
     <tbody>
-      <tr>
-        <td>Claude Agent SDK</td>
-        <td>Anthropic official agent toolkit; built-in tools (Read, Write, Bash, WebSearch)</td>
-        <td><a href="https://docs.anthropic.com/en/docs/agents-and-tools" target="_blank">docs.anthropic.com</a></td>
-      </tr>
-      <tr>
-        <td>Google ADK</td>
-        <td>Agent Development Kit; multi-agent, code-first, deploy to Cloud Run/Vertex AI</td>
-        <td><a href="https://google.github.io/adk-docs/" target="_blank">google.github.io/adk-docs</a></td>
-      </tr>
-      <tr>
-        <td>Beer Game (supply chain)</td>
-        <td>Classic MIT Sloan simulation game; bullwhip effect demonstration</td>
-        <td><a href="https://mitsloan.mit.edu/LearningEdge/simulations/beergame/Pages/the-beer-game.aspx" target="_blank">MIT Sloan</a></td>
-      </tr>
+      <tr><td>Claude Code Documentation</td><td><a href="https://docs.anthropic.com/en/docs/claude-code" target="_blank">docs.anthropic.com/en/docs/claude-code</a></td></tr>
+      <tr><td>Claude Code CLI Reference</td><td><a href="https://docs.anthropic.com/en/docs/claude-code/cli-reference" target="_blank">docs.anthropic.com/.../cli-reference</a></td></tr>
+      <tr><td>CLAUDE.md Best Practices</td><td><a href="https://docs.anthropic.com/en/docs/claude-code/memory" target="_blank">docs.anthropic.com/.../memory</a></td></tr>
+      <tr><td>Anthropic Blog: Claude Code</td><td><a href="https://www.anthropic.com/claude-code" target="_blank">anthropic.com/claude-code</a></td></tr>
     </tbody>
   </table>
 </div>
@@ -913,21 +1031,22 @@ function toggleTeleprompter() {
   const btn = document.getElementById('teleBtn');
   btn.classList.toggle('teleprompter-active', teleMode);
   btn.textContent = teleMode ? 'Exit Teleprompter' : 'Teleprompter';
-  if (!teleMode) stopAutoScroll();
+  if (!teleMode) { stopAutoScroll(); }
 }
 
-let scrollInterval = null, isScrolling = false;
-function toggleAutoScroll() { if (isScrolling) stopAutoScroll(); else startAutoScroll(); }
+let scrollInterval = null;
+let isScrolling = false;
+function toggleAutoScroll() { if (isScrolling) { stopAutoScroll(); } else { startAutoScroll(); } }
 function startAutoScroll() { isScrolling = true; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Stop'; btn.classList.add('active'); scrollInterval = setInterval(() => { window.scrollBy(0, parseFloat(document.getElementById('scrollSpeed').value)); }, 16); }
 function stopAutoScroll() { isScrolling = false; const btn = document.getElementById('scrollToggle'); btn.textContent = 'Start'; btn.classList.remove('active'); if (scrollInterval) { clearInterval(scrollInterval); scrollInterval = null; } }
 
 document.addEventListener('keydown', function(e) {
-  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') toggleTeleprompter();
+  if (e.key === 't' && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { toggleTeleprompter(); }
   if (e.key === ' ' && teleMode && e.target.tagName !== 'INPUT') { e.preventDefault(); toggleAutoScroll(); }
-  if (['1','2','3','4','5'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') switchVideo(parseInt(e.key));
+  if (['1','2','3','4','5','6'].includes(e.key) && !e.ctrlKey && !e.metaKey && e.target.tagName !== 'INPUT') { switchVideo(parseInt(e.key)); }
 });
 
-// ── Inline Segment Editing ──
+// Inline Segment Editing
 (function() {
   const PAGE_KEY = document.title.replace(/[^a-zA-Z0-9]/g, '_');
 
@@ -1009,7 +1128,7 @@ document.addEventListener('keydown', function(e) {
 })();
 
 
-// ── Review Status (approve / maybe / reject) ──
+// Review Status (approve / maybe / reject)
 (function() {
   const PAGE_KEY = document.title.replace(/[^a-zA-Z0-9]/g, '_');
   const STORE_KEY = 'dads_script_reviews';
@@ -1025,9 +1144,9 @@ document.addEventListener('keydown', function(e) {
   }
 
   const statuses = [
-    { key: 'approved', label: '✓', cls: 'rv-approve', tip: 'Approve' },
+    { key: 'approved', label: '\u2713', cls: 'rv-approve', tip: 'Approve' },
     { key: 'maybe',   label: '?',       cls: 'rv-maybe',  tip: 'Maybe' },
-    { key: 'rejected',label: '✗', cls: 'rv-reject', tip: 'Reject' }
+    { key: 'rejected',label: '\u2717', cls: 'rv-reject', tip: 'Reject' }
   ];
 
   document.querySelectorAll('.segment').forEach(seg => {
@@ -1046,7 +1165,6 @@ document.addEventListener('keydown', function(e) {
         const id = revId(seg);
         const reviews = getReviews();
         const current = seg.getAttribute('data-review');
-        // Toggle off if same status clicked again
         if (current === s.key) {
           seg.removeAttribute('data-review');
           delete reviews[id];
@@ -1062,7 +1180,6 @@ document.addEventListener('keydown', function(e) {
       wrap.appendChild(b);
     });
 
-    // Insert after segment-title
     const title = header.querySelector('.segment-title');
     if (title && title.nextSibling) {
       header.insertBefore(wrap, title.nextSibling);
@@ -1071,7 +1188,6 @@ document.addEventListener('keydown', function(e) {
     }
   });
 
-  // Restore on load
   const reviews = getReviews();
   document.querySelectorAll('.segment').forEach(seg => {
     const id = revId(seg);
@@ -1091,26 +1207,20 @@ function exportScript() {
   let videoBlocks = [];
 
   document.querySelectorAll('.video-section').forEach(section => {
-    // Skip TA-only or export-disabled videos
     if (section.dataset.scriptExport === 'false') return;
     if (section.dataset.taOnly === 'true') return;
 
-    // Get video number from id="video-N"
     const videoNum = section.id.replace('video-', '');
-    // Get clean title from h2 (strip any HTML tags)
     const h2El = section.querySelector('.video-header h2');
     const h2Raw = h2El ? h2El.textContent.trim() : '';
-    // Extract just the title part after "Video N: " - remove quotes
     const titleMatch = h2Raw.match(/Video\s+\d+:\s*"?([^"]*)"?\s*$/);
     const videoTitle = titleMatch ? titleMatch[1].replace(/\s*$/, '') : h2Raw;
 
     let partBlocks = [];
 
     section.querySelectorAll('.segment').forEach(seg => {
-      // Use the segment-number text from the HTML (e.g. "PART 01", "PART A")
       const segNum = seg.querySelector('.segment-number')?.textContent?.trim() || '';
       const segTitle = seg.querySelector('.segment-title')?.textContent?.trim() || '';
-      // Format: "PART 1: Title" - use the number/letter from the span
       const partLabel = segNum ? segNum : 'PART';
       const partHeader = segTitle ? partLabel + ': ' + segTitle : partLabel;
 
@@ -1125,7 +1235,6 @@ function exportScript() {
           if (text) paragraphs.push(text);
         });
 
-        // Also handle selected option cards
         const selected = scriptCol.querySelector('.option-card.selected');
         if (selected) {
           selected.querySelectorAll('p').forEach(p => {
@@ -1134,7 +1243,6 @@ function exportScript() {
           });
         }
 
-        // Also handle .script-card blocks
         const scriptCard = scriptCol.querySelector('.script-card');
         if (scriptCard) {
           scriptCard.querySelectorAll('p').forEach(p => {
@@ -1152,7 +1260,6 @@ function exportScript() {
   });
 
   const text = videoBlocks.join('\n\n===\n\n');
-  // Extract module number from title for filename
   const modMatch = document.title.match(/M(\d+)/);
   const filename = modMatch ? 'M' + modMatch[1] + '_Script.txt' : 'Script_Export.txt';
   const blob = new Blob([text], { type: 'text/plain' });
@@ -1177,5 +1284,6 @@ function exportScript() {
 }
 
 </script>
+
 </body>
 </html>
