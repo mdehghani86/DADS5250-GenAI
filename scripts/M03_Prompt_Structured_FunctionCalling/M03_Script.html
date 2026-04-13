@@ -1601,13 +1601,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Here is a complete example.</p>
-      <p>Step 1: You define a function called get_weather with parameters city and units.</p>
-      <p>Step 2: User says "What is the weather in Boston?"</p>
-      <p>Step 3: The model does not answer directly. Instead it returns: {"name": "get_weather", "arguments": {"city": "Boston", "units": "fahrenheit"}}</p>
-      <p>Step 4: Your code calls the real weather API with those arguments.</p>
-      <p>Step 5: You send the result back to the model. Now it generates a human-readable response: "It is currently 72 degrees in Boston with partly cloudy skies."</p>
-      <p>Five steps. The model decided which function to call. Your code did the work. That is function calling.</p>
+      <p>Here is a complete example. You define get_weather with parameters city and units. User asks "What is the weather in Boston?" The model does not answer directly -- it returns a JSON call: {"name": "get_weather", "arguments": {"city": "Boston"}}.</p>
+      <p>Your code executes the real API call, sends the result back, and now the model generates a human-readable response. The model decided which function to call. Your code did the work. That is function calling.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Five-Step Weather Example</span>

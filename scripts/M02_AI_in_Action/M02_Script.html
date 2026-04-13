@@ -830,8 +830,8 @@ body.teleprompter .scroll-controls {
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)" title="Scripted video">V2: Excel GPT</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button> -->
+    <button class="video-tab scripted active" onclick="switchVideo(2)" title="Scripted video">V2: Excel GPT</button>
     <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(3)" title="TA lab walkthrough -- no script">V3: Excel GPT Lab</button> -->
     <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Bitcoin Analyzer</button>
     <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Bitcoin Lab</button> -->
@@ -850,7 +850,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 1: "The Spark" — Build Something Real             -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section active" id="video-1">
+<div class="video-section" id="video-1" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- AI Is Already in Everything You Use</h2>
@@ -1059,7 +1059,7 @@ body.teleprompter .scroll-controls {
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 2: Excel GPT — AI Meets Spreadsheets              -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-2">
+<div class="video-section active" id="video-2">
 
   <div class="video-header">
     <h2>Video 2: "Excel GPT -- AI Meets Spreadsheets"</h2>
@@ -1082,8 +1082,7 @@ body.teleprompter .scroll-controls {
       </div>
     </div>
     <div class="script-col">
-      <p>Let me start with something personal. I firmly believe Excel is one of the most powerful tools ever built for business. Data analysis. Visualization. Reporting. Modeling. You name it -- Excel can do it. That is why nearly every organization on the planet runs on spreadsheets. It is the silent workhorse of how work actually gets done.</p>
-      <p>So when I started building this course, adding generative AI to Excel was a no-brainer. If we can make Excel smarter, faster, and easier to work with, we touch the daily workflow of millions of professionals. That is where this module starts.</p>
+      <p>Excel is one of the most powerful tools ever built for business. Data analysis, visualization, reporting, modeling -- nearly every organization on the planet runs on spreadsheets. Adding generative AI to Excel was a no-brainer for this course. If we can make Excel smarter and faster, we touch the daily workflow of millions of professionals.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Why Excel Matters</span>
@@ -1130,9 +1129,7 @@ body.teleprompter .scroll-controls {
       </div>
     </div>
     <div class="script-col">
-      <p>Here is the problem most of us know too well. You have a spreadsheet with sales data -- thousands of rows. You need to calculate monthly growth rates, create a pivot summary, and highlight outliers. Normally, you would spend an hour writing formulas. Remembering the exact syntax. Debugging typos. Copying formulas down thousands of rows. By the time you are done, you have forgotten what question you were trying to answer in the first place.</p>
-      <p>With an API call, this changes. You describe what you want to the model in plain English: "Analyze this sales data. Calculate month-over-month growth rates. Flag any month where growth dropped below negative ten percent. Generate the Excel formulas I need."</p>
-      <p>The model responds with working formulas. You paste them into Excel. Done.</p>
+      <p>You have a spreadsheet with thousands of rows. You need growth rates, a pivot summary, outlier flags. Normally you spend an hour writing formulas, remembering syntax, debugging typos. With an API call, you describe what you want in plain English: "Calculate month-over-month growth rates. Flag any month below negative ten percent." The model responds with working formulas. You paste them into Excel. Done.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Manual vs AI</span>
@@ -1201,10 +1198,8 @@ body.teleprompter .scroll-controls {
       </div>
     </div>
     <div class="script-col">
-      <p>Now here is where it gets really interesting. If you know Excel well, you know that you can go beyond formulas -- you can extend its capabilities with VBA. Visual Basic for Applications is Excel's built-in scripting language. With VBA, you can build custom functions, automate tasks, format data, generate charts, even connect to external systems. VBA is what turns Excel from a spreadsheet into a mini application platform.</p>
-      <p>The catch? Most people do not know VBA. It is an older language, the syntax is clunky, and writing it from scratch is slow and painful.</p>
-      <p>This is where the same API call pattern unlocks something big. You can ask the AI to write the VBA for you. "Write a VBA macro that automatically formats the top 10 products by revenue in bold and adds a chart." The model writes the macro. You paste it into Excel's VBA editor. Run it. Your spreadsheet transforms.</p>
-      <p>In Lab 1, you will build exactly this from scratch. The starter code is on GitHub. Your assignment is to extend it with your own functions.</p>
+      <p>Beyond formulas, Excel has VBA -- its built-in scripting language. With VBA you can build custom functions, automate tasks, generate charts, connect to external systems. The catch: most people do not know VBA. The syntax is clunky and writing it from scratch is painful.</p>
+      <p>Same API call pattern solves this. Ask the AI: "Write a VBA macro that formats the top 10 products by revenue in bold and adds a chart." The model writes the macro. You paste it into Excel's VBA editor. Run it. Your spreadsheet transforms. In Lab 1, you build exactly this from scratch.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- English → VBA → Excel</span>
@@ -1405,9 +1400,8 @@ body.teleprompter .scroll-controls {
       </div>
     </div>
     <div class="script-col">
-      <p>Right now, somewhere in the world, the price of Bitcoin just moved. It moves every second of every day. No opening bell, no closing bell, no weekends off.</p>
-      <p>It is probably the most watched number on the planet -- and certainly the most opinionated one. Everyone has a theory about where it is going. And that is exactly why it is the perfect playground for applied AI.</p>
-      <p>Because if you can point an LLM at a stream of live market data and get a clean, structured analysis out the other side -- you have just built the same kind of tool that firms pay analysts six figures to write. Let's do it.</p>
+      <p>The price of Bitcoin moves every second of every day. No opening bell, no closing bell, no weekends off. Everyone has a theory about where it is going. That makes it the perfect playground for applied AI.</p>
+      <p>If you can point an LLM at live market data and get a clean, structured analysis out the other side, you have built the same kind of tool that firms pay analysts six figures to write.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Chaos In, Order Out</span>
@@ -1483,8 +1477,7 @@ body.teleprompter .scroll-controls {
       </div>
     </div>
     <div class="script-col">
-      <p>You will load real market data using a free API. You will send it to an LLM along with instructions for analysis. And the model will return a structured report with trend analysis, support and resistance levels, and a summary recommendation.</p>
-      <p>Is it financial advice? Absolutely not. But it is a working demonstration of how AI can process real data and generate structured analysis -- the same pattern used in every industry from finance to manufacturing to healthcare.</p>
+      <p>You load real market data using a free API, send it to an LLM with analysis instructions, and the model returns a structured report with trends, support and resistance levels, and a summary. Is it financial advice? No. But it is a working demonstration of how AI processes real data into structured analysis -- the same pattern used in finance, manufacturing, and healthcare.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- Live Chart + AI Annotations</span>

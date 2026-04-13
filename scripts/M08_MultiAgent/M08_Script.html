@@ -282,7 +282,7 @@ body.teleprompter .scroll-controls { display: flex; }
     <button class="video-tab scripted" onclick="switchVideo(2)">V2: CrewAI Intro</button>
     <!-- HIDDEN: non-studio videos --><button class="video-tab scripted" onclick="switchVideo(3)" style="display:none">V3: Orchestrating Workflows</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(4)" style="display:none" title="TA lab walkthrough -- no script">V4: CrewAI Basics Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(5)">V5: CrewAI Tools &amp; Processes</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(5)">V5: CrewAI Tools &amp; Processes</button> -->
     <button class="video-tab ta-recorded" onclick="switchVideo(6)" style="display:none" title="TA lab walkthrough -- no script">V6: Multi-Agent Project Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(7)" style="display:none">V7: Wrap-Up</button>
   </div>
@@ -418,10 +418,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>CrewAI was created in late 2023 by Joao Moura, a Brazilian-born engineer who had spent years building AI systems at large companies. He noticed the same problem over and over -- developers were writing hundreds of lines of boilerplate just to get two agents to talk to each other.</p>
-      <p>His idea was simple. What if multi-agent systems worked the way real teams work? You define who is on the team, what each person is responsible for, and how they collaborate. The framework handles the rest.</p>
-      <p>He open-sourced it in early 2024, and it took off. Within months, CrewAI had tens of thousands of stars on GitHub and a growing community of developers building everything from research assistants to automated content pipelines. By 2025, CrewAI had raised funding and become one of the most popular multi-agent frameworks in the Python ecosystem.</p>
-      <p>What makes CrewAI special is the level of abstraction. You do not think in nodes and edges. You think in people and jobs. You describe the team, and CrewAI figures out how to run it.</p>
+      <p>CrewAI was created in late 2023 by Joao Moura, a Brazilian-born engineer who noticed the same problem over and over -- developers were writing hundreds of lines of boilerplate just to get two agents to talk to each other. His idea: what if multi-agent systems worked the way real teams work? Define who is on the team, what each person does, and how they collaborate. The framework handles the rest.</p>
+      <p>He open-sourced it in early 2024 and it took off. By 2025, CrewAI had raised funding and become one of the most popular multi-agent frameworks in Python. What makes it special is the abstraction. You do not think in nodes and edges. You think in people and jobs.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- CrewAI Timeline</span>
@@ -463,10 +461,8 @@ body.teleprompter .scroll-controls { display: flex; }
       </div>
     </div>
     <div class="script-col">
-      <p>Everything in CrewAI comes down to three things. An agent, a task, and a crew.</p>
-      <p>Start with the agent. Imagine you are hiring someone. You would tell them their job title -- "Senior Researcher." You would explain what success looks like -- "Find the three most relevant papers on this topic." And you would give them some background so they know how to approach the work -- maybe they are an expert in academic literature, maybe they specialize in industry reports. That is exactly what you do in CrewAI. You define a role, a goal, and a backstory. And if the agent needs to go out and do something -- search the web, read a file, call an API -- you hand it the right tools.</p>
-      <p>Next comes the task. A task is the actual assignment. You write a clear description of what needs to happen, you describe what the finished output should look like -- a summary, a report, a list of recommendations -- and you assign it to one of your agents. One agent, one task, one clear deliverable.</p>
-      <p>Finally, the crew. The crew is where it all comes together. You take your agents, you take your tasks, you pick how they should work -- one after another in sequence, or with a manager coordinating from above -- and you hit run. CrewAI handles the execution, the handoffs, and the context sharing between agents. You designed the team. CrewAI runs it.</p>
+      <p>Everything in CrewAI comes down to three things. An agent has a role, a goal, and a backstory. A task is the assignment -- a description, an expected output, and one assigned agent.</p>
+      <p>The crew brings it together. You list your agents and tasks, pick the process -- sequential or hierarchical -- and hit run. CrewAI handles execution, handoffs, and context sharing.</p>
     </div>
     <div class="media-col">
       <span class="media-label">Storyboard -- CrewAI · Three Building Blocks</span>
@@ -607,7 +603,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
   </div>
 
   <!-- PART D -->
-  <div class="segment">
+  <div class="segment" data-script-export="false">
     <div class="segment-header">
       <span class="segment-number">PART D</span>
       <span class="segment-title">Sequential vs Hierarchical</span>
@@ -661,7 +657,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
   </div>
 
   <!-- PART E -->
-  <div class="segment">
+  <div class="segment" data-script-export="false">
     <div class="segment-header">
       <span class="segment-number">PART E</span>
       <span class="segment-title">Delegation</span>
@@ -953,7 +949,7 @@ result = crew.<span class="fn">kickoff</span>()</pre></div>
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 5: CrewAI Tools & Processes (Scripted)            -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-5">
+<div class="video-section" id="video-5" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 5: "CrewAI Tools &amp; Processes"</h2>

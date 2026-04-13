@@ -283,7 +283,7 @@ body.teleprompter .scroll-controls { display: flex; }
     <!-- HIDDEN: non-studio videos --><button class="video-tab scripted" onclick="switchVideo(1)" style="display:none">V1: The Spark</button>
     <button class="video-tab active scripted" onclick="switchVideo(2)">V2: Google A2A Protocol</button>
     <button class="video-tab ta-recorded" onclick="switchVideo(3)" style="display:none" title="TA lab walkthrough -- no script">V3: A2A Lab</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)">V4: OpenAI SDK</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(4)">V4: OpenAI SDK</button> -->
     <button class="video-tab ta-recorded" onclick="switchVideo(5)" style="display:none" title="TA lab walkthrough -- no script">V5: OpenAI SDK Lab</button>
     <button class="video-tab scripted" onclick="switchVideo(6)" style="display:none">V6: Wrap-Up</button>
   </div>
@@ -660,7 +660,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 4: OpenAI SDK                                              -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-4" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 4: "OpenAI Agents SDK"</h2>
