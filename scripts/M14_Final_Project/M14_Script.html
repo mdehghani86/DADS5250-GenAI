@@ -260,9 +260,9 @@ body.teleprompter .scroll-controls { display: flex; }
     <span class="topbar-subtitle">DADS 5250 -- Generative AI in Practice</span>
   </div>
   <div class="video-tabs">
-    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Tips for Great Project</button>
-    <button class="video-tab scripted" onclick="switchVideo(3)">V3: The Final Closing</button>
+    <!-- HIDDEN (no studio): <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark</button> -->
+    <!-- HIDDEN (no studio): <button class="video-tab scripted" onclick="switchVideo(2)">V2: Tips for Great Project</button> -->
+    <!-- HIDDEN (no studio): <button class="video-tab scripted" onclick="switchVideo(3)">V3: The Final Closing</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -277,7 +277,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 1: "The Spark" -- Look How Far You Have Come               -->
 <!-- ================================================================ -->
-<div class="video-section active" id="video-1">
+<div class="video-section active" id="video-1" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- Look How Far You Have Come</h2>
@@ -414,7 +414,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 2: Tips for a Great Project                                -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-2">
+<div class="video-section" id="video-2" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 2: Tips for a Great Project</h2>
@@ -552,7 +552,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 3: The Final Closing                                       -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 3: Course Wrap-Up -- The Final Closing</h2>

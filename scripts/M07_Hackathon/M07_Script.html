@@ -267,8 +267,8 @@ body.teleprompter .scroll-controls { display: flex; }
   </div>
   <div style="display:inline-flex;align-items:center;gap:8px;padding:4px 14px;border-radius:8px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);font-size:0.78rem;font-weight:600;color:#b45309;">NO VIDEO SCRIPTS — Hackathon module, logistics only</div>
   <div class="video-tabs">
-    <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark (Reference)</button>
-    <button class="video-tab scripted" onclick="switchVideo(2)">V2: Kickoff (Reference)</button>
+    <!-- HIDDEN (no studio): <button class="video-tab active scripted" onclick="switchVideo(1)">V1: The Spark (Reference)</button> -->
+    <!-- HIDDEN (no studio): <button class="video-tab scripted" onclick="switchVideo(2)">V2: Kickoff (Reference)</button> -->
   </div>
   <div class="topbar-actions">
     <button class="btn-action" onclick="toggleTeleprompter()" id="teleBtn">Teleprompter</button>
@@ -283,7 +283,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 1: "The Spark" -- Build Something Real                    -->
 <!-- ================================================================ -->
-<div class="video-section active" id="video-1">
+<div class="video-section active" id="video-1" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 1: "The Spark" -- Build Something Real</h2>
@@ -402,7 +402,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ================================================================ -->
 <!-- VIDEO 2: Hackathon Kickoff                                      -->
 <!-- ================================================================ -->
-<div class="video-section" id="video-2">
+<div class="video-section" id="video-2" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 2: "Hackathon Kickoff"</h2>

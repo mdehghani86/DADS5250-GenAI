@@ -525,8 +525,8 @@ body.teleprompter .scroll-controls { display: flex; }
   <div class="video-tabs">
     <button class="video-tab scripted active" onclick="switchVideo(1)" title="Scripted video">V1: The Spark</button>
     <!-- HIDDEN (non-studio): <button class="video-tab voiceover-only" onclick="switchVideo(2)" title="TA voiceover + animation -- not included in teleprompter script export">V2: Prompting Foundations (TA)</button> -->
-    <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: Prompting Strategies</button>
-    <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Text to Structure</button>
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(3)" title="Scripted video">V3: Prompting Strategies</button> -->
+    <!-- HIDDEN (non-studio): <button class="video-tab scripted" onclick="switchVideo(4)" title="Scripted video">V4: Text to Structure</button> -->
     <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(5)" title="TA lab walkthrough -- no script">V5: Structured Output Lab</button> -->
     <button class="video-tab scripted" onclick="switchVideo(6)" title="Scripted video">V6: Function Calling</button>
     <!-- HIDDEN (non-studio): <button class="video-tab ta-recorded" onclick="switchVideo(7)" title="TA lab walkthrough -- no script">V7: Function Calling Lab</button> -->
@@ -985,7 +985,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 3: Prompting Strategies                           -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-3">
+<div class="video-section" id="video-3" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 3: "Prompting Strategies"</h2>
@@ -1207,7 +1207,7 @@ body.teleprompter .scroll-controls { display: flex; }
 <!-- ════════════════════════════════════════════════════════ -->
 <!-- VIDEO 4: From Text to Structure                         -->
 <!-- ════════════════════════════════════════════════════════ -->
-<div class="video-section" id="video-4">
+<div class="video-section" id="video-4" data-script-export="false">
 
   <div class="video-header">
     <h2>Video 4: "From Text to Structure"</h2>
