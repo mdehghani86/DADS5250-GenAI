@@ -1,15 +1,13 @@
-desktop.ini
-Thumbs.db
-.DS_Store
 __pycache__/
 *.pyc
 .env
-.ipynb_checkpoints/
+.env.*
 
-# Personal / planning files — not for GitHub
-planning/
-images/
-.claude/
-CLAUDE.md
-course-materials/
-evaluations/
+# pip editable install artifacts
+**/*.egg-info/
+
+# Smoke-test / Colab runtime artifacts (downloaded by labs at runtime)
+.gradio/
+document.pdf
+sales_data.csv
+dashboard_app.py
