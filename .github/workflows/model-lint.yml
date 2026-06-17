@@ -1,0 +1,26 @@
+name: Model name lint
+
+on:
+  push:
+    paths:
+      - 'labs/**/*.ipynb'
+      - 'scripts/check_model_names.py'
+  pull_request:
+    paths:
+      - 'labs/**/*.ipynb'
+      - 'scripts/check_model_names.py'
+
+jobs:
+  lint:
+    name: Check for hardcoded model strings
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run model name linter
+        run: python scripts/check_model_names.py
