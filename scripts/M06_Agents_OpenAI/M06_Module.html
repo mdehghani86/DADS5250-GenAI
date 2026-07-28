@@ -172,6 +172,11 @@ h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8p
 .vp-badge-type-expert { background: rgba(120,113,108,0.35); color: #d6d3d1; }
 .vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
 
+.vp-badge-status { border: 1px solid transparent; }
+.vp-badge-status-todo { background: rgba(220,38,38,0.28); color: #fca5a5; border-color: rgba(220,38,38,0.5); }
+.vp-badge-status-done { background: rgba(22,163,74,0.30); color: #86efac; border-color: rgba(22,163,74,0.5); }
+
+
 /* -- Script Button -- */
 .script-btn {
   position: absolute;
@@ -1330,6 +1335,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
         <div class="vp-badges">
           <span class="vp-badge vp-badge-type-lab">LAB WALKTHROUGH</span>
           <span class="vp-badge vp-badge-dur">~20 min</span>
+          <span class="vp-badge vp-badge-status vp-badge-status-todo">NOT RECORDED</span>
         </div>
         <button class="script-btn" onclick="openScript('script-lab1')" title="View Script">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1593,6 +1599,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
         <div class="vp-badges">
           <span class="vp-badge vp-badge-type-lab">LAB WALKTHROUGH</span>
           <span class="vp-badge vp-badge-dur">~25 min</span>
+          <span class="vp-badge vp-badge-status vp-badge-status-todo">NOT RECORDED</span>
         </div>
         <button class="script-btn" onclick="openScript('script-lab2')" title="View Script">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">

@@ -170,6 +170,11 @@ h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8p
 .vp-badge-type-ta { background: rgba(217,119,6,0.3); color: #fcd34d; }
 .vp-badge-type-lab { background: rgba(100,116,139,0.4); color: #cbd5e1; }
 .vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+
+.vp-badge-status { border: 1px solid transparent; }
+.vp-badge-status-todo { background: rgba(220,38,38,0.28); color: #fca5a5; border-color: rgba(220,38,38,0.5); }
+.vp-badge-status-done { background: rgba(22,163,74,0.30); color: #86efac; border-color: rgba(22,163,74,0.5); }
+
 .vp-badge-type-discussion { background: rgba(20,184,166,0.3); color: #5eead4; }
 
 /* ── Script Button ── */
@@ -1295,6 +1300,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
         <div class="vp-badges">
           <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
           <span class="vp-badge vp-badge-dur">~12 min</span>
+          <span class="vp-badge vp-badge-status vp-badge-status-todo">NOT RECORDED</span>
         </div>
         <button class="script-btn" onclick="openScript('script-lab1')" title="View Walkthrough Info">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1619,6 +1625,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
         <div class="vp-badges">
           <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
           <span class="vp-badge vp-badge-dur">~12 min</span>
+          <span class="vp-badge vp-badge-status vp-badge-status-todo">NOT RECORDED</span>
         </div>
         <button class="script-btn" onclick="openScript('script-lab2')" title="View Walkthrough Info">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1747,6 +1754,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
         <div class="vp-badges">
           <span class="vp-badge vp-badge-type-lab">SCREEN RECORDING</span>
           <span class="vp-badge vp-badge-dur">~12 min</span>
+          <span class="vp-badge vp-badge-status vp-badge-status-todo">NOT RECORDED</span>
         </div>
         <button class="script-btn" onclick="openScript('script-lab3')" title="View Walkthrough Info">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
