@@ -101,6 +101,57 @@ def show_info(text: str):
     display(HTML(html))
 
 
+_PP_THEMES = {
+    "blue":   {"color": "#1e4b8f", "background": "#f0f6ff"},
+    "red":    {"color": "#c62828", "background": "#ffebee"},
+    "yellow": {"color": "#b26a00", "background": "#fff8e1"},
+    "green":  {"color": "#1b5e20", "background": "#e8f5e9"},
+    "gray":   {"color": "#37474f", "background": "#eceff1"},
+}
+
+
+def pretty_print(text, title="🤖 Model Response", theme="blue", style=None):
+    """Display a styled message box for plain-text LLM output.
+
+    Compatibility shim for labs originally authored for the AppliedGenAI
+    `utils.py` module — accepts the same `(text, title, theme=...)` /
+    `(..., style=...)` signature so reused notebooks keep working
+    byte-identically.
+    """
+    chosen = (style or theme or "blue").lower()
+    palette = _PP_THEMES.get(chosen, _PP_THEMES["blue"])
+    body = str(text).replace("\n", "<br>")
+    display(HTML(f"""
+    <div style="border-left: 5px solid {palette['color']};
+                padding: 12px 16px;
+                background-color: {palette['background']};
+                border-radius: 6px;
+                font-family: 'Segoe UI', sans-serif;
+                line-height: 1.6;
+                margin: 10px 0;">
+        <strong style="color: {palette['color']}; font-size: 16px;">{title}</strong><br>
+        <span style="font-size: 14px; color: #333;">{body}</span>
+    </div>
+    """))
+
+
+def lab_pill(title: str, color: str = "#0055d4") -> None:
+    """Render a sticky pill at the top of the notebook so the lab name stays
+    visible while scrolling."""
+    display(HTML(f"""
+    <div style="position: sticky; top: 0; z-index: 9999; text-align: center;
+                padding: 6px 0; pointer-events: none;">
+      <span style="display: inline-block; background: {color}; color: white;
+                   padding: 6px 16px; border-radius: 999px;
+                   font-family: 'Segoe UI', sans-serif; font-size: 12px;
+                   font-weight: 600; letter-spacing: 0.5px;
+                   box-shadow: 0 2px 6px rgba(0,0,0,0.15);">
+        📘 {title}
+      </span>
+    </div>
+    """))
+
+
 def compare_responses(responses: dict):
     """Side-by-side comparison of multiple model responses.
 
