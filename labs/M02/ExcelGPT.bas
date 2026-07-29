@@ -236,10 +236,10 @@ End Function
 '
 '  Fill in the blank role below, rename the function, and try it.
 ' ---------------------------------------------------------------------
-Public Function GPT_MY_FUNCTION(input As String) As String
+Public Function GPT_MY_FUNCTION(userText As String) As String
     Dim sys As String
     sys = "You are a ______."              ' describe the AI's job here
-    GPT_MY_FUNCTION = CallOpenAI(sys, input)
+    GPT_MY_FUNCTION = CallOpenAI(sys, userText)
 End Function
 
 
@@ -278,14 +278,14 @@ End Sub
 ' we copy it into one plain block of text, one row per line with the
 ' columns separated by tabs. That is what this function does.
 Private Function RangeToText(rng As Range) As String
-    Dim row As Range, cell As Range, line As String, out As String
-    For Each row In rng.Rows
-        line = ""
-        For Each cell In row.Cells
-            line = line & CStr(cell.Value) & vbTab
+    Dim r As Range, cell As Range, rowText As String, out As String
+    For Each r In rng.Rows
+        rowText = ""
+        For Each cell In r.Cells
+            rowText = rowText & CStr(cell.Value) & vbTab
         Next cell
-        out = out & RTrim(line) & vbLf
-    Next row
+        out = out & RTrim(rowText) & vbLf
+    Next r
     RangeToText = out
 End Function
 
