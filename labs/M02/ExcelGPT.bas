@@ -75,6 +75,24 @@ Private Function GetKey() As String
 End Function
 
 
+' ---------------------------------------------------------------------
+'  GetModel
+'  Returns which AI model to use. It first looks in the Setup tab
+'  (cell C8) so you can switch models without touching the code. For
+'  example, type gpt-4.1-mini for speed or a larger model for depth.
+'  If that cell is empty, it falls back to the MODEL constant above.
+' ---------------------------------------------------------------------
+Private Function GetModel() As String
+    Dim m As String
+    m = ""
+    On Error Resume Next
+    m = Trim(CStr(ThisWorkbook.Worksheets("Setup").Range("C8").Value))
+    On Error GoTo 0
+    If m = "" Then m = MODEL
+    GetModel = m
+End Function
+
+
 ' =====================================================================
 '  THE ENGINE
 '  This is the single function that actually talks to the AI. Every
@@ -99,7 +117,7 @@ Private Function CallOpenAI(systemMsg As String, userMsg As String, _
     ' two messages (the system role and the user question). The messy
     ' looking double quotes are there because every quote inside JSON
     ' has to be written as "" so Excel keeps it as part of the text.
-    body = "{""model"":""" & MODEL & """," & _
+    body = "{""model"":""" & GetModel() & """," & _
            """temperature"":" & Replace(CStr(temperature), ",", ".") & "," & _
            """max_tokens"":" & maxTokens & "," & _
            """messages"":[" & _

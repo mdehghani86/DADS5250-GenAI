@@ -60,6 +60,11 @@ Go to the **Setup** tab and follow the steps there:
 5. Paste your OpenAI key into the highlighted key cell. The functions read your
    key from that cell automatically, so you do not need to edit the code.
 
+There is also a **Model** cell just below the key. It is set to `gpt-4.1-mini`,
+which is fast and cheap. You can change it to a different model whenever you
+want, and the functions will use whatever is in that cell. Leave it as is if
+you are not sure.
+
 ### 3. Run the examples
 
 Go to any use case tab (Sales, Regression, Reviews, Classify, Ask Anything) and
