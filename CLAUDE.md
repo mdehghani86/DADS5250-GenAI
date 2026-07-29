@@ -105,6 +105,19 @@ numbered section it belongs to, e.g.
 and important lines carry short inline comments explaining what is happening.
 Numbers match the numbered markdown sections. This is required in every lab.
 
+**Depth is required, not optional (MD has flagged thin labs repeatedly):**
+- **Markdown** for each section must actually teach: motivate *why* the concept
+  matters and the *need* for it, explain *how* it works in plain English, not a
+  single terse sentence. The module intro must sell why the topic matters.
+- **Every technical code cell** gets real inline comments — enough that a student
+  can follow each non-obvious step (e.g. an `ast`/`operator` evaluator gets a
+  comment per branch), not just a one-line header.
+- **All model/output display uses `pretty_print(...)` or `pp(...)`**, never a bare
+  `print()` of a result, and this is consistent across every cell.
+- When a mechanism is introduced (tools/registration, JSON mode, embeddings,
+  agents), include a short section explaining the mechanism itself before the
+  first code that uses it.
+
 ## Module Plan (14 modules, 4 phases)
 
 | Phase | Modules | Focus |
