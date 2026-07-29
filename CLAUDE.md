@@ -87,6 +87,12 @@ The key is resolved by `_get_secret()`: Colab Secret (`OPENAI_API_KEY`) first,
 then an environment variable, then a hidden `getpass` prompt so a student can
 enter it directly without Colab Secrets.
 
+**Header banner image.** Cell 0 of every lab is a markdown header: the Colab
+badge link, then a PNG banner image referenced by its **raw GitHub URL** (not a
+relative path, which breaks in Colab). Banners live at
+`labs/MXX/assets/images/<notebook>_banner.png` (navy to blue gradient, "DADS 5250
+· Module N · Lab M", the lab title). The raw URL renders in both Colab and GitHub.
+
 **Every content code cell** opens with a boxed banner header that carries the
 numbered section it belongs to, e.g.
 
