@@ -99,8 +99,16 @@ Test your new function on one of the tabs and note what you changed.
 Your API key sits inside the workbook. Never share a workbook that still has
 your key in it, and never upload your key to GitHub. Treat it like a password.
 
-## A note on cost
+## A note on cost (important)
 
-Every cell that uses one of these functions calls the AI each time the sheet
-recalculates. Copying a formula down hundreds of rows means hundreds of calls,
-so start small while you are learning.
+Every cell that uses one of these functions calls the AI each time it
+recalculates. Two things to keep in mind:
+
+- Pressing `Ctrl + Alt + F9` runs a full recalculation, which re-runs **every**
+  AI cell on the sheet at once and charges you for all of them. Copying a
+  formula down hundreds of rows means hundreds of calls.
+- When you get an answer you like, **freeze it**: copy the cell, then use
+  Paste Special and choose Values. The cell becomes plain text and will never
+  call the AI again. This is the simplest way to control your cost.
+
+Start small while you are learning.
