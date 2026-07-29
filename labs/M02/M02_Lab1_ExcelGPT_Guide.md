@@ -1,4 +1,4 @@
-![Module 2, Lab 1: Excel GPT](./assets/M02_Lab1_banner.png)
+![Module 2, Lab 1: Excel GPT](./assets/images/M02_Lab1_banner.png)
 
 # Module 2, Lab 1: Excel GPT
 
