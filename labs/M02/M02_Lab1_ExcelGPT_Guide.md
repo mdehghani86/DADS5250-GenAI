@@ -41,26 +41,29 @@ open the raw view and save the page.
 
 ## Steps
 
-### 1. Open the starter workbook
+### 1. Fill in the Student Info tab
 
-Open `M02_Lab1_ExcelGPT_Starter.xlsx` in Excel. It has six tabs: a Start Here
-guide plus five use cases (Sales, Regression, Reviews, Classify, Ask Anything).
-Each tab already has example formulas waiting for you. They will show `#NAME?`
-until you finish step 2, which is expected.
+Open `M02_Lab1_ExcelGPT_Starter.xlsx`. It opens on the **Student Info** tab.
+Type your first name, last name, and student ID in the highlighted cells, then
+read and sign the Declaration of Completion.
 
-### 2. Paste the VBA and add your key
+### 2. Load the VBA and add your key on the Setup tab
+
+Go to the **Setup** tab and follow the steps there:
 
 1. Press `Alt + F11` to open the VBA editor.
-2. From the menu choose `Insert` then `Module`.
+2. Choose `Insert` then `Module`.
 3. Open `ExcelGPT.bas`, copy all of it, and paste it into the module.
-4. Find the `API_KEY` line near the top and replace the placeholder with your
-   own OpenAI key.
-5. Close the editor.
+4. Close the editor and return to the Setup tab.
+5. Paste your OpenAI key into the highlighted key cell. The functions read your
+   key from that cell automatically, so you do not need to edit the code.
 
 ### 3. Run the examples
 
-Go to any tab and press `Ctrl + Alt + F9` to recalculate. The example cells now
-return real answers from the AI. Change a question and watch the answer change.
+Go to any use case tab (Sales, Regression, Reviews, Classify, Ask Anything) and
+press `Ctrl + Alt + F9` to recalculate. The example cells now return real
+answers from the AI. They show `#NAME?` until the VBA is loaded and your key is
+in place, which is expected. Change a question and watch the answer change.
 
 ### 4. The AskSelection macro (optional)
 

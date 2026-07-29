@@ -46,12 +46,33 @@
 
 ' ---------------------------------------------------------------------
 '  SETTINGS
-'  These three values are used everywhere below. The only one you have
-'  to change is API_KEY. Paste your own OpenAI key between the quotes.
+'  You have two easy ways to provide your OpenAI key:
+'    (a) In the starter workbook, type it into the highlighted cell on
+'        the Setup tab. The code reads it from there automatically.
+'    (b) Or paste it into the API_KEY line below.
+'  Option (a) is used first whenever that cell has a key in it.
 ' ---------------------------------------------------------------------
-Private Const API_KEY As String = "sk-REPLACE_WITH_YOUR_KEY"   ' your personal OpenAI key
+Private Const API_KEY As String = "sk-REPLACE_WITH_YOUR_KEY"   ' fallback key, used only if the Setup tab is empty
 Private Const API_URL As String = "https://api.openai.com/v1/chat/completions"  ' the address we send requests to
 Private Const MODEL   As String = "gpt-4.1-mini"               ' which AI model answers you
+
+
+' ---------------------------------------------------------------------
+'  GetKey
+'  Returns your API key. It first looks in the Setup tab (cell C7) of
+'  the starter workbook. If that cell is empty, or you are using your
+'  own workbook that has no Setup tab, it falls back to the API_KEY
+'  constant above.
+' ---------------------------------------------------------------------
+Private Function GetKey() As String
+    Dim k As String
+    k = ""
+    On Error Resume Next
+    k = Trim(CStr(ThisWorkbook.Worksheets("Setup").Range("C7").Value))
+    On Error GoTo 0
+    If k = "" Then k = API_KEY
+    GetKey = k
+End Function
 
 
 ' =====================================================================
@@ -101,7 +122,7 @@ Private Function CallOpenAI(systemMsg As String, userMsg As String, _
     ' JSON. The second is your key, which proves the request is really
     ' from you and is allowed to use your account.
     http.setRequestHeader "Content-Type", "application/json"
-    http.setRequestHeader "Authorization", "Bearer " & API_KEY
+    http.setRequestHeader "Authorization", "Bearer " & GetKey()
 
     ' STEP 5. Send the request and wait for the reply.
     http.send body
