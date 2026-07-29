@@ -2,99 +2,83 @@
 
 # Module 2, Lab 1: Excel GPT
 
-Build an AI assistant that lives inside Excel. Instead of writing code in a
-notebook, you paste one VBA module into Excel and then talk to an AI model
-directly from your spreadsheet cells.
+Call an AI model directly from an Excel cell. You use one function,
+`=AI_Reply(...)`, to send a prompt to the model and get the answer back in the
+cell, right next to your data.
 
 **Difficulty:** 2 of 3 stars &nbsp;·&nbsp; **Time:** about 15 minutes
 
 ---
 
-## What you will build
+## Platform note (read first)
 
-By the end you can type functions like these into any cell and get answers
-back from the AI:
+This lab uses Excel VBA and is built for **Windows Excel (desktop)**, where it
+works with no extra setup.
 
-- `=GPT("...")` ask the AI anything
-- `=GPT_ASK("question", A1:E13)` ask a question about your data
-- `=GPT_CALC("instruction", C2:C13)` let the AI do the math and return a number
-
----
-
-## What you need
-
-- Microsoft Excel for Windows or Mac, the desktop version. The browser version
-  of Excel does not run VBA, so it will not work for this lab.
-- Your own OpenAI API key.
+**Mac users:** Mac Excel cannot make the web request from VBA on its own (it
+lacks the Windows components this uses), so the function will return an ActiveX
+error. To run this lab on a Mac you need an extra one time AppleScript helper
+installed, or you can use a Windows machine or lab computer. Ask the instructor
+for the Mac setup if you need it.
 
 ---
 
-## Download the files
+## What you will do
 
-Grab both files first, then follow the steps below.
+- Put your OpenAI API key into the workbook.
+- Use `=AI_Reply(key, prompt)` to get AI answers directly in cells.
+- Complete a set of sample prompts (formatting, data analysis, content
+  creation, problem solving, data cleaning, translation), then try your own.
 
-- **Starter workbook (Excel):**
-  [Download M02_Lab1_ExcelGPT_Starter.xlsx](https://github.com/mdehghani86/DADS5250-GenAI/raw/main/labs/M02/M02_Lab1_ExcelGPT_Starter.xlsx)
-  This link downloads the file straight to your computer. Open it in Excel.
-- **VBA code:**
-  [Open ExcelGPT.bas](https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/ExcelGPT.bas)
-  Click it, then use the Copy button at the top right of the code box to copy all of it.
+---
 
-Both files also live in the `labs/M02` folder of this repository if you prefer
-to browse there.
+## Download the file
+
+- **Workbook:**
+  [Download M02_Lab1_ExcelGPT.xlsm](https://github.com/mdehghani86/DADS5250-GenAI/raw/main/labs/M02/M02_Lab1_ExcelGPT.xlsm)
+
+This is a macro enabled workbook (`.xlsm`); the AI code is already inside it, so
+there is nothing to paste.
 
 ---
 
 ## Steps
 
-### 1. Fill in the Student Info tab
+### 1. Open the workbook and enable macros
 
-Open `M02_Lab1_ExcelGPT_Starter.xlsx`. It opens on the **Student Info** tab.
-Type your first name, last name, and student ID in the highlighted cells, then
-read and sign the Declaration of Completion.
+Open `M02_Lab1_ExcelGPT.xlsm` in Excel. When Excel warns about macros, click
+**Enable Content** (or Enable Macros). The code will not run otherwise.
 
-### 2. Load the VBA and add your key on the Setup tab
+### 2. Add your key and settings on the AI_Reply sheet
 
-Go to the **Setup** tab and follow the steps there:
+Go to the **AI_Reply** sheet and fill in the top cells:
 
-1. Press `Alt + F11` to open the VBA editor.
-2. Choose `Insert` then `Module`.
-3. Open `ExcelGPT.bas`, copy all of it, and paste it into the module.
-4. Close the editor and return to the Setup tab.
-5. Paste your OpenAI key into the highlighted key cell. The functions read your
-   key from that cell automatically, so you do not need to edit the code.
+- **B3** — your OpenAI API key (replace `PASTE_YOUR_OPENAI_KEY_HERE`)
+- **B4** — the model (default `gpt-4o`)
+- **B5** — the temperature (default `0.5`)
 
-There is also a **Model** cell just below the key. It is set to `gpt-4.1-mini`,
-which is fast and cheap. You can change it to a different model whenever you
-want, and the functions will use whatever is in that cell. Leave it as is if
-you are not sure.
+### 3. Use the function
 
-### 3. Run the examples
+In the **Result** column, call the function on the prompt in that row. The
+simplest form is:
 
-Go to any use case tab (Sales, Regression, Reviews, Classify, Ask Anything) and
-press `Ctrl + Alt + F9` to recalculate. The example cells now return real
-answers from the AI. They show `#NAME?` until the VBA is loaded and your key is
-in place, which is expected. Change a question and watch the answer change.
+```
+=AI_Reply($B$3, B9)
+```
 
-### 4. The AskSelection macro (optional)
+You can also pass the length, model, and temperature:
 
-Select a range of cells, then run the `AskSelection` macro. Type a question in
-the box and the answer appears in a pop up. This is a quick way to ask about
-data without typing a formula.
+```
+=AI_Reply($B$3, B9, "Short", $B$4, $B$5)
+```
 
----
+`AI_Reply(key, prompt, [length], [model], [temperature])` — length can be
+`"Short"`, `"Medium"`, or `"Descriptive"`.
 
-## Your exercise
+### 4. Complete the samples, then try your own
 
-Open the VBA editor and find the function called `GPT_MY_FUNCTION`. Turn it into
-a new tool of your own by writing a role in the system line and renaming it.
-A few ideas:
-
-- `GPT_TRANSLATE(text, "Spanish")` translates text into another language
-- `GPT_EMAIL(bulletPoints)` turns notes into a polished email
-- `GPT_CLASSIFY(text)` labels text as positive or negative
-
-Test your new function on one of the tabs and note what you changed.
+Fill the Result column for each sample prompt, then add a row with your own
+prompt and see what the model returns.
 
 ---
 
@@ -103,16 +87,8 @@ Test your new function on one of the tabs and note what you changed.
 Your API key sits inside the workbook. Never share a workbook that still has
 your key in it, and never upload your key to GitHub. Treat it like a password.
 
-## A note on cost (important)
+## A note on cost
 
-Every cell that uses one of these functions calls the AI each time it
-recalculates. Two things to keep in mind:
-
-- Pressing `Ctrl + Alt + F9` runs a full recalculation, which re-runs **every**
-  AI cell on the sheet at once and charges you for all of them. Copying a
-  formula down hundreds of rows means hundreds of calls.
-- When you get an answer you like, **freeze it**: copy the cell, then use
-  Paste Special and choose Values. The cell becomes plain text and will never
-  call the AI again. This is the simplest way to control your cost.
-
-Start small while you are learning.
+Each `=AI_Reply(...)` cell calls the model when it recalculates. When you get an
+answer you like, freeze it: copy the cell, then use Paste Special and choose
+Values. The cell becomes plain text and will not call the model again.
