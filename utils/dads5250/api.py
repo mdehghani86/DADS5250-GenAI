@@ -16,18 +16,37 @@ DEFAULT_GEMINI_MODEL = "gemini-flash-latest"  # auto-tracks the latest stable fl
 
 
 def _get_secret(name: str) -> str:
-    """Retrieve a secret from Google Colab Secrets or environment."""
+    """Retrieve a secret, trying several sources so nobody gets stuck:
+    1) Google Colab Secret, 2) environment variable, 3) a hidden prompt where
+    the user types/pastes the key (input is not shown or saved in the notebook).
+    """
+    # 1) Colab Secret
     try:
         from google.colab import userdata
-        return userdata.get(name)
-    except (ImportError, ModuleNotFoundError):
-        val = os.environ.get(name)
-        if not val:
-            raise EnvironmentError(
-                f"'{name}' not found. In Colab: set it in Secrets (key icon). "
-                f"Locally: export {name}=your-key"
-            )
+        val = userdata.get(name)
+        if val:
+            return val
+    except Exception:
+        pass
+
+    # 2) environment variable
+    val = os.environ.get(name)
+    if val:
         return val
+
+    # 3) ask the user directly (hidden input)
+    try:
+        import getpass
+        val = getpass.getpass(f"Enter your {name} (input hidden, not saved): ").strip()
+    except Exception:
+        val = ""
+    if not val:
+        raise EnvironmentError(
+            f"'{name}' not found. Set it in Colab Secrets (key icon), "
+            f"export {name}=your-key, or enter it when prompted."
+        )
+    os.environ[name] = val  # cache for the rest of this session
+    return val
 
 
 def setup_openai(model: str = None):

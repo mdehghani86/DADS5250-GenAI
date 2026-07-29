@@ -71,6 +71,22 @@ When moving an existing image that a page already references, update every
 reference so nothing breaks. Applies to all modules (lab folders and, where it
 helps, the scripts module folders too).
 
+## Lab Notebook Cell Convention (all labs)
+
+Every lab notebook opens with the same two cells, in this order:
+
+1. **Setup cell** — install the `dads5250` utils (once per runtime) and do all
+   imports. No API calls here.
+2. **API check cell** — call `setup_openai()` (and/or `setup_gemini()`), then a
+   `pp({...}, title="API check")` that shows the connection status and the
+   model(s) this lab uses. One model listed if the lab uses one, several if it
+   uses several. This is a visible confirmation of connected / not connected
+   before any content runs.
+
+The key is resolved by `_get_secret()`: Colab Secret (`OPENAI_API_KEY`) first,
+then an environment variable, then a hidden `getpass` prompt so a student can
+enter it directly without Colab Secrets.
+
 ## Module Plan (14 modules, 4 phases)
 
 | Phase | Modules | Focus |
