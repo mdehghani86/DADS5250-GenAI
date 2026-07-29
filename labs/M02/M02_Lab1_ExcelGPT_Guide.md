@@ -29,15 +29,19 @@ back from the AI:
 
 ---
 
-## Files for this lab
+## Download the files
 
-Both files are in this `labs/M02` folder. Download them to your computer first.
+Grab both files first, then follow the steps below.
 
-1. **Starter workbook:** `M02_Lab1_ExcelGPT_Starter.xlsx` (open this in Excel)
-2. **VBA code:** `ExcelGPT.bas` (the code you paste into Excel)
+- **Starter workbook (Excel):**
+  [Download M02_Lab1_ExcelGPT_Starter.xlsx](https://github.com/mdehghani86/DADS5250-GenAI/raw/main/labs/M02/M02_Lab1_ExcelGPT_Starter.xlsx)
+  This link downloads the file straight to your computer. Open it in Excel.
+- **VBA code:**
+  [Open ExcelGPT.bas](https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/ExcelGPT.bas)
+  Click it, then use the Copy button at the top right of the code box to copy all of it.
 
-To download a single file on GitHub, open it and click the download button, or
-open the raw view and save the page.
+Both files also live in the `labs/M02` folder of this repository if you prefer
+to browse there.
 
 ---
 
