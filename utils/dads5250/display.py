@@ -32,7 +32,8 @@ def pp(data, title: str = None):
 
     html = f"""
     <div style="background:#f8f9fb; border:1px solid #dde3ec; padding:12px 16px;
-                border-radius:8px; margin:8px 0; font-family:monospace; font-size:13px;">
+                border-radius:8px; margin:8px 0; font-family:monospace; font-size:13px;
+                max-width:720px;">
         {title_html}
         <pre style="margin:0; white-space:pre-wrap; color:#1a1a2e;">{formatted}</pre>
     </div>
@@ -128,7 +129,8 @@ def pretty_print(text, title="🤖 Model Response", theme="blue", style=None):
                 border-radius: 6px;
                 font-family: 'Segoe UI', sans-serif;
                 line-height: 1.6;
-                margin: 10px 0;">
+                margin: 10px 0;
+                max-width: 720px;">
         <strong style="color: {palette['color']}; font-size: 16px;">{title}</strong><br>
         <span style="font-size: 14px; color: #333;">{body}</span>
     </div>
