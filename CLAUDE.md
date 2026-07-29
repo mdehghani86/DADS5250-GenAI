@@ -117,6 +117,9 @@ Numbers match the numbered markdown sections. This is required in every lab.
 - When a mechanism is introduced (tools/registration, JSON mode, embeddings,
   agents), include a short section explaining the mechanism itself before the
   first code that uses it.
+- **Emojis:** lab markdown DOES use a tasteful emoji on each section header
+  (course style, like the old AppliedGenAI labs), one per header, not clutter.
+  (The global "no emojis" rule applies to UI / marketing pages, not lab notebooks.)
 
 ## Module Plan (14 modules, 4 phases)
 
