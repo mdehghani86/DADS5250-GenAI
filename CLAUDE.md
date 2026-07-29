@@ -87,6 +87,18 @@ The key is resolved by `_get_secret()`: Colab Secret (`OPENAI_API_KEY`) first,
 then an environment variable, then a hidden `getpass` prompt so a student can
 enter it directly without Colab Secrets.
 
+**Every content code cell** opens with a boxed banner header that carries the
+numbered section it belongs to, e.g.
+
+```
+# ==========================================================
+# 3. Compute the indicators: returns, SMA(20/50), RSI(14)
+# ==========================================================
+```
+
+and important lines carry short inline comments explaining what is happening.
+Numbers match the numbered markdown sections. This is required in every lab.
+
 ## Module Plan (14 modules, 4 phases)
 
 | Phase | Modules | Focus |
