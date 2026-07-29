@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M12: AI Platforms — Google A2A & OpenAI Agents SDK</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent: #0055D4;
+  --navy: #001A70;
+  --accent-light: rgba(0,85,212,0.08);
+  --accent-border: rgba(0,85,212,0.15);
+  --text: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --glass-bg: rgba(255,255,255,0.72);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-shadow: 0 8px 32px rgba(0,0,0,0.06);
+  --code-bg: #1e293b;
+  --video-bg: #0f172a;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  font-family: 'Outfit', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+#progress-bar {
+  position: fixed; top: 0; left: 0; height: 3px;
+  background: var(--accent);
+  transition: width 0.4s ease;
+  z-index: 1000;
+}
+
+#top-bar {
+  position: fixed; top: 3px; left: 0; right: 0;
+  height: 48px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0,85,212,0.06);
+  z-index: 999;
+  font-size: 0.82rem;
+}
+#top-bar .module-title { color: var(--text-secondary); font-weight: 500; }
+#top-bar .page-info { display: flex; align-items: center; gap: 16px; }
+#top-bar .page-counter { color: var(--text-muted); font-weight: 500; font-variant-numeric: tabular-nums; }
+#top-bar .total-time {
+  color: var(--accent); font-weight: 600; font-size: 0.75rem;
+  background: var(--accent-light); padding: 3px 10px; border-radius: 6px;
+}
+
+#pages-container {
+  position: fixed;
+  top: 51px; left: 0; right: 0; bottom: 0;
+  overflow: hidden;
+}
+
+.page {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 48px 24px 180px;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.45s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.35s ease;
+  will-change: transform, opacity;
+}
+.page[data-state="active"] { transform: translateX(0); opacity: 1; pointer-events: auto; }
+.page[data-state="left"]   { transform: translateX(-100%); opacity: 0; pointer-events: none; }
+.page[data-state="right"]  { transform: translateX(100%); opacity: 0; pointer-events: none; }
+.page[data-state="hidden"] { display: none; }
+
+.page-inner { width: 100%; max-width: 900px; }
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius);
+  box-shadow: var(--glass-shadow);
+  padding: 40px;
+}
+.glass-sm {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.04);
+  padding: 24px;
+}
+
+.page-label {
+  display: inline-block;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-light);
+  padding: 4px 12px; border-radius: 6px;
+  margin-bottom: 16px;
+}
+h1 { font-size: 2.4rem; font-weight: 800; line-height: 1.15; color: var(--navy); margin-bottom: 12px; }
+h2 { font-size: 1.6rem; font-weight: 700; line-height: 1.25; color: var(--navy); margin-bottom: 10px; }
+h3 { font-size: 1.15rem; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+.subtitle { font-size: 1.05rem; color: var(--text-secondary); line-height: 1.6; }
+
+.video-wrapper { display: flex; justify-content: center; margin: 28px 0 24px; }
+.video-placeholder {
+  position: relative;
+  width: 100%; max-width: 640px; margin: 0 auto;
+  aspect-ratio: 16/9;
+  background: var(--video-bg);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; cursor: pointer;
+  transition: box-shadow var(--transition);
+}
+.video-placeholder:hover { box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
+.vp-center { text-align: center; }
+.vp-play { opacity: 0.7; transition: opacity 0.2s; }
+.video-placeholder:hover .vp-play { opacity: 1; }
+.vp-title { color: rgba(255,255,255,0.7); font-size: 0.85rem; margin-top: 12px; font-weight: 400; }
+.vp-badges { position: absolute; top: 10px; left: 10px; display: flex; gap: 6px; }
+.vp-badge {
+  font-size: 0.6rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.vp-badge-type { background: rgba(0,85,212,0.3); color: #93c5fd; }
+.vp-badge-dur { background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+
+/* Embedded YouTube */
+.yt-embed {
+  position: relative; width: 100%; max-width: 640px; margin: 0 auto;
+  aspect-ratio: 16/9; border-radius: 12px; overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,0,0,0.18);
+  border: 1px solid var(--accent-border);
+}
+.yt-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.yt-caption { text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 12px; }
+.yt-caption a { color: var(--accent); text-decoration: none; }
+.yt-caption a:hover { text-decoration: underline; }
+
+.info-grid { display: grid; gap: 16px; margin: 20px 0; }
+.info-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.info-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 768px) { .info-grid.cols-3, .info-grid.cols-2 { grid-template-columns: 1fr; } }
+.info-card {
+  background: var(--glass-bg); backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius-sm);
+  padding: 24px; text-align: center;
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.info-card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+.info-card .icon { font-size: 2rem; margin-bottom: 10px; display: block; }
+.info-card h3 { font-size: 1rem; margin-bottom: 6px; }
+.info-card p { font-size: 0.82rem; color: var(--text-secondary); line-height: 1.5; }
+
+.info-table {
+  width: 100%; border-collapse: collapse; margin: 16px 0; font-size: 0.85rem;
+}
+.info-table th {
+  background: var(--navy); color: #fff;
+  padding: 10px 16px; text-align: left; font-weight: 600;
+}
+.info-table th:first-child { border-radius: 8px 0 0 0; }
+.info-table th:last-child { border-radius: 0 8px 0 0; }
+.info-table td { padding: 10px 16px; border-bottom: 1px solid rgba(0,85,212,0.08); }
+.info-table tr:last-child td:first-child { border-radius: 0 0 0 8px; }
+.info-table tr:last-child td:last-child { border-radius: 0 0 8px 0; }
+.info-table tbody tr { background: rgba(255,255,255,0.6); }
+.info-table tbody tr:hover { background: rgba(0,85,212,0.04); }
+.info-table td:first-child { font-weight: 600; color: var(--navy); }
+
+.bullet-list { list-style: none; padding: 0; margin: 16px 0; }
+.bullet-list li {
+  position: relative; padding: 8px 0 8px 28px;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.bullet-list li::before {
+  content: ''; position: absolute; left: 0; top: 16px;
+  width: 8px; height: 8px; background: var(--accent); border-radius: 50%;
+}
+
+.reading-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 0.75rem; font-weight: 600;
+  color: #10b981; background: rgba(16,185,129,0.08);
+  padding: 5px 14px; border-radius: 6px; margin-bottom: 20px;
+}
+.reading-badge svg { width: 14px; height: 14px; }
+
+.reading-body { max-width: 760px; margin: 0 auto; }
+.reading-body p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 16px; }
+.reading-body h3 { font-size: 1.15rem; font-weight: 700; color: var(--navy); margin: 32px 0 12px; }
+.reading-body .lead { font-size: 1.05rem; color: var(--text); line-height: 1.7; margin-bottom: 20px; }
+
+.quote-block {
+  border-left: 3px solid var(--accent); padding: 16px 24px; margin: 20px 0;
+  background: rgba(0,85,212,0.03); border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.quote-block p { font-size: 1.15rem; font-weight: 500; font-style: italic; color: var(--text); line-height: 1.6; }
+
+.sep { height: 1px; background: rgba(0,85,212,0.08); margin: 24px 0; }
+
+.end-card {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(0,85,212,0.06), rgba(0,26,112,0.12));
+  border: 1px solid var(--accent-border); border-radius: var(--radius-sm);
+  padding: 16px 32px; margin-top: 20px;
+}
+.end-card span { font-size: 0.9rem; font-weight: 600; color: var(--accent); }
+
+.time-breakdown { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
+@media (max-width: 600px) { .time-breakdown { grid-template-columns: 1fr; } }
+.time-item {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm); padding: 16px; text-align: center;
+}
+.time-item .time-val { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+.time-item .time-label { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+.meta-row { display: flex; gap: 16px; flex-wrap: wrap; margin: 12px 0; font-size: 0.8rem; color: var(--text-muted); }
+.meta-row .meta-item { display: flex; align-items: center; gap: 4px; }
+
+.takeaway-list { list-style: none; padding: 0; margin: 16px 0; }
+.takeaway-list li {
+  display: flex; align-items: flex-start; gap: 12px; padding: 10px 0;
+  font-size: 0.92rem; color: var(--text-secondary); line-height: 1.5;
+}
+.takeaway-list li .tk-icon {
+  width: 28px; height: 28px; flex-shrink: 0; border-radius: 50%;
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.takeaway-list li .tk-icon svg { width: 14px; height: 14px; stroke: var(--accent); fill: none; stroke-width: 2; }
+
+/* -- Figures (live HTML/CSS diagrams) -- */
+.figure {
+  background: #fff; border: 1px solid var(--accent-border);
+  border-radius: 12px; padding: 22px 20px; margin: 22px 0;
+}
+.figure .fig-cap { font-size: 0.74rem; color: var(--text-muted); margin-top: 14px; font-style: italic; text-align: center; }
+
+.flow { display: flex; align-items: stretch; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.node {
+  flex: 1; min-width: 130px; background: var(--accent-light);
+  border: 1px solid var(--accent-border); border-radius: 10px; padding: 12px 14px; text-align: center;
+}
+.node b { display: block; color: var(--navy); font-size: 0.92rem; margin-bottom: 3px; }
+.node span { font-size: 0.76rem; color: var(--text-muted); line-height: 1.4; }
+.node.dark { background: var(--navy); border-color: var(--navy); }
+.node.dark b { color: #fff; }
+.node.dark span { color: #cbd5e1; }
+.arrow { display: flex; align-items: center; color: var(--accent); font-weight: 700; font-size: 1.3rem; }
+
+.two-agent { display: flex; gap: 16px; align-items: center; justify-content: center; flex-wrap: wrap; }
+.agentbox {
+  background: #fff; border: 2px solid var(--accent); border-radius: 12px;
+  padding: 14px 20px; text-align: center; min-width: 150px;
+}
+.agentbox b { color: var(--navy); display: block; font-size: 0.95rem; }
+.agentbox small { color: var(--text-muted); display: block; font-size: 0.72rem; margin-top: 2px; }
+.bus { background: var(--navy); color: #fff; padding: 10px 18px; border-radius: 20px; font-size: 0.82rem; font-weight: 600; }
+
+.stepflow { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; align-items: stretch; }
+.step {
+  flex: 1; min-width: 120px; background: #fff; border: 1px solid var(--accent-border);
+  border-radius: 10px; padding: 12px; text-align: center; position: relative;
+}
+.step .snum {
+  width: 22px; height: 22px; border-radius: 50%; background: var(--accent); color: #fff;
+  font-size: 0.72rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 6px;
+}
+.step b { display: block; color: var(--navy); font-size: 0.86rem; }
+.step span { font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 2px; }
+.step code { font-family: 'JetBrains Mono', monospace; font-size: 0.64rem; color: var(--accent); }
+
+.code-card { background: var(--code-bg); border-radius: 10px; padding: 18px 22px; overflow-x: auto; margin: 16px 0; }
+.code-card pre { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.7; color: #e2e8f0; margin: 0; white-space: pre; }
+.code-card .kw { color: #93c5fd; } .code-card .str { color: #86efac; } .code-card .fn { color: #fde68a; } .code-card .cm { color: #64748b; }
+
+.callout {
+  background: rgba(0,85,212,0.05); border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm); padding: 16px 20px; margin: 18px 0;
+}
+.callout p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+.callout strong { color: var(--navy); }
+
+code.inline {
+  font-family: 'JetBrains Mono', monospace; font-size: 0.82rem;
+  background: rgba(0,85,212,0.06); padding: 2px 8px; border-radius: 5px; color: var(--accent);
+}
+
+.ref-list { list-style: none; padding: 0; margin: 8px 0; }
+.ref-list li {
+  padding: 12px 0; border-bottom: 1px solid rgba(0,85,212,0.08);
+  font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;
+}
+.ref-list li:last-child { border-bottom: none; }
+.ref-list a { color: var(--accent); text-decoration: none; word-break: break-word; }
+.ref-list a:hover { text-decoration: underline; }
+.ref-list .ref-title { font-weight: 600; color: var(--navy); }
+
+:fullscreen { background: var(--bg); }
+
+@media print {
+  #top-bar, #nav-bar, #progress-bar, #sidebar, #sidebar-toggle { display: none !important; }
+  #pages-container { position: static; overflow: visible; left: 0 !important; }
+  .page { position: static !important; display: block !important; opacity: 1 !important; transform: none !important; page-break-after: always; padding: 24px; }
+  .page[data-state] { transform: none !important; opacity: 1 !important; pointer-events: auto !important; display: block !important; }
+}
+
+@media (max-width: 768px) {
+  h1 { font-size: 1.8rem; }
+  h2 { font-size: 1.3rem; }
+  .glass { padding: 24px; }
+  .video-placeholder { width: 100%; }
+}
+
+/* -- Sidebar -- */
+#sidebar {
+  position: fixed; top: 51px; left: 0; bottom: 0; width: 230px;
+  background: rgba(255,255,255,0.9); backdrop-filter: blur(20px);
+  border-right: 1px solid rgba(148,163,184,0.15);
+  overflow-y: auto; padding: 14px 0; z-index: 800;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+#sidebar.collapsed { transform: translateX(-230px); opacity: 0; pointer-events: none; }
+#sidebar-toggle {
+  position: fixed; top: 58px; left: 8px; width: 32px; height: 32px;
+  border-radius: 8px; background: var(--glass-bg);
+  border: 1px solid rgba(148,163,184,0.25); cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 850; transition: left 0.3s ease, background 0.2s;
+  color: var(--text-muted); font-size: 0.8rem;
+}
+#sidebar-toggle:hover { background: rgba(0,85,212,0.06); color: var(--accent); }
+#sidebar.collapsed ~ #sidebar-toggle { left: 8px; }
+body:not(.sidebar-hidden) #sidebar-toggle { left: 238px; }
+
+.sb-title { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-muted); padding: 0 14px 8px; }
+.sb-item {
+  display: flex; align-items: flex-start; gap: 10px; padding: 6px 14px;
+  cursor: pointer; transition: background 0.15s; position: relative;
+}
+.sb-item:hover { background: rgba(0,85,212,0.05); }
+.sb-item.active { background: rgba(0,85,212,0.07); border-left: 2px solid var(--accent); }
+.sb-item.active .sb-dot { background: var(--accent); box-shadow: 0 0 0 3px rgba(0,85,212,0.15); }
+.sb-item.active .sb-label { color: var(--text); font-weight: 600; }
+.sb-item.visited .sb-dot { background: #10b981; }
+.sb-item::before {
+  content: ''; position: absolute; left: 18px; top: 0; bottom: 0;
+  width: 2px; background: rgba(148,163,184,0.15);
+}
+.sb-item:first-child::before { top: 50%; }
+.sb-item:last-child::before { bottom: 50%; }
+.sb-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: rgba(148,163,184,0.3); flex-shrink: 0; margin-top: 5px;
+  position: relative; z-index: 1; transition: all 0.2s;
+}
+.sb-type {
+  font-size: 0.5rem; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.04em; padding: 1px 4px 1px 16px; border-radius: 3px;
+  display: inline-block; margin-bottom: 2px; position: relative;
+}
+.sb-type svg.sb-icon { position: absolute; left: 3px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; }
+.sb-type-video { background: rgba(0,85,212,0.1); color: var(--accent); }
+.sb-type-content { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-type-reading { background: rgba(16,185,129,0.1); color: #10b981; }
+.sb-label { font-size: 0.72rem; color: var(--text-secondary); line-height: 1.25; transition: color 0.2s; }
+.sb-dur { font-size: 0.55rem; color: var(--text-muted); margin-top: 1px; }
+.sb-section {
+  font-size: 0.58rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.06em; color: var(--accent); padding: 12px 14px 4px;
+  margin-top: 4px; border-top: 1px solid rgba(0,85,212,0.08);
+}
+.sb-section:first-of-type { border-top: none; margin-top: 0; }
+
+body:not(.sidebar-hidden) #pages-container { left: 230px; }
+body:not(.sidebar-hidden) #nav-bar { left: 230px; }
+body.sidebar-hidden #pages-container { left: 0; }
+body.sidebar-hidden #nav-bar { left: 0; }
+#pages-container { transition: left 0.3s ease; }
+#nav-bar { transition: left 0.3s ease; }
+
+@media (max-width: 900px) {
+  #sidebar { width: 220px; }
+  body:not(.sidebar-hidden) #pages-container { left: 220px; }
+  body:not(.sidebar-hidden) #nav-bar { left: 220px; }
+  body:not(.sidebar-hidden) #sidebar-toggle { left: 228px; }
+}
+
+#nav-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 80px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 24px;
+  background: rgba(240,244,250,0.88); backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(0,85,212,0.06); z-index: 999;
+}
+.nav-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 24px; border-radius: 12px;
+  font-family: 'Outfit', sans-serif; font-size: 0.85rem; font-weight: 600;
+  cursor: pointer; border: none; transition: all var(--transition);
+  min-width: 120px; justify-content: center;
+}
+.nav-btn.prev {
+  background: rgba(255,255,255,0.7); border: 1px solid var(--glass-border);
+  color: var(--text-secondary); backdrop-filter: blur(12px);
+}
+.nav-btn.prev:hover { background: rgba(255,255,255,0.9); color: var(--text); }
+.nav-btn.prev:disabled { opacity: 0.3; cursor: default; }
+.nav-btn.next { background: var(--accent); color: #fff; box-shadow: 0 4px 12px rgba(0,85,212,0.3); }
+.nav-btn.next:hover { background: var(--navy); transform: translateY(-1px); }
+
+#page-dots { display: flex; gap: 8px; align-items: center; }
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(0,85,212,0.2); cursor: pointer;
+  transition: all var(--transition); border: none; padding: 0;
+}
+.dot.active { background: var(--accent); width: 24px; border-radius: 4px; }
+.dot:hover { background: rgba(0,85,212,0.4); }
+</style>
+</head>
+<body>
+
+<div id="progress-bar" style="width: 11.11%"></div>
+
+<a href="../../planning/course-outline.html" class="back-to-outline" style="position:fixed;top:58px;left:8px;z-index:900;font-size:0.7rem;font-weight:600;color:#0055D4;text-decoration:none;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);padding:4px 10px;border-radius:6px;border:1px solid rgba(0,85,212,0.15);">&#8592; Course Outline</a>
+
+<div id="top-bar">
+  <span class="module-title">M12: AI Platforms — Google A2A &amp; OpenAI Agents SDK</span>
+  <div class="page-info">
+    <span class="page-counter" id="page-counter">1 / 9</span>
+    <span class="total-time">Total: ~45 min</span>
+  </div>
+</div>
+
+<!-- Sidebar -->
+<div id="sidebar">
+  <div class="sb-title">Module Progress</div>
+
+  <div class="sb-item active" onclick="goToPage(1)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Welcome</div><div class="sb-dur">Overview</div></div>
+  </div>
+
+  <div class="sb-section">Section 1: The Spark</div>
+  <div class="sb-item" onclick="goToPage(2)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Platforms, Not Just Models</div><div class="sb-dur">~5 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 2: Google A2A</div>
+  <div class="sb-item" onclick="goToPage(3)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">The A2A Protocol</div><div class="sb-dur">~8 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(4)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-video"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>Video</span><div class="sb-label">A2A in Action</div><div class="sb-dur">~15 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 3: OpenAI Agents SDK</div>
+  <div class="sb-item" onclick="goToPage(5)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Four Building Blocks</div><div class="sb-dur">~8 min</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(6)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">The Handoff Pattern</div><div class="sb-dur">~6 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 4: How It Fits</div>
+  <div class="sb-item" onclick="goToPage(7)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">MCP vs A2A vs SDK</div><div class="sb-dur">~5 min</div></div>
+  </div>
+
+  <div class="sb-section">Section 5: Wrap-Up</div>
+  <div class="sb-item" onclick="goToPage(8)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Key Takeaways</div><div class="sb-dur">Review</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(9)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">References &amp; Resources</div><div class="sb-dur">Links</div></div>
+  </div>
+</div>
+
+<button id="sidebar-toggle" onclick="toggleSidebar()" title="Toggle sidebar">&#9776;</button>
+
+<!-- Pages -->
+<div id="pages-container" style="left:230px;">
+
+<!-- PAGE 1: Welcome -->
+<div class="page" data-page="1" data-state="active">
+<div class="page-inner">
+  <div class="glass" style="text-align:center;">
+    <span class="page-label">Module 12 — AI Platforms</span>
+    <h1>Google A2A &amp; the OpenAI Agents SDK</h1>
+
+    <div class="quote-block" style="text-align:left; max-width:640px; margin:20px auto;">
+      <p>"The companies that win in AI are not just building better models. They are building platforms."</p>
+    </div>
+
+    <p class="subtitle" style="max-width:660px; margin:0 auto;">
+      A single model answers a prompt. Real work needs many agents, tools, and systems cooperating.
+      That coordination layer is the platform. This module covers two of them, from two companies with
+      two very different philosophies.
+    </p>
+
+    <div style="text-align:left; max-width:640px; margin:28px auto 0;">
+      <h3>What You Will Learn</h3>
+      <ul class="bullet-list">
+        <li>Why the industry shifted from single models to agent platforms</li>
+        <li>The Google <strong>A2A protocol</strong>: Agent Cards, Tasks, and transport over HTTP, SSE, and JSON-RPC</li>
+        <li>The <strong>OpenAI Agents SDK</strong>: Agents, Tools, Handoffs, and Guardrails</li>
+        <li>How MCP, A2A, and an agent SDK are complementary layers, not competitors</li>
+      </ul>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="max-width:600px; margin:0 auto;">
+      <h3 style="text-align:center; margin-bottom:16px;">Estimated Time: ~45 Minutes</h3>
+      <div class="time-breakdown">
+        <div class="time-item">
+          <div class="time-val">~15</div>
+          <div class="time-label">min Video</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">~27</div>
+          <div class="time-label">min Reading</div>
+        </div>
+        <div class="time-item">
+          <div class="time-val">2</div>
+          <div class="time-label">Labs (separate)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sep"></div>
+
+    <div class="meta-row" style="justify-content:center;">
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 9 pages</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg> Builds on M11: MCP &amp; Claude Code</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 2: The Spark -->
+<div class="page" data-page="2" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+      Section 1 · Reading — ~5 min
+    </span>
+    <h2>The Spark: Platforms, Not Just Models</h2>
+    <div class="reading-body">
+      <p class="lead">Competition drives innovation. In AI, competition drove an entire ecosystem. Google, OpenAI, and Anthropic did not just build better models. They built platforms. And knowing how to work across them is what makes you versatile.</p>
+
+      <p>Think about the arc this course has taken. Early on, you sent a prompt to a model and got an answer back. One request, one response. Then you gave the model tools and memory and turned it into an <em>agent</em> that could act, not just talk. In Module 11 you connected an agent to your tools and data through MCP and drove real work with Claude Code. The natural next step is more than one agent. Once you have several specialized agents, something has to coordinate them, and that coordination layer is the platform.</p>
+
+      <div class="figure">
+        <div class="flow">
+          <div class="node"><b>Model</b><span>answers a prompt</span></div>
+          <div class="arrow">&rarr;</div>
+          <div class="node"><b>Agent</b><span>model + tools + memory</span></div>
+          <div class="arrow">&rarr;</div>
+          <div class="node"><b>Many agents</b><span>coordinate on a task</span></div>
+          <div class="arrow">&rarr;</div>
+          <div class="node dark"><b>Platform</b><span>the layer that connects them</span></div>
+        </div>
+        <div class="fig-cap">Figure 1. The capability ladder: why a coordination layer becomes necessary.</div>
+      </div>
+
+      <h3>Two Problems Every Platform Solves</h3>
+      <p>Strip away the branding and every agent platform is answering one of two questions. The first is <strong>how does an agent reach its tools and data?</strong> That is the problem MCP solved in Module 11: a standard way to plug an agent into files, APIs, and databases. The second is <strong>how do agents reach each other?</strong> When your team builds a research agent and another team builds an analysis agent, in different frameworks, running on different servers, they need a shared way to discover one another and exchange work. That is the problem the Google A2A protocol solves.</p>
+
+      <p>Alongside those connection problems sits a build problem: even with tools and protocols available, you still have to assemble one agent application and get it into production. That is where an agent SDK comes in. The OpenAI Agents SDK gives you a clean Python interface for defining agents, wiring them together, and shipping them with safety checks in place.</p>
+
+      <h3>Two Philosophies</h3>
+      <p>The two platforms in this module reflect two ways of thinking. Google thinks in <strong>protocols</strong>: open standards that let any agent talk to any other agent, regardless of who built it. OpenAI thinks in <strong>SDKs</strong>: a small, opinionated toolkit that lets you build a working multi-agent app fast. Same destination, different roads. By the end of this module you will have seen both, and you will understand when to reach for each.</p>
+
+      <div class="callout">
+        <p><strong>Where this sits.</strong> Module 12 comes right after M11 (MCP and Claude Code) and feeds directly into the Final Project, where you assemble everything into a working system. Keep MCP in mind as you read: it is the third piece of the puzzle we tie together on the "How It Fits" page.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 3: A2A Protocol reading -->
+<div class="page" data-page="3" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+      Section 2 · Reading — ~8 min
+    </span>
+    <h2>The Google A2A Protocol</h2>
+    <div class="reading-body">
+      <p class="lead">A2A stands for Agent-to-Agent. It is an open protocol that Google announced in April 2025 and later donated to the Linux Foundation for vendor-neutral governance. Its job is to let agents built by different teams, in different frameworks, running at different companies, find each other and collaborate.</p>
+
+      <h3>The Problem: Siloed Agents</h3>
+      <p>Right now, if you build an agent in CrewAI, it naturally talks only to other CrewAI agents. If someone else builds an agent in LangGraph, those two systems cannot collaborate without custom glue code written by hand for that one pairing. Multiply that across an enterprise with dozens of teams and you get a combinatorial mess: every new agent needs a bespoke integration with every other agent it should talk to. That does not scale.</p>
+
+      <p>Think about what HTTP did for the web. Before HTTP, every network had its own protocol and browsers could not talk to arbitrary servers. After HTTP, any browser could talk to any server. A2A aims to be that shared layer for AI agents: implement the spec once, and your agent can discover, message, and delegate to any other A2A-compatible agent. Google did not build it alone, either. The protocol launched with more than fifty technology partners, including Salesforce, SAP, LangChain, and CrewAI, and the spec is open for anyone to implement.</p>
+
+      <h3>The Three Building Blocks</h3>
+      <p>A2A has a small surface area. Three concepts carry the whole protocol.</p>
+
+      <div class="figure">
+        <div class="flow">
+          <div class="node"><b>Agent Card</b><span>capabilities + endpoint</span></div>
+          <div class="arrow">+</div>
+          <div class="node"><b>Task</b><span>the work to be done</span></div>
+          <div class="arrow">+</div>
+          <div class="node"><b>Transport</b><span>HTTP · SSE · JSON-RPC</span></div>
+        </div>
+        <div class="fig-cap">Figure 2. The three building blocks of A2A.</div>
+      </div>
+
+      <p>An <strong>Agent Card</strong> is like a business card for an AI agent. It is a JSON document, hosted at a well-known URL, that describes what the agent can do, what inputs it expects, and what authentication it requires. When another agent wants to find a collaborator, it reads the Agent Card first. A <strong>Task</strong> is the unit of work agents exchange: a structured request with a clear goal, sent to a discovered agent. The receiving agent processes it and returns results, either all at once or as a stream of progress updates. The <strong>transport</strong> layer is deliberately built on boring, proven web technology: requests go over plain HTTP, use JSON-RPC 2.0 for structured calls, and use Server-Sent Events (SSE) for streaming. There is nothing exotic here, which is exactly the point. Any engineer who knows web APIs can implement it.</p>
+
+      <h3>The Flow, End to End</h3>
+      <div class="figure">
+        <div class="stepflow">
+          <div class="step"><div class="snum">1</div><b>Discover</b><span>read Agent Card</span><code>/.well-known/agent.json</code></div>
+          <div class="step"><div class="snum">2</div><b>Send Task</b><span>structured request</span><code>POST /tasks</code></div>
+          <div class="step"><div class="snum">3</div><b>Stream</b><span>progress updates</span><code>SSE</code></div>
+          <div class="step"><div class="snum">4</div><b>Result</b><span>final output</span><code>done</code></div>
+        </div>
+        <div class="fig-cap">Figure 3. The A2A flow: discover the Agent Card, send a Task, receive streamed updates, get the result.</div>
+      </div>
+
+      <p>Streaming matters more than it looks. Many agent tasks take real time, searching, reasoning, calling other systems, and the calling agent needs to know what is happening rather than staring at a frozen request. SSE lets the worker agent report progress as it goes.</p>
+
+      <h3>Why It Matters</h3>
+      <p>The real value of A2A is interoperability. Your CrewAI research agent publishes an Agent Card. Someone else's LangGraph analysis agent reads that card, sends a Task, and gets results back. Neither team wrote code specific to the other. The frameworks stop mattering; the protocol handles the translation. This is how enterprise AI is likely to work at scale: not one company building every agent, but many teams building specialized agents that discover and collaborate through a shared standard.</p>
+
+      <div class="figure">
+        <div class="two-agent">
+          <div class="agentbox"><b>HR Agent</b><small>Vendor A · CrewAI</small></div>
+          <div class="bus">A2A protocol</div>
+          <div class="agentbox"><b>Finance Agent</b><small>Vendor B · LangGraph</small></div>
+        </div>
+        <div class="fig-cap">Figure 4. Two agents from different vendors and frameworks coordinating through A2A. No custom glue code required.</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 4: Video -->
+<div class="page" data-page="4" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Section 2 · Video — ~15 min</span>
+    <h2>Watch: A2A in Action</h2>
+    <p class="subtitle">A clear technical walkthrough of Google's Agent2Agent protocol — what it is, how Agent Cards and Tasks work, and how it sits next to MCP. Watch this after the reading above so the vocabulary already makes sense.</p>
+
+    <div class="video-wrapper" style="flex-direction:column;">
+      <div class="yt-embed">
+        <iframe
+          src="https://www.youtube.com/embed/rAeqTaYj_aI"
+          title="Google's NEW Agent2Agent Protocol"
+          loading="lazy"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen></iframe>
+      </div>
+      <div class="yt-caption">
+        "Google's NEW Agent2Agent Protocol" · Sam Witteveen ·
+        <a href="https://www.youtube.com/watch?v=rAeqTaYj_aI" target="_blank" rel="noopener">Open on YouTube</a>
+      </div>
+    </div>
+
+    <div class="callout">
+      <p><strong>Watch for these three moments:</strong> the Agent Card as a discovery document, the difference between A2A (agent-to-agent) and MCP (agent-to-tools), and how streaming task updates keep a long-running job transparent to the calling agent.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 5: OpenAI Agents SDK reading -->
+<div class="page" data-page="5" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+      Section 3 · Reading — ~8 min
+    </span>
+    <h2>The OpenAI Agents SDK</h2>
+    <div class="reading-body">
+      <p class="lead">Where A2A is a protocol for connecting agents, the OpenAI Agents SDK is a toolkit for building one. It is a lightweight Python framework (the production successor to OpenAI's experimental "Swarm") with a deliberately tiny surface area: a small number of powerful primitives that you compose into whatever you need.</p>
+
+      <h3>Why Minimalism Is the Point</h3>
+      <p>Earlier agent frameworks asked you to learn a large vocabulary of concepts before you could ship anything. The Agents SDK takes the opposite bet. It gives developers just a few primitives and leans on plain Python for everything else, so the learning curve is shallow and the code stays readable. If you know Python functions and classes, you already know most of what you need.</p>
+
+      <h3>Four Building Blocks</h3>
+      <div class="figure">
+        <div class="flow">
+          <div class="node dark"><b>Agent</b><span>model + instructions</span></div>
+          <div class="arrow">&harr;</div>
+          <div class="node"><b>Tools</b><span>call functions</span></div>
+          <div class="arrow">&harr;</div>
+          <div class="node"><b>Handoffs</b><span>delegate to a specialist</span></div>
+          <div class="arrow">&harr;</div>
+          <div class="node"><b>Guardrails</b><span>validate in / out</span></div>
+        </div>
+        <div class="fig-cap">Figure 5. The anatomy of an OpenAI Agents SDK application.</div>
+      </div>
+
+      <p>An <strong>Agent</strong> is a language model configured with instructions and a set of tools. The instructions shape its behavior; the tools give it the ability to act. A <strong>Tool</strong> is simply a Python function the agent is allowed to call, decorated so the SDK knows its name and arguments. When the agent decides it needs to search, calculate, or fetch something, it calls the matching tool and works with the result.</p>
+
+      <p>A <strong>Handoff</strong> lets one agent delegate to another. Rather than one giant do-everything agent, you build small specialists, a researcher, a writer, an analyst, and let a coordinating agent transfer control to the right one at runtime. <strong>Guardrails</strong> are input and output checks that run alongside the agent and fail fast. An input guardrail can reject an off-topic or unsafe request before the agent spends tokens on it; an output guardrail validates the final answer before it reaches the user. Guardrails apply to the boundaries of a run: input guardrails to the first agent that receives the request, output guardrails to the agent that produces the final answer.</p>
+
+      <h3>The Smallest Complete Example</h3>
+      <p>Because the surface area is so small, a working agent is only a few lines. You define an agent with a name, instructions, and tools, then hand it to the Runner, the execution engine that runs the agentic loop and returns a result.</p>
+
+      <div class="code-card"><pre><span class="kw">from</span> agents <span class="kw">import</span> Agent, Runner, function_tool
+
+<span class="cm"># A tool is just a decorated Python function</span>
+<span class="fn">@function_tool</span>
+<span class="kw">def</span> <span class="fn">search</span>(query: str) -> str:
+    <span class="str">"""Search the web for a query and return results."""</span>
+    <span class="kw">return</span> run_search(query)
+
+<span class="cm"># An Agent = model + instructions + tools</span>
+agent = <span class="fn">Agent</span>(
+    name=<span class="str">"Researcher"</span>,
+    instructions=<span class="str">"Find and summarize recent, credible sources."</span>,
+    tools=[search],
+)
+
+<span class="cm"># The Runner drives the loop and returns the result</span>
+result = Runner.<span class="fn">run_sync</span>(agent, <span class="str">"Find recent papers on the A2A protocol"</span>)
+<span class="fn">print</span>(result.final_output)</pre></div>
+
+      <div class="callout">
+        <p><strong>Runner is the fourth verb.</strong> Agent, Tool, and Handoff describe <em>what</em> your system is. The Runner is <em>how</em> it executes: it takes an agent and an input, runs the tool-calling and handoff loop until the task is done, and hands you back the final output.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 6: Handoff pattern -->
+<div class="page" data-page="6" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+      Section 3 · Reading — ~6 min
+    </span>
+    <h2>The Handoff Pattern</h2>
+    <div class="reading-body">
+      <p class="lead">Handoffs are the SDK's signature idea, and the reason it feels different from earlier multi-agent frameworks. Instead of choreographing an entire crew up front, each agent simply declares which other agents it can hand off to, and the routing happens dynamically at runtime.</p>
+
+      <h3>A Triage Agent Routes the Work</h3>
+      <p>The canonical pattern is a triage agent that receives every user request and decides which specialist should handle it. A research agent searches the web. A writing agent drafts prose. An analyst agent runs calculations. The triage agent inspects the request and hands off to the right specialist. The Runner manages the execution loop until the task is complete.</p>
+
+      <div class="figure" style="background:#0f172a; border-color:#1e293b;">
+        <div class="flow">
+          <div class="node dark" style="min-width:100%; background:#0055D4; border-color:#0055D4;"><b>Triage Agent</b><span>reads the request, routes it</span></div>
+        </div>
+        <div class="flow" style="margin-top:12px;">
+          <div class="node" style="background:rgba(0,85,212,0.15); border-color:#0055D4;"><b style="color:#93c5fd;">Researcher</b><span style="color:#94a3b8;">tools: [search]</span></div>
+          <div class="node" style="background:rgba(16,185,129,0.15); border-color:#10b981;"><b style="color:#34d399;">Writer</b><span style="color:#94a3b8;">tools: [draft]</span></div>
+          <div class="node" style="background:rgba(245,158,11,0.15); border-color:#f59e0b;"><b style="color:#fde68a;">Analyst</b><span style="color:#94a3b8;">tools: [calculate]</span></div>
+        </div>
+        <div class="fig-cap" style="color:#94a3b8;">Figure 6. A triage agent hands off to whichever specialist fits the request. Routing is decided at runtime, not hard-wired.</div>
+      </div>
+
+      <h3>Why Dynamic Routing Beats a Fixed Crew</h3>
+      <p>In a fixed-crew framework you specify the whole workflow ahead of time: this agent, then that agent, then that one. That works when the path is always the same. But real requests are messy. Some need research, some need only formatting, some need a calculation and nothing else. With handoffs, the triage agent decides at runtime which specialist gets the job, so the same system handles a wide range of requests without you enumerating every path.</p>
+
+      <div class="code-card"><pre><span class="kw">from</span> agents <span class="kw">import</span> Agent, Runner
+
+researcher = <span class="fn">Agent</span>(name=<span class="str">"Researcher"</span>, instructions=<span class="str">"Search and summarize."</span>, tools=[search])
+writer     = <span class="fn">Agent</span>(name=<span class="str">"Writer"</span>,     instructions=<span class="str">"Draft clear prose."</span>)
+
+<span class="cm"># The triage agent declares who it can hand off to</span>
+triage = <span class="fn">Agent</span>(
+    name=<span class="str">"Triage"</span>,
+    instructions=<span class="str">"Route research questions to the Researcher, writing to the Writer."</span>,
+    handoffs=[researcher, writer],
+)
+
+result = Runner.<span class="fn">run_sync</span>(triage, <span class="str">"Summarize the A2A spec, then write a one-paragraph intro."</span>)</pre></div>
+
+      <div class="callout">
+        <p><strong>Handoffs stay inside one run.</strong> Control moves from agent to agent, but it is still a single execution. That is why the input guardrail applies only to the first agent in the chain and the output guardrail only to the agent that produces the final answer, a useful detail when you start adding safety checks.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 7: How it fits (clarifier) -->
+<div class="page" data-page="7" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Section 4 · The Clarifier</span>
+    <h2>How the Pieces Fit: MCP vs A2A vs an Agent SDK</h2>
+    <div class="reading-body">
+      <p class="lead">Students confuse these three constantly, because the names all sound like "AI agent glue." They are not competitors. They solve different problems and are designed to work together. One small table fixes the confusion for good.</p>
+
+      <div class="figure">
+        <table class="info-table">
+          <thead><tr><th>Layer</th><th>Connects</th><th>Example in this course</th></tr></thead>
+          <tbody>
+            <tr><td>MCP</td><td>an agent to its tools and data</td><td>Claude Code + MCP (Module 11)</td></tr>
+            <tr><td>A2A</td><td>one agent to another agent</td><td>Google A2A (this module)</td></tr>
+            <tr><td>Agent SDK</td><td>builds a single agent application</td><td>OpenAI Agents SDK (this module)</td></tr>
+          </tbody>
+        </table>
+        <div class="fig-cap">Figure 7. Complementary layers, not rivals. This is the link between M11 (MCP) and M12.</div>
+      </div>
+
+      <h3>Read It Left to Right</h3>
+      <p><strong>MCP is the agent-to-tools layer.</strong> It answers "how does my agent reach files, APIs, and databases?" You met it in Module 11. An agent with MCP can read a spreadsheet, query a database, or hit an API through a standard interface.</p>
+
+      <p><strong>A2A is the agent-to-agent layer.</strong> It answers "how does my agent reach another agent that someone else built?" Different question entirely. MCP plugs an agent into <em>tools</em>; A2A plugs an agent into <em>other agents</em>. The two are complementary by design, Google explicitly positioned A2A as a companion to Anthropic's MCP, not a replacement.</p>
+
+      <p><strong>An agent SDK is the build layer.</strong> It answers "how do I actually assemble one working agent application and ship it?" The OpenAI Agents SDK gives you Agents, Tools, Handoffs, and Guardrails to construct that app. Inside that app, individual agents might use MCP to reach tools, and the whole app might expose an A2A Agent Card so other systems can call it.</p>
+
+      <div class="callout">
+        <p><strong>The mental model:</strong> an <em>agent SDK</em> builds the agent, <em>MCP</em> gives that agent hands to use tools, and <em>A2A</em> gives it a voice to talk to other agents. A production system often uses all three at once.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 8: Wrap-up / takeaways -->
+<div class="page" data-page="8" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Section 5 · Wrap-Up</span>
+    <h2>Module 12 — Key Takeaways</h2>
+
+    <ul class="takeaway-list">
+      <li>
+        <div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>Platforms, not just models.</strong> The winners in AI build the coordination layer that connects agents, tools, and systems, and being able to work across those platforms is what makes you versatile.</div>
+      </li>
+      <li>
+        <div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>A2A is the HTTP of agents.</strong> An open protocol (April 2025, now under the Linux Foundation) built on Agent Cards, Tasks, and transport over HTTP, SSE, and JSON-RPC, so agents from different vendors and frameworks can discover and collaborate.</div>
+      </li>
+      <li>
+        <div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>The OpenAI Agents SDK has four building blocks.</strong> Agents, Tools, Handoffs, and Guardrails, driven by the Runner. Small surface area, fast to a working multi-agent app.</div>
+      </li>
+      <li>
+        <div class="tk-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+        <div><strong>MCP, A2A, and an agent SDK are complementary.</strong> Agent-to-tools, agent-to-agent, and build-one-app. Real systems use all three together.</div>
+      </li>
+    </ul>
+
+    <div class="sep"></div>
+
+    <div class="glass-sm" style="background:rgba(0,85,212,0.05); border:1px solid rgba(0,85,212,0.15);">
+      <h3 style="color:var(--navy); font-size:0.95rem;">What You Will Do in the Labs</h3>
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Two hands-on lab walkthroughs accompany this module: an A2A lab where you create an Agent Card and exchange a Task between two agents, and an OpenAI Agents SDK lab where you define agents, wire a handoff, and run a multi-agent pipeline. Submit both notebooks via Canvas with screenshots of your working output.</p>
+    </div>
+
+    <div class="sep"></div>
+
+    <div style="text-align:center;">
+      <div class="end-card" style="padding:20px 40px;">
+        <p style="font-size:0.78rem; color:var(--text-muted); margin-bottom:6px; font-weight:500;">NEXT UP</p>
+        <span style="font-size:1rem;">M13: Fine-Tuning &amp; Deployment &rarr; Final Project</span>
+        <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:8px; font-weight:400; font-style:italic;">"Two platforms. Two philosophies. Now you have built with both."</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 9: References -->
+<div class="page" data-page="9" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="reading-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>
+      References &amp; Resources
+    </span>
+    <h2>References &amp; Resources</h2>
+    <p class="subtitle" style="margin-bottom:8px;">Every link below is an authoritative primary source and was verified to resolve. Start with the two official docs, then explore the deeper references.</p>
+
+    <h3 style="margin-top:24px; color:var(--navy);">Google A2A Protocol</h3>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-title">Announcing the Agent2Agent Protocol (A2A)</span> — Google Developers Blog, April 9, 2025. The official launch announcement.<br>
+        <a href="https://developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability/" target="_blank" rel="noopener">developers.googleblog.com/en/a2a-a-new-era-of-agent-interoperability</a>
+      </li>
+      <li>
+        <span class="ref-title">Agent2Agent (A2A)</span> — Overview, building blocks, and Linux Foundation governance.<br>
+        <a href="https://en.wikipedia.org/wiki/Agent2Agent" target="_blank" rel="noopener">en.wikipedia.org/wiki/Agent2Agent</a>
+      </li>
+    </ul>
+
+    <h3 style="margin-top:24px; color:var(--navy);">OpenAI Agents SDK</h3>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-title">OpenAI Agents SDK — Documentation</span> — Official docs. Start here for Agents, Tools, and the Runner.<br>
+        <a href="https://openai.github.io/openai-agents-python/" target="_blank" rel="noopener">openai.github.io/openai-agents-python</a>
+      </li>
+      <li>
+        <span class="ref-title">OpenAI Agents SDK — Handoffs guide</span> — How agents delegate to specialist agents.<br>
+        <a href="https://openai.github.io/openai-agents-python/handoffs/" target="_blank" rel="noopener">openai.github.io/openai-agents-python/handoffs</a>
+      </li>
+      <li>
+        <span class="ref-title">OpenAI Agents SDK — Guardrails guide</span> — Input and output validation that runs in parallel and fails fast.<br>
+        <a href="https://openai.github.io/openai-agents-python/guardrails/" target="_blank" rel="noopener">openai.github.io/openai-agents-python/guardrails</a>
+      </li>
+    </ul>
+
+    <h3 style="margin-top:24px; color:var(--navy);">Video</h3>
+    <ul class="ref-list">
+      <li>
+        <span class="ref-title">Google's NEW Agent2Agent Protocol</span> — Sam Witteveen (embedded in Section 2). A technical walkthrough of A2A.<br>
+        <a href="https://www.youtube.com/watch?v=rAeqTaYj_aI" target="_blank" rel="noopener">youtube.com/watch?v=rAeqTaYj_aI</a>
+      </li>
+    </ul>
+
+    <div class="sep"></div>
+    <p class="subtitle" style="font-size:0.85rem; color:var(--text-muted);">DADS 5250 · Generative AI in Practice · Dr. Mohammad Dehghani · Northeastern University</p>
+  </div>
+</div>
+</div>
+
+</div><!-- /pages-container -->
+
+<div id="nav-bar">
+  <button class="nav-btn prev" id="btn-prev" onclick="prevPage()" disabled>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+    Previous
+  </button>
+  <div id="page-dots"></div>
+  <button class="nav-btn next" id="btn-next" onclick="nextPage()">
+    Next
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>
+  </button>
+</div>
+
+<script>
+(function() {
+  const TOTAL = 9;
+  let current = parseInt(localStorage.getItem('m12mod_page') || '1', 10);
+  if (current < 1 || current > TOTAL) current = 1;
+
+  const pages = document.querySelectorAll('.page');
+  const progressBar = document.getElementById('progress-bar');
+  const pageCounter = document.getElementById('page-counter');
+  const btnPrev = document.getElementById('btn-prev');
+  const btnNext = document.getElementById('btn-next');
+  const dotsContainer = document.getElementById('page-dots');
+
+  for (let i = 1; i <= TOTAL; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'dot';
+    dot.setAttribute('aria-label', 'Go to page ' + i);
+    dot.addEventListener('click', () => goToPage(i));
+    dotsContainer.appendChild(dot);
+  }
+
+  function render(oldPage, direction) {
+    pages.forEach((p) => {
+      const idx = parseInt(p.getAttribute('data-page'), 10);
+      if (idx === current) {
+        p.style.display = ''; void p.offsetWidth;
+        p.setAttribute('data-state', 'active');
+      } else if (idx === oldPage && direction) {
+        p.setAttribute('data-state', direction === 'next' ? 'left' : 'right');
+        setTimeout(() => { p.style.display = 'none'; }, 500);
+      } else {
+        p.style.display = 'none';
+        p.setAttribute('data-state', idx < current ? 'left' : 'right');
+      }
+    });
+    progressBar.style.width = ((current / TOTAL) * 100) + '%';
+    pageCounter.textContent = current + ' / ' + TOTAL;
+    btnPrev.disabled = (current === 1);
+    if (current < TOTAL) {
+      btnNext.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 6 15 12 9 18"/></svg>';
+    } else {
+      btnNext.innerHTML = 'Done <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>';
+    }
+    const dots = dotsContainer.querySelectorAll('.dot');
+    dots.forEach((d, i) => { d.classList.toggle('active', i + 1 === current); });
+    const activePage = document.querySelector('.page[data-state="active"]');
+    if (activePage) activePage.scrollTop = 0;
+    localStorage.setItem('m12mod_page', current.toString());
+    updateSidebar(current);
+  }
+
+  function nextPage() {
+    if (current >= TOTAL) return;
+    const old = current;
+    const nextP = document.querySelector('.page[data-page="' + (current + 1) + '"]');
+    if (nextP) { nextP.style.display = ''; nextP.setAttribute('data-state', 'right'); void nextP.offsetWidth; }
+    current++; render(old, 'next');
+  }
+  function prevPage() {
+    if (current <= 1) return;
+    const old = current;
+    const prevP = document.querySelector('.page[data-page="' + (current - 1) + '"]');
+    if (prevP) { prevP.style.display = ''; prevP.setAttribute('data-state', 'left'); void prevP.offsetWidth; }
+    current--; render(old, 'prev');
+  }
+  function goToPage(n) {
+    if (n === current || n < 1 || n > TOTAL) return;
+    const old = current; const dir = n > current ? 'next' : 'prev';
+    const targetP = document.querySelector('.page[data-page="' + n + '"]');
+    if (targetP) { targetP.style.display = ''; targetP.setAttribute('data-state', dir === 'next' ? 'right' : 'left'); void targetP.offsetWidth; }
+    current = n; render(old, dir);
+  }
+  function toggleFullscreen() {
+    if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(() => {});
+    else document.exitFullscreen();
+  }
+  function updateSidebar(pageNum) {
+    var items = document.querySelectorAll('.sb-item');
+    items.forEach(function(item, i) {
+      item.classList.remove('active');
+      if (i + 1 < pageNum) item.classList.add('visited');
+      if (i + 1 === pageNum) item.classList.add('active');
+    });
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === 'ArrowRight') nextPage();
+    if (e.key === 'ArrowLeft') prevPage();
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+  });
+  window.nextPage = nextPage;
+  window.prevPage = prevPage;
+  window.goToPage = goToPage;
+  window.updateSidebar = updateSidebar;
+  render(null, null);
+})();
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+  document.body.classList.toggle('sidebar-hidden');
+}
+</script>
+</body>
+</html>
