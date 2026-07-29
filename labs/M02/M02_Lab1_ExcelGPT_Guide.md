@@ -2,9 +2,9 @@
 
 # Module 2, Lab 1: Excel GPT
 
-Call an AI model directly from an Excel cell. You use one function,
-`=AI_Reply(...)`, to send a prompt to the model and get the answer back in the
-cell, right next to your data.
+Call an AI model directly from an Excel cell. You paste one block of VBA code
+into your workbook and then use `=AI_Reply(...)` to send a prompt to the model
+and get the answer back in the cell, right next to your data.
 
 **Difficulty:** 2 of 3 stars &nbsp;·&nbsp; **Time:** about 15 minutes
 
@@ -16,69 +16,54 @@ This lab uses Excel VBA and is built for **Windows Excel (desktop)**, where it
 works with no extra setup.
 
 **Mac users:** Mac Excel cannot make the web request from VBA on its own (it
-lacks the Windows components this uses), so the function will return an ActiveX
-error. To run this lab on a Mac you need an extra one time AppleScript helper
-installed, or you can use a Windows machine or lab computer. Ask the instructor
-for the Mac setup if you need it.
+lacks the Windows components this uses), so the function returns an ActiveX
+error. To run this on a Mac you need an extra one time AppleScript helper
+(`VBA_HTTP.scpt`) installed, or you can use a Windows machine or lab computer.
+Ask the instructor for the Mac setup if you need it.
 
 ---
 
-## What you will do
+## Get the code
 
-- Put your OpenAI API key into the workbook.
-- Use `=AI_Reply(key, prompt)` to get AI answers directly in cells.
-- Complete a set of sample prompts (formatting, data analysis, content
-  creation, problem solving, data cleaning, translation), then try your own.
+- **VBA code:**
+  [Open M02_Lab1_ExcelGPT_AI_Reply.bas](https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/M02_Lab1_ExcelGPT_AI_Reply.bas)
+  Click it, then use the Copy button at the top right of the code box to copy all of it.
 
----
-
-## Download the file
-
-- **Workbook:**
-  [Download M02_Lab1_ExcelGPT.xlsm](https://github.com/mdehghani86/DADS5250-GenAI/raw/main/labs/M02/M02_Lab1_ExcelGPT.xlsm)
-
-This is a macro enabled workbook (`.xlsm`); the AI code is already inside it, so
-there is nothing to paste.
+That is the only file for this lab. You use your own Excel workbook.
 
 ---
 
 ## Steps
 
-### 1. Open the workbook and enable macros
+### 1. Paste the code into your workbook
 
-Open `M02_Lab1_ExcelGPT.xlsm` in Excel. When Excel warns about macros, click
-**Enable Content** (or Enable Macros). The code will not run otherwise.
+Open your Excel workbook and press `Alt + F11` to open the VBA editor. Choose
+`Insert` then `Module`, and paste all of the code. Close the editor.
 
-### 2. Add your key and settings on the AI_Reply sheet
+### 2. Use the function
 
-Go to the **AI_Reply** sheet and fill in the top cells:
+`AI_Reply(key, prompt, [length], [model], [temperature])`
 
-- **B3** — your OpenAI API key (replace `PASTE_YOUR_OPENAI_KEY_HERE`)
-- **B4** — the model (default `gpt-4o`)
-- **B5** — the temperature (default `0.5`)
+The simplest call, with your key and a prompt:
 
-### 3. Use the function
+```
+=AI_Reply("sk-your-key", "Write a professional thank you email")
+```
 
-In the **Result** column, call the function on the prompt in that row. The
-simplest form is:
+A cleaner setup is to put your key in a cell (say B3) and reference it, so it is
+not repeated in every formula:
 
 ```
 =AI_Reply($B$3, B9)
+=AI_Reply($B$3, B9, "Short", "gpt-4o", 0.5)
 ```
 
-You can also pass the length, model, and temperature:
+`length` can be `"Short"`, `"Medium"`, or `"Descriptive"`.
 
-```
-=AI_Reply($B$3, B9, "Short", $B$4, $B$5)
-```
+### 3. Try a range of use cases
 
-`AI_Reply(key, prompt, [length], [model], [temperature])` — length can be
-`"Short"`, `"Medium"`, or `"Descriptive"`.
-
-### 4. Complete the samples, then try your own
-
-Fill the Result column for each sample prompt, then add a row with your own
-prompt and see what the model returns.
+Use it for formatting, data analysis, content creation, problem solving, data
+cleaning, and translation. Fill in the answers, then write your own prompts.
 
 ---
 
