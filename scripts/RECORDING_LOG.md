@@ -25,3 +25,10 @@ _Last updated: 2026-07-29_
 | M06 | 2 | Building Agents with LangGraph | not recorded | |
 
 **Recorded: 2 / 13**
+
+## Module 3 — concept / spotlight videos (not lab walkthroughs)
+
+| Module | Video | Length | Status |
+|--------|-------|--------|--------|
+| M03 | From Text to Structure | 7 min | not recorded |
+| M03 | Prompt Bud (AI spotlight) | 5 min | not recorded |
