@@ -1,3 +1,5 @@
+![Module 2, Lab 1: Excel GPT](./M02_Lab1_banner.png)
+
 # Module 2, Lab 1: Excel GPT
 
 Build an AI assistant that lives inside Excel. Instead of writing code in a
