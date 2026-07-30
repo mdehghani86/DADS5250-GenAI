@@ -47,7 +47,7 @@ DADS5250-GenAI/
 - **Assignment**: 1 per module
 - **Lab coverage time**: 10-15 min max per lab
 - **Theory/Practice**: 20/80 (lectures are separate)
-- **Utils**: pip install from GitHub repo
+- **Utils**: `dads5250` package on PyPI (pypi.org/project/dads5250); labs pin an exact version (`pip install dads5250==0.2.0`). To ship a change, cut a new version — see `utils/RELEASING.md`.
 - **Difficulty**: Star rating (1-3 stars)
 
 ## Folder Convention: assets (all modules)
