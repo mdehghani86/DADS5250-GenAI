@@ -1,0 +1,42 @@
+name: Publish dads5250 to PyPI
+
+# Builds the utils/ package and publishes it to PyPI whenever a version tag
+# (v*) is pushed, or on manual dispatch. Uses PyPI Trusted Publishing (OIDC),
+# so no API token is stored in the repo.
+#
+# ONE-TIME SETUP (owner does this once on pypi.org):
+#   1. Log in at https://pypi.org, go to Account -> Publishing.
+#   2. Add a "pending publisher":
+#        PyPI project name : dads5250
+#        Owner             : mdehghani86
+#        Repository name   : DADS5250-GenAI
+#        Workflow name     : publish-pypi.yml
+#        Environment name  : pypi
+#   3. Create a GitHub environment named "pypi" in repo Settings -> Environments.
+# After that, pushing a new tag (e.g. git tag v0.2.1 && git push origin v0.2.1)
+# publishes automatically, and labs can move to:  pip install dads5250
+
+on:
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    environment: pypi
+    permissions:
+      id-token: write   # required for Trusted Publishing
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build the package
+        run: |
+          python -m pip install --upgrade build
+          python -m build utils
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: utils/dist
