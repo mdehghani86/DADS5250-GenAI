@@ -387,7 +387,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
 <div id="top-bar">
   <span class="module-title">M13: AI Ethics, Safety &amp; Guardrails</span>
   <div class="page-info">
-    <span class="page-counter" id="page-counter">1 / 13</span>
+    <span class="page-counter" id="page-counter">1 / 14</span>
     <span class="total-time">Total: ~45 min</span>
   </div>
 </div>
@@ -444,13 +444,17 @@ body.sidebar-hidden #nav-bar { left: 0; }
   <div class="sb-section">Section 3: Wrap-Up</div>
   <div class="sb-item" onclick="goToPage(11)">
     <div class="sb-dot"></div>
-    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Responsible AI Checklist</div><div class="sb-dur">Review</div></div>
+    <div><span class="sb-type sb-type-reading"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M4 4.5A2.5 2.5 0 016.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15z"/></svg>Reading</span><div class="sb-label">Responsible AI Principles</div><div class="sb-dur">~4 min</div></div>
   </div>
   <div class="sb-item" onclick="goToPage(12)">
     <div class="sb-dot"></div>
-    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">References &amp; Resources</div><div class="sb-dur">Links</div></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Responsible AI Checklist</div><div class="sb-dur">Review</div></div>
   </div>
   <div class="sb-item" onclick="goToPage(13)">
+    <div class="sb-dot"></div>
+    <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">References &amp; Resources</div><div class="sb-dur">Links</div></div>
+  </div>
+  <div class="sb-item" onclick="goToPage(14)">
     <div class="sb-dot"></div>
     <div><span class="sb-type sb-type-content"><svg class="sb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>Content</span><div class="sb-label">Summary &amp; Next Steps</div><div class="sb-dur">Review</div></div>
   </div>
@@ -511,7 +515,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
     <div class="sep"></div>
 
     <div class="meta-row" style="justify-content:center;">
-      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 13 pages</span>
+      <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg> 14 pages</span>
       <span class="meta-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Aligned to OWASP LLM Top 10</span>
     </div>
   </div>
@@ -1368,8 +1372,102 @@ client = OpenAI()
 </div>
 </div>
 
-<!-- PAGE 11: Responsible AI Checklist -->
+<!-- PAGE 11: Responsible AI Principles -->
 <div class="page" data-page="11" data-state="right">
+<div class="page-inner">
+  <div class="glass">
+    <span class="page-label">Principles</span>
+    <h2>Responsible AI: Principles and Frameworks</h2>
+    <p class="subtitle">The guardrails in this module are the how. Responsible AI is the why: a small set of principles that decide what you should build in the first place, plus the external frameworks that regulators, auditors, and enterprise buyers will hold your system to.</p>
+
+    <div class="info-grid cols-3" style="margin:24px 0;">
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M12 3v18"/><path d="M5 7h14"/><path d="M5 7l-3 6a3 3 0 006 0z"/><path d="M19 7l-3 6a3 3 0 006 0z"/></svg></span>
+        <h3>Fairness</h3>
+        <p>Comparable outcomes across groups. Test on diverse data and watch for proxies that quietly recreate bias.</p>
+      </div>
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#0ea5e9" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="2.5"/></svg></span>
+        <h3>Transparency</h3>
+        <p>Disclose that AI is in use, explain what it can and cannot do, and ship a model card documenting its limits.</p>
+      </div>
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 018 0v4"/></svg></span>
+        <h3>Privacy</h3>
+        <p>Collect the minimum data, protect it, and honor consent. PII never leaves the system in the clear.</p>
+      </div>
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" stroke-width="2"><circle cx="12" cy="8" r="6"/><path d="M8.5 13.5L7 22l5-3 5 3-1.5-8.5"/></svg></span>
+        <h3>Accountability</h3>
+        <p>A named owner for every model, with a clear path to pause or roll it back the moment it misbehaves.</p>
+      </div>
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span>
+        <h3>Safety and Reliability</h3>
+        <p>Predictable behavior, graceful failure, and a red team pass before anything reaches real users.</p>
+      </div>
+      <div class="info-card">
+        <span class="icon"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M16 11l2 2 4-4"/></svg></span>
+        <h3>Human Oversight</h3>
+        <p>A person can review and override the model, and stays in the loop for any high stakes decision.</p>
+      </div>
+    </div>
+
+    <div class="figure">
+      <svg viewBox="0 0 400 224" xmlns="http://www.w3.org/2000/svg" style="background:#0f172a; border:1px solid #1e293b;">
+        <text x="200" y="22" text-anchor="middle" font-family="Outfit" font-size="11" fill="#e2e8f0" font-weight="600">NIST AI Risk Management Framework</text>
+        <rect x="26" y="42" width="104" height="44" rx="8" fill="rgba(37,99,235,0.14)" stroke="#2563EB" stroke-width="1.2"/>
+        <text x="78" y="62" text-anchor="middle" font-family="Outfit" font-size="10" fill="#93c5fd" font-weight="700">MAP</text>
+        <text x="78" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#94a3b8">context + risks</text>
+        <rect x="148" y="42" width="104" height="44" rx="8" fill="rgba(14,165,233,0.14)" stroke="#0ea5e9" stroke-width="1.2"/>
+        <text x="200" y="62" text-anchor="middle" font-family="Outfit" font-size="10" fill="#7dd3fc" font-weight="700">MEASURE</text>
+        <text x="200" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#94a3b8">test + quantify</text>
+        <rect x="270" y="42" width="104" height="44" rx="8" fill="rgba(16,185,129,0.14)" stroke="#10b981" stroke-width="1.2"/>
+        <text x="322" y="62" text-anchor="middle" font-family="Outfit" font-size="10" fill="#34d399" font-weight="700">MANAGE</text>
+        <text x="322" y="76" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#94a3b8">act + monitor</text>
+        <line x1="130" y1="64" x2="146" y2="64" stroke="#64748b" stroke-width="1.2"/><polygon points="148,64 140,60 140,68" fill="#64748b"/>
+        <line x1="252" y1="64" x2="268" y2="64" stroke="#64748b" stroke-width="1.2"/><polygon points="270,64 262,60 262,68" fill="#64748b"/>
+        <path d="M322 88 C322 112, 78 112, 78 90" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="4"/><polygon points="78,88 74,96 82,96" fill="#475569"/>
+        <line x1="200" y1="112" x2="200" y2="134" stroke="#64748b" stroke-width="1"/><polygon points="200,136 196,128 204,128" fill="#64748b"/>
+        <rect x="26" y="136" width="348" height="46" rx="8" fill="rgba(124,58,237,0.14)" stroke="#7c3aed" stroke-width="1.2"/>
+        <text x="200" y="156" text-anchor="middle" font-family="Outfit" font-size="10" fill="#c4b5fd" font-weight="700">GOVERN</text>
+        <text x="200" y="171" text-anchor="middle" font-family="JetBrains Mono" font-size="6.5" fill="#94a3b8">policies, roles, and accountability across all three</text>
+        <text x="200" y="204" text-anchor="middle" font-family="Outfit" font-size="7.5" fill="#64748b">Govern is continuous; Map, Measure, and Manage repeat for every system</text>
+      </svg>
+      <div class="figure-caption">The NIST AI Risk Management Framework is the common vocabulary for AI risk. Govern runs continuously while Map, Measure, and Manage cycle for every system you ship.</div>
+    </div>
+
+    <div class="glass-sm" style="background:rgba(37,99,235,0.04); border:1px solid rgba(37,99,235,0.15); margin:20px 0;">
+      <h3 style="color:#2563EB; font-size:0.95rem; margin-bottom:10px;">Frameworks Worth Knowing</h3>
+      <div class="info-grid cols-2" style="margin:0; gap:14px;">
+        <div>
+          <strong><a href="https://www.nist.gov/itl/ai-risk-management-framework" target="_blank" rel="noopener">NIST AI RMF</a></strong>
+          <p style="margin:4px 0 0; font-size:0.85rem; color:var(--text-secondary);">The US voluntary standard. Four functions (Govern, Map, Measure, Manage) and the default language for AI risk in enterprise and government.</p>
+        </div>
+        <div>
+          <strong><a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener">EU AI Act</a></strong>
+          <p style="margin:4px 0 0; font-size:0.85rem; color:var(--text-secondary);">The first broad AI law. Sorts systems into risk tiers from minimal to unacceptable, with hard duties for high risk uses like hiring and credit.</p>
+        </div>
+        <div>
+          <strong><a href="https://oecd.ai/en/ai-principles" target="_blank" rel="noopener">OECD AI Principles</a></strong>
+          <p style="margin:4px 0 0; font-size:0.85rem; color:var(--text-secondary);">Adopted by more than 40 countries. Five values: inclusive growth, human centered values, transparency, robustness, and accountability.</p>
+        </div>
+        <div>
+          <strong><a href="https://www.microsoft.com/en-us/ai/responsible-ai" target="_blank" rel="noopener">Company standards</a></strong>
+          <p style="margin:4px 0 0; font-size:0.85rem; color:var(--text-secondary);">Microsoft Responsible AI, Google AI Principles, and Anthropic safety policies turn these ideas into rules engineers actually follow.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout warn">
+      <p><strong>Where this leaves you:</strong> principles set the direction, frameworks make it auditable, and the checklist on the next page turns both into something you can run before you ship.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE 12: Responsible AI Checklist -->
+<div class="page" data-page="12" data-state="right">
 <div class="page-inner">
   <div class="glass">
     <span class="page-label">Checklist</span>
@@ -1430,8 +1528,8 @@ client = OpenAI()
 </div>
 </div>
 
-<!-- PAGE 12: References -->
-<div class="page" data-page="12" data-state="right">
+<!-- PAGE 13: References -->
+<div class="page" data-page="13" data-state="right">
 <div class="page-inner">
   <div class="glass">
     <span class="page-label">References</span>
@@ -1483,8 +1581,8 @@ client = OpenAI()
 </div>
 </div>
 
-<!-- PAGE 13: Summary -->
-<div class="page" data-page="13" data-state="right">
+<!-- PAGE 14: Summary -->
+<div class="page" data-page="14" data-state="right">
 <div class="page-inner">
   <div class="glass">
     <span class="page-label">Summary</span>
@@ -1561,7 +1659,7 @@ client = OpenAI()
 
 <script>
 (function() {
-  const TOTAL = 13;
+  const TOTAL = 14;
   let current = parseInt(localStorage.getItem('m13_page') || '1', 10);
   if (current < 1 || current > TOTAL) current = 1;
 
