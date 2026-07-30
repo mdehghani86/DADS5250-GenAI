@@ -4,9 +4,19 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dads5250"
-version = "0.1.0"
-description = "Shared utilities for DADS 5250: Generative AI in Practice"
+version = "0.2.0"
+description = "Shared utilities for DADS 5250: Generative AI in Practice (Northeastern University)"
+readme = "README.md"
 requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Mohammad Dehghani", email = "m.dehghani@northeastern.edu" }]
+keywords = ["generative ai", "llm", "openai", "gemini", "teaching", "colab"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Education",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
     "openai>=1.30",
     "tiktoken>=0.7",
@@ -16,6 +26,10 @@ dependencies = [
 
 [project.optional-dependencies]
 gemini = ["google-genai>=1.0"]
+
+[project.urls]
+Homepage = "https://github.com/mdehghani86/DADS5250-GenAI"
+Repository = "https://github.com/mdehghani86/DADS5250-GenAI"
 
 [tool.setuptools.packages.find]
 include = ["dads5250*"]
