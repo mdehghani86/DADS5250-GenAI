@@ -87,6 +87,12 @@ The key is resolved by `_get_secret()`: Colab Secret (`OPENAI_API_KEY`) first,
 then an environment variable, then a hidden `getpass` prompt so a student can
 enter it directly without Colab Secrets.
 
+**Key setup instructions must cover both Colab AND Jupyter/JupyterHub.** Labs run
+on Colab but also on JupyterHub (where there are no Colab Secrets). Every lab's
+key-setup markdown states both paths: the Colab Secret (key icon) route, and for
+Jupyter either running the setup cell and pasting the key at the hidden prompt, or
+setting `OPENAI_API_KEY` via `export` / `os.environ` first.
+
 **Header banner image.** Cell 0 of every lab is a markdown header: the Colab
 badge link, then a PNG banner image referenced by its **raw GitHub URL** (not a
 relative path, which breaks in Colab). Banners live at
