@@ -105,6 +105,26 @@ numbered section it belongs to, e.g.
 and important lines carry short inline comments explaining what is happening.
 Numbers match the numbered markdown sections. This is required in every lab.
 
+**Critical cells state their purpose and list what they build.** A cell that
+*defines* something the lab depends on (functions, classes, tools, agents, a
+pipeline) is not self-explanatory from a one-line title. Its header must add a
+`Purpose:` line and a `Defines:` list naming each function/object and what it is
+for, e.g.
+
+```
+# ==========================================================
+# 4. A real tool: live crypto price (with polite rate-limit retry)
+# ----------------------------------------------------------
+# Purpose: give the assistant a SECOND tool that fetches real-world data.
+# Defines:
+#   - cg_get()           : a rate-limit-safe GET helper for CoinGecko (retries on HTTP 429)
+#   - get_crypto_price() : the tool the model calls -- returns live USD price + 24h change
+# ==========================================================
+```
+
+Trivial cells (imports, a single `print`, a quick display) do not need this;
+the Purpose/Defines block is for cells that build the machinery of the lab.
+
 **Depth is required, not optional (MD has flagged thin labs repeatedly):**
 - **Markdown** for each section must actually teach: motivate *why* the concept
   matters and the *need* for it, explain *how* it works in plain English, not a
