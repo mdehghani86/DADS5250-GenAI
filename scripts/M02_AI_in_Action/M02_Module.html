@@ -1162,7 +1162,7 @@ body.sidebar-hidden #nav-bar { left: 0; }
   <div class="glass lab-card">
     <span class="lab-badge">Hands-On Lab</span>
     <h2>M02 Lab 1 -- Excel GPT: AI-Powered Spreadsheets</h2>
-    <p class="subtitle" style="max-width:600px; margin:0 auto;">Build a tool that generates Excel formulas and VBA macros from natural language descriptions using the OpenAI API.</p>
+    <p class="subtitle" style="max-width:600px; margin:0 auto;">Turn plain English requests into working Excel formulas and VBA macros, right inside a spreadsheet, powered by the OpenAI API you set up last week.</p>
 
     <div class="video-wrapper">
       <div class="video-placeholder">
@@ -1190,13 +1190,13 @@ body.sidebar-hidden #nav-bar { left: 0; }
     </div>
 
     <div class="lab-buttons">
-      <a href="#" class="lab-btn primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        Open in Colab
+      <a href="https://github.com/mdehghani86/DADS5250-GenAI/raw/main/labs/M02/M02_Lab1_ExcelGPT_Starter.xlsm" class="lab-btn primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download the Excel Workbook
       </a>
-      <a href="#" class="lab-btn secondary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/></svg>
-        View on GitHub
+      <a href="https://github.com/mdehghani86/DADS5250-GenAI/blob/main/labs/M02/M02_Lab1_ExcelGPT_Guide.md" target="_blank" rel="noopener" class="lab-btn secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+        Open the Lab Guide
       </a>
     </div>
 
@@ -1205,11 +1205,11 @@ body.sidebar-hidden #nav-bar { left: 0; }
     <div class="lab-sections">
       <h3>What You Will Do</h3>
       <ol>
-        <li>Load sample sales data (CSV) into your notebook</li>
-        <li>Send data to GPT with natural language instructions -- get Excel formulas back</li>
-        <li>Test the generated formulas in a spreadsheet</li>
-        <li>Ask AI to write VBA macros for automation</li>
-        <li>Copy VBA code from GitHub starter, run in Excel</li>
+        <li>Download the starter workbook and enable macros when Excel asks</li>
+        <li>Open the VBA editor (Alt+F11) and paste in the AI_Reply macro from the lab</li>
+        <li>Put your OpenAI API key and model in the Setup sheet, so you never edit code</li>
+        <li>Type a request in a cell and call the AI function to get the reply right in the spreadsheet</li>
+        <li>Extend it with your own use case tabs: formulas, summaries, rewrites</li>
       </ol>
     </div>
 
@@ -1217,11 +1217,12 @@ body.sidebar-hidden #nav-bar { left: 0; }
 
     <div class="glass-sm" style="background:rgba(245,158,11,0.05); border:1px solid rgba(245,158,11,0.15); text-align:left;">
       <h3 style="color:#b45309; font-size:0.95rem;">Assignment</h3>
-      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Extend the tool: add 2 new functions (your choice), test with different data, submit your modified notebook + Excel file.</p>
+      <p style="font-size:0.88rem; color:var(--text-secondary); line-height:1.6;">Extend the workbook: add 2 new AI functions or use case tabs of your own, test them with different data, and submit your modified .xlsm file.</p>
     </div>
 
     <div class="glass-sm" style="margin-top:16px; background:rgba(37,99,235,0.03); text-align:left;">
-      <p style="font-size:0.85rem; color:var(--text-secondary);"><strong>Key outcome:</strong> A working Excel GPT tool that writes formulas and VBA from natural language.</p>
+      <p style="font-size:0.85rem; color:var(--text-secondary);"><strong>Key outcome:</strong> A working Excel GPT tool that writes formulas and VBA from plain English, callable as a spreadsheet function.</p>
+      <p style="font-size:0.8rem; color:var(--text-secondary); margin-top:6px;">Note: the API call runs on Windows Excel (MSXML). On Mac, follow the guide's AppleScript helper step.</p>
     </div>
   </div>
 </div>
