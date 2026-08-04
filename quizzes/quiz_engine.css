@@ -167,3 +167,15 @@ body::before {
   color:#2563EB; text-decoration:none; cursor:pointer; }
 .dl-btn:hover { background:rgba(37,99,235,0.18); }
 .dl-btn svg { width:15px; height:15px; }
+
+/* ---- single review view: field + copy button layout ---- */
+.fieldwrap { display:flex; align-items:flex-start; gap:6px; margin-bottom:0; }
+.fieldwrap > .cf, .fieldwrap > .option { flex:1 1 auto; min-width:0; }
+.fieldwrap .question-prompt { margin-bottom:0; }
+.rev-answer { display:flex; align-items:flex-start; gap:6px; flex-wrap:wrap; margin-top:6px; font-size:0.98rem; }
+.rev-answer .cf { flex:1 1 auto; min-width:0; }
+.rev-optfb { display:flex; align-items:flex-start; gap:6px; }
+.rev-optfb .cf { flex:1 1 auto; min-width:0; }
+.copybtn { opacity:0; }
+.fieldwrap:hover .copybtn, .rev-optfb:hover .copybtn, .rev-answer:hover .copybtn, .question-card:hover .copybtn { opacity:.5; }
+.copybtn:hover { opacity:1 !important; }
