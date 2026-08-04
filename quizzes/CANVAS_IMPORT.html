@@ -1,0 +1,27 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>Importing the quizzes into Canvas</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Outfit',system-ui,sans-serif;background:#F0F4FA;color:#1e293b;padding:48px 24px;line-height:1.65}
+.wrap{max-width:760px;margin:0 auto}h1{font-size:1.8rem;font-weight:700;margin-bottom:8px}h2{font-size:1.15rem;color:#2563EB;margin:26px 0 8px}
+ol{margin:8px 0 8px 20px}li{margin-bottom:8px}code{background:rgba(37,99,235,0.08);padding:2px 6px;border-radius:6px;font-family:ui-monospace,Menlo,monospace;font-size:0.9em}
+.card{background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.6);border-radius:16px;padding:22px 26px;box-shadow:0 8px 32px rgba(37,99,235,0.08)}
+.small{color:#475569;font-size:0.92rem}</style></head><body><div class="wrap"><div class="card">
+<h1>Importing a module quiz into Canvas</h1>
+<p class="small">Each module has a QTI 1.2 package (a .zip) that Canvas Classic Quizzes can import directly.</p>
+<h2>Two-step import</h2>
+<ol>
+<li>Download the module's package: click <b>Download for Canvas (QTI .zip)</b> on the quiz page, or take <code>quizzes/canvas/MXX_Canvas.zip</code>.</li>
+<li>In the Canvas course, open <b>Settings</b> &rarr; <b>Import Course Content</b>. For <b>Content Type</b> choose <b>QTI .zip file</b>, select the downloaded .zip, and click <b>Import</b>.</li>
+</ol>
+<p class="small">When the import job finishes, the quiz appears under <b>Quizzes</b> (Classic). Open it to review before publishing.</p>
+<h2>What is included</h2>
+<ol>
+<li>All 5 questions with their options and the correct answer(s).</li>
+<li><b>Per-answer feedback</b>: the comment for each option (why the correct one is right, and why each wrong one is wrong) imports as Canvas answer comments.</li>
+<li><b>Points</b>: easy = 1, medium = 2, hard = 3, so each module quiz totals 10 points.</li>
+<li><b>Graphic questions</b>: the diagram is rendered to a PNG and embedded in the question, and the PNG is also shipped inside the .zip.</li>
+</ol>
+<h2>Question type mapping</h2>
+<p class="small">Multiple choice, practical, coding, and graphic questions import as <b>Multiple Choice</b>. Multiple-select imports as <b>Multiple Answers</b>. True/False and Fill-in import as their Canvas equivalents. Ordering questions import as <b>Multiple Choice</b> (pick the correct sequence), since Canvas Classic has no native ordering type.</p>
+<h2>If a diagram image does not appear</h2>
+<p class="small">Some Canvas instances handle imported images differently. If a diagram is missing after import, the PNG is inside the .zip (named <code>MXX_qN.png</code>) and can be inserted into the question with the Canvas image tool.</p>
+</div></div></body></html>

@@ -30,6 +30,12 @@
       '<span class="badge">' + esc(q.typeLabel || 'Multiple choice') + '</span>' +
       '<span class="badge diff-' + (q.difficulty || 'medium') + '">' + diffLabel(q.difficulty) + '</span></div>';
   }
+  function dlRow() {
+    if (!window.CANVAS_ZIP) return '';
+    return '<div class="dl-row"><a class="dl-btn" href="' + window.CANVAS_ZIP + '" download>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+      'Download for Canvas (QTI .zip)</a></div>';
+  }
 
   /* ---------- one interactive question card (student mode) ---------- */
   function studentCard(q, i) {
@@ -58,7 +64,7 @@
     var r = root();
     var head = '<div class="score-bar"><span class="score-text">' + score() + ' / ' + questions.length + ' correct</span>' +
       '<span class="page-indicator" id="prog">' + answered() + ' of ' + questions.length + ' answered</span></div>';
-    r.innerHTML = head + questions.map(function (q, i) { return '<div class="question-card" id="qc-' + i + '">' + studentCard(q, i) + '</div>'; }).join('');
+    r.innerHTML = dlRow() + head + questions.map(function (q, i) { return '<div class="question-card" id="qc-' + i + '">' + studentCard(q, i) + '</div>'; }).join('');
     questions.forEach(function (q, i) { wire(q, i); if (state.answers[i].answered) replay(q, i); });
   }
 
@@ -167,16 +173,18 @@
   /* ---------- REVIEW / ANSWER-KEY MODE ---------- */
   function renderReview() {
     var r = root();
-    var html = '<div class="review-banner">Colleague review view. Correct answers and explanations are shown. This is not the student view.</div>';
+    var html = dlRow() + '<div class="review-banner">Colleague review view. Correct answers and explanations are shown. This is not the student view.</div>';
     questions.forEach(function (q, i) {
       html += '<div class="question-card">' + metaRow(q, i) + '<div class="question-prompt">' + q.prompt + '</div>' + visuals(q);
       if (q.type === 'mc' || q.type === 'multi') {
         var correctSet = q.type === 'mc' ? [q.correctIndex] : q.correctIndices;
-        html += '<div class="options-list">' + q.options.map(function (o, j) {
+        html += q.options.map(function (o, j) {
           var isC = correctSet.indexOf(j) >= 0;
-          return '<div class="option locked' + (isC ? ' correct' : '') + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark">' + (isC ? '✓' : '') + '</span></div>';
-        }).join('') + '</div>';
-        html += '<div class="rev-exp">' + q.options.map(function (o) { return '<div class="opt-exp"><span class="ol">' + o.letter + ')</span> ' + (o.explanation || '') + '</div>'; }).join('') + '</div>';
+          var opt = '<div class="option locked' + (isC ? ' correct' : '') + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark">' + (isC ? '✓' : '') + '</span></div>';
+          var lbl = isC ? 'Shown if selected (correct):' : 'Shown if selected (wrong):';
+          var fb = '<div class="rev-optfb ' + (isC ? 'correct' : 'wrong') + '"><span class="lbl">' + lbl + '</span> ' + (o.explanation || '') + '</div>';
+          return '<div class="rev-opt">' + opt + fb + '</div>';
+        }).join('');
       } else if (q.type === 'tf') {
         html += '<div class="rev-answer"><span class="lbl">Answer:</span> ' + (q.correctAnswer ? 'True' : 'False') + '</div><div class="rev-exp">' + q.explanation + '</div>';
       } else if (q.type === 'fill') {

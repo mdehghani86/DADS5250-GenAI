@@ -45,7 +45,7 @@ def standalone(mod, review):
 </div>
 <script>
 {data}
-window.REVIEW = {str(review).lower()};
+window.REVIEW = {str(review).lower()};\nwindow.CANVAS_ZIP = '../canvas/{mod}_Canvas.zip';
 </script>
 <script>
 {JS}

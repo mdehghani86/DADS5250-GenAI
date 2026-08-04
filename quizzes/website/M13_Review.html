@@ -156,6 +156,35 @@ body::before {
 .rev-exp .opt-exp { margin: 4px 0; }
 .rev-exp .opt-exp .ol { font-weight: 700; }
 
+/* ---- copy-to-clipboard buttons (tiny, reveal on hover) ---- */
+.copybtn {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; margin-left:6px; padding:0; vertical-align:middle;
+  border:1px solid rgba(37,99,235,0.22); border-radius:6px; background:rgba(255,255,255,0.75);
+  color:#2563EB; cursor:pointer; opacity:0; transition:opacity .15s ease, background .15s ease; flex:0 0 auto;
+}
+.copywrap:hover > .copybtn, .rev-opt:hover .copybtn, .rev-optfb:hover .copybtn, .question-prompt:hover .copybtn { opacity:.8; }
+.copybtn:hover { opacity:1 !important; background:rgba(37,99,235,0.12); }
+.copybtn svg { width:12px; height:12px; pointer-events:none; }
+.copybtn.copied { color:#059669; border-color:rgba(34,197,94,0.45); background:rgba(34,197,94,0.12); opacity:1; }
+
+/* ---- per-option feedback in the review view ---- */
+.rev-opt { margin-bottom:8px; }
+.rev-opt .option { margin-bottom:0; }
+.rev-optfb { margin:6px 0 14px 34px; font-size:0.92rem; line-height:1.5; color:#475569;
+  padding:9px 13px; border-radius:8px; background:rgba(37,99,235,0.05); border-left:3px solid rgba(37,99,235,0.25); }
+.rev-optfb.correct { background:rgba(34,197,94,0.08); border-left-color:var(--correct); }
+.rev-optfb.wrong   { background:rgba(239,68,68,0.06); border-left-color:var(--incorrect); }
+.rev-optfb .lbl { font-weight:700; }
+.rev-optfb.correct .lbl { color:var(--correct); }
+.rev-optfb.wrong .lbl { color:var(--incorrect); }
+.dl-row { display:flex; justify-content:flex-end; margin-bottom:18px; }
+.dl-btn { display:inline-flex; align-items:center; gap:8px; font-family:inherit; font-weight:600; font-size:0.92rem;
+  padding:10px 16px; border-radius:12px; border:1px solid rgba(37,99,235,0.3); background:rgba(37,99,235,0.1);
+  color:#2563EB; text-decoration:none; cursor:pointer; }
+.dl-btn:hover { background:rgba(37,99,235,0.18); }
+.dl-btn svg { width:15px; height:15px; }
+
 </style>
 </head>
 <body>
@@ -327,6 +356,7 @@ window.QUIZ = {
 };
 
 window.REVIEW = true;
+window.CANVAS_ZIP = '../canvas/M13_Canvas.zip';
 </script>
 <script>
 /* DADS 5250 quiz engine. Reads window.QUIZ = {meta, questions} and window.REVIEW (bool).
@@ -361,6 +391,12 @@ window.REVIEW = true;
       '<span class="badge">' + esc(q.typeLabel || 'Multiple choice') + '</span>' +
       '<span class="badge diff-' + (q.difficulty || 'medium') + '">' + diffLabel(q.difficulty) + '</span></div>';
   }
+  function dlRow() {
+    if (!window.CANVAS_ZIP) return '';
+    return '<div class="dl-row"><a class="dl-btn" href="' + window.CANVAS_ZIP + '" download>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>' +
+      'Download for Canvas (QTI .zip)</a></div>';
+  }
 
   /* ---------- one interactive question card (student mode) ---------- */
   function studentCard(q, i) {
@@ -389,7 +425,7 @@ window.REVIEW = true;
     var r = root();
     var head = '<div class="score-bar"><span class="score-text">' + score() + ' / ' + questions.length + ' correct</span>' +
       '<span class="page-indicator" id="prog">' + answered() + ' of ' + questions.length + ' answered</span></div>';
-    r.innerHTML = head + questions.map(function (q, i) { return '<div class="question-card" id="qc-' + i + '">' + studentCard(q, i) + '</div>'; }).join('');
+    r.innerHTML = dlRow() + head + questions.map(function (q, i) { return '<div class="question-card" id="qc-' + i + '">' + studentCard(q, i) + '</div>'; }).join('');
     questions.forEach(function (q, i) { wire(q, i); if (state.answers[i].answered) replay(q, i); });
   }
 
@@ -498,16 +534,18 @@ window.REVIEW = true;
   /* ---------- REVIEW / ANSWER-KEY MODE ---------- */
   function renderReview() {
     var r = root();
-    var html = '<div class="review-banner">Colleague review view. Correct answers and explanations are shown. This is not the student view.</div>';
+    var html = dlRow() + '<div class="review-banner">Colleague review view. Correct answers and explanations are shown. This is not the student view.</div>';
     questions.forEach(function (q, i) {
       html += '<div class="question-card">' + metaRow(q, i) + '<div class="question-prompt">' + q.prompt + '</div>' + visuals(q);
       if (q.type === 'mc' || q.type === 'multi') {
         var correctSet = q.type === 'mc' ? [q.correctIndex] : q.correctIndices;
-        html += '<div class="options-list">' + q.options.map(function (o, j) {
+        html += q.options.map(function (o, j) {
           var isC = correctSet.indexOf(j) >= 0;
-          return '<div class="option locked' + (isC ? ' correct' : '') + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark">' + (isC ? '✓' : '') + '</span></div>';
-        }).join('') + '</div>';
-        html += '<div class="rev-exp">' + q.options.map(function (o) { return '<div class="opt-exp"><span class="ol">' + o.letter + ')</span> ' + (o.explanation || '') + '</div>'; }).join('') + '</div>';
+          var opt = '<div class="option locked' + (isC ? ' correct' : '') + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark">' + (isC ? '✓' : '') + '</span></div>';
+          var lbl = isC ? 'Shown if selected (correct):' : 'Shown if selected (wrong):';
+          var fb = '<div class="rev-optfb ' + (isC ? 'correct' : 'wrong') + '"><span class="lbl">' + lbl + '</span> ' + (o.explanation || '') + '</div>';
+          return '<div class="rev-opt">' + opt + fb + '</div>';
+        }).join('');
       } else if (q.type === 'tf') {
         html += '<div class="rev-answer"><span class="lbl">Answer:</span> ' + (q.correctAnswer ? 'True' : 'False') + '</div><div class="rev-exp">' + q.explanation + '</div>';
       } else if (q.type === 'fill') {

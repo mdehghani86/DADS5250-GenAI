@@ -138,3 +138,32 @@ body::before {
 .rev-exp { margin-top: 10px; padding: 14px 16px; background: rgba(37,99,235,0.06); border-left: 4px solid var(--accent-blue); border-radius: 10px; font-size: 0.94rem; }
 .rev-exp .opt-exp { margin: 4px 0; }
 .rev-exp .opt-exp .ol { font-weight: 700; }
+
+/* ---- copy-to-clipboard buttons (tiny, reveal on hover) ---- */
+.copybtn {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:22px; height:22px; margin-left:6px; padding:0; vertical-align:middle;
+  border:1px solid rgba(37,99,235,0.22); border-radius:6px; background:rgba(255,255,255,0.75);
+  color:#2563EB; cursor:pointer; opacity:0; transition:opacity .15s ease, background .15s ease; flex:0 0 auto;
+}
+.copywrap:hover > .copybtn, .rev-opt:hover .copybtn, .rev-optfb:hover .copybtn, .question-prompt:hover .copybtn { opacity:.8; }
+.copybtn:hover { opacity:1 !important; background:rgba(37,99,235,0.12); }
+.copybtn svg { width:12px; height:12px; pointer-events:none; }
+.copybtn.copied { color:#059669; border-color:rgba(34,197,94,0.45); background:rgba(34,197,94,0.12); opacity:1; }
+
+/* ---- per-option feedback in the review view ---- */
+.rev-opt { margin-bottom:8px; }
+.rev-opt .option { margin-bottom:0; }
+.rev-optfb { margin:6px 0 14px 34px; font-size:0.92rem; line-height:1.5; color:#475569;
+  padding:9px 13px; border-radius:8px; background:rgba(37,99,235,0.05); border-left:3px solid rgba(37,99,235,0.25); }
+.rev-optfb.correct { background:rgba(34,197,94,0.08); border-left-color:var(--correct); }
+.rev-optfb.wrong   { background:rgba(239,68,68,0.06); border-left-color:var(--incorrect); }
+.rev-optfb .lbl { font-weight:700; }
+.rev-optfb.correct .lbl { color:var(--correct); }
+.rev-optfb.wrong .lbl { color:var(--incorrect); }
+.dl-row { display:flex; justify-content:flex-end; margin-bottom:18px; }
+.dl-btn { display:inline-flex; align-items:center; gap:8px; font-family:inherit; font-weight:600; font-size:0.92rem;
+  padding:10px 16px; border-radius:12px; border:1px solid rgba(37,99,235,0.3); background:rgba(37,99,235,0.1);
+  color:#2563EB; text-decoration:none; cursor:pointer; }
+.dl-btn:hover { background:rgba(37,99,235,0.18); }
+.dl-btn svg { width:15px; height:15px; }
