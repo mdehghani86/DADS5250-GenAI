@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M03 Answer Key, Prompt Engineering, Structured Output & Function Calling</title>
+<!--
+  DADS 5250 Module Quiz, M03: Prompt Engineering, Structured Output & Function Calling  (Answer key (colleagues))
+  SELF-CONTAINED: this single .html file needs no other files (it only loads the Outfit web font from Google).
+  HOW TO ADD IT TO THE WEBSITE, pick one:
+    1) Upload this file and embed it:  <iframe src="M03_Quiz.html" style="width:100%;height:940px;border:0"></iframe>
+    2) Or link to it directly from the module page.
+  Two versions exist per module: M03_Quiz.html (student, answers hidden) and M03_Review.html (answer key, answers shown).
+  Everything runs in the browser. No data is sent anywhere; the student's answers stay on their device.
+-->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* DADS 5250 quiz engine, Liquid Glass theme (lifted from the IE3425 quiz component). */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #F0F4FA;
+  --accent-blue: #2563EB;
+  --glass-bg: rgba(255,255,255,0.45);
+  --glass-border: rgba(255,255,255,0.55);
+  --glass-shadow: 0 8px 32px rgba(37,99,235,0.08);
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-warm: #64748b;
+  --correct: #059669;
+  --correct-bg: rgba(34,197,94,0.10);
+  --correct-border: rgba(34,197,94,0.35);
+  --incorrect: #dc2626;
+  --incorrect-bg: rgba(239,68,68,0.09);
+  --incorrect-border: rgba(239,68,68,0.32);
+  --blue-light: rgba(37,99,235,0.08);
+  --blue-medium: rgba(37,99,235,0.12);
+  --radius: 20px;
+  --radius-sm: 12px;
+}
+
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  font-weight: 400;
+  position: relative;
+  overflow-x: hidden;
+}
+body::before {
+  content: ''; position: fixed; top: -120px; right: -120px; width: 400px; height: 400px;
+  border-radius: 50%; background: radial-gradient(circle, rgba(37,99,235,0.07) 0%, transparent 70%);
+  pointer-events: none; z-index: 0;
+}
+.container { max-width: 780px; margin: 0 auto; padding: 32px 24px 72px; position: relative; z-index: 1; }
+
+.quiz-header { text-align: center; margin-bottom: 28px; }
+.quiz-header .eyebrow { font-size: 0.78rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--accent-blue); }
+.quiz-header h1 { font-size: 1.75rem; font-weight: 700; margin: 6px 0 4px; }
+.quiz-header .subtitle { font-size: 0.95rem; color: var(--text-secondary); }
+
+.review-banner {
+  background: rgba(37,99,235,0.10); border: 1px solid rgba(37,99,235,0.28); color: #1e3a8a;
+  border-radius: var(--radius-sm); padding: 12px 18px; margin-bottom: 24px; font-weight: 600; font-size: 0.95rem; text-align: center;
+}
+
+.score-bar {
+  display: flex; align-items: center; justify-content: space-between; background: var(--glass-bg);
+  backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border);
+  border-radius: 16px; padding: 14px 24px; margin-bottom: 24px; box-shadow: var(--glass-shadow);
+}
+.score-bar .score-text { font-weight: 600; font-size: 1rem; }
+.score-bar .page-indicator { font-weight: 400; font-size: 0.9rem; color: var(--text-secondary); }
+
+.progress-dots { display: flex; gap: 8px; justify-content: center; margin-bottom: 26px; flex-wrap: wrap; }
+.progress-dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(37,99,235,0.15); transition: all 0.3s ease; cursor: pointer; }
+.progress-dot.active { background: var(--accent-blue); box-shadow: 0 0 8px rgba(37,99,235,0.35); transform: scale(1.25); }
+.progress-dot.correct { background: rgba(34,197,94,0.75); }
+.progress-dot.incorrect { background: rgba(239,68,68,0.72); }
+
+.question-card {
+  background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 34px 32px;
+  box-shadow: var(--glass-shadow); margin-bottom: 22px; animation: fadeIn 0.35s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+.qmeta { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.question-number { font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-blue); }
+.badge { display: inline-block; font-size: 0.68rem; font-weight: 600; padding: 3px 10px; border-radius: 99px; background: var(--blue-medium); color: var(--accent-blue); letter-spacing: 0.03em; }
+.badge.diff-easy { background: rgba(34,197,94,0.14); color: #047857; }
+.badge.diff-medium { background: rgba(234,179,8,0.16); color: #a16207; }
+.badge.diff-hard { background: rgba(239,68,68,0.14); color: #b91c1c; }
+
+.question-prompt { font-size: 1.15rem; font-weight: 500; line-height: 1.55; margin-bottom: 20px; }
+.hint { font-size: 0.86rem; color: var(--text-warm); margin-bottom: 18px; }
+
+.diagram-area { display: flex; justify-content: center; margin-bottom: 22px; padding: 16px; background: rgba(255,255,255,0.4); border: 1px solid rgba(37,99,235,0.08); border-radius: 14px; }
+.diagram-area svg { max-width: 100%; height: auto; }
+
+.code-block {
+  font-family: 'SF Mono', ui-monospace, Menlo, Consolas, monospace; font-size: 0.9rem; line-height: 1.6;
+  background: #0f172a; color: #e2e8f0; border-radius: var(--radius-sm); padding: 18px 20px; margin-bottom: 20px;
+  overflow-x: auto; white-space: pre; border: 1px solid rgba(148,163,184,0.25);
+}
+.code-block .cm { color: #64748b; }
+
+.options-list { display: flex; flex-direction: column; gap: 12px; }
+.option {
+  display: flex; align-items: flex-start; gap: 12px; text-align: left; width: 100%;
+  background: rgba(255,255,255,0.5); border: 1px solid rgba(37,99,235,0.12); border-radius: 14px;
+  padding: 15px 18px; font-size: 1rem; font-family: inherit; color: var(--text-primary);
+  cursor: pointer; transition: all 0.25s ease;
+}
+.option:hover:not(.locked) { border-color: rgba(37,99,235,0.35); background: rgba(37,99,235,0.06); }
+.option .letter { flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px; background: var(--blue-light); color: var(--accent-blue); font-weight: 700; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; }
+.option.selected { border-color: rgba(37,99,235,0.5); background: rgba(37,99,235,0.10); }
+.option.correct { background: var(--correct-bg); border-color: var(--correct-border); }
+.option.correct .letter { background: rgba(34,197,94,0.2); color: var(--correct); }
+.option.incorrect { background: var(--incorrect-bg); border-color: var(--incorrect-border); }
+.option.incorrect .letter { background: rgba(239,68,68,0.18); color: var(--incorrect); }
+.option.locked { cursor: default; }
+.option .mark { margin-left: auto; font-weight: 700; }
+.option.correct .mark { color: var(--correct); }
+.option.incorrect .mark { color: var(--incorrect); }
+
+.fill-input { width: 100%; font-family: inherit; font-size: 1rem; padding: 14px 18px; border-radius: 14px; border: 1px solid rgba(37,99,235,0.2); background: rgba(255,255,255,0.6); color: var(--text-primary); }
+.order-list { display: flex; flex-direction: column; gap: 10px; }
+.order-item { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.5); border: 1px solid rgba(37,99,235,0.12); border-radius: 12px; padding: 12px 16px; }
+.order-item .num { width: 24px; height: 24px; border-radius: 6px; background: var(--blue-light); color: var(--accent-blue); font-weight: 700; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; }
+.order-item select { margin-left: auto; font-family: inherit; padding: 6px 8px; border-radius: 8px; border: 1px solid rgba(37,99,235,0.2); background: #fff; }
+
+.btn { font-family: inherit; font-weight: 600; font-size: 0.95rem; padding: 11px 22px; border-radius: 12px; border: 1px solid rgba(37,99,235,0.25); background: rgba(37,99,235,0.1); color: var(--accent-blue); cursor: pointer; transition: all 0.2s ease; }
+.btn:hover { background: rgba(37,99,235,0.18); }
+.btn.primary { background: var(--accent-blue); color: #fff; border-color: var(--accent-blue); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.submit-row { margin-top: 20px; display: flex; gap: 12px; }
+
+.feedback { margin-top: 20px; padding: 16px 18px; border-radius: 14px; font-size: 0.98rem; line-height: 1.55; display: none; }
+.feedback.show { display: block; animation: fadeIn 0.3s ease; }
+.feedback.correct { background: var(--correct-bg); border-left: 4px solid var(--correct); }
+.feedback.incorrect { background: var(--incorrect-bg); border-left: 4px solid var(--incorrect); }
+.feedback .verdict { font-weight: 700; }
+.feedback.correct .verdict { color: var(--correct); }
+.feedback.incorrect .verdict { color: var(--incorrect); }
+.feedback .answer-line { margin-top: 6px; }
+
+.nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+
+/* Review mode: everything visible, stacked */
+.rev-answer { margin-top: 8px; font-size: 0.95rem; }
+.rev-answer .lbl { font-weight: 700; color: var(--correct); }
+.rev-exp { margin-top: 10px; padding: 14px 16px; background: rgba(37,99,235,0.06); border-left: 4px solid var(--accent-blue); border-radius: 10px; font-size: 0.94rem; }
+.rev-exp .opt-exp { margin: 4px 0; }
+.rev-exp .opt-exp .ol { font-weight: 700; }
+
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="quiz-header" id="quiz-header"></div>
+  <div id="quiz-root"></div>
+</div>
+<script>
+window.QUIZ = {
+  meta: { module: "M03", title: "Prompt Engineering, Structured Output & Function Calling", subtitle: "DADS 5250 Generative AI in Practice" },
+  questions: [
+    {
+      id: "m03q1",
+      difficulty: "easy",
+      type: "mc",
+      typeLabel: "Multiple choice",
+      prompt: "In the RTCF framework taught in this module, what do the four letters stand for?",
+      options: [
+        { letter: "A", text: "Role, Task, Context, Format", explanation: "Correct: RTCF stands for Role, Task, Context, and Format, the four elements every good prompt should have." },
+        { letter: "B", text: "Reason, Test, Compute, Finish", explanation: "This invents a reasoning loop that is not the RTCF framework. RTCF is a prompt-writing checklist standing for Role, Task, Context, Format, not steps in an execution process." },
+        { letter: "C", text: "Request, Token, Cost, Fallback", explanation: "This mixes API and billing terms that are unrelated to the prompt framework. RTCF describes prompt content and stands for Role, Task, Context, Format." },
+        { letter: "D", text: "Retrieval, Training, Chaining, Fine-tuning", explanation: "These are advanced pipeline techniques from later modules, not the prompt anatomy. RTCF is the four-part structure of a single prompt: Role, Task, Context, Format." }
+      ],
+      correctIndex: 0
+    },
+    {
+      id: "m03q2",
+      difficulty: "medium",
+      type: "multi",
+      typeLabel: "Multiple select",
+      prompt: "The module presents three core prompting <strong>strategies</strong>. Which of the following are among them as taught?",
+      options: [
+        { letter: "A", text: "Zero-shot: give the task with no examples", explanation: "Correct: zero-shot gives the model a task with no examples and works for simple, familiar tasks." },
+        { letter: "B", text: "Few-shot: give a few examples before the task", explanation: "Correct: few-shot supplies a few examples so the model learns the pattern, useful for consistent formatting and edge cases." },
+        { letter: "C", text: "Chain-of-thought: tell the model to think step by step", explanation: "Correct: chain-of-thought asks the model to reason step by step and improves accuracy on multi-step reasoning problems like the bat-and-ball puzzle." },
+        { letter: "D", text: "Fine-tuning: retrain the model weights on your examples", explanation: "This confuses a prompting strategy with model training. Fine-tuning changes the model's weights and is covered in a later production module; the three prompting strategies here are zero-shot, few-shot, and chain-of-thought, none of which retrain the model." }
+      ],
+      correctIndices: [0, 1, 2],
+      explanation: "The three prompting strategies taught are zero-shot, few-shot, and chain-of-thought. Fine-tuning is not a prompting strategy, it retrains the model and belongs to a later module."
+    },
+    {
+      id: "m03q3",
+      difficulty: "medium",
+      type: "mc",
+      typeLabel: "Graphic based",
+      prompt: "The diagram shows the function-calling loop from Section 3. At the highlighted step where the model responds to <em>\"What is the weather in Boston?\"</em>, what does the model actually return?",
+      diagram: "<svg viewBox='0 0 620 240' xmlns='http://www.w3.org/2000/svg'><text x='310' y='24' text-anchor='middle' font-family='sans-serif' font-size='14' fill='#1e293b' font-weight='700'>Function-Calling Loop</text><rect x='20' y='60' width='150' height='60' rx='8' fill='#eff6ff' stroke='#2563EB' stroke-width='2'/><text x='95' y='86' text-anchor='middle' font-family='sans-serif' font-size='11' fill='#1e293b' font-weight='600'>1. You send</text><text x='95' y='102' text-anchor='middle' font-family='sans-serif' font-size='10' fill='#64748b'>question + tools</text><rect x='235' y='60' width='150' height='60' rx='8' fill='#2563EB' stroke='#1e293b' stroke-width='2'/><text x='310' y='84' text-anchor='middle' font-family='sans-serif' font-size='11' fill='#ffffff' font-weight='700'>2. Model returns</text><text x='310' y='100' text-anchor='middle' font-family='sans-serif' font-size='10' fill='#dbeafe'>a tool call (JSON)</text><rect x='450' y='60' width='150' height='60' rx='8' fill='#eff6ff' stroke='#2563EB' stroke-width='2'/><text x='525' y='86' text-anchor='middle' font-family='sans-serif' font-size='11' fill='#1e293b' font-weight='600'>3. You execute</text><text x='525' y='102' text-anchor='middle' font-family='sans-serif' font-size='10' fill='#64748b'>the real function</text><rect x='235' y='160' width='150' height='60' rx='8' fill='#eff6ff' stroke='#2563EB' stroke-width='2'/><text x='310' y='186' text-anchor='middle' font-family='sans-serif' font-size='11' fill='#1e293b' font-weight='600'>4. You return result</text><text x='310' y='202' text-anchor='middle' font-family='sans-serif' font-size='10' fill='#64748b'>model answers</text><path d='M170 90 L232 90' stroke='#64748b' stroke-width='2' marker-end='url(#a)'/><path d='M385 90 L447 90' stroke='#64748b' stroke-width='2' marker-end='url(#a)'/><path d='M525 120 L525 145 L387 145' stroke='#64748b' stroke-width='2' marker-end='url(#a)'/><path d='M235 175 L110 175 L110 122' stroke='#64748b' stroke-width='2' stroke-dasharray='4,3' marker-end='url(#a)'/><defs><marker id='a' markerWidth='8' markerHeight='8' refX='6' refY='3' orient='auto'><path d='M0,0 L6,3 L0,6 Z' fill='#64748b'/></marker></defs></svg>",
+      options: [
+        { letter: "A", text: "A structured tool call naming the function and its arguments, such as get_weather with city \"Boston\"", explanation: "Correct: instead of prose, the model returns a structured call naming the function and the arguments it pulled from the sentence." },
+        { letter: "B", text: "A finished sentence like \"It is 72 degrees in Boston\"", explanation: "This assumes the model answers directly, but at step 2 it has no live weather data. The human-readable sentence only comes in step 4 after your code executes the function and returns the result." },
+        { letter: "C", text: "The model runs the weather function itself and returns the value", explanation: "This is the common misconception that the model executes tools. The model never runs your code; it only emits a structured request, and your code performs the execution in step 3." },
+        { letter: "D", text: "A Pydantic model instance validating the weather schema", explanation: "This confuses structured output from Section 2 with function calling. The model returns a JSON tool call, not a Pydantic object; Pydantic is a separate validation layer you apply in your own code." }
+      ],
+      correctIndex: 0
+    },
+    {
+      id: "m03q4",
+      difficulty: "medium",
+      type: "mc",
+      typeLabel: "Multiple choice",
+      prompt: "The module says JSON mode has a gap that Pydantic fills. What is that gap?",
+      options: [
+        { letter: "A", text: "JSON mode guarantees valid JSON but not the right fields or the right types; Pydantic validates the schema", explanation: "Correct: JSON mode guarantees parseable JSON, but only Pydantic enforces that the expected fields exist with the correct types." },
+        { letter: "B", text: "JSON mode cannot return numbers, so Pydantic converts strings to numbers", explanation: "This misstates JSON mode, which can return numbers, booleans, and lists. The real gap is that JSON mode does not guarantee the correct fields or types, which is what Pydantic checks." },
+        { letter: "C", text: "JSON mode often returns malformed JSON wrapped in markdown, and Pydantic strips the markdown", explanation: "That describes asking for JSON without JSON mode; JSON mode itself guarantees valid, parseable JSON. Pydantic's job is validating fields and types, not cleaning markdown." },
+        { letter: "D", text: "JSON mode is slower, so Pydantic caches the responses for speed", explanation: "Pydantic is a validation library, not a cache, and speed is not the issue. The gap is correctness: JSON mode ensures valid JSON but not the right schema, which Pydantic enforces." }
+      ],
+      correctIndex: 0
+    },
+    {
+      id: "m03q5",
+      difficulty: "hard",
+      type: "mc",
+      typeLabel: "Coding",
+      prompt: "This snippet simulates the <strong>execute</strong> step of the function-calling loop: the model has already returned a tool call, and your code runs the real function and packages the result as a <code>tool</code> message. What does it print?",
+      code: "import json\n\ndef calculate(a, b, op):\n    return a + b if op == 'add' else a * b\n\ntool_call = {'name': 'calculate',\n             'arguments': {'a': 3, 'b': 5, 'op': 'add'}}\nfn = {'calculate': calculate}[tool_call['name']]\nresult = fn(**tool_call['arguments'])\nprint(json.dumps({'role': 'tool', 'content': str(result)}))",
+      options: [
+        { letter: "A", text: "{\"role\": \"tool\", \"content\": \"8\"}", explanation: "Correct: op is 'add', so calculate returns 8, str(result) is \"8\", and json.dumps prints {\"role\": \"tool\", \"content\": \"8\"}." },
+        { letter: "B", text: "{\"role\": \"tool\", \"content\": 8}", explanation: "This forgets the str() wrapping around result. Because the code calls str(result) before json.dumps, the content value is the string \"8\" with quotes, not the bare number 8." },
+        { letter: "C", text: "{\"role\": \"tool\", \"content\": \"15\"}", explanation: "This assumes multiplication (3 * 5), but op equals 'add', so the function takes the a + b branch and returns 8. The result would only be 15 if op were not 'add'." },
+        { letter: "D", text: "{'role': 'tool', 'content': '8'}", explanation: "This shows Python's dict repr with single quotes, but json.dumps produces a JSON string, which always uses double quotes. The printed output is {\"role\": \"tool\", \"content\": \"8\"}." }
+      ],
+      correctIndex: 0
+    }
+  ]
+};
+
+window.REVIEW = true;
+</script>
+<script>
+/* DADS 5250 quiz engine. Reads window.QUIZ = {meta, questions} and window.REVIEW (bool).
+   Mechanics: mc, multi, tf, fill, order. Any question may carry a `code` block or `diagram` (SVG).
+   typeLabel carries the pedagogical label (Practical insight, Graphic based, Coding, etc.). */
+(function () {
+  var Q = window.QUIZ || { meta: {}, questions: [] };
+  var REVIEW = !!window.REVIEW;
+  var questions = Q.questions || [];
+  var meta = Q.meta || {};
+  var STORAGE_KEY = 'dads_quiz_' + (meta.module || 'x');
+
+  var state = { idx: 0, answers: questions.map(function () { return { answered: false, correct: false }; }) };
+
+  function esc(s) { return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function norm(s) { return String(s).trim().toLowerCase().replace(/[^a-z0-9.]/g, ''); }
+  function root() { return document.getElementById('quiz-root'); }
+
+  function save() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {} }
+  function load() { try { var s = JSON.parse(localStorage.getItem(STORAGE_KEY)); if (s && s.answers && s.answers.length === questions.length) state = s; } catch (e) {} }
+
+  function diffLabel(d) { return d ? d.charAt(0).toUpperCase() + d.slice(1) : 'Medium'; }
+  function visuals(q) {
+    var h = '';
+    if (q.diagram) h += '<div class="diagram-area">' + q.diagram + '</div>';
+    if (q.code) h += '<div class="code-block">' + esc(q.code) + '</div>';
+    return h;
+  }
+  function score() { return state.answers.filter(function (a) { return a.correct; }).length; }
+
+  /* ---------- STUDENT MODE ---------- */
+  function renderStudent() {
+    var r = root();
+    var done = state.answers.every(function (a) { return a.answered; });
+    var dots = questions.map(function (q, i) {
+      var c = 'progress-dot' + (i === state.idx ? ' active' : '');
+      if (state.answers[i].answered) c += state.answers[i].correct ? ' correct' : ' incorrect';
+      return '<span class="' + c + '" data-jump="' + i + '"></span>';
+    }).join('');
+    var head =
+      '<div class="score-bar"><span class="score-text">' + score() + ' / ' + questions.length + ' correct</span>' +
+      '<span class="page-indicator">' + (done ? 'Review your answers' : 'Question ' + (state.idx + 1) + ' of ' + questions.length) + '</span></div>' +
+      '<div class="progress-dots">' + dots + '</div>';
+    r.innerHTML = head + '<div id="card"></div>';
+    renderCard();
+    Array.prototype.forEach.call(r.querySelectorAll('[data-jump]'), function (d) {
+      d.onclick = function () { state.idx = +d.getAttribute('data-jump'); renderStudent(); };
+    });
+  }
+
+  function renderCard() {
+    var q = questions[state.idx], a = state.answers[state.idx], card = document.getElementById('card');
+    var body =
+      '<div class="qmeta"><span class="question-number">Question ' + (state.idx + 1) + '</span>' +
+      '<span class="badge">' + esc(q.typeLabel || 'Multiple choice') + '</span>' +
+      '<span class="badge diff-' + (q.difficulty || 'medium') + '">' + diffLabel(q.difficulty) + '</span></div>' +
+      '<div class="question-prompt">' + q.prompt + '</div>' + visuals(q);
+
+    if (q.type === 'mc' || q.type === 'multi') {
+      body += '<div class="options-list">' + q.options.map(function (o, i) {
+        return '<button class="option" data-i="' + i + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark"></span></button>';
+      }).join('') + '</div>';
+      if (q.type === 'multi') body += '<div class="submit-row"><button class="btn primary" id="submit">Submit</button><span class="hint" style="margin:0;align-self:center">Select all that apply.</span></div>';
+    } else if (q.type === 'tf') {
+      body += '<div class="options-list"><button class="option" data-tf="true"><span class="letter">T</span><span>True</span><span class="mark"></span></button>' +
+              '<button class="option" data-tf="false"><span class="letter">F</span><span>False</span><span class="mark"></span></button></div>';
+    } else if (q.type === 'fill') {
+      body += '<input class="fill-input" id="fill" placeholder="Type your answer" autocomplete="off"><div class="submit-row"><button class="btn primary" id="submit">Submit</button></div>';
+    } else if (q.type === 'order') {
+      body += '<div class="order-list">' + q.items.map(function (it, i) {
+        var opts = q.items.map(function (_, j) { return '<option value="' + j + '">' + (j + 1) + '</option>'; }).join('');
+        return '<div class="order-item"><span class="num">' + (i + 1) + '</span><span>' + esc(it) + '</span><select data-oi="' + i + '">' + opts + '</select></div>';
+      }).join('') + '</div><div class="submit-row"><button class="btn primary" id="submit">Submit</button></div>';
+    }
+    body += '<div class="feedback" id="fb"></div>';
+    body +=
+      '<div class="nav-row"><button class="btn" id="prev"' + (state.idx === 0 ? ' disabled' : '') + '>Previous</button>' +
+      '<button class="btn primary" id="next"' + (state.idx === questions.length - 1 ? ' disabled' : '') + '>Next</button></div>';
+    card.innerHTML = body;
+
+    wire(q, a);
+    document.getElementById('prev').onclick = function () { if (state.idx > 0) { state.idx--; renderStudent(); } };
+    document.getElementById('next').onclick = function () { if (state.idx < questions.length - 1) { state.idx++; renderStudent(); } };
+    if (a.answered) replay(q, a);
+  }
+
+  function wire(q, a) {
+    if (a.answered) return;
+    if (q.type === 'mc') {
+      Array.prototype.forEach.call(document.querySelectorAll('.option'), function (b) {
+        b.onclick = function () { gradeMC(q, +b.getAttribute('data-i')); };
+      });
+    } else if (q.type === 'tf') {
+      Array.prototype.forEach.call(document.querySelectorAll('.option'), function (b) {
+        b.onclick = function () { gradeTF(q, b.getAttribute('data-tf') === 'true'); };
+      });
+    } else if (q.type === 'multi') {
+      Array.prototype.forEach.call(document.querySelectorAll('.option'), function (b) {
+        b.onclick = function () { b.classList.toggle('selected'); };
+      });
+      document.getElementById('submit').onclick = function () {
+        var chosen = []; Array.prototype.forEach.call(document.querySelectorAll('.option.selected'), function (b) { chosen.push(+b.getAttribute('data-i')); });
+        gradeMulti(q, chosen);
+      };
+    } else if (q.type === 'fill') {
+      document.getElementById('submit').onclick = function () { gradeFill(q, document.getElementById('fill').value); };
+    } else if (q.type === 'order') {
+      document.getElementById('submit').onclick = function () {
+        var ord = []; Array.prototype.forEach.call(document.querySelectorAll('[data-oi]'), function (s) { ord[+s.getAttribute('data-oi')] = +s.value; });
+        gradeOrder(q, ord);
+      };
+    }
+  }
+
+  function lockAndFeedback(correct, answerHTML, exp) {
+    Array.prototype.forEach.call(document.querySelectorAll('.option'), function (b) { b.classList.add('locked'); });
+    var sub = document.getElementById('submit'); if (sub) sub.disabled = true;
+    var fill = document.getElementById('fill'); if (fill) fill.disabled = true;
+    var fb = document.getElementById('fb');
+    fb.className = 'feedback show ' + (correct ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="verdict">' + (correct ? 'Correct.' : 'Not quite.') + '</span>' +
+      (answerHTML ? '<div class="answer-line">' + answerHTML + '</div>' : '') +
+      (exp ? '<div class="answer-line">' + exp + '</div>' : '');
+    state.answers[state.idx] = { answered: true, correct: correct };
+    save();
+    document.getElementById('next').disabled = state.idx === questions.length - 1;
+    // refresh dots
+    renderStudentDots();
+  }
+  function renderStudentDots() {
+    var dots = document.querySelectorAll('.progress-dot');
+    dots.forEach(function (d, i) {
+      d.className = 'progress-dot' + (i === state.idx ? ' active' : '') + (state.answers[i].answered ? (state.answers[i].correct ? ' correct' : ' incorrect') : '');
+    });
+    var st = document.querySelector('.score-text'); if (st) st.textContent = score() + ' / ' + questions.length + ' correct';
+  }
+
+  function gradeMC(q, i) {
+    var correct = i === q.correctIndex, opts = document.querySelectorAll('.option');
+    opts[i].classList.add(correct ? 'correct' : 'incorrect');
+    opts[i].querySelector('.mark').textContent = correct ? '✓' : '✗';
+    if (!correct) { opts[q.correctIndex].classList.add('correct'); opts[q.correctIndex].querySelector('.mark').textContent = '✓'; }
+    var co = q.options[q.correctIndex], chosen = q.options[i];
+    var answer = '<strong>Answer:</strong> ' + co.letter + ') ' + co.text;
+    var exp = correct
+      ? co.explanation
+      : '<strong>Why ' + chosen.letter + ' is wrong:</strong> ' + chosen.explanation +
+        '<div class="answer-line"><strong>Why ' + co.letter + ' is right:</strong> ' + co.explanation + '</div>';
+    lockAndFeedback(correct, answer, exp);
+  }
+  function gradeMulti(q, chosen) {
+    var want = q.correctIndices.slice().sort().join(','), got = chosen.slice().sort().join(',');
+    var correct = want === got, opts = document.querySelectorAll('.option');
+    q.correctIndices.forEach(function (ci) { opts[ci].classList.add('correct'); opts[ci].querySelector('.mark').textContent = '✓'; });
+    chosen.forEach(function (ci) { if (q.correctIndices.indexOf(ci) < 0) { opts[ci].classList.add('incorrect'); opts[ci].querySelector('.mark').textContent = '✗'; } });
+    var letters = q.correctIndices.map(function (ci) { return q.options[ci].letter; }).join(', ');
+    var exp;
+    if (correct) {
+      exp = q.explanation || '';
+    } else {
+      var parts = [];
+      chosen.forEach(function (ci) { if (q.correctIndices.indexOf(ci) < 0) parts.push('<div class="answer-line"><strong>' + q.options[ci].letter + ' should NOT be selected:</strong> ' + q.options[ci].explanation + '</div>'); });
+      q.correctIndices.forEach(function (ci) { if (chosen.indexOf(ci) < 0) parts.push('<div class="answer-line"><strong>' + q.options[ci].letter + ' should be selected:</strong> ' + q.options[ci].explanation + '</div>'); });
+      exp = parts.join('') + (q.explanation ? '<div class="answer-line">' + q.explanation + '</div>' : '');
+    }
+    lockAndFeedback(correct, '<strong>Correct set:</strong> ' + letters, exp);
+  }
+  function gradeTF(q, val) {
+    var correct = val === q.correctAnswer, opts = document.querySelectorAll('.option');
+    var idx = val ? 0 : 1, cidx = q.correctAnswer ? 0 : 1;
+    opts[idx].classList.add(correct ? 'correct' : 'incorrect');
+    opts[idx].querySelector('.mark').textContent = correct ? '✓' : '✗';
+    if (!correct) { opts[cidx].classList.add('correct'); opts[cidx].querySelector('.mark').textContent = '✓'; }
+    lockAndFeedback(correct, '<strong>Answer:</strong> ' + (q.correctAnswer ? 'True' : 'False'), q.explanation);
+  }
+  function gradeFill(q, val) {
+    var correct = (q.accept || []).some(function (a) { return norm(a) === norm(val); });
+    lockAndFeedback(correct, '<strong>Answer:</strong> ' + esc(q.accept[0]), q.explanation);
+  }
+  function gradeOrder(q, ord) {
+    var correct = ord.join(',') === q.correctOrder.join(',');
+    var right = q.correctOrder.map(function (pos, i) { return (i + 1) + '. ' + q.items[q.correctOrder.indexOf(i)]; });
+    // simpler: show correct sequence
+    var seq = q.correctOrder.map(function (targetPos, itemIdx) { return null; });
+    var ordered = q.items.map(function (_, slot) { var itemIdx = q.correctOrder.indexOf(slot); return (slot + 1) + '. ' + q.items[itemIdx]; }).join('<br>');
+    lockAndFeedback(correct, '<strong>Correct order:</strong><br>' + ordered, q.explanation);
+  }
+
+  function replay(q, a) {
+    // re-show a locked, answered card with the correct answer highlighted
+    if (q.type === 'mc' || q.type === 'tf') {
+      var opts = document.querySelectorAll('.option');
+      var cidx = q.type === 'mc' ? q.correctIndex : (q.correctAnswer ? 0 : 1);
+      if (opts[cidx]) { opts[cidx].classList.add('correct', 'locked'); opts[cidx].querySelector('.mark').textContent = '✓'; }
+      opts.forEach(function (b) { b.classList.add('locked'); });
+    }
+    var fb = document.getElementById('fb');
+    fb.className = 'feedback show ' + (a.correct ? 'correct' : 'incorrect');
+    fb.innerHTML = '<span class="verdict">' + (a.correct ? 'Correct.' : 'Not quite.') + '</span> <span class="answer-line">You have already answered this one.</span>';
+    var sub = document.getElementById('submit'); if (sub) sub.disabled = true;
+    var fill = document.getElementById('fill'); if (fill) fill.disabled = true;
+  }
+
+  /* ---------- REVIEW / ANSWER-KEY MODE ---------- */
+  function renderReview() {
+    var r = root();
+    var html = '<div class="review-banner">Colleague review view. Correct answers and explanations are shown. This is not the student view.</div>';
+    questions.forEach(function (q, i) {
+      html += '<div class="question-card"><div class="qmeta"><span class="question-number">Question ' + (i + 1) + '</span>' +
+        '<span class="badge">' + esc(q.typeLabel || 'Multiple choice') + '</span>' +
+        '<span class="badge diff-' + (q.difficulty || 'medium') + '">' + diffLabel(q.difficulty) + '</span></div>' +
+        '<div class="question-prompt">' + q.prompt + '</div>' + visuals(q);
+      if (q.type === 'mc' || q.type === 'multi') {
+        var correctSet = q.type === 'mc' ? [q.correctIndex] : q.correctIndices;
+        html += '<div class="options-list">' + q.options.map(function (o, j) {
+          var isC = correctSet.indexOf(j) >= 0;
+          return '<div class="option locked' + (isC ? ' correct' : '') + '"><span class="letter">' + o.letter + '</span><span>' + o.text + '</span><span class="mark">' + (isC ? '✓' : '') + '</span></div>';
+        }).join('') + '</div>';
+        html += '<div class="rev-exp">' + q.options.map(function (o, j) {
+          return '<div class="opt-exp"><span class="ol">' + o.letter + ')</span> ' + (o.explanation || '') + '</div>';
+        }).join('') + '</div>';
+      } else if (q.type === 'tf') {
+        html += '<div class="rev-answer"><span class="lbl">Answer:</span> ' + (q.correctAnswer ? 'True' : 'False') + '</div><div class="rev-exp">' + q.explanation + '</div>';
+      } else if (q.type === 'fill') {
+        html += '<div class="rev-answer"><span class="lbl">Answer:</span> ' + esc(q.accept.join(' / ')) + '</div><div class="rev-exp">' + q.explanation + '</div>';
+      } else if (q.type === 'order') {
+        var ordered = q.items.map(function (_, slot) { var itemIdx = q.correctOrder.indexOf(slot); return (slot + 1) + '. ' + esc(q.items[itemIdx]); }).join('<br>');
+        html += '<div class="rev-answer"><span class="lbl">Correct order:</span><br>' + ordered + '</div><div class="rev-exp">' + q.explanation + '</div>';
+      }
+      html += '</div>';
+    });
+    r.innerHTML = html;
+  }
+
+  function boot() {
+    var hdr = document.getElementById('quiz-header');
+    if (hdr) hdr.innerHTML = '<div class="eyebrow">' + esc(meta.module || '') + ' quiz</div><h1>' + esc(meta.title || 'Module quiz') + '</h1><div class="subtitle">' + esc(meta.subtitle || 'DADS 5250 Generative AI in Practice') + '</div>';
+    if (REVIEW) renderReview(); else { load(); renderStudent(); }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
+
+</script>
+</body>
+</html>

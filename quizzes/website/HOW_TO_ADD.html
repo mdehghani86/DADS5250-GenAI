@@ -1,0 +1,118 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DADS 5250 Quizzes, how to add them to the website</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Outfit',system-ui,sans-serif;background:#F0F4FA;color:#1e293b;padding:40px 20px}
+.wrap{max-width:900px;margin:0 auto}
+h1{font-size:1.9rem;font-weight:700}
+.lead{color:#475569;margin:8px 0 22px;line-height:1.6}
+.steps{background:rgba(255,255,255,0.6);border:1px solid rgba(255,255,255,0.6);border-radius:16px;padding:20px 24px;margin-bottom:30px;box-shadow:0 8px 32px rgba(37,99,235,0.08)}
+.steps h2{font-size:1.05rem;color:#2563EB;margin-bottom:10px}
+.steps ol{margin-left:18px;line-height:1.8;color:#1e293b}
+.steps code{background:rgba(37,99,235,0.08);padding:2px 6px;border-radius:6px;font-family:ui-monospace,Menlo,monospace;font-size:0.9em}
+.mcard{background:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.6);border-radius:16px;padding:20px 22px;margin-bottom:26px;box-shadow:0 8px 32px rgba(37,99,235,0.06)}
+.mhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.mcode{font-weight:700;color:#2563EB}
+.mtitle{font-weight:600}
+.mlinks{margin-left:auto;font-size:0.9rem}
+.mlinks a{color:#2563EB;font-weight:600;text-decoration:none}
+.mdoc{color:#475569;font-size:0.9rem;margin-bottom:6px}
+.snip{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:12px 14px;font-family:ui-monospace,Menlo,monospace;font-size:0.85rem;overflow-x:auto;margin-bottom:14px}
+.prev{width:100%;height:620px;border:1px solid #e2e8f0;border-radius:12px;background:#F0F4FA}
+</style></head><body><div class="wrap">
+<h1>DADS 5250 Quizzes, how to add them to the website</h1>
+<p class="lead">Each module below has a self-contained quiz. Every file is standalone: it needs no other files and only loads the Outfit web font. Answers are checked in the browser and nothing is sent anywhere. There are two versions per module: the student quiz (answers hidden until answered) and the answer key (all answers and explanations shown, for reviewers).</p>
+<div class="steps"><h2>To add a module quiz to the website</h2>
+<ol>
+<li>Upload that module's <code>MXX_Quiz.html</code> file (from the <code>website/</code> folder) to the site.</li>
+<li>On the module's page, paste the embed snippet shown under that module (an <code>iframe</code>).</li>
+<li>That is all. To let a reviewer see the correct answers, use <code>MXX_Review.html</code> instead.</li>
+</ol></div>
+
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M01</span><span class="mtitle">Getting Started with LLM APIs</span>
+      <span class="mlinks"><a href="M01_Quiz.html" target="_blank">student</a> &middot; <a href="M01_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M01_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M01_Quiz.html" title="M01 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M02</span><span class="mtitle">AI in Action</span>
+      <span class="mlinks"><a href="M02_Quiz.html" target="_blank">student</a> &middot; <a href="M02_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M02_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M02_Quiz.html" title="M02 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M03</span><span class="mtitle">Prompt Engineering, Structured Output & Function Calling</span>
+      <span class="mlinks"><a href="M03_Quiz.html" target="_blank">student</a> &middot; <a href="M03_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M03_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M03_Quiz.html" title="M03 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M04</span><span class="mtitle">LangChain & the Beer Game</span>
+      <span class="mlinks"><a href="M04_Quiz.html" target="_blank">student</a> &middot; <a href="M04_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M04_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M04_Quiz.html" title="M04 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M05</span><span class="mtitle">Retrieval-Augmented Generation (RAG)</span>
+      <span class="mlinks"><a href="M05_Quiz.html" target="_blank">student</a> &middot; <a href="M05_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M05_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M05_Quiz.html" title="M05 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M06</span><span class="mtitle">AI Agents: Concepts & LangGraph</span>
+      <span class="mlinks"><a href="M06_Quiz.html" target="_blank">student</a> &middot; <a href="M06_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M06_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M06_Quiz.html" title="M06 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M08</span><span class="mtitle">Multi-Agent Systems (CrewAI)</span>
+      <span class="mlinks"><a href="M08_Quiz.html" target="_blank">student</a> &middot; <a href="M08_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M08_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M08_Quiz.html" title="M08 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M09</span><span class="mtitle">Frontend for AI: Gradio & Streamlit</span>
+      <span class="mlinks"><a href="M09_Quiz.html" target="_blank">student</a> &middot; <a href="M09_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M09_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M09_Quiz.html" title="M09 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M10</span><span class="mtitle">Vision, Multimodal & Evaluation</span>
+      <span class="mlinks"><a href="M10_Quiz.html" target="_blank">student</a> &middot; <a href="M10_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M10_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M10_Quiz.html" title="M10 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M11</span><span class="mtitle">Claude Agent SDK, Google ADK & Claude Code</span>
+      <span class="mlinks"><a href="M11_Quiz.html" target="_blank">student</a> &middot; <a href="M11_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M11_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M11_Quiz.html" title="M11 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M12</span><span class="mtitle">AI Platforms: Google A2A & OpenAI Agents SDK</span>
+      <span class="mlinks"><a href="M12_Quiz.html" target="_blank">student</a> &middot; <a href="M12_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M12_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M12_Quiz.html" title="M12 preview" loading="lazy"></iframe>
+  </section>
+  <section class="mcard">
+    <div class="mhead"><span class="mcode">M13</span><span class="mtitle">AI Ethics, Safety & Guardrails</span>
+      <span class="mlinks"><a href="M13_Quiz.html" target="_blank">student</a> &middot; <a href="M13_Review.html" target="_blank">answer key</a></span></div>
+    <p class="mdoc">Embed snippet to paste into the website:</p>
+    <pre class="snip">&lt;iframe src="M13_Quiz.html" style="width:100%;height:940px;border:0"&gt;&lt;/iframe&gt;</pre>
+    <iframe class="prev" src="M13_Quiz.html" title="M13 preview" loading="lazy"></iframe>
+  </section>
+</div></body></html>
