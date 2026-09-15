@@ -170,7 +170,11 @@ def setup_openai(model: str = None):
         if embed_key:
             embed_client = OpenAI(api_key=embed_key, base_url=_PROVIDER["embed_base_url"])
             client.embeddings = embed_client.embeddings
-            EMBED_KWARGS.update(api_key=embed_key, base_url=_PROVIDER["embed_base_url"])
+            # check_embedding_ctx_length=False makes LangChain send raw strings;
+            # its default pre-tokenization sends token-id arrays, which
+            # DashScope rejects ("contents is neither str nor list of str").
+            EMBED_KWARGS.update(api_key=embed_key, base_url=_PROVIDER["embed_base_url"],
+                                check_embedding_ctx_length=False)
             print(f"embeddings routed to {_PROVIDER['embed_key_name'].split('_')[0].lower()}"
                   f"  |  model: {DEFAULT_EMBED_MODEL}")
         else:
