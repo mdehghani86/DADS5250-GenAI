@@ -16,3 +16,16 @@ reports dashboard (2026-09-15).
 
 Rollout gates agreed with MD: (a) live key test before release; (b) version
 bump + PyPI publish + lab re-pins only on MD's explicit go (RELEASING.md flow).
+
+## Cell sweep (2026-09-15, MD-requested full evaluation)
+
+An automated harness executed every code cell of all 20 in-scope notebooks
+(origin/main content) live against DeepSeek + Qwen: 204 cells OK, 0
+unexpected errors (43 skipped by design: fill-ins/servers/Gemini-scope; 10
+exercise-dependent; 2 expected moderations failures). Five real fixes came
+out of it, all pushed: two rotted Dropbox data links (M05 syllabus PDF, M06
+AAPL CSV) now ship in-repo; M01_Lab2 client shadowing removed (10 cells);
+M04 key cell tolerant of missing secrets; toolkit batches routed embeddings
+(DashScope 10-item cap); M06 math agent sets handle_parsing_errors=True.
+Both API keys were kept in session env only and shared solely inside MD's
+local TA report (TEA-021) at MD's explicit request; rotate after TA testing.
