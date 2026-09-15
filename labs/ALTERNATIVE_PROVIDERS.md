@@ -36,6 +36,18 @@ With that Secret present, the package routes only the embeddings calls to
 Qwen while chat stays on DeepSeek; without it, chat labs still run and the
 setup cell prints a one-line note about what is missing.
 
+## Image generation (M01 Lab 2, section 3)
+
+The image section can also run on an alternative service, Z.ai's CogView
+(about $0.01 per image). Create an account at `z.ai` (email signup), make an
+API key, and add one more Secret:
+
+- `ZAI_API_KEY`: your Z.ai key.
+
+The package then routes image calls there automatically. Differences you
+will notice: images come back as URLs (no base64 option) and are generated
+at 1024x1024. Without this Secret, only that one section is unavailable.
+
 ## Jupyter / JupyterHub instead of Colab
 
 There are no Colab Secrets there; use environment variables with the same
