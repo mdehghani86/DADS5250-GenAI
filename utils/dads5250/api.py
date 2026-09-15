@@ -2,16 +2,69 @@
 
 import os
 
-# --- Default model choices (current as of 2026-05) -------------------------
-# Latest OpenAI chat models that still accept a custom `temperature=` (which
-# every prompting / RAG / agent lab depends on for deterministic comparisons).
-# gpt-5.5 / gpt-5.3-chat-latest / gpt-5.2-chat-latest / gpt-5.1-chat-latest /
-# gpt-5 / gpt-5-mini all reject custom temperature. gpt-5.4 + gpt-5.4-mini
-# accept it, are the newest that do, and are the right defaults for course
-# labs. To upgrade later, change these in one place.
-DEFAULT_CHAT_MODEL = "gpt-5.4"          # main reasoning model
-DEFAULT_MINI_MODEL = "gpt-5.4-mini"     # cheaper / faster default
-DEFAULT_EMBED_MODEL = "text-embedding-3-small"
+# --- Provider registry (restricted-country support, 2026-09) ---------------
+# Some students are in countries where the OpenAI / Gemini APIs are blocked.
+# Each entry here is an OpenAI-COMPATIBLE service: same `openai` python SDK,
+# different base_url + key. A student switches by adding ONE extra Colab
+# Secret, LLM_PROVIDER (e.g. "deepseek"), plus that provider's API key.
+# Everyone else adds nothing and stays on OpenAI exactly as before.
+#
+# token_param: the name of the max-output-tokens argument the provider's
+# models accept. gpt-5.x rejects the classic `max_tokens` and requires
+# `max_completion_tokens`; DeepSeek is the reverse.
+PROVIDERS = {
+    "openai": {
+        "base_url": None,                       # SDK default: api.openai.com
+        "key_name": "OPENAI_API_KEY",
+        "chat_model": "gpt-5.4",
+        "mini_model": "gpt-5.4-mini",
+        "token_param": "max_completion_tokens",
+    },
+    "deepseek": {
+        "base_url": "https://api.deepseek.com",
+        "key_name": "DEEPSEEK_API_KEY",
+        "chat_model": "deepseek-v4-pro",
+        "mini_model": "deepseek-flash",
+        "token_param": "max_tokens",
+    },
+    # Phase 2 (planned): "qwen", the DashScope intl compatible-mode endpoint,
+    # mainly for embeddings (text-embedding-v4) which DeepSeek does not offer.
+}
+
+
+def _get_optional(name: str):
+    """Read a Colab Secret / env var WITHOUT prompting or raising.
+    Used for LLM_PROVIDER, which must stay invisible to students who
+    never set it (they simply get OpenAI)."""
+    try:
+        from google.colab import userdata
+        val = userdata.get(name)
+        if val:
+            return val.strip()
+    except Exception:
+        pass
+    return (os.environ.get(name) or "").strip() or None
+
+
+# Provider is resolved at import time because every lab imports the model
+# constants below in its setup cell, BEFORE calling setup_openai().
+LLM_PROVIDER = (_get_optional("LLM_PROVIDER") or "openai").lower()
+if LLM_PROVIDER not in PROVIDERS:
+    print(f"Unknown LLM_PROVIDER '{LLM_PROVIDER}', falling back to 'openai'. "
+          f"Valid values: {', '.join(PROVIDERS)}")
+    LLM_PROVIDER = "openai"
+_PROVIDER = PROVIDERS[LLM_PROVIDER]
+
+# --- Default model choices ------------------------------------------------
+# OpenAI defaults (current as of 2026-05): latest chat models that still
+# accept a custom `temperature=` (which every prompting / RAG / agent lab
+# depends on for deterministic comparisons). gpt-5.5 / gpt-5.3-chat-latest /
+# gpt-5.2-chat-latest / gpt-5.1-chat-latest / gpt-5 / gpt-5-mini all reject
+# custom temperature; gpt-5.4 + gpt-5.4-mini accept it. To upgrade later,
+# change the registry above in one place.
+DEFAULT_CHAT_MODEL = _PROVIDER["chat_model"]    # main reasoning model
+DEFAULT_MINI_MODEL = _PROVIDER["mini_model"]    # cheaper / faster default
+DEFAULT_EMBED_MODEL = "text-embedding-3-small"  # OpenAI-only for now (DeepSeek has no embeddings; Qwen planned)
 DEFAULT_GEMINI_MODEL = "gemini-flash-latest"  # auto-tracks the latest stable flash
 
 
@@ -50,22 +103,36 @@ def _get_secret(name: str) -> str:
 
 
 def setup_openai(model: str = None):
-    """Set up and return an OpenAI client. Validates the key with a test call."""
+    """Set up and return an OpenAI-compatible client for the active provider
+    (OpenAI by default; DeepSeek etc. when the LLM_PROVIDER secret is set).
+    Validates the key with a test call."""
     from openai import OpenAI
     model = model or DEFAULT_MINI_MODEL
-    key = _get_secret("OPENAI_API_KEY")
-    client = OpenAI(api_key=key)
-    # Quick validation — use max_completion_tokens (max_tokens is deprecated for
-    # gpt-5.x family).
+    key = _get_secret(_PROVIDER["key_name"])
+    kwargs = {"api_key": key}
+    if _PROVIDER["base_url"]:
+        kwargs["base_url"] = _PROVIDER["base_url"]
+        # Export the route so everything that builds its OWN client later in
+        # the lab follows the same provider without any cell edits: bare
+        # OpenAI() re-instantiations read OPENAI_BASE_URL, LangChain and
+        # LiteLLM/CrewAI read OPENAI_API_BASE, and all of them read
+        # OPENAI_API_KEY from the environment.
+        os.environ["OPENAI_BASE_URL"] = _PROVIDER["base_url"]
+        os.environ["OPENAI_API_BASE"] = _PROVIDER["base_url"]
+        os.environ["OPENAI_API_KEY"] = key
+    client = OpenAI(**kwargs)
+    # Quick validation. The max-output-tokens argument is provider-specific:
+    # gpt-5.x wants max_completion_tokens, DeepSeek wants max_tokens.
     try:
         client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": "Say OK"}],
-            max_completion_tokens=5,
+            **{_PROVIDER["token_param"]: 5},
         )
-        print(f"OpenAI ready  |  model: {model}  |  status: connected")
+        label = "OpenAI" if LLM_PROVIDER == "openai" else LLM_PROVIDER
+        print(f"{label} ready  |  model: {model}  |  status: connected")
     except Exception as e:
-        print(f"OpenAI connection failed: {e}")
+        print(f"{LLM_PROVIDER} connection failed: {e}")
         raise
     return client
 
@@ -87,7 +154,7 @@ def check_api(client, provider: str = "openai", model: str = None):
         r = client.chat.completions.create(
             model=model,
             messages=[{"role": "user", "content": "Reply with exactly: API is working"}],
-            max_completion_tokens=10,
+            **{_PROVIDER["token_param"]: 10},
         )
         msg = r.choices[0].message.content.strip()
         print(f"[{provider}] {model} says: {msg}")

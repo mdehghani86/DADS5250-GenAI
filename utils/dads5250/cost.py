@@ -11,6 +11,8 @@ PRICING = {
     "gpt-4o":             (2.50, 10.00),
     "gemini-2.5-flash":   (0.15, 0.60),   # approximate
     "gemini-2.5-pro":     (1.25, 10.00),   # approximate
+    "deepseek-flash":     (0.30, 1.20),   # peak rate; off-peak is about half
+    "deepseek-v4-pro":    (1.32, 4.00),   # peak rate; off-peak is about half
 }
 
 
