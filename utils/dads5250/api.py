@@ -15,7 +15,12 @@ import os
 # embed_*: where /v1/embeddings calls go. OpenAI and Qwen serve embeddings on
 # their own endpoint; DeepSeek has NO embeddings endpoint, so its entry routes
 # embeddings to Qwen (a second, optional Colab Secret: QWEN_API_KEY).
+# image_*: where /v1/images/generations calls go. Neither DeepSeek nor the
+# Qwen compatible-mode endpoint serves OpenAI-shaped images, so both route to
+# Z.ai's CogView (a third, optional Colab Secret: ZAI_API_KEY). CogView
+# returns image URLs only (no b64_json) and expects an explicit model id.
 _QWEN_BASE = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+_ZAI_BASE = "https://api.z.ai/api/paas/v4"
 PROVIDERS = {
     "openai": {
         "base_url": None,                       # SDK default: api.openai.com
@@ -26,6 +31,9 @@ PROVIDERS = {
         "embed_model": "text-embedding-3-small",
         "embed_base_url": None,                 # native: same client
         "embed_key_name": None,
+        "image_model": None,                    # native: the SDK's default image model
+        "image_base_url": None,
+        "image_key_name": None,
     },
     "deepseek": {
         "base_url": "https://api.deepseek.com",
@@ -36,6 +44,9 @@ PROVIDERS = {
         "embed_model": "text-embedding-v4",     # served by Qwen, see below
         "embed_base_url": _QWEN_BASE,
         "embed_key_name": "QWEN_API_KEY",
+        "image_model": "cogview-4-250304",      # served by Z.ai
+        "image_base_url": _ZAI_BASE,
+        "image_key_name": "ZAI_API_KEY",
     },
     "qwen": {
         "base_url": _QWEN_BASE,
@@ -46,6 +57,9 @@ PROVIDERS = {
         "embed_model": "text-embedding-v4",
         "embed_base_url": None,                 # native: same client
         "embed_key_name": None,
+        "image_model": "cogview-4-250304",      # served by Z.ai
+        "image_base_url": _ZAI_BASE,
+        "image_key_name": "ZAI_API_KEY",
     },
 }
 
@@ -83,6 +97,7 @@ _PROVIDER = PROVIDERS[LLM_PROVIDER]
 DEFAULT_CHAT_MODEL = _PROVIDER["chat_model"]    # main reasoning model
 DEFAULT_MINI_MODEL = _PROVIDER["mini_model"]    # cheaper / faster default
 DEFAULT_EMBED_MODEL = _PROVIDER["embed_model"]  # follows the embeddings backend
+DEFAULT_IMAGE_MODEL = _PROVIDER["image_model"]  # None on OpenAI (SDK default); CogView id when routed
 DEFAULT_GEMINI_MODEL = "gemini-flash-latest"  # auto-tracks the latest stable flash
 
 # Kwargs for LangChain's OpenAIEmbeddings so M05-style code can follow the
@@ -162,6 +177,17 @@ def setup_openai(model: str = None):
             print(f"note: {LLM_PROVIDER} has no embeddings endpoint. Set "
                   f"{_PROVIDER['embed_key_name']} (Colab Secret) to enable the "
                   f"embeddings labs (M01, M05, M10).")
+    # Image routing: same pattern for /v1/images/generations. Z.ai's CogView
+    # is the one OpenAI-shaped image endpoint reachable for these students.
+    if _PROVIDER["image_base_url"]:
+        image_key = _get_optional(_PROVIDER["image_key_name"])
+        if image_key:
+            image_client = OpenAI(api_key=image_key, base_url=_PROVIDER["image_base_url"])
+            client.images = image_client.images
+            print(f"images routed to z.ai  |  model: {DEFAULT_IMAGE_MODEL}")
+        else:
+            print(f"note: image generation needs {_PROVIDER['image_key_name']} "
+                  f"(Colab Secret); only the image section of M01 Lab 2 uses it.")
     # Quick validation. The max-output-tokens argument is provider-specific:
     # gpt-5.x wants max_completion_tokens, DeepSeek wants max_tokens.
     try:
