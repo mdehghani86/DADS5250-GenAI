@@ -142,6 +142,33 @@ def _get_secret(name: str) -> str:
     return val
 
 
+class _BatchedEmbeddings:
+    """DashScope caps embeddings batches at 10 inputs; OpenAI allows
+    thousands. This thin proxy splits big batches so lab code written
+    for OpenAI works unchanged on the routed backend."""
+    def __init__(self, embeddings_resource, max_batch=10):
+        self._emb = embeddings_resource
+        self._max = max_batch
+
+    def create(self, *, input, **kwargs):
+        items = input if isinstance(input, list) else [input]
+        if len(items) <= self._max:
+            return self._emb.create(input=input, **kwargs)
+        merged = None
+        for i in range(0, len(items), self._max):
+            r = self._emb.create(input=items[i:i + self._max], **kwargs)
+            if merged is None:
+                merged = r
+            else:
+                merged.data.extend(r.data)
+                if getattr(merged, "usage", None) and getattr(r, "usage", None):
+                    merged.usage.prompt_tokens += r.usage.prompt_tokens
+                    merged.usage.total_tokens += r.usage.total_tokens
+        for idx, d in enumerate(merged.data):   # re-index across the merged batches
+            d.index = idx
+        return merged
+
+
 def setup_openai(model: str = None):
     """Set up and return an OpenAI-compatible client for the active provider
     (OpenAI by default; DeepSeek etc. when the LLM_PROVIDER secret is set).
@@ -169,12 +196,12 @@ def setup_openai(model: str = None):
         embed_key = _get_optional(_PROVIDER["embed_key_name"])
         if embed_key:
             embed_client = OpenAI(api_key=embed_key, base_url=_PROVIDER["embed_base_url"])
-            client.embeddings = embed_client.embeddings
-            # check_embedding_ctx_length=False makes LangChain send raw strings;
-            # its default pre-tokenization sends token-id arrays, which
-            # DashScope rejects ("contents is neither str nor list of str").
+            client.embeddings = _BatchedEmbeddings(embed_client.embeddings)
+            # check_embedding_ctx_length=False makes LangChain send raw strings
+            # (its default pre-tokenization sends token-id arrays, which
+            # DashScope rejects); chunk_size=10 respects DashScope's batch cap.
             EMBED_KWARGS.update(api_key=embed_key, base_url=_PROVIDER["embed_base_url"],
-                                check_embedding_ctx_length=False)
+                                check_embedding_ctx_length=False, chunk_size=10)
             print(f"embeddings routed to {_PROVIDER['embed_key_name'].split('_')[0].lower()}"
                   f"  |  model: {DEFAULT_EMBED_MODEL}")
         else:
