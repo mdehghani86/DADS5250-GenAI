@@ -13,6 +13,8 @@ PRICING = {
     "gemini-2.5-pro":     (1.25, 10.00),   # approximate
     "deepseek-flash":     (0.30, 1.20),   # peak rate; off-peak is about half
     "deepseek-v4-pro":    (1.32, 4.00),   # peak rate; off-peak is about half
+    "qwen3.8-flash":      (0.14, 0.42),   # approximate
+    "qwen3.8-max":        (2.00, 6.00),   # approximate
 }
 
 

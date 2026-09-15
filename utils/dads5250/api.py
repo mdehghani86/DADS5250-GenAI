@@ -12,6 +12,10 @@ import os
 # token_param: the name of the max-output-tokens argument the provider's
 # models accept. gpt-5.x rejects the classic `max_tokens` and requires
 # `max_completion_tokens`; DeepSeek is the reverse.
+# embed_*: where /v1/embeddings calls go. OpenAI and Qwen serve embeddings on
+# their own endpoint; DeepSeek has NO embeddings endpoint, so its entry routes
+# embeddings to Qwen (a second, optional Colab Secret: QWEN_API_KEY).
+_QWEN_BASE = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
 PROVIDERS = {
     "openai": {
         "base_url": None,                       # SDK default: api.openai.com
@@ -19,6 +23,9 @@ PROVIDERS = {
         "chat_model": "gpt-5.4",
         "mini_model": "gpt-5.4-mini",
         "token_param": "max_completion_tokens",
+        "embed_model": "text-embedding-3-small",
+        "embed_base_url": None,                 # native: same client
+        "embed_key_name": None,
     },
     "deepseek": {
         "base_url": "https://api.deepseek.com",
@@ -26,9 +33,20 @@ PROVIDERS = {
         "chat_model": "deepseek-v4-pro",
         "mini_model": "deepseek-flash",
         "token_param": "max_tokens",
+        "embed_model": "text-embedding-v4",     # served by Qwen, see below
+        "embed_base_url": _QWEN_BASE,
+        "embed_key_name": "QWEN_API_KEY",
     },
-    # Phase 2 (planned): "qwen", the DashScope intl compatible-mode endpoint,
-    # mainly for embeddings (text-embedding-v4) which DeepSeek does not offer.
+    "qwen": {
+        "base_url": _QWEN_BASE,
+        "key_name": "QWEN_API_KEY",
+        "chat_model": "qwen3.8-max",
+        "mini_model": "qwen3.8-flash",
+        "token_param": "max_tokens",
+        "embed_model": "text-embedding-v4",
+        "embed_base_url": None,                 # native: same client
+        "embed_key_name": None,
+    },
 }
 
 
@@ -64,8 +82,15 @@ _PROVIDER = PROVIDERS[LLM_PROVIDER]
 # change the registry above in one place.
 DEFAULT_CHAT_MODEL = _PROVIDER["chat_model"]    # main reasoning model
 DEFAULT_MINI_MODEL = _PROVIDER["mini_model"]    # cheaper / faster default
-DEFAULT_EMBED_MODEL = "text-embedding-3-small"  # OpenAI-only for now (DeepSeek has no embeddings; Qwen planned)
+DEFAULT_EMBED_MODEL = _PROVIDER["embed_model"]  # follows the embeddings backend
 DEFAULT_GEMINI_MODEL = "gemini-flash-latest"  # auto-tracks the latest stable flash
+
+# Kwargs for LangChain's OpenAIEmbeddings so M05-style code can follow the
+# embeddings backend with one line: OpenAIEmbeddings(model=DEFAULT_EMBED_MODEL,
+# **EMBED_KWARGS). Starts empty; setup_openai() fills it in place when the
+# active provider routes embeddings to a second endpoint (DeepSeek -> Qwen),
+# and labs imported the same dict object, so the update is visible to them.
+EMBED_KWARGS = {}
 
 
 def _get_secret(name: str) -> str:
@@ -121,6 +146,22 @@ def setup_openai(model: str = None):
         os.environ["OPENAI_API_BASE"] = _PROVIDER["base_url"]
         os.environ["OPENAI_API_KEY"] = key
     client = OpenAI(**kwargs)
+    # Embeddings routing: DeepSeek has no /v1/embeddings, so when the student
+    # also set QWEN_API_KEY we graft Qwen's embeddings resource onto this
+    # client. Lab cells calling client.embeddings.create(...) then just work.
+    # Without the second key, chat labs run fine and we print a one-line note.
+    if _PROVIDER["embed_base_url"]:
+        embed_key = _get_optional(_PROVIDER["embed_key_name"])
+        if embed_key:
+            embed_client = OpenAI(api_key=embed_key, base_url=_PROVIDER["embed_base_url"])
+            client.embeddings = embed_client.embeddings
+            EMBED_KWARGS.update(api_key=embed_key, base_url=_PROVIDER["embed_base_url"])
+            print(f"embeddings routed to {_PROVIDER['embed_key_name'].split('_')[0].lower()}"
+                  f"  |  model: {DEFAULT_EMBED_MODEL}")
+        else:
+            print(f"note: {LLM_PROVIDER} has no embeddings endpoint. Set "
+                  f"{_PROVIDER['embed_key_name']} (Colab Secret) to enable the "
+                  f"embeddings labs (M01, M05, M10).")
     # Quick validation. The max-output-tokens argument is provider-specific:
     # gpt-5.x wants max_completion_tokens, DeepSeek wants max_tokens.
     try:

@@ -3,7 +3,7 @@
 from dads5250.api import (
     setup_openai, setup_gemini, check_api,
     DEFAULT_CHAT_MODEL, DEFAULT_MINI_MODEL, DEFAULT_EMBED_MODEL, DEFAULT_GEMINI_MODEL,
-    LLM_PROVIDER, PROVIDERS,
+    LLM_PROVIDER, PROVIDERS, EMBED_KWARGS,
 )
 from dads5250.display import (
     pp, show_response, show_expected, show_success, show_info, compare_responses,
