@@ -12,4 +12,4 @@ from dads5250.display import (
 from dads5250.quiz import quiz
 from dads5250.cost import count_tokens, estimate_cost, PRICING
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
