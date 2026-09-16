@@ -29,3 +29,13 @@ M04 key cell tolerant of missing secrets; toolkit batches routed embeddings
 (DashScope 10-item cap); M06 math agent sets handle_parsing_errors=True.
 Both API keys were kept in session env only and shared solely inside MD's
 local TA report (TEA-021) at MD's explicit request; rotate after TA testing.
+
+## Release (2026-09-16)
+
+MD approved reframing pilot-first as gating the ANNOUNCEMENT to restricted
+students, not the mechanical release (needed so the TA can test in Colab).
+dads5250 0.3.0 published to PyPI, tagged v0.3.0, all 26 notebooks re-pinned
+and pushed. End-to-end verified on the published package: LLM_PROVIDER
+secret -> deepseek chat connected + Qwen embeddings (1024-dim). Default
+path (no secret) unchanged. Open: TA lab pass, in-country pilot, then the
+announcement; Z.ai image key still to be issued for the M01 image section.
