@@ -1,0 +1,78 @@
+<div style="max-width:860px; margin:0 auto; font-family:'Lato',Helvetica,Arial,sans-serif; color:#3d3d3d; font-size:12.5px; line-height:1.7;">
+
+<div style="background:linear-gradient(120deg,#0B4A39,#0F6B52 70%,#168A6B); border-radius:6px; padding:22px 26px; color:#ffffff;">
+  <div style="font-size:11px; letter-spacing:2px; font-weight:700; opacity:0.9;">DADS 5250 &middot; WORKING OUTSIDE VLAB</div>
+  <div style="font-size:22px; font-weight:800; margin-top:4px;">Setting Your API Key in Jupyter</div>
+  <div style="font-size:12.5px; margin-top:4px; opacity:0.95;">Two minutes, once per session. In Google Colab you would use the key sidebar; on your own Jupyter there are no Colab Secrets, so you set the key like this instead.</div>
+</div>
+
+<div style="background:rgba(15,107,82,0.08); border-left:3px solid #0F6B52; border-radius:0 6px 6px 0; padding:12px 16px; margin-top:14px;">
+  <b style="color:#0B4A39;">Your key is a password.</b> Never paste it into a notebook cell you will save or submit, never print it in output, and never commit it to GitHub. The pattern below keeps the key out of your notebook file entirely.
+</div>
+
+<div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><circle cx="8" cy="15" r="4"></circle><path d="M11 12 21 2m-4 4 3 3"></path></svg>
+  Step 1. Get a key
+</div>
+<p style="margin:8px 0 0;">Create one at <b>platform.openai.com</b> under <i>API keys</i>. Copy it right away, it is shown only once. If OpenAI is not available in your country, see the last section of this page.</p>
+
+<div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><rect x="3" y="4" width="18" height="14" rx="2"></rect><path d="M7 9l3 3-3 3M13 15h4"></path></svg>
+  Step 2. Run this cell first, every session
+</div>
+<p style="margin:8px 0 6px;">Add this as the first cell you run. It asks for the key with a hidden prompt, so the key never appears on screen or inside the saved notebook:</p>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").strip()</pre>
+<p style="margin:8px 0 0; font-size:11px; color:#747474;">The <b>.strip()</b> matters: keys copied on Windows often carry an invisible space or line ending, which makes a valid key fail. When the prompt appears, paste the key and press Enter. Nothing is displayed, that is the point.</p>
+
+<p style="margin:10px 0 6px;"><b style="color:#123f33;">Prefer to set it once per computer?</b> Put the key in your shell profile instead, then you never type it again and every lab finds it automatically:</p>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;"># macOS or Linux: add to ~/.zshrc, then restart the terminal
+export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"
+
+# Windows PowerShell: run once, then reopen Jupyter
+setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</pre>
+
+<div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><path d="M20 6 9 17l-5-5"></path></svg>
+  Step 3. Verify
+</div>
+<p style="margin:8px 0 0;">Now run the lab's own setup and API check cells. You should see <b style="font-family:monospace; font-size:11.5px;">OpenAI ready | model: ... | status: connected</b>. If the setup cell shows a hidden prompt instead, that is the same mechanism offering you a second chance to paste the key.</p>
+
+<div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v6l4 2"></path></svg>
+  If something fails
+</div>
+<table style="width:100%; border-collapse:collapse; font-size:12.5px; margin-top:8px;">
+  <tr>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; width:38%; vertical-align:top;"><b style="color:#123f33;">"OPENAI_API_KEY not found"</b></td>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; vertical-align:top;">The key cell has not run in this session. Run the Step 2 cell first, then the setup cell, in that order.</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; vertical-align:top;"><b style="color:#123f33;">401 or "invalid key", but the key looks right</b></td>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; vertical-align:top;">Almost always a trailing space or a Windows line ending picked up during copy paste. The <b>.strip()</b> in the Step 2 cell removes it; if you set the key elsewhere, retype the last few characters by hand.</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; vertical-align:top;"><b style="color:#123f33;">It worked, then stopped after a restart</b></td>
+    <td style="padding:8px 10px; border-bottom:1px solid #E4E9EB; vertical-align:top;">Restarting the kernel clears everything the Step 2 cell set. That is normal: run the key cell again. If this annoys you, use the shell profile option in Step 2 and it survives restarts.</td>
+  </tr>
+  <tr>
+    <td style="padding:8px 10px; vertical-align:top;"><b style="color:#123f33;">Provider set, but labs still call OpenAI</b></td>
+    <td style="padding:8px 10px; vertical-align:top;">The provider choice below is read when the setup cell runs its imports. Set it in the first cell, before the setup cell, then restart the kernel and run top to bottom.</td>
+  </tr>
+</table>
+
+<div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c3 3.5 3 14 0 18M12 3c-3 3.5-3 14 0 18"></path></svg>
+  No OpenAI access in your country?
+</div>
+<p style="margin:8px 0 6px;">The course toolkit (dads5250 version 0.3.0 and later) supports DeepSeek as a drop in provider. Make your first cell this instead, and the labs run unchanged:</p>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
+os.environ["LLM_PROVIDER"] = "deepseek"
+os.environ["DEEPSEEK_API_KEY"] = getpass.getpass("Paste your DeepSeek key: ").strip()</pre>
+<p style="margin:8px 0 0;">Account setup, the optional Qwen key for the embeddings labs, and troubleshooting for this path are in the guide <b>labs/ALTERNATIVE_PROVIDERS.md</b> in the course GitHub repository. Students with OpenAI access should ignore this section, the default needs no provider line at all.</p>
+
+<div style="background:#fdf6e3; border-left:3px solid #d9a514; border-radius:0 6px 6px 0; padding:12px 16px; margin-top:16px;">
+  <b style="color:#7a5c00;">Never do these.</b> Do not write the key directly in a cell, do not <span style="font-family:monospace; font-size:11.5px;">print(os.environ["OPENAI_API_KEY"])</span>, do not screenshot or screen share with the key visible, and do not push a notebook whose output contains any part of a key. If a key leaks, revoke it on the provider dashboard and create a new one.
+</div>
+
+</div>
