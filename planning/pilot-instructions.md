@@ -25,7 +25,7 @@ able to add a small credit (any payment method you would normally use).
 Step 2. Create an API key there (API Keys section).
 
 Step 3. Open this notebook in Google Colab:
-https://colab.research.google.com/github/mdehghani86/DADS5250-GenAI/blob/main/labs/M00/M00_Lab0_API_Key_Check.ipynb
+https://colab.research.google.com/github/mdehghani86/DADS5250-GenAI/blob/main/labs/M00/M00_Lab0_Setting_Keys_in_Jupyter.ipynb
 In the key sidebar (key icon) add two Secrets, enabling notebook access:
   LLM_PROVIDER = deepseek
   DEEPSEEK_API_KEY = <your key>
