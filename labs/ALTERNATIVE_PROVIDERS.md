@@ -17,7 +17,8 @@ and run the same notebooks, unchanged.
    notebook access for both:
    - `LLM_PROVIDER` with the value `deepseek`
    - `DEEPSEEK_API_KEY` with your key
-4. Open any lab and Run All. The API-check cell will show
+4. Open Lab 0 (`labs/M00/M00_Lab0_API_Key_Check.ipynb`) and Run All to
+   verify everything, then start any lab. The API-check cell will show
    `deepseek ready | model: deepseek-flash | status: connected`.
 
 That is the entire setup. If `LLM_PROVIDER` is not set, everything stays on

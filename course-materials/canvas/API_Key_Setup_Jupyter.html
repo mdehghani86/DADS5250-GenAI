@@ -9,6 +9,10 @@
 <div style="background:rgba(15,107,82,0.08); border-left:3px solid #0F6B52; border-radius:0 6px 6px 0; padding:12px 16px; margin-top:14px;">
   <b style="color:#0B4A39;">Your key is a password.</b> Never paste it into a notebook cell you will save or submit, never print it in output, and never commit it to GitHub. The pattern below keeps the key out of your notebook file entirely.
 </div>
+<a target="_blank" rel="noopener" href="https://colab.research.google.com/github/mdehghani86/DADS5250-GenAI/blob/main/labs/M00/M00_Lab0_API_Key_Check.ipynb" style="display:block; background:#0F6B52; color:#ffffff; border-radius:6px; padding:12px 16px; margin-top:12px; text-decoration:none; font-weight:800; font-size:13px; text-align:center;">
+  Fastest check: open Lab 0 in Colab and press Run All. It verifies your key end to end in two minutes, nothing to copy.
+</a>
+
 
 <div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><circle cx="8" cy="15" r="4"></circle><path d="M11 12 21 2m-4 4 3 3"></path></svg>
@@ -21,8 +25,9 @@
   Step 2. Run this cell first, every session
 </div>
 <p style="margin:8px 0 6px;">Add this as the first cell you run. It asks for the key with a hidden prompt, so the key never appears on screen or inside the saved notebook:</p>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
-os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").strip()</pre>
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").strip()</pre><button data-src="cp0" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp0" style="display:none;">import os, getpass
+os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").strip()</span></div>
 <p style="margin:8px 0 0; font-size:11px; color:#747474;">The <b>.strip()</b> matters: keys copied on Windows often carry an invisible space or line ending, which makes a valid key fail. When the prompt appears, paste the key and press Enter. Nothing is displayed, that is the point.</p>
 
 <p style="margin:10px 0 6px;"><b style="color:#123f33;">Prefer to set it once per computer?</b> You can store the key on your computer so every notebook finds it automatically and you never type it again. It takes three steps.</p>
@@ -37,22 +42,22 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").st
   <li>Open the <b>Terminal</b> app.</li>
   <li>Copy the line below, replace the placeholder with your real key (keep the quotes), paste it into Terminal, and press Enter. It saves the key into a settings file called <span style="font-family:monospace; font-size:11.5px;">~/.zshrc</span> that runs every time a terminal opens:</li>
 </ol>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo 'export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"' &gt;&gt; ~/.zshrc</pre>
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo 'export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"' &gt;&gt; ~/.zshrc</pre><button data-src="cp1" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp1" style="display:none;">echo 'export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"' &gt;&gt; ~/.zshrc</span></div>
 <ol start="3" style="margin:6px 0 0 22px; line-height:1.9;">
   <li>Close Terminal, open a new one, and check it worked. This should print your key:</li>
 </ol>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $OPENAI_API_KEY</pre>
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $OPENAI_API_KEY</pre><button data-src="cp2" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp2" style="display:none;">echo $OPENAI_API_KEY</span></div>
 
 <p style="margin:12px 0 4px;"><b style="color:#123f33;">On Windows:</b></p>
 <ol style="margin:4px 0 0 22px; line-height:1.9;">
   <li>Open <b>PowerShell</b> (press the Windows key, type powershell, press Enter).</li>
   <li>Run this once, with your real key in place of the placeholder (keep the quotes):</li>
 </ol>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</pre>
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</pre><button data-src="cp3" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp3" style="display:none;">setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</span></div>
 <ol start="3" style="margin:6px 0 0 22px; line-height:1.9;">
   <li>Close PowerShell, open a NEW one, and check it worked. This should print your key:</li>
 </ol>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $env:OPENAI_API_KEY</pre>
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $env:OPENAI_API_KEY</pre><button data-src="cp4" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp4" style="display:none;">echo $env:OPENAI_API_KEY</span></div>
 
 <div style="background:rgba(15,107,82,0.08); border-left:3px solid #0F6B52; border-radius:0 6px 6px 0; padding:10px 14px; margin-top:10px; font-size:12px;">
   <b style="color:#0B4A39;">The one rule that trips everyone:</b> the key only reaches programs started AFTER you set it. So close Jupyter (and Anaconda Navigator, if you use it) and start it again from a fresh terminal. If a notebook still says the key is not found, this is almost always why.
@@ -92,9 +97,11 @@ os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").st
   No OpenAI access in your country?
 </div>
 <p style="margin:8px 0 6px;">The course toolkit (dads5250 version 0.3.0 and later) supports DeepSeek as a drop in provider. Make your first cell this instead, and the labs run unchanged:</p>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
+<div style="position:relative;"><pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-left:3px solid #0F6B52; border-radius:4px; padding:12px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;">import os, getpass
 os.environ["LLM_PROVIDER"] = "deepseek"
-os.environ["DEEPSEEK_API_KEY"] = getpass.getpass("Paste your DeepSeek key: ").strip()</pre>
+os.environ["DEEPSEEK_API_KEY"] = getpass.getpass("Paste your DeepSeek key: ").strip()</pre><button data-src="cp5" style="position:absolute; top:6px; right:6px; font-family:inherit; font-size:10.5px; font-weight:700; color:#0F6B52; background:#ffffff; border:1px solid #8FC8CA; border-radius:4px; padding:2px 10px; cursor:pointer;">copy</button><span id="cp5" style="display:none;">import os, getpass
+os.environ["LLM_PROVIDER"] = "deepseek"
+os.environ["DEEPSEEK_API_KEY"] = getpass.getpass("Paste your DeepSeek key: ").strip()</span></div>
 <p style="margin:8px 0 0;">Account setup, the optional Qwen key for the embeddings labs, and troubleshooting for this path are in the guide <b>labs/ALTERNATIVE_PROVIDERS.md</b> in the course GitHub repository. Students with OpenAI access should ignore this section, the default needs no provider line at all.</p>
 
 <div style="background:#fdf6e3; border-left:3px solid #d9a514; border-radius:0 6px 6px 0; padding:12px 16px; margin-top:16px;">
@@ -102,3 +109,23 @@ os.environ["DEEPSEEK_API_KEY"] = getpass.getpass("Paste your DeepSeek key: ").st
 </div>
 
 </div>
+<script>
+document.addEventListener("click", function (e) {
+  var b = e.target.closest("button[data-src]");
+  if (!b) return;
+  var el = document.getElementById(b.getAttribute("data-src"));
+  var tmp = document.createElement("textarea");
+  tmp.innerHTML = el.innerHTML;
+  var text = tmp.value.replace(/<[^>]+>/g, "");
+  function done() { b.textContent = "copied"; setTimeout(function () { b.textContent = "copy"; }, 1800); }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(done);
+  } else {
+    var t = document.createElement("textarea"); t.value = text;
+    t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select();
+    try { document.execCommand("copy"); done(); } catch (err) {}
+    document.body.removeChild(t);
+  }
+});
+</script>
