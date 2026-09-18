@@ -25,12 +25,33 @@
 os.environ["OPENAI_API_KEY"] = getpass.getpass("Paste your OpenAI API key: ").strip()</pre>
 <p style="margin:8px 0 0; font-size:11px; color:#747474;">The <b>.strip()</b> matters: keys copied on Windows often carry an invisible space or line ending, which makes a valid key fail. When the prompt appears, paste the key and press Enter. Nothing is displayed, that is the point.</p>
 
-<p style="margin:10px 0 6px;"><b style="color:#123f33;">Prefer to set it once per computer?</b> Put the key in your shell profile instead, then you never type it again and every lab finds it automatically:</p>
-<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:0;"># macOS or Linux: add to ~/.zshrc, then restart the terminal
-export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"
+<p style="margin:10px 0 6px;"><b style="color:#123f33;">Prefer to set it once per computer?</b> You can store the key on your computer so every notebook finds it automatically and you never type it again. It takes three steps.</p>
 
-# Windows PowerShell: run once, then reopen Jupyter
-setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</pre>
+<p style="margin:8px 0 4px;"><b style="color:#123f33;">On macOS or Linux:</b></p>
+<ol style="margin:4px 0 0 22px; line-height:1.9;">
+  <li>Open the <b>Terminal</b> app.</li>
+  <li>Copy the line below, replace the placeholder with your real key (keep the quotes), paste it into Terminal, and press Enter. It saves the key into a settings file called <span style="font-family:monospace; font-size:11.5px;">~/.zshrc</span> that runs every time a terminal opens:</li>
+</ol>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo 'export OPENAI_API_KEY="sk-PASTE-YOUR-KEY-HERE"' &gt;&gt; ~/.zshrc</pre>
+<ol start="3" style="margin:6px 0 0 22px; line-height:1.9;">
+  <li>Close Terminal, open a new one, and check it worked. This should print your key:</li>
+</ol>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $OPENAI_API_KEY</pre>
+
+<p style="margin:12px 0 4px;"><b style="color:#123f33;">On Windows:</b></p>
+<ol style="margin:4px 0 0 22px; line-height:1.9;">
+  <li>Open <b>PowerShell</b> (press the Windows key, type powershell, press Enter).</li>
+  <li>Run this once, with your real key in place of the placeholder (keep the quotes):</li>
+</ol>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">setx OPENAI_API_KEY "sk-PASTE-YOUR-KEY-HERE"</pre>
+<ol start="3" style="margin:6px 0 0 22px; line-height:1.9;">
+  <li>Close PowerShell, open a NEW one, and check it worked. This should print your key:</li>
+</ol>
+<pre style="background:#f4f7f6; border:1px solid #E4E9EB; border-radius:4px; padding:10px 14px; font-size:11.5px; line-height:1.6; overflow-x:auto; margin:6px 0 0;">echo $env:OPENAI_API_KEY</pre>
+
+<div style="background:rgba(15,107,82,0.08); border-left:3px solid #0F6B52; border-radius:0 6px 6px 0; padding:10px 14px; margin-top:10px; font-size:12px;">
+  <b style="color:#0B4A39;">The one rule that trips everyone:</b> the key only reaches programs started AFTER you set it. So close Jupyter (and Anaconda Navigator, if you use it) and start it again from a fresh terminal. If a notebook still says the key is not found, this is almost always why.
+</div>
 
 <div style="margin-top:18px; font-size:16px; font-weight:800; color:#123f33; border-bottom:2px solid rgba(15,107,82,0.3); padding-bottom:6px;">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#0F6B52" stroke-width="2.4" stroke-linecap="round" style="vertical-align:-2px;"><path d="M20 6 9 17l-5-5"></path></svg>
