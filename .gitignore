@@ -15,3 +15,8 @@ scripts/RECORDING_LOG.md
 
 # Recorded lab videos (large, local only)
 videos/
+.DS_Store
+9_Archive/
+1_Course_Material/1_Presentations/
+*.pptx
+*.pdf

@@ -2,7 +2,7 @@
 
 For: TA Saqar Esmaeili
 Status: DRAFT. Do not record yet. MD must confirm the two video split below first.
-Companion page: `course-materials/canvas/API_Key_Setup_Jupyter.html` (the videos
+Companion page: `1_Course_Material/2_Canvas_Pages/canvas/API_Key_Setup_Jupyter.html` (the videos
 demonstrate exactly what that page says; do not improvise extra advice).
 
 ## Proposed split, for MD to confirm

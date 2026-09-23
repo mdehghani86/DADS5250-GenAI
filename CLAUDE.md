@@ -28,8 +28,8 @@ DADS5250-GenAI/
 │   ├── M12/            # Workflow Automation & n8n
 │   └── M13/            # Fine-Tuning & Deployment
 ├── utils/              # Shared Python utilities (pip-installable from GitHub)
-├── course-materials/   # Lecture slides, readings
-├── evaluations/        # Exams, rubrics, grading
+├── 1_Course_Material/  # 1_Presentations (module decks), 2_Canvas_Pages
+├── 2_Course_Evaluation/# 1_Exams, 2_Projects
 ├── data/               # Datasets for labs
 ├── images/             # Generated images (NanoBanana MCP)
 └── .claude/commands/   # Slash commands for this project
